@@ -1,0 +1,13 @@
+
+from binance.client import Client
+
+# Binance Testnet API bilgilerinizi girin
+api_key = "70545197030f91dcd85316478ef03e15fdf565514a0bfcd6afe915dc93b0c69b"      # Buraya kendi API Key'inizi girin
+api_secret = "8c403fbf9b9bdd003bc38a7162f89b96f8f97a3df48244a542685023dc9b2033"
+
+# Binance Futures Testnet bağlantısını yapıyoruz
+client = Client(api_key, api_secret, testnet=True)
+
+# Hesap bakiyenizi kontrol edelim
+balance = client.futures_account_balance()
+print(balance)
