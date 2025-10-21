@@ -1,0 +1,23 @@
+# deployment/cloud_run.yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: binance1-pro-bot
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image: gcr.io/<PROJECT_ID>/binance1-pro-bot:latest
+          env:
+            - name: BINANCE_API_KEY
+              value: "<YOUR_BINANCE_API_KEY>"
+            - name: BINANCE_API_SECRET
+              value: "<YOUR_BINANCE_API_SECRET>"
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 1
+      containerConcurrency: 1
