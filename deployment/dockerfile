@@ -1,0 +1,22 @@
+# deployment/dockerfile
+# Temel imaj
+FROM python:3.10-slim
+
+# Çalışma dizini oluştur
+WORKDIR /app
+
+# Gereksinimleri kopyala ve yükle
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Bot kodunu kopyala
+COPY . .
+
+# Redis ve Supervisor gerekli ise ekleyin
+RUN apt-get update && apt-get install -y redis supervisor
+
+# Supervisor konfigürasyonu eklenir
+COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Başlatma komutu
+CMD ["supervisord", "-n"]
