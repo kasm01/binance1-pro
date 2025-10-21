@@ -1,0 +1,3 @@
+2025-10-21 14:33:01 | ERROR | BinanceAPIException | Code: -1013 | Insufficient funds
+2025-10-21 14:36:22 | WARNING | WebSocketDisconnected | Attempting reconnect...
+2025-10-21 14:41:15 | CRITICAL | RiskManagerException | Position size exceeds limit
