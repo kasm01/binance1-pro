@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_DIR="${BASE_DIR:-$HOME/binance1}"
+BASE_DIR="${BASE_DIR:-$HOME/binance1-pro}"
 SUP_DIR="$BASE_DIR/logs/supervisor"
 PID_MAIN_FILE="$SUP_DIR/main.pid"
 PID_BRIDGE_FILE="$SUP_DIR/bridge.pid"

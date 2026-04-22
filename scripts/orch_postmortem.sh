@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-D="${XDG_STATE_HOME:-$HOME/.local/state}/binance1/postmortem"
+D="${XDG_STATE_HOME:-$HOME/.local/state}/binance1-pro/postmortem"
 mkdir -p "$D"
 
 # -----------------------------
@@ -44,7 +44,7 @@ log_event
 
 # Service status snapshot (best-effort)
 write_atomic "$D/systemd_status_orch_${TS_EPOCH}.txt" \
-  /bin/bash -lc '/usr/bin/systemctl --user --no-pager --full status binance1-orch.service || true'
+  /bin/bash -lc '/usr/bin/systemctl --user --no-pager --full status binance1-long-orch.service || true'
 
 # Full process snapshot (sorted by longest runtime first)
 write_atomic "$D/ps_all_${TS_EPOCH}.txt" \
@@ -60,10 +60,10 @@ write_atomic "$D/ps_orch_${TS_EPOCH}.txt" \
 
 # Tail key logs (best-effort)
 for f in \
-  "$HOME/binance1/logs/orch/top_selector.log" \
-  "$HOME/binance1/logs/orch/master_executor.log" \
-  "$HOME/binance1/logs/orch/intent_bridge.log" \
-  "$HOME/binance1/logs/orch/aggregator.log"
+  "$HOME/binance1-pro/logs/orch/top_selector.log" \
+  "$HOME/binance1-pro/logs/orch/master_executor.log" \
+  "$HOME/binance1-pro/logs/orch/intent_bridge.log" \
+  "$HOME/binance1-pro/logs/orch/aggregator.log"
 do
   if [[ -f "$f" ]]; then
     base="$(/usr/bin/basename "$f" .log)"
@@ -101,17 +101,17 @@ write_atomic "$D/redis_streams_${TS_EPOCH}.txt" \
     done
   '
 # Watchdog state snapshot (best-effort)
-if [[ -f "$HOME/.local/state/binance1/orch_watchdog.state" ]]; then
+if [[ -f "$HOME/.local/state/binance1-pro/orch_watchdog.state" ]]; then
   write_atomic "$D/watchdog_state_${TS_EPOCH}.txt" \
-    /bin/bash -lc 'cat "$HOME/.local/state/binance1/orch_watchdog.state"'
+    /bin/bash -lc 'cat "$HOME/.local/state/binance1-pro/orch_watchdog.state"'
 fi
 
 # Journals (last 10 minutes)
 write_atomic "$D/journal_orch_${TS_EPOCH}.txt" \
-  /usr/bin/journalctl --user -u binance1-orch.service --since "10 min ago" --no-pager
+  /usr/bin/journalctl --user -u binance1-long-orch.service --since "10 min ago" --no-pager
 
 write_atomic "$D/journal_watchdog_${TS_EPOCH}.txt" \
-  /usr/bin/journalctl --user -u binance1-orch-watchdog.service --since "10 min ago" --no-pager
+  /usr/bin/journalctl --user -u binance1-long-orch-watchdog.service --since "10 min ago" --no-pager
 
 write_atomic "$D/journal_health_${TS_EPOCH}.txt" \
   /usr/bin/journalctl --user -u binance1-orch-health.service --since "10 min ago" --no-pager

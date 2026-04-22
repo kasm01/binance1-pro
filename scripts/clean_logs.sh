@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE="/home/kasm920/binance1"
+BASE="/home/kasm920/binance1-pro"
 STATE_FILE="$BASE/logs/logrotate.status"
 CONF_FILE="$BASE/scripts/logrotate_binance1.conf"
 

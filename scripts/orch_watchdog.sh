@@ -22,7 +22,7 @@ fi
 # -----------------------------
 # Single-instance lock
 # -----------------------------
-exec 9>/tmp/binance1_orch_watchdog.lock
+exec 9>/tmp/binance1_pro_orch_watchdog.lock
 flock -n 9 || exit 0
 
 # -----------------------------
@@ -75,9 +75,9 @@ STREAM_GROUP_HEAL_IDLE_SEC="${STREAM_GROUP_HEAL_IDLE_SEC:-120}"
 STREAM_GROUP_HEAL_COOLDOWN_SEC="${STREAM_GROUP_HEAL_COOLDOWN_SEC:-300}"
 STREAM_GROUP_HEAL_DESTROY_RECREATE="${STREAM_GROUP_HEAL_DESTROY_RECREATE:-0}"
 
-STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/binance1"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/binance1-pro"
 STATE_FILE="$STATE_DIR/orch_watchdog.state"
-STREAM_RECOVERY_STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/binance1_stream_recovery.state"
+STREAM_RECOVERY_STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/binance1_pro_stream_recovery.state"
 mkdir -p "$STATE_DIR"
 
 need() {
@@ -181,7 +181,7 @@ stream_recovery_allowed() {
   delta=$(( ts_now - ${LAST_STREAM_RECOVERY_TS:-0} ))
   (( delta >= STREAM_RECOVERY_COOLDOWN_SEC ))
 }
-STREAM_GROUP_HEAL_STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/binance1_stream_group_heal.state"
+STREAM_GROUP_HEAL_STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/binance1_pro_stream_group_heal.state"
 
 read_group_heal_state() {
   LAST_GROUP_HEAL_TS=0
@@ -270,7 +270,7 @@ heal_stream_group_target() {
 # -----------------------------
 # Skip checks if orch service is not active (prevents false alarms during manual stop)
 # -----------------------------
-if systemctl --user is-active --quiet binance1-orch.service 2>/dev/null; then
+if systemctl --user is-active --quiet binance1-long-orch.service 2>/dev/null; then
   :
 else
   exit 0
@@ -483,7 +483,7 @@ fail_count=${FAIL_COUNT}/${FAIL_THRESHOLD}"
   FAIL_COUNT=0
   write_state
 
-  systemctl --user restart binance1-orch.service
+  systemctl --user restart binance1-long-orch.service
   exit 0
 }
 # -----------------------------
@@ -548,7 +548,7 @@ fail_count=${FAIL_COUNT}/${FAIL_THRESHOLD}"
   FAIL_COUNT=0
   write_state
 
-  systemctl --user restart binance1-orch.service
+  systemctl --user restart binance1-long-orch.service
   exit 0
 }
 

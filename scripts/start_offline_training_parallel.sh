@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PROJECT_ROOT="$HOME/binance1"
+PROJECT_ROOT="$HOME/binance1-pro"
 LOG_DIR="$PROJECT_ROOT/logs"
 mkdir -p "$LOG_DIR"
 

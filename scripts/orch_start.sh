@@ -365,8 +365,8 @@ fi
 if [[ "${VOLSEL_ENABLE:-0}" == "1" ]]; then
   echo "[VOLSEL] running volatility selector..."
   if "$PY" -u ./orchestration/scanners/volatility_selector.py >>"$LOGDIR/volatility_selector.log" 2>&1; then
-    if [[ -f "${VOLSEL_OUT_FILE:-/tmp/binance1_volsel_symbols.txt}" ]]; then
-      SEL_SYMBOLS="$(cat "${VOLSEL_OUT_FILE:-/tmp/binance1_volsel_symbols.txt}" 2>/dev/null || true)"
+    if [[ -f "${VOLSEL_OUT_FILE:-/tmp/binance1_pro_volsel_symbols.txt}" ]]; then
+      SEL_SYMBOLS="$(cat "${VOLSEL_OUT_FILE:-/tmp/binance1_pro_volsel_symbols.txt}" 2>/dev/null || true)"
       if [[ -n "${SEL_SYMBOLS:-}" ]]; then
         SYMBOLS_24="$SEL_SYMBOLS"
         echo "[VOLSEL] selected symbols: $SYMBOLS_24"

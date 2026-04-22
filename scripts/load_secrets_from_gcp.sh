@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUT="/home/kasm920/binance1/.runtime_secrets.env"
+OUT="/home/kasm920/binance1-pro/.runtime_secrets.env"
 TMP="${OUT}.tmp"
 
 get_secret() {

@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/binance1"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/binance1-pro"
 STATE_FILE="$STATE_DIR/orch_health.state"
 mkdir -p "$STATE_DIR"
 
@@ -157,12 +157,12 @@ if (( FAIL_COUNT < FAIL_THRESH )); then
   exit 0
 fi
 
-echo "[HEALTH][FAIL] threshold reached -> restarting binance1-orch.service (reason=${reasons[*]:-unknown})"
+echo "[HEALTH][FAIL] threshold reached -> restarting binance1-long-orch.service (reason=${reasons[*]:-unknown})"
 logger -t binance1-orch "HEALTH triggering restart (details=${reasons[*]:-unknown})" || true
 
 FAIL_COUNT=0
 LAST_RESTART="$now"
 save_state
 
-systemctl --user restart binance1-orch.service
+systemctl --user restart binance1-long-orch.service
 exit 0
