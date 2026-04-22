@@ -38,7 +38,7 @@ class TradeExecutor:
         self.risk_manager = risk_manager
         self.telegram_bot = telegram_bot
 
-        self.dry_run = bool(dry_run)
+        self.dry_run = str(dry_run or "0").strip().lower() in ("1", "true", "yes", "on")
         self.base_order_notional = float(base_order_notional or 120.0)
         self.max_position_notional = float(max_position_notional or 500.0)
         self.max_leverage = float(max_leverage or 3.0)
@@ -5034,6 +5034,7 @@ class TradeExecutor:
                 pass
 
             return 0.0
+
         def _fresh(obj: Any, grace_sec: float = 45.0) -> bool:
             ts = _state_ts(obj)
             if ts <= 0:
@@ -5058,6 +5059,13 @@ class TradeExecutor:
         bridge_all = self._get_bridge_state()
         bridge_all = bridge_all if isinstance(bridge_all, dict) else {}
         summary["bridge_open"] = len(bridge_all)
+
+        try:
+            bot_side_mode = str(os.getenv("BOT_SIDE_MODE", "both") or "both").strip().lower()
+        except Exception:
+            bot_side_mode = "both"
+
+        strict_exchange_truth = bot_side_mode in ("long", "short")
 
         try:
             if self.logger:
@@ -5148,10 +5156,13 @@ class TradeExecutor:
         refreshed_bridge_all = self._get_bridge_state()
         refreshed_bridge_all = refreshed_bridge_all if isinstance(refreshed_bridge_all, dict) else {}
 
-        # 2) local'de var ama exchange'de yok -> fresh ise dokunma, değilse temizle
+        # 2) local'de var ama exchange'de yok
+        # strict_exchange_truth aktifse fresh olsa bile local phantom state tutulmaz
         for sym, pos in refreshed_local_map.items():
             if sym not in exchange_map:
-                if _fresh(pos, grace_sec=90.0):
+                is_fresh_local = _fresh(pos, grace_sec=90.0)
+
+                if is_fresh_local and not strict_exchange_truth:
                     summary["skipped_fresh_local"].append(sym)
                     try:
                         if self.logger:
@@ -5171,8 +5182,10 @@ class TradeExecutor:
                         try:
                             if self.logger:
                                 self.logger.info(
-                                    "[EXEC][SYNC] removed orphan local position | symbol=%s",
+                                    "[EXEC][SYNC] removed orphan local position | symbol=%s fresh=%s strict_exchange_truth=%s",
                                     sym,
+                                    bool(is_fresh_local),
+                                    bool(strict_exchange_truth),
                                 )
                         except Exception:
                             pass
@@ -5248,6 +5261,16 @@ class TradeExecutor:
                             )
                     except Exception:
                         pass
+
+        try:
+            # summary değerlerini tekrar hesapla ki "done" logu güncel durumu göstersin
+            summary["exchange_open"] = len(self._get_exchange_open_positions_map())
+            summary["local_open"] = len(self._get_all_local_positions())
+            _bridge_now = self._get_bridge_state()
+            _bridge_now = _bridge_now if isinstance(_bridge_now, dict) else {}
+            summary["bridge_open"] = len(_bridge_now)
+        except Exception:
+            pass
 
         try:
             if self.logger:
@@ -8792,7 +8815,7 @@ class TradeExecutor:
         pos["notional"] = float(pos.get("notional") or final_notional or 0.0)
         pos["interval"] = str(pos.get("interval") or interval0).strip() or "5m"
 
-        self._set_position(sym_u, pos)
+#        self._set_position(sym_u, pos)
 
         try:
             if getattr(self, "redis", None) is not None:
@@ -8839,7 +8862,7 @@ class TradeExecutor:
                 now2 = time.time()
                 pos_after["bridge_written_ts"] = float(now2)
                 pos_after["sync_grace_until"] = float(now2 + sync_grace_sec)
-                self._set_position(sym_u, pos_after)
+#                self._set_position(sym_u, pos_after)
 
                 if self.logger:
                     self.logger.info(
