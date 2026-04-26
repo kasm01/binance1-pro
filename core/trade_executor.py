@@ -3865,6 +3865,249 @@ class TradeExecutor:
         best_roi_pct = float(best_pnl_pct) * lev
         retrace_roi_pct = float(retrace_pct) * lev
 
+        # =========================
+        # EARLY SCALP TP (çok kritik)
+        # =========================
+        try:
+            early_tp_enable = str(os.getenv("EARLY_TP_ENABLE", "1")).lower() in ("1","true","yes","on")
+        except:
+            early_tp_enable = True
+
+        early_tp_roi = float(os.getenv("EARLY_TP_ROI", "0.0025") or 0.0025)
+
+        if early_tp_enable and roi_pct >= early_tp_roi:
+            if self.logger:
+                self.logger.info(
+                    "[EXEC][CLOSE] reason=early_tp symbol=%s roi=%.4f",
+                    sym, roi_pct
+                )
+
+            self.close_position(
+                symbol=sym,
+                price=float(price),
+                reason="early_tp",
+                interval=str(pos.get("interval") or ""),
+            )
+
+            return
+
+        # =========================
+        # FIXED ROI TAKE PROFIT - NO MISS VERSION
+        # ROI %0.65 = 0.0065
+        # best_roi gördüyse, geri vermeden kapatır
+        # =========================
+        try:
+            fixed_roi_tp_enable = str(
+                os.getenv("FIXED_ROI_TP_ENABLE", "0")
+            ).strip().lower() in ("1", "true", "yes", "on")
+        except Exception:
+            fixed_roi_tp_enable = False
+
+        try:
+            fixed_roi_tp_pct = float(
+                os.getenv("FIXED_ROI_TP_PCT", "0.0065") or 0.0065
+            )
+        except Exception:
+            fixed_roi_tp_pct = 0.0065
+
+        try:
+            fixed_roi_tp_giveback = float(
+                os.getenv("FIXED_ROI_TP_GIVEBACK", "0.0015") or 0.0015
+            )
+        except Exception:
+            fixed_roi_tp_giveback = 0.0015
+
+        if fixed_roi_tp_enable:
+            direct_tp_hit = float(roi_pct) >= float(fixed_roi_tp_pct)
+
+            best_tp_hit = (
+                float(best_roi_pct) >= float(fixed_roi_tp_pct)
+                and float(roi_pct) <= float(best_roi_pct) - float(fixed_roi_tp_giveback)
+            )
+
+            if direct_tp_hit or best_tp_hit:
+                close_reason = "fixed_roi_tp" if direct_tp_hit else "fixed_roi_tp_lock"
+
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][CLOSE] reason=%s symbol=%s side=%s roi=%.4f best_roi=%.4f tp=%.4f giveback=%.4f price=%.6f",
+                            close_reason,
+                            sym,
+                            pos_side,
+                            float(roi_pct),
+                            float(best_roi_pct),
+                            float(fixed_roi_tp_pct),
+                            float(fixed_roi_tp_giveback),
+                            float(price),
+                        )
+                except Exception:
+                    pass
+
+                try:
+                    self.close_position(
+                        symbol=sym,
+                        price=float(price),
+                        reason=close_reason,
+                        interval=str(pos.get("interval") or interval or ""),
+                    )
+                except Exception:
+                    try:
+                        if self.logger:
+                            self.logger.exception(
+                                "[EXEC][CLOSE] fixed_roi_tp close failed | symbol=%s side=%s roi=%.4f best_roi=%.4f",
+                                sym,
+                                pos_side,
+                                float(roi_pct),
+                                float(best_roi_pct),
+                            )
+                    except Exception:
+                        pass
+
+                return
+
+        # =========================
+        # STEP TP + PROFIT LOCK
+        # =========================
+        try:
+            step_tp_enable = str(
+                os.getenv("STEP_TP_ENABLE", "0")
+            ).strip().lower() in ("1", "true", "yes", "on")
+        except Exception:
+            step_tp_enable = False
+
+        try:
+            step_tp_step_usdt = float(os.getenv("STEP_TP_STEP_USDT", "0.10") or 0.10)
+        except Exception:
+            step_tp_step_usdt = 0.10
+
+        try:
+            step_tp_max_target_usdt = float(os.getenv("STEP_TP_MAX_TARGET_USDT", "0.50") or 0.50)
+        except Exception:
+            step_tp_max_target_usdt = 0.50
+
+        try:
+            step_tp_giveback_usdt = float(os.getenv("STEP_TP_GIVEBACK_USDT", "0.04") or 0.04)
+        except Exception:
+            step_tp_giveback_usdt = 0.04
+
+        try:
+            step_tp_min_lock_usdt = float(os.getenv("STEP_TP_MIN_LOCK_USDT", "0.08") or 0.08)
+        except Exception:
+            step_tp_min_lock_usdt = 0.08
+
+        try:
+            pos_notional = float(pos.get("notional") or 0.0)
+        except Exception:
+            pos_notional = 0.0
+
+        try:
+            live_pnl_usdt = float(roi_pct) * float(pos_notional)
+        except Exception:
+            live_pnl_usdt = 0.0
+
+        try:
+            best_pnl_usdt_step = float(best_roi_pct) * float(pos_notional)
+        except Exception:
+            best_pnl_usdt_step = 0.0
+
+        if step_tp_enable and pos_notional > 0:
+            try:
+                current_step = int(best_pnl_usdt_step // step_tp_step_usdt)
+            except Exception:
+                current_step = 0
+
+            target_usdt = min(
+                float(step_tp_max_target_usdt),
+                max(float(step_tp_step_usdt), float(current_step + 1) * float(step_tp_step_usdt)),
+            )
+
+            giveback_hit = (
+                best_pnl_usdt_step >= float(step_tp_min_lock_usdt)
+                and (best_pnl_usdt_step - live_pnl_usdt) >= float(step_tp_giveback_usdt)
+            )
+
+            max_target_hit = (
+                best_pnl_usdt_step >= float(step_tp_max_target_usdt)
+                and live_pnl_usdt >= float(step_tp_max_target_usdt)
+            )
+
+            if giveback_hit or max_target_hit:
+                close_reason = "step_tp_giveback" if giveback_hit else "step_tp_max_target"
+
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][CLOSE] reason=%s symbol=%s side=%s live_pnl=%.4f best_pnl=%.4f target=%.4f giveback=%.4f roi=%.4f best_roi=%.4f",
+                            close_reason,
+                            sym,
+                            pos_side,
+                            float(live_pnl_usdt),
+                            float(best_pnl_usdt_step),
+                            float(target_usdt),
+                            float(step_tp_giveback_usdt),
+                            float(roi_pct),
+                            float(best_roi_pct),
+                        )
+                except Exception:
+                    pass
+
+                try:
+                    self.close_position(
+                        symbol=sym,
+                        price=float(price),
+                        reason=close_reason,
+                        interval=str(pos.get("interval") or interval or ""),
+                    )
+                except Exception:
+                    try:
+                        if self.logger:
+                            self.logger.exception(
+                                "[EXEC][CLOSE] step_tp close failed | symbol=%s side=%s live_pnl=%.4f best_pnl=%.4f",
+                                sym,
+                                pos_side,
+                                float(live_pnl_usdt),
+                                float(best_pnl_usdt_step),
+                            )
+                    except Exception:
+                        pass
+
+                return
+        # =========================
+        # ANTI REVERSAL
+        # =========================
+        try:
+            anti_enable = str(os.getenv("ANTI_REVERSAL_ENABLE", "0")).lower() in ("1","true","yes","on")
+        except:
+            anti_enable = False
+
+        anti_max_age = float(os.getenv("ANTI_REVERSAL_MAX_AGE_SEC", "180") or 180)
+        anti_arm = float(os.getenv("ANTI_REVERSAL_MIN_ROI_TO_ARM", "0.0015") or 0.0015)
+        anti_pullback = float(os.getenv("ANTI_REVERSAL_PULLBACK_ROI_PCT", "0.0025") or 0.0025)
+
+        best_roi = float(pos.get("best_pnl_pct") or 0.0)
+
+        opened_at = pos.get("opened_at")
+        age = 0.0
+        if isinstance(opened_at, (int, float)):
+            age = time.time() - float(opened_at)
+
+        if anti_enable and age <= anti_max_age:
+            armed = best_roi >= anti_arm
+
+            pullback_hit = armed and (best_roi - roi_pct) >= anti_pullback
+
+            if pullback_hit:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][CLOSE] reason=anti_reversal symbol=%s roi=%.4f best=%.4f",
+                        sym, roi_pct, best_roi
+                    )
+
+                self.close_position(symbol=sym, price=float(price), reason="anti_reversal", interval=str(pos.get("interval") or ""))
+
+                return
+
         roi_hard_stop_pct = abs(float(getattr(self, "roi_hard_stop_pct", 0.08) or 0.08))
 
         # ---------------------------------------------
@@ -8743,6 +8986,34 @@ class TradeExecutor:
         whale_bias_now = self._whale_bias(side=side0, extra=extra_safe)
         extra_safe["whale_bias"] = whale_bias_now
 
+        # =========================
+        # DUPLICATE OPEN PROTECTION
+        # aynı sinyalin 2 kere order atmasını engeller
+        # =========================
+        try:
+            if not hasattr(self, "_last_open_ts"):
+                self._last_open_ts = {}
+
+            now_dup = time.time()
+            dup_key = f"{sym_u}_{side0}"
+
+            last_dup = self._last_open_ts.get(dup_key)
+
+            if last_dup and (now_dup - float(last_dup)) < 8:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN-BLOCK] duplicate protection | symbol=%s side=%s wait_left=%.2f",
+                        sym_u,
+                        side0,
+                        float(8 - (now_dup - float(last_dup))),
+                    )
+                return
+
+            self._last_open_ts[dup_key] = now_dup
+
+        except Exception:
+            pass
+
         try:
             if self.logger:
                 self.logger.info(
@@ -8815,8 +9086,6 @@ class TradeExecutor:
         pos["notional"] = float(pos.get("notional") or final_notional or 0.0)
         pos["interval"] = str(pos.get("interval") or interval0).strip() or "5m"
 
-#        self._set_position(sym_u, pos)
-
         try:
             if getattr(self, "redis", None) is not None:
                 self.redis.setex(
@@ -8834,6 +9103,54 @@ class TradeExecutor:
             pass
 
         try:
+            self._upsert_bridge_state_on_open(
+                symbol=sym_u,
+                side=side0,
+                interval=interval0,
+                intent_id=str(extra_safe.get("intent_id") or ""),
+            )
+        except Exception:
+            pass
+
+        # Local position burada değil, başarılı exchange open SONRASI yazılmalı
+        if not self.dry_run:
+            try:
+                self._exchange_open_market(
+                    symbol=sym_u,
+                    side=side0,
+                    qty=float(qty),
+                    price=float(order_price),
+                    reduce_only=False,
+                    extra=extra_safe,
+                )
+            except Exception as e:
+                try:
+                    if self.logger:
+                        self.logger.exception(
+                            "[EXEC][INTENT] exchange_open_failed | symbol=%s side=%s qty=%.10f price=%.6f err=%s",
+                            sym_u,
+                            side0,
+                            float(qty),
+                            float(order_price),
+                            str(e)[:300],
+                        )
+                except Exception:
+                    pass
+                return {"status": "skip", "reason": "exchange_open_failed"}
+
+            # Exchange open başarılıysa artık local state yaz
+            try:
+                self._set_position(sym_u, pos)
+            except Exception:
+                pass
+        else:
+            # dry run modunda test için local state yazılabilir
+            try:
+                self._set_position(sym_u, pos)
+            except Exception:
+                pass
+
+        try:
             chk_local = self._get_position(sym_u)
             if self.logger:
                 self.logger.info(
@@ -8847,22 +9164,12 @@ class TradeExecutor:
             pass
 
         try:
-            self._upsert_bridge_state_on_open(
-                symbol=sym_u,
-                side=side0,
-                interval=interval0,
-                intent_id=str(extra_safe.get("intent_id") or ""),
-            )
-        except Exception:
-            pass
-
-        try:
             pos_after = self._get_position(sym_u)
             if isinstance(pos_after, dict) and pos_after:
                 now2 = time.time()
                 pos_after["bridge_written_ts"] = float(now2)
                 pos_after["sync_grace_until"] = float(now2 + sync_grace_sec)
-#                self._set_position(sym_u, pos_after)
+                self._set_position(sym_u, pos_after)
 
                 if self.logger:
                     self.logger.info(
@@ -8872,7 +9179,6 @@ class TradeExecutor:
                         float(now2 + sync_grace_sec),
                     )
         except Exception:
-
             try:
                 if self.logger:
                     self.logger.exception(
