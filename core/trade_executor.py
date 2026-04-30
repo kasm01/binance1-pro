@@ -9951,6 +9951,22 @@ class TradeExecutor:
 
             if spike_filter_enable:
                 try:
+                    if not extra0.get("kline"):
+                        k1 = self._backfill_ema_metrics(
+                            symbol=sym_u,
+                            interval="1m",
+                            extra=extra0,
+                        )
+                        if isinstance(k1, dict):
+                            extra0["kline"] = k1
+                            extra0["open_1m"] = k1.get("open")
+                            extra0["high_1m"] = k1.get("high")
+                            extra0["low_1m"] = k1.get("low")
+                            extra0["close_1m"] = k1.get("close")
+                            extra0["prev_close_1m"] = k1.get("prev_close")
+                except Exception:
+                    pass
+                try:
                     kline = extra0.get("kline") or {}
                     if not isinstance(kline, dict):
                         kline = {}
