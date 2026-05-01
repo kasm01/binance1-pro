@@ -9016,6 +9016,24 @@ class TradeExecutor:
             pass
 
         try:
+            if signal == "hold":
+                whale_dir = (extra or {}).get("whale_dir")
+                whale_score = float((extra or {}).get("whale_score", 0.0))
+                p_buy = float((extra or {}).get("p_buy_ema", 0.5))
+
+                if whale_dir == "long" and whale_score >= 0.15 and p_buy > 0.50:
+                    signal = "long"
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][HOLD→LONG] symbol=%s p_buy=%.3f whale_score=%.3f",
+                            sym_u,
+                            p_buy,
+                            whale_score,
+                        )
+        except Exception:
+            pass
+
+        try:
             if self.logger:
                 self.logger.info(
                     "[EXEC][WHALE][CTX] symbol=%s side=%s whale_dir=%s whale_score=%.4f keys=%s",
@@ -10094,6 +10112,82 @@ class TradeExecutor:
         except Exception:
             pass
 
+        # =========================
+        # SNIPER ENTRY TIMING FILTER
+        # =========================
+        try:
+            sniper_enable = str(os.getenv("SNIPER_ENTRY_ENABLE", "0")).strip().lower() in (
+                "1", "true", "yes", "on"
+            )
+
+            if sniper_enable:
+                import time
+
+                max_progress = float(os.getenv("SNIPER_ENTRY_MAX_CANDLE_PROGRESS", "0.55"))
+                min_progress = float(os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08"))
+
+                interval_sec = 60.0
+                if str(interval).endswith("m"):
+                    interval_sec = float(str(interval).replace("m", "")) * 60.0
+
+                candle_progress = (time.time() % interval_sec) / interval_sec
+
+                if candle_progress > max_progress:
+                    try:
+                        if self.logger:
+                            self.logger.info(
+                                "[EXEC][OPEN-BLOCK][SNIPER-LATE] symbol=%s side=%s progress=%.3f max=%.3f interval=%s",
+                                sym_u,
+                                side_norm,
+                                float(candle_progress),
+                                float(max_progress),
+                                str(interval),
+                            )
+                    except Exception:
+                        pass
+                    return
+
+                if candle_progress < min_progress:
+                    try:
+                        if self.logger:
+                            self.logger.info(
+                                "[EXEC][OPEN-BLOCK][SNIPER-EARLY] symbol=%s side=%s progress=%.3f min=%.3f interval=%s",
+                                sym_u,
+                                side_norm,
+                                float(candle_progress),
+                                float(min_progress),
+                                str(interval),
+                            )
+                    except Exception:
+                        pass
+                    return
+
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][SNIPER-ENTRY] allow | symbol=%s side=%s progress=%.3f min=%.3f max=%.3f interval=%s",
+                            sym_u,
+                            side_norm,
+                            float(candle_progress),
+                            float(min_progress),
+                            float(max_progress),
+                            str(interval),
+                        )
+                except Exception:
+                    pass
+
+        except Exception as e:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][SNIPER-ENTRY][WARN] symbol=%s side=%s err=%s",
+                        sym_u,
+                        side_norm,
+                        str(e)[:200],
+                    )
+            except Exception:
+                pass
+
         # ------------------------------
         # EMA TREND FILTER (RELAXED MTF)
         # ------------------------------
@@ -10206,9 +10300,14 @@ class TradeExecutor:
             # =========================
             # 5M TREND FILTER
             # 5m sadece yön filtresi olsun, entry timing'i yavaşlatmasın
+            # EMA_TREND_5M_ONLY_DIRECTION=1 ise BLOCK yapmaz, sadece WARN basar
             # =========================
             try:
                 use_5m_filter = str(os.getenv("EMA_TREND_USE_5M_FILTER", "0")).strip().lower() in (
+                    "1", "true", "yes", "on"
+                )
+
+                only_dir_5m = str(os.getenv("EMA_TREND_5M_ONLY_DIRECTION", "0")).strip().lower() in (
                     "1", "true", "yes", "on"
                 )
 
@@ -10245,40 +10344,67 @@ class TradeExecutor:
                             trend_5m = "short"
 
                     if side_norm == "long" and trend_5m == "short":
-                        try:
-                            if self.logger:
-                                self.logger.info(
-                                    "[EXEC][OPEN-BLOCK][5M-TREND] long blocked | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                    sym_u,
-                                    float(ema7_5m),
-                                    float(ema25_5m),
-                                    float(ema99_5m),
-                                )
-                        except Exception:
-                            pass
-                        return
+                        if only_dir_5m:
+                            try:
+                                if self.logger:
+                                    self.logger.info(
+                                        "[EXEC][5M-TREND][WARN] long vs 5m short | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                                        sym_u,
+                                        float(ema7_5m),
+                                        float(ema25_5m),
+                                        float(ema99_5m),
+                                    )
+                            except Exception:
+                                pass
+                        else:
+                            try:
+                                if self.logger:
+                                    self.logger.info(
+                                        "[EXEC][OPEN-BLOCK][5M-TREND] long blocked | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                                        sym_u,
+                                        float(ema7_5m),
+                                        float(ema25_5m),
+                                        float(ema99_5m),
+                                    )
+                            except Exception:
+                                pass
+                            return
 
                     if side_norm == "short" and trend_5m == "long":
-                        try:
-                            if self.logger:
-                                self.logger.info(
-                                    "[EXEC][OPEN-BLOCK][5M-TREND] short blocked | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                    sym_u,
-                                    float(ema7_5m),
-                                    float(ema25_5m),
-                                    float(ema99_5m),
-                                )
-                        except Exception:
-                            pass
-                        return
+                        if only_dir_5m:
+                            try:
+                                if self.logger:
+                                    self.logger.info(
+                                        "[EXEC][5M-TREND][WARN] short vs 5m long | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                                        sym_u,
+                                        float(ema7_5m),
+                                        float(ema25_5m),
+                                        float(ema99_5m),
+                                    )
+                            except Exception:
+                                pass
+                        else:
+                            try:
+                                if self.logger:
+                                    self.logger.info(
+                                        "[EXEC][OPEN-BLOCK][5M-TREND] short blocked | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                                        sym_u,
+                                        float(ema7_5m),
+                                        float(ema25_5m),
+                                        float(ema99_5m),
+                                    )
+                            except Exception:
+                                pass
+                            return
 
                     try:
                         if self.logger:
                             self.logger.info(
-                                "[EXEC][5M-TREND] allow | symbol=%s side=%s trend_5m=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                                "[EXEC][5M-TREND] allow | symbol=%s side=%s trend_5m=%s only_dir=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
                                 sym_u,
                                 side_norm,
                                 str(trend_5m),
+                                str(only_dir_5m),
                                 float(ema7_5m),
                                 float(ema25_5m),
                                 float(ema99_5m),
@@ -10297,50 +10423,6 @@ class TradeExecutor:
                         )
                 except Exception:
                     pass
-
-            if side_norm == "long" and not long_ok:
-                try:
-                    if self.logger:
-                        self.logger.info(
-                            "[EXEC][OPEN-BLOCK][EMA-TREND] symbol=%s side=%s px=%.6f ema7_1m=%.6f ema25_1m=%.6f ema99_1m=%.6f ema7_3m=%.6f ema25_3m=%.6f ema99_3m=%.6f long_score=%s short_score=%s flat=%s",
-                            sym_u,
-                            side_norm,
-                            float(trend_px_now),
-                            float(ema7_1m),
-                            float(ema25_1m),
-                            float(ema99_1m),
-                            float(ema7_3m),
-                            float(ema25_3m),
-                            float(ema99_3m),
-                            str(trend_long_score),
-                            str(trend_short_score),
-                            str(flat_market),
-                        )
-                except Exception:
-                    pass
-                return
-
-            if side_norm == "short" and not short_ok:
-                try:
-                    if self.logger:
-                        self.logger.info(
-                            "[EXEC][OPEN-BLOCK][EMA-TREND] symbol=%s side=%s px=%.6f ema7_1m=%.6f ema25_1m=%.6f ema99_1m=%.6f ema7_3m=%.6f ema25_3m=%.6f ema99_3m=%.6f long_score=%s short_score=%s flat=%s",
-                            sym_u,
-                            side_norm,
-                            float(trend_px_now),
-                            float(ema7_1m),
-                            float(ema25_1m),
-                            float(ema99_1m),
-                            float(ema7_3m),
-                            float(ema25_3m),
-                            float(ema99_3m),
-                            str(trend_long_score),
-                            str(trend_short_score),
-                            str(flat_market),
-                        )
-                except Exception:
-                    pass
-                return
 
         # ------------------------------
         # SCALP ENTRY BOOST FILTER
