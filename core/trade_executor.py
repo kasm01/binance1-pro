@@ -5237,7 +5237,12 @@ class TradeExecutor:
     ) -> None:
         sym = str(symbol).upper().strip()
         side_n = str(side or "").lower().strip()
-        interval_n = str(interval or "").strip()
+
+        try:
+            interval_n = str(os.getenv("INTERVAL", "1m")).strip() or "1m"
+        except Exception:
+            interval_n = "1m"
+
         if not sym or self.redis is None:
             return
 
@@ -7665,66 +7670,81 @@ class TradeExecutor:
             stalled_for = now_ts - last_best_ts
             if stall_ttl_sec > 0 and stalled_for >= stall_ttl_sec:
                 close_reason = "stall_exit"
+
         # ===== ROI PROFIT LOCK =====
         profit_lock_reason = None
         try:
-            lev = float(self._resolve_position_leverage(pos))
-            roi_pct = float(pnl_pct) * lev
-            best_roi_pct = float(best_pnl_pct) * lev
+            profit_lock_enabled = bool(getattr(self, "profit_lock_enable", False))
 
-            if side == "long":
-                retrace_pct = (
-                    (float(highest_price) - float(price)) / max(float(highest_price), 1e-12)
-                    if float(highest_price) > 0
-                    else 0.0
+            if profit_lock_enabled:
+                lev = float(self._resolve_position_leverage(pos))
+                roi_pct = float(pnl_pct) * lev
+                best_roi_pct = float(best_pnl_pct) * lev
+
+                if side == "long":
+                    retrace_pct = (
+                        (float(highest_price) - float(price)) / max(float(highest_price), 1e-12)
+                        if float(highest_price) > 0
+                        else 0.0
+                    )
+                else:
+                    retrace_pct = (
+                        (float(price) - float(lowest_price)) / max(float(lowest_price), 1e-12)
+                        if float(lowest_price) > 0
+                        else 0.0
+                    )
+
+                retrace_roi_pct = float(retrace_pct) * lev
+
+                profit_lock_arm_roi_pct = float(
+                    getattr(self, "profit_lock_arm_roi_pct", 0.0175) or 0.0175
                 )
+                profit_lock_retrace_roi_pct = float(
+                    getattr(self, "profit_lock_retrace_roi_pct", 0.0045) or 0.0045
+                )
+                profit_floor_roi_pct = float(
+                    getattr(self, "profit_floor_roi_pct", 0.0040) or 0.0040
+                )
+
+                if (
+                    float(best_roi_pct) >= float(profit_lock_arm_roi_pct)
+                    and float(retrace_roi_pct) >= float(profit_lock_retrace_roi_pct)
+                ):
+                    profit_lock_reason = "profit_lock_roi"
+
+                if (
+                    profit_lock_reason is None
+                    and float(best_roi_pct) >= float(profit_lock_arm_roi_pct)
+                    and float(roi_pct) <= float(profit_floor_roi_pct)
+                ):
+                    profit_lock_reason = "profit_floor_roi_exit"
+
+                if profit_lock_reason is not None:
+                    try:
+                        if self.logger:
+                            self.logger.info(
+                                "[EXEC][PROFIT-LOCK] trigger | symbol=%s side=%s reason=%s roi_pct=%.6f best_roi_pct=%.6f retrace_roi_pct=%.6f lev=%.2f",
+                                sym,
+                                side,
+                                str(profit_lock_reason),
+                                float(roi_pct),
+                                float(best_roi_pct),
+                                float(retrace_roi_pct),
+                                float(lev),
+                            )
+                    except Exception:
+                        pass
             else:
-                retrace_pct = (
-                    (float(price) - float(lowest_price)) / max(float(lowest_price), 1e-12)
-                    if float(lowest_price) > 0
-                    else 0.0
-                )
-
-            retrace_roi_pct = float(retrace_pct) * lev
-
-            profit_lock_arm_roi_pct = float(
-                getattr(self, "profit_lock_arm_roi_pct", 0.0175) or 0.0175
-            )
-            profit_lock_retrace_roi_pct = float(
-                getattr(self, "profit_lock_retrace_roi_pct", 0.0045) or 0.0045
-            )
-            profit_floor_roi_pct = float(
-                getattr(self, "profit_floor_roi_pct", 0.0040) or 0.0040
-            )
-
-            if (
-                float(best_roi_pct) >= float(profit_lock_arm_roi_pct)
-                and float(retrace_roi_pct) >= float(profit_lock_retrace_roi_pct)
-            ):
-                profit_lock_reason = "profit_lock_roi"
-
-            if (
-                profit_lock_reason is None
-                and float(best_roi_pct) >= float(profit_lock_arm_roi_pct)
-                and float(roi_pct) <= float(profit_floor_roi_pct)
-            ):
-                profit_lock_reason = "profit_floor_roi_exit"
-
-            if profit_lock_reason is not None:
                 try:
                     if self.logger:
-                        self.logger.info(
-                            "[EXEC][PROFIT-LOCK] trigger | symbol=%s side=%s reason=%s roi_pct=%.6f best_roi_pct=%.6f retrace_roi_pct=%.6f lev=%.2f",
+                        self.logger.debug(
+                            "[EXEC][PROFIT-LOCK] disabled | symbol=%s side=%s",
                             sym,
                             side,
-                            str(profit_lock_reason),
-                            float(roi_pct),
-                            float(best_roi_pct),
-                            float(retrace_roi_pct),
-                            float(lev),
                         )
                 except Exception:
                     pass
+
         except Exception as e:
             try:
                 if self.logger:
@@ -9015,20 +9035,25 @@ class TradeExecutor:
         except Exception:
             pass
 
+        # =========================================================
+        # HOLD → LONG CONVERSION
+        # Not: dönüşüm sonrası raw_signal / signal_u / side_norm güncellenecek
+        # =========================================================
         try:
-            if signal == "hold":
-                whale_dir = (extra or {}).get("whale_dir")
-                whale_score = float((extra or {}).get("whale_score", 0.0))
-                p_buy = float((extra or {}).get("p_buy_ema", 0.5))
+            if raw_signal == "hold":
+                whale_dir_h = str((extra0 or {}).get("whale_dir") or "").strip().lower()
+                whale_score_h = float((extra0 or {}).get("whale_score", 0.0) or 0.0)
+                p_buy_h = float((extra0 or {}).get("p_buy_ema", 0.5) or 0.5)
 
-                if whale_dir == "long" and whale_score >= 0.15 and p_buy > 0.50:
+                if whale_dir_h == "long" and whale_score_h >= 0.15 and p_buy_h > 0.50:
                     signal = "long"
+                    raw_signal = "long"
                     if self.logger:
                         self.logger.info(
                             "[EXEC][HOLD→LONG] symbol=%s p_buy=%.3f whale_score=%.3f",
                             sym_u,
-                            p_buy,
-                            whale_score,
+                            p_buy_h,
+                            whale_score_h,
                         )
         except Exception:
             pass
@@ -9179,6 +9204,94 @@ class TradeExecutor:
                         float(extra0.get("p_buy_ema") or 0.0),
                         float(extra0.get("p_buy_raw") or 0.0),
                         float(extra0.get("model_confidence_factor") or 0.0),
+                    )
+            except Exception:
+                pass
+        # =========================================================
+        # SNIPER ENTRY TIMING FILTER
+        # Low score'dan ÖNCE çalışır; böylece SNIPER logları görünür.
+        # =========================================================
+        try:
+            sniper_enable = str(os.getenv("SNIPER_ENTRY_ENABLE", "0")).strip().lower() in (
+                "1", "true", "yes", "on"
+            )
+
+            if sniper_enable and side_norm in ("long", "short"):
+                import time
+
+                max_progress = float(os.getenv("SNIPER_ENTRY_MAX_CANDLE_PROGRESS", "0.55") or 0.55)
+                min_progress = float(os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08") or 0.08)
+
+                interval_sec = 60.0
+                try:
+                    interval_s = str(interval or "1m").strip().lower()
+                    if interval_s.endswith("m"):
+                        interval_sec = float(interval_s.replace("m", "")) * 60.0
+                    elif interval_s.endswith("s"):
+                        interval_sec = float(interval_s.replace("s", ""))
+                except Exception:
+                    interval_sec = 60.0
+
+                candle_progress = (time.time() % interval_sec) / max(interval_sec, 1.0)
+
+                if candle_progress > max_progress:
+                    try:
+                        if self.logger:
+                            self.logger.info(
+                                "[EXEC][OPEN-BLOCK][SNIPER-LATE] symbol=%s side=%s progress=%.3f max=%.3f interval=%s score=%.4f min_open=%.4f",
+                                sym_u,
+                                side_norm,
+                                float(candle_progress),
+                                float(max_progress),
+                                str(interval),
+                                float(signal_score),
+                                float(open_min_score),
+                            )
+                    except Exception:
+                        pass
+                    return
+
+                if candle_progress < min_progress:
+                    try:
+                        if self.logger:
+                            self.logger.info(
+                                "[EXEC][OPEN-BLOCK][SNIPER-EARLY] symbol=%s side=%s progress=%.3f min=%.3f interval=%s score=%.4f min_open=%.4f",
+                                sym_u,
+                                side_norm,
+                                float(candle_progress),
+                                float(min_progress),
+                                str(interval),
+                                float(signal_score),
+                                float(open_min_score),
+                            )
+                    except Exception:
+                        pass
+                    return
+
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][SNIPER-ENTRY] allow | symbol=%s side=%s progress=%.3f min=%.3f max=%.3f interval=%s score=%.4f min_open=%.4f",
+                            sym_u,
+                            side_norm,
+                            float(candle_progress),
+                            float(min_progress),
+                            float(max_progress),
+                            str(interval),
+                            float(signal_score),
+                            float(open_min_score),
+                        )
+                except Exception:
+                    pass
+
+        except Exception as e:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][SNIPER-ENTRY][WARN] symbol=%s side=%s err=%s",
+                        sym_u,
+                        side_norm,
+                        str(e)[:200],
                     )
             except Exception:
                 pass
@@ -10111,82 +10224,6 @@ class TradeExecutor:
 
         except Exception:
             pass
-
-        # =========================
-        # SNIPER ENTRY TIMING FILTER
-        # =========================
-        try:
-            sniper_enable = str(os.getenv("SNIPER_ENTRY_ENABLE", "0")).strip().lower() in (
-                "1", "true", "yes", "on"
-            )
-
-            if sniper_enable:
-                import time
-
-                max_progress = float(os.getenv("SNIPER_ENTRY_MAX_CANDLE_PROGRESS", "0.55"))
-                min_progress = float(os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08"))
-
-                interval_sec = 60.0
-                if str(interval).endswith("m"):
-                    interval_sec = float(str(interval).replace("m", "")) * 60.0
-
-                candle_progress = (time.time() % interval_sec) / interval_sec
-
-                if candle_progress > max_progress:
-                    try:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][SNIPER-LATE] symbol=%s side=%s progress=%.3f max=%.3f interval=%s",
-                                sym_u,
-                                side_norm,
-                                float(candle_progress),
-                                float(max_progress),
-                                str(interval),
-                            )
-                    except Exception:
-                        pass
-                    return
-
-                if candle_progress < min_progress:
-                    try:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][SNIPER-EARLY] symbol=%s side=%s progress=%.3f min=%.3f interval=%s",
-                                sym_u,
-                                side_norm,
-                                float(candle_progress),
-                                float(min_progress),
-                                str(interval),
-                            )
-                    except Exception:
-                        pass
-                    return
-
-                try:
-                    if self.logger:
-                        self.logger.info(
-                            "[EXEC][SNIPER-ENTRY] allow | symbol=%s side=%s progress=%.3f min=%.3f max=%.3f interval=%s",
-                            sym_u,
-                            side_norm,
-                            float(candle_progress),
-                            float(min_progress),
-                            float(max_progress),
-                            str(interval),
-                        )
-                except Exception:
-                    pass
-
-        except Exception as e:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][SNIPER-ENTRY][WARN] symbol=%s side=%s err=%s",
-                        sym_u,
-                        side_norm,
-                        str(e)[:200],
-                    )
-            except Exception:
-                pass
 
         # ------------------------------
         # EMA TREND FILTER (RELAXED MTF)
