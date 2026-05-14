@@ -810,23 +810,6 @@ class TradeExecutor:
                 if entry_price <= 0:
                     continue
 
-                # -------------------------------------------------
-                # BOT SIDE FILTER
-                # -------------------------------------------------
-                try:
-                    bot_side_mode = str(
-                        os.getenv("BOT_SIDE_MODE", "both") or "both"
-                    ).strip().lower()
-
-                    if bot_side_mode == "long" and side != "long":
-                        continue
-
-                    if bot_side_mode == "short" and side != "short":
-                        continue
-
-                except Exception:
-                    pass
-
                 cp = dict(pos)
                 cp["symbol"] = sym_u
                 cp["side"] = side
@@ -1445,123 +1428,27 @@ class TradeExecutor:
     # price helpers
     # ---------------------------------------------------------
     def _get_cached_mid_price(self, symbol: str) -> Optional[float]:
-        import os
-        import json
-
         sym = str(symbol).upper()
-
-        # -----------------------------
-        # price cache object
-        # -----------------------------
         try:
             pc = getattr(self, "price_cache", None)
-
             if pc is not None:
-                for method_name in (
-                    "get_mid",
-                    "get_mid_price",
-                    "get_price",
-                    "get_last_price",
-                ):
+                for method_name in ("get_mid_price", "get_price", "get_last_price"):
                     fn = getattr(pc, method_name, None)
-
                     if callable(fn):
-                        try:
-                            max_age = float(
-                                os.getenv(
-                                    "REDIS_PRICECACHE_MAX_AGE_SEC",
-                                    "90",
-                                ) or 90
-                            )
-
-                            v = fn(sym, max_age_sec=max_age)
-
-                        except TypeError:
-                            v = fn(sym)
-
+                        v = fn(sym)
                         fv = self._clip_float(v, None)
-
                         if fv is not None and fv > 0:
                             return fv
-
         except Exception:
             pass
 
-        # -----------------------------
-        # raw redis fallback
-        # -----------------------------
         try:
             if self.redis is not None:
-
-                keys = [
-                    f"{os.getenv('REDIS_PREFIX', 'binance1_long')}:pricecache:{sym}",
-                    f"pricecache:{sym}",
-                    f"price:{sym}",
-                ]
-
-                for k in keys:
-
-                    raw = self.redis.get(k)
-
-                    if not raw:
-                        continue
-
+                raw = self.redis.get(f"price:{sym}")
+                if raw:
                     fv = self._clip_float(raw, None)
-
                     if fv is not None and fv > 0:
                         return fv
-
-                    try:
-                        txt = (
-                            raw.decode("utf-8")
-                            if isinstance(raw, (bytes, bytearray))
-                            else str(raw)
-                        )
-
-                        obj = json.loads(txt)
-
-                        if isinstance(obj, dict):
-
-                            for kk in (
-                                "mid",
-                                "price",
-                                "last",
-                                "last_price",
-                                "mark_price",
-                                "bid",
-                                "ask",
-                            ):
-
-                                vv = obj.get(kk)
-
-                                fv = self._clip_float(vv, None)
-
-                                if fv is not None and fv > 0:
-                                    return fv
-
-                            b = self._clip_float(
-                                obj.get("bid"),
-                                None,
-                            )
-
-                            a = self._clip_float(
-                                obj.get("ask"),
-                                None,
-                            )
-
-                            if (
-                                b is not None
-                                and a is not None
-                                and b > 0
-                                and a > 0
-                            ):
-                                return (
-                                    float(b) + float(a)
-                                ) / 2.0
-
-                    except Exception:
-                        pass
-
         except Exception:
             pass
 
@@ -9313,85 +9200,6 @@ class TradeExecutor:
             probs=probs,
         )
 
-        # =========================================================
-        # DYNAMIC COIN SCORE ADJUST
-        # open_min_score değerini piyasa yoğunluğuna göre ayarlar.
-        # =========================================================
-        try:
-            dyn_enable = str(
-                os.getenv("DYNAMIC_COIN_SCORE_ENABLE", "0") or "0"
-            ).strip().lower() in ("1", "true", "yes", "on")
-
-            if dyn_enable and side_norm in ("long", "short"):
-                dyn_min = float(os.getenv("DYNAMIC_SCORE_MIN", "0.49") or 0.49)
-                dyn_max = float(os.getenv("DYNAMIC_SCORE_MAX", "0.58") or 0.58)
-
-                atr_boost = float(os.getenv("DYNAMIC_SCORE_ATR_BOOST", "0.0") or 0.0)
-                spread_boost = float(os.getenv("DYNAMIC_SCORE_SPREAD_BOOST", "0.0") or 0.0)
-                ema_relax = float(os.getenv("DYNAMIC_SCORE_EMA_RELAX", "0.0") or 0.0)
-                whale_relax = float(os.getenv("DYNAMIC_SCORE_WHALE_RELAX", "0.0") or 0.0)
-
-                dyn_score = float(open_min_score)
-
-                atr_v = float(extra0.get("atr") or extra0.get("atr_pct") or 0.0)
-                spread_v = float(extra0.get("spread_pct") or extra0.get("spread") or 0.0)
-
-                whale_dir = str(extra0.get("whale_dir") or "").strip().lower()
-                whale_score = float(extra0.get("whale_score") or 0.0)
-
-                ema7_v = float(extra0.get("ema7") or 0.0)
-                ema25_v = float(extra0.get("ema25") or 0.0)
-
-                # ATR yüksekse biraz daha seçici ol
-                if atr_v > 0:
-                    dyn_score += atr_boost
-
-                # Spread yüksekse biraz daha seçici ol
-                if spread_v > 0:
-                    dyn_score += spread_boost
-
-                # EMA aynı yönse gevşet
-                if side_norm == "long" and ema7_v > 0 and ema25_v > 0 and ema7_v > ema25_v:
-                    dyn_score -= ema_relax
-
-                if side_norm == "short" and ema7_v > 0 and ema25_v > 0 and ema7_v < ema25_v:
-                    dyn_score -= ema_relax
-
-                # Whale aynı yönse gevşet
-                if whale_dir == side_norm and whale_score > 0:
-                    dyn_score -= whale_relax
-
-                dyn_score = max(dyn_min, min(dyn_max, dyn_score))
-
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][DYNAMIC-SCORE] symbol=%s side=%s base=%.4f final=%.4f min=%.4f max=%.4f atr=%.6f spread=%.6f whale_dir=%s whale_score=%.4f",
-                        sym_u,
-                        side_norm,
-                        float(open_min_score),
-                        float(dyn_score),
-                        float(dyn_min),
-                        float(dyn_max),
-                        float(atr_v),
-                        float(spread_v),
-                        whale_dir,
-                        float(whale_score),
-                    )
-
-                open_min_score = float(dyn_score)
-
-        except Exception as e:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][DYNAMIC-SCORE][WARN] symbol=%s side=%s err=%s",
-                        sym_u,
-                        side_norm,
-                        str(e)[:200],
-                    )
-            except Exception:
-                pass
-
         if side_norm in ("long", "short"):
             try:
                 if self.logger:
@@ -9406,7 +9214,6 @@ class TradeExecutor:
                     )
             except Exception:
                 pass
-
         # =========================================================
         # SNIPER ENTRY TIMING FILTER
         # Low score'dan ÖNCE çalışır; böylece SNIPER logları görünür.
@@ -9483,64 +9290,6 @@ class TradeExecutor:
                         )
                 except Exception:
                     pass
-
-        except Exception as e:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][SNIPER-ENTRY][WARN] symbol=%s side=%s err=%s",
-                        sym_u,
-                        side_norm,
-                        str(e)[:200],
-                    )
-            except Exception:
-                pass
-
-        # =========================================================
-        # LONG EMA HARD VETO
-        # =========================================================
-        try:
-            if side_norm == "long":
-                ema_state = self._get_ema_state(
-                    symbol=sym_u,
-                    interval=str(interval or "1m"),
-                ) or {}
-
-                ema7_v = float(ema_state.get("ema7") or 0.0)
-                ema25_v = float(ema_state.get("ema25") or 0.0)
-                ema99_v = float(ema_state.get("ema99") or 0.0)
-
-                if ema7_v > 0 and ema25_v > 0 and ema99_v > 0:
-                    bearish_align = (
-                        ema7_v < ema25_v
-                        or ema25_v < ema99_v
-                    )
-
-                    if bearish_align:
-                        try:
-                            if self.logger:
-                                self.logger.info(
-                                    "[EXEC][OPEN-BLOCK][EMA-HARD-LONG] symbol=%s side=%s ema7=%.6f ema25=%.6f ema99=%.6f",
-                                    sym_u,
-                                    side_norm,
-                                    ema7_v,
-                                    ema25_v,
-                                    ema99_v,
-                                )
-                        except Exception:
-                            pass
-                        return
-
-        except Exception as e:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][EMA-HARD-LONG][WARN] symbol=%s err=%s",
-                        sym_u,
-                        str(e)[:200],
-                    )
-            except Exception:
-                pass
 
         except Exception as e:
             try:
@@ -11184,25 +10933,6 @@ class TradeExecutor:
             pass
 
         intent_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
-
-        # >>> PRICECACHE FALLBACK BEFORE SKIP
-        if intent_price is None or intent_price <= 0:
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][PRICECACHE-FALLBACK][TRY] symbol=%s", sym_u)
-
-                intent_price = self._get_cached_mid_price(sym_u)
-
-                if self.logger:
-                    self.logger.info("[EXEC][PRICECACHE-FALLBACK][RESULT] symbol=%s price=%s", sym_u, intent_price)
-
-                if intent_price and intent_price > 0 and self.logger:
-                    self.logger.info("[EXEC][PRICECACHE-FALLBACK] symbol=%s price=%.8f", sym_u, float(intent_price))
-            except Exception as e:
-                if self.logger:
-                    self.logger.warning("[EXEC][PRICECACHE-FALLBACK][ERR] symbol=%s err=%s", sym_u, e)
-                intent_price = None
-
         if intent_price is None or intent_price <= 0:
             try:
                 if self.logger:

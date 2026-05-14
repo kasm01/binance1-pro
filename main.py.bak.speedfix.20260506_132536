@@ -79,7 +79,7 @@ from core.trade_executor import TradeExecutor
 
 from core.market_meta_builder import MarketMetaBuilder
 from core.price_cache import PriceCache
-from core.redis_price_cache import read_kline_cache, write_kline_cache, RedisPriceCache, RedisPriceCache
+from core.redis_price_cache import RedisPriceCache
 from data.anomaly_detection import AnomalyDetector
 from core.whale_detector import MultiTimeframeWhaleDetector
 from models.hybrid_inference import HybridMultiTFModel
@@ -1207,84 +1207,14 @@ class HeavyEngine:
         interval = self.interval
         timer = _StepTimer()
 
-        # >>> REDIS-FIRST KLINE READ
-        raw_df = None
-        cache_hit = False
-        try:
-            cached_rows = read_kline_cache(symbol, interval, max_age_sec=15.0)
-            if isinstance(cached_rows, list) and len(cached_rows) >= 30:
-                import pandas as pd
-                raw_df = pd.DataFrame(cached_rows)
-                cache_hit = True
-        except Exception:
-            raw_df = None
-            cache_hit = False
-
-        if raw_df is None or len(raw_df) < 30:
-            raw_df = await fetch_klines(
-                client=self.client,
-                symbol=symbol,
-                interval=interval,
-                limit=self.data_limit,
-                logger=system_logger,
-            )
+        raw_df = await fetch_klines(
+            client=self.client,
+            symbol=symbol,
+            interval=interval,
+            limit=self.data_limit,
+            logger=system_logger,
+        )
         timer.mark("fetch_klines")
-
-        # >>> REDIS PRICE CACHE WRITE FOR CURRENT SYMBOL
-        try:
-            if raw_df is not None and len(raw_df) > 0:
-                last_row = raw_df.iloc[-1]
-                close_val = None
-
-                for k in ("close", "Close", "c"):
-                    if k in last_row and last_row.get(k) is not None:
-                        try:
-                            close_val = float(last_row.get(k))
-                            break
-                        except Exception:
-                            pass
-
-                if (close_val is None or close_val <= 0) and hasattr(raw_df, "columns"):
-                    try:
-                        close_val = float(last_row[raw_df.columns[-1]])
-                    except Exception:
-                        close_val = None
-
-                if close_val and close_val > 0:
-                    pc = RedisPriceCache(
-                        key_prefix=f"{os.getenv('REDIS_PREFIX','binance1_pro')}:pricecache",
-                        ttl_sec=int(os.getenv("REDIS_PRICECACHE_TTL_SEC", "60")),
-                    )
-                    pc.set_bid_ask(symbol=symbol, bid=close_val, ask=close_val)
-
-                    # >>> EXECUTOR LAST KLINE CLOSE
-                    try:
-                        if hasattr(self, "executor") and self.executor is not None:
-                            self.executor._last_kline_close = float(close_val)
-                    except Exception:
-                        pass
-
-                    try:
-                        system_logger.info("[PRICECACHE] write ok | symbol=%s close=%.6f", symbol, close_val)
-                    except Exception:
-                        pass
-        except Exception as e:
-            try:
-                system_logger.warning("[PRICECACHE] write failed | symbol=%s err=%s", symbol, e)
-            except Exception:
-                pass
-
-        # >>> REDIS KLINE CACHE WRITE
-        try:
-            if (not cache_hit) and raw_df is not None and len(raw_df) >= 30:
-                write_kline_cache(
-                    symbol=symbol,
-                    interval=interval,
-                    rows=raw_df.tail(100).to_dict("records"),
-                    ttl_sec=90,
-                )
-        except Exception:
-            pass
 
         feat_df = build_features(raw_df)
         feat_df = self._normalize_feat_df(feat_df, interval)
@@ -2351,10 +2281,7 @@ async def async_main() -> None:
         if system_logger:
             system_logger.info("[WS] ENABLE_WS=false -> websocket disabled.")
     price_cache = PriceCache()
-    redis_price_cache = RedisPriceCache(
-        key_prefix=f"{os.getenv('REDIS_PREFIX', 'binance1_long')}:pricecache",
-        ttl_sec=int(os.getenv("REDIS_PRICECACHE_TTL_SEC", "120")),
-    )
+    redis_price_cache = RedisPriceCache()
 
     if system_logger:
         system_logger.info(
