@@ -832,7 +832,7 @@ class TradeExecutor:
                 cp["side"] = side
                 cp["qty"] = float(qty)
                 cp["entry_price"] = float(entry_price)
-                cp["interval"] = str(cp.get("interval") or "5m").strip() or "5m"
+                cp["interval"] = str(cp.get("interval") or "1m").strip() or "1m"
                 cp["notional"] = float(cp.get("notional") or (qty * entry_price))
                 cp["sl_price"] = float(cp.get("sl_price") or 0.0)
                 cp["tp_price"] = float(cp.get("tp_price") or 0.0)
@@ -3476,6 +3476,23 @@ class TradeExecutor:
         sym = str(symbol).upper()
         lev = int(max(1, leverage))
 
+        try:
+            import time, os
+            ttl = float(os.getenv("LEVERAGE_SET_CACHE_TTL_SEC", "3600") or 3600)
+            cache = getattr(self, "_leverage_set_cache", None)
+            if not isinstance(cache, dict):
+                cache = {}
+                setattr(self, "_leverage_set_cache", cache)
+            now = time.time()
+            prev = cache.get(sym)
+            if isinstance(prev, dict) and int(prev.get("lev") or 0) == int(lev) and (now - float(prev.get("ts") or 0)) < ttl:
+                if self.logger:
+                    self.logger.info("[EXEC][LEV][SKIP] symbol=%s leverage=%s cache=1", sym, int(lev))
+                return int(lev)
+        except Exception:
+            cache = None
+            now = 0.0
+
         client = getattr(self, "client", None)
         if client is None:
             return lev
@@ -3485,6 +3502,12 @@ class TradeExecutor:
             return lev
 
         resp = fn(symbol=sym, leverage=lev)
+
+        try:
+            if isinstance(cache, dict):
+                cache[sym] = {"lev": int(lev), "ts": float(now)}
+        except Exception:
+            pass
 
         try:
             if self.logger:
@@ -3674,7 +3697,7 @@ class TradeExecutor:
 
         sym = str(symbol).upper().strip()
         side0 = str(side).lower().strip()
-        interval0 = str(interval or "5m").strip() or "5m"
+        interval0 = str(interval or "1m").strip() or "1m"
 
         if side0 not in ("long", "short"):
             return False
@@ -5168,7 +5191,7 @@ class TradeExecutor:
         self._upsert_bridge_state_on_open(
             symbol=sym,
             side=residual_side,
-            interval=str(interval or residual_pos.get("interval") or "5m"),
+            interval=str(interval or residual_pos.get("interval") or "1m"),
             intent_id="",
         )
 
@@ -5523,7 +5546,7 @@ class TradeExecutor:
                     "qty": float(ex_pos.get("qty") or 0.0),
                     "entry_price": float(ex_pos.get("entry_price") or 0.0),
                     "notional": float(ex_pos.get("notional") or 0.0),
-                    "interval": str(bridge_st.get("interval") or "5m").strip() or "5m",
+                    "interval": str(bridge_st.get("interval") or "1m").strip() or "1m",
                     "opened_at": datetime.now(timezone.utc).isoformat(),
 
                     # >>> NEW
@@ -5554,7 +5577,7 @@ class TradeExecutor:
                 self._upsert_bridge_state_on_open(
                     symbol=sym,
                     side=str(hydrated.get("side") or ""),
-                    interval=str(hydrated.get("interval") or "5m"),
+                    interval=str(hydrated.get("interval") or "1m"),
                     intent_id=str(bridge_st.get("intent_id") or ""),
                 )
 
@@ -5788,7 +5811,7 @@ class TradeExecutor:
 
                         side = str(pos.get("side") or "").strip().lower()
                         qty = float(pos.get("qty") or 0.0)
-                        interval = str(pos.get("interval") or "5m").strip() or "5m"
+                        interval = str(pos.get("interval") or "1m").strip() or "1m"
                         entry_price = float(pos.get("entry_price") or 0.0)
 
                         if side not in ("long", "short") or qty <= 0 or entry_price <= 0:
@@ -7318,7 +7341,7 @@ class TradeExecutor:
             self._upsert_bridge_state_on_open(
                 symbol=sym,
                 side=residual_side,
-                interval=str(interval or residual_pos.get("interval") or "5m"),
+                interval=str(interval or residual_pos.get("interval") or "1m"),
                 intent_id="",
             )
 
@@ -8449,7 +8472,7 @@ class TradeExecutor:
         side0 = str(side or "long").strip().lower()
         if side0 not in ("long", "short"):
             side0 = "long"
-        interval0 = str(interval or "5m").strip() or "5m"
+        interval0 = str(interval or "1m").strip() or "1m"
 
         _open_key = f"{sym_u}_{side0}"
         _lock_taken = False
@@ -8876,7 +8899,17 @@ class TradeExecutor:
 
             notional = self._compute_balance_based_notional(sym_u, side0, float(order_price), meta0)
             raw_notional = float(notional)
-            notional = self._apply_whale_open_adjustments(side0, float(notional), meta0)
+
+            try:
+                whale_adj_on = str(__import__("os").getenv("WHALE_OPEN_NOTIONAL_ADJUST", "0")).lower() in ("1", "true", "yes", "on")
+            except Exception:
+                whale_adj_on = False
+
+            if whale_adj_on:
+                notional = self._apply_whale_open_adjustments(side0, float(notional), meta0)
+            else:
+                notional = float(raw_notional)
+
             notional = float(min(float(notional), float(self.max_position_notional)))
             notional = float(max(10.0, float(notional)))
 
@@ -8932,10 +8965,8 @@ class TradeExecutor:
                 }
             )
 
-            try:
-                ema_backfill = self._backfill_ema_metrics(symbol=sym_u, interval=interval0, extra=extra_safe)
-            except Exception:
-                ema_backfill = {}
+            # FAST-OPEN: open sırasında EMA tekrar fetch etme
+            ema_backfill = {}
 
             extra_safe["ema7"] = float(ema_backfill.get("ema7") or 0.0)
             extra_safe["ema25"] = float(ema_backfill.get("ema25") or 0.0)
@@ -9028,7 +9059,7 @@ class TradeExecutor:
                     "qty": float(qty),
                     "entry_price": float(pos.get("entry_price") or order_price or 0.0),
                     "notional": float(pos.get("notional") or final_notional or 0.0),
-                    "interval": str(pos.get("interval") or interval0).strip() or "5m",
+                    "interval": str(pos.get("interval") or interval0).strip() or "1m",
                 }
             )
 
@@ -9497,30 +9528,44 @@ class TradeExecutor:
                 pass
 
         # =========================================================
-        # LONG EMA HARD VETO
+        # EMA HARD DIRECTION VETO
+        # Long block : ema7 < ema25 < ema99
+        # Short block: ema7 > ema25 > ema99
         # =========================================================
         try:
-            if side_norm == "long":
-                ema_state = self._get_ema_state(
+            if side_norm in ("long", "short"):
+
+                ema_pack = self._backfill_ema_metrics(
                     symbol=sym_u,
                     interval=str(interval or "1m"),
+                    extra=extra if isinstance(extra, dict) else {},
                 ) or {}
 
-                ema7_v = float(ema_state.get("ema7") or 0.0)
-                ema25_v = float(ema_state.get("ema25") or 0.0)
-                ema99_v = float(ema_state.get("ema99") or 0.0)
+                ema7_v = float(ema_pack.get("ema7") or 0.0)
+                ema25_v = float(ema_pack.get("ema25") or 0.0)
+                ema99_v = float(ema_pack.get("ema99") or 0.0)
 
                 if ema7_v > 0 and ema25_v > 0 and ema99_v > 0:
-                    bearish_align = (
-                        ema7_v < ema25_v
-                        or ema25_v < ema99_v
+
+                    block_long = (
+                        side_norm == "long"
+                        and ema7_v < ema25_v
+                        and ema25_v < ema99_v
                     )
 
-                    if bearish_align:
+                    block_short = (
+                        side_norm == "short"
+                        and ema7_v > ema25_v
+                        and ema25_v > ema99_v
+                    )
+
+                    if block_long or block_short:
+
                         try:
                             if self.logger:
                                 self.logger.info(
-                                    "[EXEC][OPEN-BLOCK][EMA-HARD-LONG] symbol=%s side=%s ema7=%.6f ema25=%.6f ema99=%.6f",
+                                    "[EXEC][OPEN-BLOCK][EMA-HARD-%s] symbol=%s side=%s ema7=%.6f ema25=%.6f ema99=%.6f",
+                                    str(side_norm).upper(),
                                     sym_u,
                                     side_norm,
                                     ema7_v,
@@ -9529,14 +9574,16 @@ class TradeExecutor:
                                 )
                         except Exception:
                             pass
+
                         return
 
         except Exception as e:
             try:
                 if self.logger:
                     self.logger.warning(
-                        "[EXEC][EMA-HARD-LONG][WARN] symbol=%s err=%s",
+                        "[EXEC][EMA-HARD][WARN] symbol=%s side=%s err=%s",
                         sym_u,
+                        side_norm,
                         str(e)[:200],
                     )
             except Exception:
