@@ -4048,7 +4048,7 @@ class TradeExecutor:
 
         sym = sym_u
         pos_side = side_norm
-        interval = str(pos.get("interval") or "")
+        interval = str(os.getenv("INTERVAL","3m"))
 
         if side_norm == "long":
             pnl_pct = (float(price) - float(entry_price)) / max(float(entry_price), 1e-12)
@@ -4091,7 +4091,7 @@ class TradeExecutor:
                 symbol=sym,
                 price=float(price),
                 reason="early_tp",
-                interval=str(pos.get("interval") or ""),
+                interval=str(os.getenv("INTERVAL", "3m")).strip() or "3m",
             )
 
             return
@@ -4154,7 +4154,7 @@ class TradeExecutor:
                         symbol=sym,
                         price=float(price),
                         reason=close_reason,
-                        interval=str(pos.get("interval") or interval or ""),
+                        interval=str(os.getenv("INTERVAL", "3m")).strip() or "3m",
                     )
                 except Exception:
                     try:
@@ -4262,7 +4262,7 @@ class TradeExecutor:
                         symbol=sym,
                         price=float(price),
                         reason=close_reason,
-                        interval=str(pos.get("interval") or interval or ""),
+                        interval=str(os.getenv("INTERVAL", "3m")).strip() or "3m",
                     )
                 except Exception:
                     try:
@@ -4309,7 +4309,7 @@ class TradeExecutor:
                         sym, roi_pct, best_roi
                     )
 
-                self.close_position(symbol=sym, price=float(price), reason="anti_reversal", interval=str(pos.get("interval") or ""))
+                self.close_position(symbol=sym, price=float(price), reason="anti_reversal", interval=str(os.getenv("INTERVAL", "3m")).strip() or "3m")
 
                 return
 
@@ -4494,7 +4494,7 @@ class TradeExecutor:
             try:
                 ema_5m_tc = self._backfill_ema_metrics(
                     symbol=sym_u,
-                    interval="5m",
+                    interval="3m",
                     extra=extra0,
                 )
             except Exception:
@@ -5811,7 +5811,7 @@ class TradeExecutor:
 
                         side = str(pos.get("side") or "").strip().lower()
                         qty = float(pos.get("qty") or 0.0)
-                        interval = str(pos.get("interval") or "1m").strip() or "1m"
+                        interval = str(os.getenv("INTERVAL", "3m")).strip() or "3m"
                         entry_price = float(pos.get("entry_price") or 0.0)
 
                         if side not in ("long", "short") or qty <= 0 or entry_price <= 0:
@@ -6043,7 +6043,7 @@ class TradeExecutor:
                 symbol=sym,
                 price=float(current_price or 0.0),
                 reason=str(reason),
-                interval=str(pos.get("interval") or ""),
+                interval=str(os.getenv("INTERVAL", "3m")).strip() or "3m",
             ) or {"status": "skip", "reason": "reduce_failed"}
 
         if not self.dry_run:
@@ -6055,7 +6055,7 @@ class TradeExecutor:
                 symbol=sym,
                 price=float(current_price or 0.0),
                 reason=str(reason),
-                interval=str(pos.get("interval") or ""),
+                interval=str(os.getenv("INTERVAL", "3m")).strip() or "3m",
             ) or {"status": "skip", "reason": "reduce_to_zero"}
 
         pos["qty"] = float(remaining_qty)
@@ -9463,7 +9463,10 @@ class TradeExecutor:
                 except Exception:
                     interval_sec = 60.0
 
-                candle_progress = (time.time() % interval_sec) / max(interval_sec, 1.0)
+                sniper_use_1m = str(os.getenv("SNIPER_ENTRY_USE_1M", "0")).strip().lower() in ("1", "true", "yes", "on")
+                sniper_interval_sec = 60.0 if sniper_use_1m else float(interval_sec)
+                sniper_interval_label = "1m" if sniper_use_1m else str(interval0)
+                candle_progress = (time.time() % sniper_interval_sec) / max(sniper_interval_sec, 1.0)
 
                 if candle_progress > max_progress:
                     try:
@@ -10657,7 +10660,7 @@ class TradeExecutor:
                     try:
                         ema_5m = self._backfill_ema_metrics(
                             symbol=sym_u,
-                            interval="5m",
+                            interval="3m",
                             extra=extra0,
                         )
                     except Exception:
