@@ -9169,16 +9169,48 @@ class TradeExecutor:
         extra: Optional[Dict[str, Any]] = None,
     ) -> None:
         extra0 = self._extract_whale_context(extra if isinstance(extra, dict) else {})
+
+        # =========================================================
+        # INTERVAL ROUTER
+        # Decision = 3m, Entry/Sniper = 1m, Exit = 1m, Lifecycle = 3m
+        # =========================================================
+        decision_interval = str(
+            os.getenv("DECISION_INTERVAL", os.getenv("INTERVAL", "3m")) or "3m"
+        ).strip() or "3m"
+
+        entry_interval = str(
+            os.getenv("ENTRY_INTERVAL", os.getenv("SNIPER_ENTRY_INTERVAL", "1m")) or "1m"
+        ).strip() or "1m"
+
+        exit_interval = str(
+            os.getenv("EXIT_INTERVAL", os.getenv("SCALP_EXIT_INTERVAL", "1m")) or "1m"
+        ).strip() or "1m"
+
+        lifecycle_interval = str(
+            os.getenv("LIFECYCLE_INTERVAL", "3m") or "3m"
+        ).strip() or "3m"
+
+        # execute_decision karar katmanı 3m olarak kalır
+        interval = decision_interval
+
+        extra0["decision_interval"] = decision_interval
+        extra0["entry_interval"] = entry_interval
+        extra0["exit_interval"] = exit_interval
+        extra0["lifecycle_interval"] = lifecycle_interval
+
         raw_signal = str(signal or "").strip().lower()
         sym_u = str(symbol).upper().strip()
 
         try:
             if self.logger:
                 self.logger.info(
-                    "[EXEC][DECISION] enter | symbol=%s signal=%s interval=%s price=%s size=%s extra_keys=%s",
+                    "[EXEC][DECISION] enter | symbol=%s signal=%s interval=%s entry_interval=%s exit_interval=%s lifecycle_interval=%s price=%s size=%s extra_keys=%s",
                     sym_u,
                     str(signal),
-                    str(interval),
+                    str(decision_interval),
+                    str(entry_interval),
+                    str(exit_interval),
+                    str(lifecycle_interval),
                     str(price),
                     str(size),
                     sorted(list((extra or {}).keys())) if isinstance(extra, dict) else [],
@@ -9461,12 +9493,18 @@ class TradeExecutor:
                     elif interval_s.endswith("s"):
                         interval_sec = float(interval_s.replace("s", ""))
                 except Exception:
+                interval_sec = 60.0
+                try:
+                    interval_s = str(entry_interval or "1m").strip().lower()
+                    if interval_s.endswith("m"):
+                        interval_sec = float(interval_s.replace("m", "")) * 60.0
+                    elif interval_s.endswith("s"):
+                        interval_sec = float(interval_s.replace("s", ""))
+                except Exception:
                     interval_sec = 60.0
 
-                sniper_use_1m = str(os.getenv("SNIPER_ENTRY_USE_1M", "0")).strip().lower() in ("1", "true", "yes", "on")
-                sniper_interval_sec = 60.0 if sniper_use_1m else float(interval_sec)
-                sniper_interval_label = "1m" if sniper_use_1m else str(interval0)
-                candle_progress = (time.time() % sniper_interval_sec) / max(sniper_interval_sec, 1.0)
+                sniper_interval_label = str(entry_interval or "1m")
+                candle_progress = (time.time() % interval_sec) / max(interval_sec, 1.0)
 
                 if candle_progress > max_progress:
                     try:
@@ -9477,7 +9515,7 @@ class TradeExecutor:
                                 side_norm,
                                 float(candle_progress),
                                 float(max_progress),
-                                str(interval),
+                                str(sniper_interval_label),
                                 float(signal_score),
                                 float(open_min_score),
                             )
@@ -9494,7 +9532,7 @@ class TradeExecutor:
                                 side_norm,
                                 float(candle_progress),
                                 float(min_progress),
-                                str(interval),
+                                str(sniper_interval_label),
                                 float(signal_score),
                                 float(open_min_score),
                             )
@@ -9511,7 +9549,7 @@ class TradeExecutor:
                             float(candle_progress),
                             float(min_progress),
                             float(max_progress),
-                            str(interval),
+                            str(sniper_interval_label),
                             float(signal_score),
                             float(open_min_score),
                         )
@@ -11283,7 +11321,11 @@ class TradeExecutor:
             order_price = float(intent_price)
 
         try:
-            self._check_sl_tp_trailing(symbol=sym_u, price=float(order_price), interval=interval)
+            self._check_sl_tp_trailing(
+                symbol=sym_u,
+                price=float(order_price),
+                interval=str(exit_interval or "1m")
+            )
         except Exception:
             pass
 
@@ -11291,8 +11333,16 @@ class TradeExecutor:
             self.open_position_from_signal,
             sym_u,
             side_norm,
-            str(interval or ""),
-            dict(extra0, price=float(intent_price), signal_score=float(signal_score)),
+            str(entry_interval or "1m"),
+            dict(
+                extra0,
+                price=float(intent_price),
+                signal_score=float(signal_score),
+                decision_interval=str(decision_interval),
+                entry_interval=str(entry_interval),
+                exit_interval=str(exit_interval),
+                lifecycle_interval=str(lifecycle_interval),
+            ),
         )
         return
 
