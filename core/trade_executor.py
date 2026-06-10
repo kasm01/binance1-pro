@@ -5546,6 +5546,33 @@ class TradeExecutor:
 
         # 1) exchange'de var ama local'de yok -> hydrate et
         for sym, ex_pos in exchange_map.items():
+            # SIDE-SYNC-FILTER: long bot short'u, short bot long'u sahiplenmesin
+            try:
+                ex_side = str((ex_pos or {}).get("side") or "").strip().lower()
+            except Exception:
+                ex_side = ""
+
+            try:
+                bot_side_mode = str(os.getenv("BOT_SIDE_MODE", os.getenv("SIDE_MODE", "both")) or "both").strip().lower()
+            except Exception:
+                bot_side_mode = "both"
+
+            if bot_side_mode == "long" and ex_side == "short":
+                try:
+                    if self.logger:
+                        self.logger.info("[EXEC][SYNC][SIDE-SKIP] symbol=%s ex_side=%s bot_side=%s", str(sym).upper(), ex_side, bot_side_mode)
+                except Exception:
+                    pass
+                continue
+
+            if bot_side_mode == "short" and ex_side == "long":
+                try:
+                    if self.logger:
+                        self.logger.info("[EXEC][SYNC][SIDE-SKIP] symbol=%s ex_side=%s bot_side=%s", str(sym).upper(), ex_side, bot_side_mode)
+                except Exception:
+                    pass
+                continue
+
             if sym in local_map:
                 summary["kept"].append(sym)
                 continue
