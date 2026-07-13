@@ -14,7 +14,7 @@ set -euo pipefail
 # - Reconcile helper (orch state <-> executor state)
 # =========================
 
-BASE_DIR="${BASE_DIR:-$HOME/binance1-pro}"
+BASE_DIR="${BASE_DIR:-$HOME/binance1-spot}"
 ENV_FILE="${ENV_FILE:-$BASE_DIR/.env}"
 VENV_PY="${VENV_PY:-$BASE_DIR/venv/bin/python}"
 MAIN_CMD=("$VENV_PY" -u "$BASE_DIR/main.py")
@@ -31,7 +31,7 @@ LOG_MAX_BYTES="${LOG_MAX_BYTES:-10485760}"   # 10MB
 ROTATE_KEEP="${ROTATE_KEEP:-5}"
 
 # Services
-ORCH_SERVICE="${ORCH_SERVICE:-binance1-long-orch.service}"
+ORCH_SERVICE="${ORCH_SERVICE:-binance1-spot-orch.service}"
 MANAGE_ORCH_SERVICE="${MANAGE_ORCH_SERVICE:-1}"
 
 # Safety defaults

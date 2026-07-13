@@ -708,7 +708,17 @@ class TradeExecutor:
                     r = getattr(self, "redis_client", None)
 
                 if r is not None:
-                    keys = r.keys("bot:positions:*") or []
+                    try:
+                        _trading_mode_keys = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+                        _spot_mode_keys = (
+                            _trading_mode_keys == "spot"
+                            or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+                        )
+                    except Exception:
+                        _spot_mode_keys = False
+
+                    _pos_scan_pattern = "bot:spot_positions:*" if _spot_mode_keys else "bot:positions:*"
+                    keys = r.keys(_pos_scan_pattern) or []
 
                     key_list = []
                     for k in keys:
@@ -1012,7 +1022,16 @@ class TradeExecutor:
         try:
             r = getattr(self, "redis", None) or getattr(self, "redis_client", None)
             if r is not None:
-                keys = r.keys("bot:positions:*") or []
+                try:
+                    _trading_mode_keys = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+                    _spot_mode_keys = (
+                        _trading_mode_keys == "spot"
+                        or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+                    )
+                except Exception:
+                    _spot_mode_keys = False
+                _pos_scan_pattern = "bot:spot_positions:*" if _spot_mode_keys else "bot:positions:*"
+                keys = r.keys(_pos_scan_pattern) or []
                 for key in keys:
                     try:
                         raw = r.get(key)
@@ -3599,7 +3618,17 @@ class TradeExecutor:
     # position state helpers
     # ---------------------------------------------------------
     def _pos_key(self, symbol: str) -> str:
-        return f"bot:positions:{str(symbol).upper()}"
+        try:
+            _trading_mode = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+            _spot_mode = (
+                _trading_mode == "spot"
+                or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+            )
+        except Exception:
+            _spot_mode = False
+
+        prefix = "bot:spot_positions" if _spot_mode else "bot:positions"
+        return f"{prefix}:{str(symbol).upper()}"
 
     def _get_position(self, symbol: str) -> Optional[Dict[str, Any]]:
         sym = str(symbol).upper()
@@ -5455,6 +5484,30 @@ class TradeExecutor:
                 pass
 
     def sync_positions_with_exchange(self) -> Dict[str, Any]:
+        trading_mode = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+        spot_mode = trading_mode == "spot" or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+
+        if spot_mode:
+            summary = {
+                "exchange_open": 0,
+                "local_open": 0,
+                "bridge_open": 0,
+                "removed_local": [],
+                "removed_bridge": [],
+                "added_local": [],
+                "added_bridge": [],
+                "kept": [],
+                "skipped_fresh_local": [],
+                "skipped_fresh_bridge": [],
+                "spot_mode": True,
+            }
+            try:
+                if self.logger:
+                    self.logger.info("[EXEC][SPOT][SYNC] skipped futures position sync")
+            except Exception:
+                pass
+            return summary
+
         summary = {
             "exchange_open": 0,
             "local_open": 0,
@@ -5881,17 +5934,32 @@ class TradeExecutor:
                         if px is None or px <= 0:
                             try:
                                 client = getattr(self, "client", None)
-                                fn = (
-                                    getattr(client, "futures_mark_price", None)
-                                    if client is not None
-                                    else None
-                                )
-                                if callable(fn):
-                                    mp = fn(symbol=sym_u)
-                                    if isinstance(mp, dict):
-                                        px = self._clip_float(mp.get("markPrice"), None)
-                                        if px is not None and px > 0:
-                                            price_source = "mark_price"
+
+                                try:
+                                    _trading_mode_px = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+                                    _spot_mode_px = (
+                                        _trading_mode_px == "spot"
+                                        or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+                                    )
+                                except Exception:
+                                    _spot_mode_px = False
+
+                                if _spot_mode_px:
+                                    fn = getattr(client, "get_symbol_ticker", None) if client is not None else None
+                                    if callable(fn):
+                                        mp = fn(symbol=sym_u)
+                                        if isinstance(mp, dict):
+                                            px = self._clip_float(mp.get("price"), None)
+                                            if px is not None and px > 0:
+                                                price_source = "spot_ticker"
+                                else:
+                                    fn = getattr(client, "futures_mark_price", None) if client is not None else None
+                                    if callable(fn):
+                                        mp = fn(symbol=sym_u)
+                                        if isinstance(mp, dict):
+                                            px = self._clip_float(mp.get("markPrice"), None)
+                                            if px is not None and px > 0:
+                                                price_source = "mark_price"
                             except Exception:
                                 px = None
 
@@ -5924,6 +5992,98 @@ class TradeExecutor:
                                 )
                         except Exception:
                             pass
+
+                        # -------------------------------------------------
+                        # SPOT LIFECYCLE
+                        # Spotta leverage / ROI hard stop yok.
+                        # Sadece fiyat yüzdesiyle TP/opsiyonel stop çalışır.
+                        # -------------------------------------------------
+                        try:
+                            _trading_mode = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+                            _spot_mode = (
+                                _trading_mode == "spot"
+                                or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+                            )
+                        except Exception:
+                            _spot_mode = False
+
+                        if _spot_mode:
+                            try:
+                                spot_tp_pct = float(os.getenv("SPOT_TP_PCT", "0.0300") or 0.0300)
+                            except Exception:
+                                spot_tp_pct = 0.0300
+
+                            try:
+                                spot_stop_pct = float(os.getenv("SPOT_STOP_PCT", "0.0000") or 0.0000)
+                            except Exception:
+                                spot_stop_pct = 0.0000
+
+                            try:
+                                spot_pnl_pct = (float(px) - float(entry_price)) / max(float(entry_price), 1e-12)
+                            except Exception:
+                                spot_pnl_pct = 0.0
+
+                            try:
+                                if self.logger:
+                                    self.logger.info(
+                                        "[EXEC][SPOT][LIFECYCLE] symbol=%s side=%s pnl_pct=%.6f tp=%.6f stop=%.6f price=%.6f entry=%.6f qty=%.10f",
+                                        sym_u,
+                                        side,
+                                        float(spot_pnl_pct),
+                                        float(spot_tp_pct),
+                                        float(spot_stop_pct),
+                                        float(px),
+                                        float(entry_price),
+                                        float(qty),
+                                    )
+                            except Exception:
+                                pass
+
+                            if side != "long":
+                                try:
+                                    if self.logger:
+                                        self.logger.info(
+                                            "[EXEC][SPOT][LIFECYCLE-SKIP] non-long spot position | symbol=%s side=%s",
+                                            sym_u,
+                                            side,
+                                        )
+                                except Exception:
+                                    pass
+                                continue
+
+                            spot_tp_hit = float(spot_tp_pct) > 0 and float(spot_pnl_pct) >= float(spot_tp_pct)
+                            spot_stop_hit = float(spot_stop_pct) > 0 and float(spot_pnl_pct) <= -abs(float(spot_stop_pct))
+
+                            if spot_tp_hit or spot_stop_hit:
+                                reason = "spot_take_profit" if spot_tp_hit else "spot_stop_loss"
+                                try:
+                                    if self.logger:
+                                        self.logger.info(
+                                            "[EXEC][SPOT][CLOSE-SIGNAL] symbol=%s reason=%s pnl_pct=%.6f price=%.6f entry=%.6f",
+                                            sym_u,
+                                            reason,
+                                            float(spot_pnl_pct),
+                                            float(px),
+                                            float(entry_price),
+                                        )
+                                except Exception:
+                                    pass
+
+                                try:
+                                    self.close_position(
+                                        symbol=sym_u,
+                                        price=float(px),
+                                        reason=reason,
+                                        interval=str(interval or "3m"),
+                                    )
+                                except Exception:
+                                    try:
+                                        if self.logger:
+                                            self.logger.exception("[EXEC][SPOT][LIFECYCLE] close failed | symbol=%s", sym_u)
+                                    except Exception:
+                                        pass
+
+                            continue
 
                         # FIXED ROI TP - lifecycle giveback/trailing close
                         try:
@@ -6741,6 +6901,78 @@ class TradeExecutor:
         tag = "close" if reduce_only else "open"
         client_oid = self._make_client_order_id(sym, tag)
 
+        trading_mode = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+        spot_mode = trading_mode == "spot" or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+
+        # -------------------------------------------------
+        # SPOT ORDER ROUTE
+        # Spot API positionSide / reduceOnly / leverage kabul etmez.
+        # -------------------------------------------------
+        if spot_mode:
+            payload: Dict[str, Any] = {
+                "symbol": sym,
+                "side": order_side,
+                "type": "MARKET",
+                "quantity": float(q),
+                "newClientOrderId": client_oid,
+            }
+
+            used = "create_order"
+            t0 = self._now_ms()
+            attempts = int(os.getenv("ORDER_RETRY_ATTEMPTS", "3"))
+            base_sleep = float(os.getenv("ORDER_RETRY_SLEEP_S", "0.6"))
+
+            try:
+                fn = getattr(client, "create_order", None)
+                if not callable(fn):
+                    fn = getattr(client, "order_market_buy", None) if order_side == "BUY" else getattr(client, "order_market_sell", None)
+                    used = "order_market_buy/sell"
+
+                if not callable(fn):
+                    raise RuntimeError("spot create_order/order_market_buy/order_market_sell not supported on client")
+
+                resp = self._call_with_retry(fn, payload, attempts=attempts, base_sleep=base_sleep)
+
+            except Exception as e:
+                dt = self._now_ms() - t0
+                try:
+                    if self.logger:
+                        self.logger.exception(
+                            "[EXEC][SPOT][ORDER] %s FAIL | fn=%s symbol=%s side=%s qty=%.10f dt_ms=%d client_oid=%s payload=%s err=%s",
+                            ("SELL" if order_side == "SELL" else "BUY"),
+                            used,
+                            sym,
+                            order_side,
+                            float(q),
+                            int(dt),
+                            client_oid,
+                            self._safe_json(payload, limit=900),
+                            str(e)[:300],
+                        )
+                except Exception:
+                    pass
+                raise
+
+            dt = self._now_ms() - t0
+            summ = self._summarize_order(resp)
+
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][SPOT][ORDER] %s OK | fn=%s symbol=%s side=%s qty=%.10f dt_ms=%d summary=%s",
+                        ("SELL" if order_side == "SELL" else "BUY"),
+                        used,
+                        sym,
+                        order_side,
+                        float(q),
+                        int(dt),
+                        self._safe_json(summ, limit=900),
+                    )
+            except Exception:
+                pass
+
+            return resp
+
         payload: Dict[str, Any] = {
             "symbol": sym,
             "side": order_side,
@@ -6956,6 +7188,78 @@ class TradeExecutor:
             raise ValueError(f"close qty invalid after normalization: {self._safe_json(qmeta, limit=900)}")
 
         client_oid = self._make_client_order_id(sym, "close")
+
+        trading_mode = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+        spot_mode = trading_mode == "spot" or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+
+        # -------------------------------------------------
+        # SPOT CLOSE ROUTE
+        # Spot pozisyon kapatma = eldeki coin'i MARKET SELL yapmak.
+        # positionSide / reduceOnly yoktur.
+        # -------------------------------------------------
+        if spot_mode:
+            if pos_side != "long":
+                raise RuntimeError(f"spot close only supports long/sell, got side={pos_side}")
+
+            payload: Dict[str, Any] = {
+                "symbol": sym,
+                "side": "SELL",
+                "type": "MARKET",
+                "quantity": float(q),
+                "newClientOrderId": client_oid,
+            }
+
+            used = "create_order"
+            t0 = self._now_ms()
+            attempts = int(os.getenv("ORDER_RETRY_ATTEMPTS", "3"))
+            base_sleep = float(os.getenv("ORDER_RETRY_SLEEP_S", "0.6"))
+
+            try:
+                fn = getattr(client, "create_order", None)
+                if not callable(fn):
+                    fn = getattr(client, "order_market_sell", None)
+                    used = "order_market_sell"
+
+                if not callable(fn):
+                    raise RuntimeError("spot create_order/order_market_sell not supported on client")
+
+                resp = self._call_with_retry(fn, payload, attempts=attempts, base_sleep=base_sleep)
+
+            except Exception as e:
+                dt = self._now_ms() - t0
+                try:
+                    if self.logger:
+                        self.logger.exception(
+                            "[EXEC][SPOT][CLOSE] FAIL | fn=%s symbol=%s side=SELL qty=%.10f dt_ms=%d client_oid=%s payload=%s err=%s",
+                            used,
+                            sym,
+                            float(q),
+                            int(dt),
+                            client_oid,
+                            self._safe_json(payload, limit=900),
+                            str(e)[:300],
+                        )
+                except Exception:
+                    pass
+                raise
+
+            dt = self._now_ms() - t0
+            summ = self._summarize_order(resp)
+
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][SPOT][CLOSE] OK | fn=%s symbol=%s side=SELL qty=%.10f dt_ms=%d summary=%s",
+                        used,
+                        sym,
+                        float(q),
+                        int(dt),
+                        self._safe_json(summ, limit=900),
+                    )
+            except Exception:
+                pass
+
+            return resp
 
         payload: Dict[str, Any] = {
             "symbol": sym,
@@ -9730,7 +10034,6 @@ class TradeExecutor:
             )
 
             if sniper_enable and side_norm in ("long", "short"):
-                import time
 
                 max_progress = float(os.getenv("SNIPER_ENTRY_MAX_CANDLE_PROGRESS", "0.55") or 0.55)
                 min_progress = float(os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08") or 0.08)

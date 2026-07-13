@@ -148,11 +148,21 @@ def create_binance_client(
 
     client = _attach_close(client, log)
     client = _patch_session_request_drop_version(client, log)
-    client = _patch_futures_v2_read_methods(client, log)
+
+    try:
+        trading_mode = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+        use_spot = _env_bool("USE_SPOT", False)
+        spot_mode = trading_mode == "spot" or use_spot
+    except Exception:
+        spot_mode = False
+
+    if not spot_mode:
+        client = _patch_futures_v2_read_methods(client, log)
 
     try:
         log.info(
-            "[BINANCE_CLIENT] Futures Client oluşturuldu | testnet=%s | dry_run=%s",
+            "[BINANCE_CLIENT] %s Client oluşturuldu | testnet=%s | dry_run=%s",
+            "Spot" if spot_mode else "Futures",
             is_testnet,
             dry_run,
         )

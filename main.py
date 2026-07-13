@@ -76,6 +76,7 @@ from core.binance_client import create_binance_client
 from core.position_manager import PositionManager
 from core.risk_manager import RiskManager
 from core.trade_executor import TradeExecutor
+from core.trade_executor_spot import SpotTradeExecutor
 
 from core.market_meta_builder import MarketMetaBuilder
 from core.price_cache import PriceCache
@@ -820,6 +821,18 @@ def create_trading_objects(
     redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     redis_key_prefix = os.getenv("REDIS_KEY_PREFIX", "bot:positions")
 
+    try:
+        _trading_mode_pm = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+        _spot_mode_pm = (
+            _trading_mode_pm == "spot"
+            or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+        )
+    except Exception:
+        _spot_mode_pm = False
+
+    if _spot_mode_pm and (not os.getenv("REDIS_KEY_PREFIX")):
+        redis_key_prefix = "bot:spot_positions"
+
     enable_pg = str(os.getenv("ENABLE_PG_POS_LOG", "0")).strip()
     enable_pg_flag = enable_pg.lower() not in ("0", "false", "no", "off", "")
     pg_dsn = (os.getenv("PG_DSN") or "").strip() if enable_pg_flag else None
@@ -957,7 +970,10 @@ def create_trading_objects(
 
     exec_redis = redis.Redis.from_url(redis_url, decode_responses=True)
 
-    trade_executor = TradeExecutor(
+    _trading_mode_exec = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
+    _executor_cls = SpotTradeExecutor if _trading_mode_exec == "spot" else TradeExecutor
+
+    trade_executor = _executor_cls(
         client=client,
         redis_client=exec_redis,
         risk_manager=risk_manager,
