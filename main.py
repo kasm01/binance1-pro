@@ -1524,13 +1524,28 @@ class HeavyEngine:
 
         if signal_side is None:
             long_thr = float(os.getenv("LONG_THRESHOLD", "0.60"))
-            short_thr = float(os.getenv("SHORT_THRESHOLD", "0.40"))
-            if p_used >= long_thr:
+            short_thr = float(os.getenv("SHORT_THRESHOLD", "0.60"))
+
+            # p_used = buy/long probability.
+            # long  score = p_used
+            # short score = 1 - p_used
+            short_score = 1.0 - float(p_used)
+
+            if float(p_used) >= long_thr:
                 signal_side = "long"
-            elif p_used <= short_thr:
+            elif short_score >= short_thr:
                 signal_side = "short"
             else:
                 signal_side = "hold"
+
+            try:
+                extra["long_score"] = float(p_used)
+                extra["short_score"] = float(short_score)
+                extra["long_thr"] = float(long_thr)
+                extra["short_thr"] = float(short_thr)
+            except Exception:
+                pass
+
             extra["signal_source"] = "HYBRID"
         else:
             extra["signal_source"] = "EMA"

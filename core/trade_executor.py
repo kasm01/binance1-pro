@@ -5974,6 +5974,41 @@ class TradeExecutor:
                                     sym_u, side, float(roi_pct_direct), float(best_roi_pct), float(fixed_roi_tp_pct), float(fixed_roi_tp_giveback), float(px), float(entry_price), float(lev)
                                 )
 
+                            # =========================================================
+                            # ROI HARD STOP - LIFECYCLE
+                            # =========================================================
+                            try:
+                                _roi_hard_stop = float(os.getenv("ROI_HARD_STOP_PCT", "-0.0060") or -0.0060)
+                            except Exception:
+                                _roi_hard_stop = -0.0060
+
+                            if float(roi_pct_direct) <= float(_roi_hard_stop):
+                                try:
+                                    if self.logger:
+                                        self.logger.info(
+                                            "[EXEC][ROI-HARD-STOP][LIFECYCLE] symbol=%s side=%s roi=%.6f hard_stop=%.6f price=%.6f entry=%.6f lev=%.2f",
+                                            sym_u, side, float(roi_pct_direct), float(_roi_hard_stop), float(px), float(entry_price), float(lev)
+                                        )
+                                except Exception:
+                                    pass
+
+                                try:
+                                    self.close_position(
+                                        symbol=sym_u,
+                                        price=float(px),
+                                        reason="roi_hard_stop_lifecycle",
+                                        interval=str(interval or "1m"),
+                                    )
+                                except Exception:
+                                    try:
+                                        if self.logger:
+                                            self.logger.exception("[EXEC][ROI-HARD-STOP][LIFECYCLE] close failed | symbol=%s", sym_u)
+                                    except Exception:
+                                        pass
+                                continue
+
+
+
                             direct_tp_hit = (
                                 fixed_roi_tp_enable
                                 and float(fixed_roi_tp_giveback) <= 0.0
@@ -9482,6 +9517,59 @@ class TradeExecutor:
         except Exception:
             bot_side_mode = "both"
 
+        try:
+            if self.logger:
+                self.logger.info(
+                    "[EXEC][SIDE-DEBUG] symbol=%s mode=%s raw_signal=%s signal_u=%s side_norm=%s p_buy_raw=%s p_buy_ema=%s best_side=%s signal_source=%s p_buy_source=%s whale_dir=%s whale_score=%s",
+                    sym_u,
+                    bot_side_mode,
+                    raw_signal,
+                    signal_u,
+                    side_norm,
+                    extra0.get("p_buy_raw"),
+                    extra0.get("p_buy_ema"),
+                    extra0.get("best_side"),
+                    extra0.get("signal_source"),
+                    extra0.get("p_buy_source"),
+                    extra0.get("whale_dir"),
+                    extra0.get("whale_score"),
+                )
+        except Exception:
+            pass
+
+        # =========================================================
+        # LONG MODE BEST_SIDE OVERRIDE
+        # If model is neutral p_buy=0.5 but selector says best_side=long,
+        # prevent fallback/default short from blocking long bot forever.
+        # =========================================================
+        try:
+            _best_side_l = str(extra0.get("best_side") or "").strip().lower()
+            _pbr_l = float(extra0.get("p_buy_raw", 0.5) or 0.5)
+            _pbe_l = float(extra0.get("p_buy_ema", 0.5) or 0.5)
+            _long_best_override_on = str(os.getenv("LONG_BEST_SIDE_OVERRIDE_ENABLE", "1") or "1").strip().lower() in ("1", "true", "yes", "on")
+            _neutral_band_l = float(os.getenv("LONG_BEST_SIDE_OVERRIDE_NEUTRAL_BAND", "0.01") or 0.01)
+
+            if (
+                _long_best_override_on
+                and bot_side_mode == "long"
+                and side_norm != "long"
+                and _best_side_l == "long"
+                and abs(_pbr_l - 0.5) <= _neutral_band_l
+                and abs(_pbe_l - 0.5) <= _neutral_band_l
+            ):
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][LONG-BEST-OVERRIDE] symbol=%s raw_signal=%s old_side=%s new_side=long p_buy_raw=%.4f p_buy_ema=%.4f best_side=%s",
+                            sym_u, raw_signal, side_norm, _pbr_l, _pbe_l, _best_side_l,
+                        )
+                except Exception:
+                    pass
+                signal_u = "BUY"
+                side_norm = "long"
+        except Exception:
+            pass
+
         if bot_side_mode == "long" and side_norm != "long":
             try:
                 if self.logger:
@@ -9754,7 +9842,12 @@ class TradeExecutor:
                         and ema25_v > ema99_v
                     )
 
-                    if block_long or block_short:
+                    try:
+                        _ema_hard_veto_on = str(os.getenv("EMA_HARD_VETO_ENABLE", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+                    except Exception:
+                        _ema_hard_veto_on = False
+
+                    if _ema_hard_veto_on and (block_long or block_short):
 
                         try:
                             if self.logger:
