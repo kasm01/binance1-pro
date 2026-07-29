@@ -9621,6 +9621,486 @@ class TradeExecutor:
     # ---------------------------------------------------------
     # async decision executor
     # ---------------------------------------------------------
+    # =========================================================
+    # LONG ENTRY DECISION ARCHITECTURE
+    # =========================================================
+
+    def _make_long_entry_decision(
+        self,
+        *,
+        allow: bool,
+        action: str,
+        reason: str,
+        signal_score: Optional[float] = None,
+        required_score: Optional[float] = None,
+        progress: Optional[float] = None,
+        retryable: bool = False,
+        details: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        LONG giriş değerlendirmeleri için standart karar sözlüğü
+        oluşturur.
+
+        Bu helper:
+            - state değiştirmez
+            - pozisyon açmaz
+            - pozisyon kapatmaz
+            - yalnızca karar verisi üretir
+        """
+        action_norm = str(
+            action or "block"
+        ).strip().lower()
+
+        if action_norm not in (
+            "open",
+            "block",
+            "pending",
+            "close",
+            "hold",
+        ):
+            action_norm = "block"
+
+        reason_norm = str(
+            reason or "unknown"
+        ).strip().lower()
+
+        decision: Dict[str, Any] = {
+            "allow": bool(allow),
+            "action": action_norm,
+            "reason": reason_norm,
+            "retryable": bool(retryable),
+        }
+
+        if signal_score is not None:
+            try:
+                decision["score"] = float(signal_score)
+            except Exception:
+                pass
+
+        if required_score is not None:
+            try:
+                decision["required_score"] = float(
+                    required_score
+                )
+            except Exception:
+                pass
+
+        if progress is not None:
+            try:
+                decision["progress"] = float(progress)
+            except Exception:
+                pass
+
+        if isinstance(details, dict) and details:
+            decision["details"] = dict(details)
+
+        return decision
+
+    def _normalize_long_entry_decision(
+        self,
+        decision: Optional[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        """
+        Evaluator veya başka bir karar katmanından gelen değeri
+        standart LONG karar formatına dönüştürür.
+
+        Geçersiz karar güvenli biçimde block kabul edilir.
+        """
+        if not isinstance(decision, dict):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="invalid_decision",
+                retryable=False,
+            )
+
+        allow = bool(
+            decision.get("allow", False)
+        )
+
+        action = str(
+            decision.get("action")
+            or ("open" if allow else "block")
+        ).strip().lower()
+
+        reason = str(
+            decision.get("reason")
+            or "unknown"
+        ).strip().lower()
+
+        retryable = bool(
+            decision.get("retryable", False)
+        )
+
+        score = decision.get("score")
+        required_score = decision.get(
+            "required_score"
+        )
+        progress = decision.get("progress")
+
+        details = decision.get("details")
+
+        return self._make_long_entry_decision(
+            allow=allow,
+            action=action,
+            reason=reason,
+            signal_score=score,
+            required_score=required_score,
+            progress=progress,
+            retryable=retryable,
+            details=(
+                details
+                if isinstance(details, dict)
+                else None
+            ),
+        )
+
+    def _prepare_long_open_payload(
+        self,
+        extra: Optional[Dict[str, Any]],
+        *,
+        price: float,
+        signal_score: float,
+        decision_interval: str,
+        entry_interval: str,
+        exit_interval: str,
+        lifecycle_interval: str,
+        required_score: Optional[float] = None,
+    ) -> Dict[str, Any]:
+        """
+        LONG emir açılışı için kullanılacak payload'u üretir.
+
+        Gelen extra sözlüğünü doğrudan değiştirmez.
+        """
+        payload: Dict[str, Any] = dict(
+            extra
+            if isinstance(extra, dict)
+            else {}
+        )
+
+        try:
+            price_f = float(price or 0.0)
+        except Exception:
+            price_f = 0.0
+
+        try:
+            score_f = float(signal_score)
+        except Exception:
+            score_f = 0.0
+
+        payload["price"] = price_f
+        payload["signal_score"] = score_f
+        payload["decision_interval"] = str(
+            decision_interval or ""
+        )
+        payload["entry_interval"] = str(
+            entry_interval or ""
+        )
+        payload["exit_interval"] = str(
+            exit_interval or ""
+        )
+        payload["lifecycle_interval"] = str(
+            lifecycle_interval or ""
+        )
+
+        if required_score is not None:
+            try:
+                payload["open_min_score"] = float(
+                    required_score
+                )
+            except Exception:
+                pass
+
+        return payload
+
+    def _resolve_long_open_context(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        extra: Optional[Dict[str, Any]],
+        probs: Optional[Dict[str, float]],
+    ) -> Dict[str, Any]:
+        """
+        LONG açılış kararında kullanılan skor bağlamını çözer.
+
+        Bu helper:
+            - minimum açılış skorunu hesaplar
+            - coin/side özel eşiği uygular
+            - model sinyal skorunu çözer
+            - dynamic score ayarını uygular
+            - yalnızca context sözlüğü döndürür
+
+        Pozisyon açmaz veya kapatmaz.
+        """
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+
+        extra0: Dict[str, Any] = dict(
+            extra
+            if isinstance(extra, dict)
+            else {}
+        )
+
+        probs0: Dict[str, float] = dict(
+            probs
+            if isinstance(probs, dict)
+            else {}
+        )
+
+        try:
+            min_open_score = float(
+                os.getenv(
+                    "OPEN_MIN_SCORE",
+                    os.getenv("MIN_SCORE", "0.66"),
+                )
+                or 0.66
+            )
+        except Exception:
+            min_open_score = 0.66
+
+        open_min_score = self._get_coin_side_min_open_score(
+            symbol=sym_u,
+            side=side_norm,
+            default_score=min_open_score,
+        )
+
+        try:
+            if self.logger:
+                self.logger.info(
+                    "[EXEC][COIN-MIN-SCORE] "
+                    "symbol=%s side=%s min_open=%.4f",
+                    sym_u,
+                    side_norm,
+                    float(open_min_score),
+                )
+        except Exception:
+            pass
+
+        signal_score = self._resolve_signal_score_for_open(
+            side=side_norm,
+            extra=extra0,
+            probs=probs0,
+        )
+
+        # =====================================================
+        # DYNAMIC COIN SCORE ADJUST
+        # =====================================================
+        try:
+            dyn_enable = str(
+                os.getenv(
+                    "DYNAMIC_COIN_SCORE_ENABLE",
+                    "0",
+                )
+                or "0"
+            ).strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
+            )
+
+            if dyn_enable and side_norm in (
+                "long",
+                "short",
+            ):
+                dyn_min = float(
+                    os.getenv(
+                        "DYNAMIC_SCORE_MIN",
+                        "0.49",
+                    )
+                    or 0.49
+                )
+
+                dyn_max = float(
+                    os.getenv(
+                        "DYNAMIC_SCORE_MAX",
+                        "0.58",
+                    )
+                    or 0.58
+                )
+
+                atr_boost = float(
+                    os.getenv(
+                        "DYNAMIC_SCORE_ATR_BOOST",
+                        "0.0",
+                    )
+                    or 0.0
+                )
+
+                spread_boost = float(
+                    os.getenv(
+                        "DYNAMIC_SCORE_SPREAD_BOOST",
+                        "0.0",
+                    )
+                    or 0.0
+                )
+
+                ema_relax = float(
+                    os.getenv(
+                        "DYNAMIC_SCORE_EMA_RELAX",
+                        "0.0",
+                    )
+                    or 0.0
+                )
+
+                whale_relax = float(
+                    os.getenv(
+                        "DYNAMIC_SCORE_WHALE_RELAX",
+                        "0.0",
+                    )
+                    or 0.0
+                )
+
+                dyn_score = float(open_min_score)
+
+                atr_v = float(
+                    extra0.get("atr")
+                    or extra0.get("atr_pct")
+                    or 0.0
+                )
+
+                spread_v = float(
+                    extra0.get("spread_pct")
+                    or extra0.get("spread")
+                    or 0.0
+                )
+
+                whale_dir_dyn = str(
+                    extra0.get("whale_dir")
+                    or ""
+                ).strip().lower()
+
+                whale_score_dyn = float(
+                    extra0.get("whale_score")
+                    or 0.0
+                )
+
+                ema7_v = float(
+                    extra0.get("ema7")
+                    or 0.0
+                )
+
+                ema25_v = float(
+                    extra0.get("ema25")
+                    or 0.0
+                )
+
+                # ATR yüksekse daha seçici ol.
+                if atr_v > 0:
+                    dyn_score += atr_boost
+
+                # Spread yüksekse daha seçici ol.
+                if spread_v > 0:
+                    dyn_score += spread_boost
+
+                # EMA aynı yöndeyse eşiği gevşet.
+                if (
+                    side_norm == "long"
+                    and ema7_v > 0
+                    and ema25_v > 0
+                    and ema7_v > ema25_v
+                ):
+                    dyn_score -= ema_relax
+
+                if (
+                    side_norm == "short"
+                    and ema7_v > 0
+                    and ema25_v > 0
+                    and ema7_v < ema25_v
+                ):
+                    dyn_score -= ema_relax
+
+                # Whale aynı yöndeyse eşiği gevşet.
+                if (
+                    whale_dir_dyn == side_norm
+                    and whale_score_dyn > 0
+                ):
+                    dyn_score -= whale_relax
+
+                dyn_score = max(
+                    dyn_min,
+                    min(dyn_max, dyn_score),
+                )
+
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][DYNAMIC-SCORE] "
+                            "symbol=%s side=%s "
+                            "base=%.4f final=%.4f "
+                            "min=%.4f max=%.4f "
+                            "atr=%.6f spread=%.6f "
+                            "whale_dir=%s "
+                            "whale_score=%.4f",
+                            sym_u,
+                            side_norm,
+                            float(open_min_score),
+                            float(dyn_score),
+                            float(dyn_min),
+                            float(dyn_max),
+                            float(atr_v),
+                            float(spread_v),
+                            whale_dir_dyn,
+                            float(whale_score_dyn),
+                        )
+                except Exception:
+                    pass
+
+                open_min_score = float(dyn_score)
+
+        except Exception as exc:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][DYNAMIC-SCORE][WARN] "
+                        "symbol=%s side=%s err=%s",
+                        sym_u,
+                        side_norm,
+                        str(exc)[:200],
+                    )
+            except Exception:
+                pass
+
+        if side_norm in ("long", "short"):
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN][SCORE] "
+                        "symbol=%s side=%s "
+                        "resolved_score=%.4f "
+                        "p_buy_ema=%.4f "
+                        "p_buy_raw=%.4f "
+                        "mcf=%.4f",
+                        sym_u,
+                        side_norm,
+                        float(signal_score),
+                        float(
+                            extra0.get("p_buy_ema")
+                            or 0.0
+                        ),
+                        float(
+                            extra0.get("p_buy_raw")
+                            or 0.0
+                        ),
+                        float(
+                            extra0.get(
+                                "model_confidence_factor"
+                            )
+                            or 0.0
+                        ),
+                    )
+            except Exception:
+                pass
+
+        return {
+            "symbol": sym_u,
+            "side": side_norm,
+            "signal_score": float(signal_score),
+            "open_min_score": float(open_min_score),
+            "base_min_score": float(min_open_score),
+        }
+
     async def execute_decision(
         self,
         signal: str,
@@ -9900,129 +10380,22 @@ class TradeExecutor:
                 pass
             return
 
-        try:
-            min_open_score = float(
-                os.getenv("OPEN_MIN_SCORE", os.getenv("MIN_SCORE", "0.66")) or 0.66
-            )
-        except Exception:
-            min_open_score = 0.66
-
-        open_min_score = self._get_coin_side_min_open_score(
+        long_open_context = self._resolve_long_open_context(
             symbol=sym_u,
-            side=side_norm,
-            default_score=min_open_score,
-        )
-
-        try:
-            if self.logger:
-                self.logger.info(
-                    "[EXEC][COIN-MIN-SCORE] symbol=%s side=%s min_open=%.4f",
-                    sym_u,
-                    side_norm,
-                    float(open_min_score),
-                )
-        except Exception:
-            pass
-
-        signal_score = self._resolve_signal_score_for_open(
             side=side_norm,
             extra=extra0,
             probs=probs,
         )
 
-        # =========================================================
-        # DYNAMIC COIN SCORE ADJUST
-        # open_min_score değerini piyasa yoğunluğuna göre ayarlar.
-        # =========================================================
-        try:
-            dyn_enable = str(
-                os.getenv("DYNAMIC_COIN_SCORE_ENABLE", "0") or "0"
-            ).strip().lower() in ("1", "true", "yes", "on")
+        signal_score = float(
+            long_open_context.get("signal_score")
+            or 0.0
+        )
 
-            if dyn_enable and side_norm in ("long", "short"):
-                dyn_min = float(os.getenv("DYNAMIC_SCORE_MIN", "0.49") or 0.49)
-                dyn_max = float(os.getenv("DYNAMIC_SCORE_MAX", "0.58") or 0.58)
-
-                atr_boost = float(os.getenv("DYNAMIC_SCORE_ATR_BOOST", "0.0") or 0.0)
-                spread_boost = float(os.getenv("DYNAMIC_SCORE_SPREAD_BOOST", "0.0") or 0.0)
-                ema_relax = float(os.getenv("DYNAMIC_SCORE_EMA_RELAX", "0.0") or 0.0)
-                whale_relax = float(os.getenv("DYNAMIC_SCORE_WHALE_RELAX", "0.0") or 0.0)
-
-                dyn_score = float(open_min_score)
-
-                atr_v = float(extra0.get("atr") or extra0.get("atr_pct") or 0.0)
-                spread_v = float(extra0.get("spread_pct") or extra0.get("spread") or 0.0)
-
-                whale_dir = str(extra0.get("whale_dir") or "").strip().lower()
-                whale_score = float(extra0.get("whale_score") or 0.0)
-
-                ema7_v = float(extra0.get("ema7") or 0.0)
-                ema25_v = float(extra0.get("ema25") or 0.0)
-
-                # ATR yüksekse biraz daha seçici ol
-                if atr_v > 0:
-                    dyn_score += atr_boost
-
-                # Spread yüksekse biraz daha seçici ol
-                if spread_v > 0:
-                    dyn_score += spread_boost
-
-                # EMA aynı yönse gevşet
-                if side_norm == "long" and ema7_v > 0 and ema25_v > 0 and ema7_v > ema25_v:
-                    dyn_score -= ema_relax
-
-                if side_norm == "short" and ema7_v > 0 and ema25_v > 0 and ema7_v < ema25_v:
-                    dyn_score -= ema_relax
-
-                # Whale aynı yönse gevşet
-                if whale_dir == side_norm and whale_score > 0:
-                    dyn_score -= whale_relax
-
-                dyn_score = max(dyn_min, min(dyn_max, dyn_score))
-
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][DYNAMIC-SCORE] symbol=%s side=%s base=%.4f final=%.4f min=%.4f max=%.4f atr=%.6f spread=%.6f whale_dir=%s whale_score=%.4f",
-                        sym_u,
-                        side_norm,
-                        float(open_min_score),
-                        float(dyn_score),
-                        float(dyn_min),
-                        float(dyn_max),
-                        float(atr_v),
-                        float(spread_v),
-                        whale_dir,
-                        float(whale_score),
-                    )
-
-                open_min_score = float(dyn_score)
-
-        except Exception as e:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][DYNAMIC-SCORE][WARN] symbol=%s side=%s err=%s",
-                        sym_u,
-                        side_norm,
-                        str(e)[:200],
-                    )
-            except Exception:
-                pass
-
-        if side_norm in ("long", "short"):
-            try:
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][OPEN][SCORE] symbol=%s side=%s resolved_score=%.4f p_buy_ema=%.4f p_buy_raw=%.4f mcf=%.4f",
-                        sym_u,
-                        side_norm,
-                        float(signal_score),
-                        float(extra0.get("p_buy_ema") or 0.0),
-                        float(extra0.get("p_buy_raw") or 0.0),
-                        float(extra0.get("model_confidence_factor") or 0.0),
-                    )
-            except Exception:
-                pass
+        open_min_score = float(
+            long_open_context.get("open_min_score")
+            or 0.0
+        )
 
         # =========================================================
         # SNIPER ENTRY TIMING FILTER
