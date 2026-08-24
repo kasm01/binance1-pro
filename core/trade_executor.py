@@ -95,6 +95,8 @@ class TradeExecutor:
 
         self.last_snapshot: Dict[str, Any] = {}
         self.last_snapshot_by_symbol: Dict[str, Dict[str, Any]] = {}
+        self.long_pending_by_symbol: Dict[str, Dict[str, Any]] = {}
+
 
         self.position_sync_enabled = str(
             os.getenv("POSITION_SYNC_ENABLED", "1")
@@ -10101,58 +10103,174 @@ class TradeExecutor:
             "base_min_score": float(min_open_score),
         }
 
-    async def execute_decision(
+    def _handle_long_explicit_close_signal(
         self,
+        *,
+        raw_signal: str,
+        symbol: str,
+        price: float,
+        interval: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """
+        Açık CLOSE / EXIT / FLAT kararlarını position close akışına yönlendirir.
+
+        True:
+            Sinyal explicit close sinyalidir ve çağrı bu katmanda tüketilmiştir.
+
+        False:
+            Sinyal explicit close değildir; normal karar akışı devam etmelidir.
+        """
+        raw_signal_norm = str(
+            raw_signal or ""
+        ).strip().lower()
+
+        if raw_signal_norm not in (
+            "close",
+            "exit",
+            "flat",
+        ):
+            return False
+
+        sym_u = str(
+            symbol or ""
+        ).upper().strip()
+
+        extra0 = (
+            extra
+            if isinstance(extra, dict)
+            else {}
+        )
+
+        try:
+            if self.logger:
+                self.logger.info(
+                    "[EXEC][CLOSE] explicit close signal received | "
+                    "symbol=%s signal=%s interval=%s",
+                    sym_u,
+                    raw_signal_norm,
+                    str(interval or ""),
+                )
+        except Exception:
+            pass
+
+        try:
+            self.close_position(
+                symbol=sym_u,
+                price=price,
+                reason=f"signal_{raw_signal_norm}",
+                interval=str(interval or ""),
+                intent_id=str(
+                    extra0.get("intent_id")
+                    or ""
+                ),
+            )
+        except Exception:
+            try:
+                if self.logger:
+                    self.logger.exception(
+                        "[EXEC][CLOSE] explicit close execution failed | "
+                        "symbol=%s signal=%s",
+                        sym_u,
+                        raw_signal_norm,
+                    )
+            except Exception:
+                pass
+
+        return True
+
+    def _prepare_long_decision_request(
+        self,
+        *,
         signal: str,
         symbol: str,
         price: float,
         size: Optional[float],
-        interval: str,
-        training_mode: bool,
-        hybrid_mode: bool,
-        probs: Dict[str, float],
         extra: Optional[Dict[str, Any]] = None,
-    ) -> None:
-        extra0 = self._extract_whale_context(extra if isinstance(extra, dict) else {})
+    ) -> Dict[str, Any]:
+        """
+        Long karar akışının değişmez giriş bağlamını hazırlar.
 
-        # =========================================================
-        # INTERVAL ROUTER
-        # Decision = 3m, Entry/Sniper = 1m, Exit = 1m, Lifecycle = 3m
-        # =========================================================
+        Bu katman:
+        - whale context'i çıkarır,
+        - interval router değerlerini çözer,
+        - sembol ve ham sinyali normalize eder,
+        - erken fiyat fallback zincirini uygular,
+        - decision giriş logunu üretir.
+
+        Entry, candidate veya order kararı vermez.
+        """
+        extra0 = self._extract_whale_context(
+            extra
+            if isinstance(extra, dict)
+            else {}
+        )
+
         decision_interval = str(
-            os.getenv("DECISION_INTERVAL", os.getenv("INTERVAL", "3m")) or "3m"
+            os.getenv(
+                "DECISION_INTERVAL",
+                os.getenv("INTERVAL", "3m"),
+            )
+            or "3m"
         ).strip() or "3m"
 
         entry_interval = str(
-            os.getenv("ENTRY_INTERVAL", os.getenv("SNIPER_ENTRY_INTERVAL", "1m")) or "1m"
+            os.getenv(
+                "ENTRY_INTERVAL",
+                os.getenv(
+                    "SNIPER_ENTRY_INTERVAL",
+                    "1m",
+                ),
+            )
+            or "1m"
         ).strip() or "1m"
 
         exit_interval = str(
-            os.getenv("EXIT_INTERVAL", os.getenv("SCALP_EXIT_INTERVAL", "1m")) or "1m"
+            os.getenv(
+                "EXIT_INTERVAL",
+                os.getenv(
+                    "SCALP_EXIT_INTERVAL",
+                    "1m",
+                ),
+            )
+            or "1m"
         ).strip() or "1m"
 
         lifecycle_interval = str(
-            os.getenv("LIFECYCLE_INTERVAL", "3m") or "3m"
+            os.getenv(
+                "LIFECYCLE_INTERVAL",
+                "3m",
+            )
+            or "3m"
         ).strip() or "3m"
 
-        # execute_decision karar katmanı 3m olarak kalır
         interval = decision_interval
 
-        extra0["decision_interval"] = decision_interval
-        extra0["entry_interval"] = entry_interval
-        extra0["exit_interval"] = exit_interval
-        extra0["lifecycle_interval"] = lifecycle_interval
+        extra0["decision_interval"] = (
+            decision_interval
+        )
+        extra0["entry_interval"] = (
+            entry_interval
+        )
+        extra0["exit_interval"] = (
+            exit_interval
+        )
+        extra0["lifecycle_interval"] = (
+            lifecycle_interval
+        )
 
-        raw_signal = str(signal or "").strip().lower()
-        sym_u = str(symbol).upper().strip()
+        raw_signal = str(
+            signal or ""
+        ).strip().lower()
 
-        # =========================================================
-        # PRICE FALLBACK EARLY
-        # Decision'a price=0.0 gelirse cache/extra üzerinden doldur.
-        # Böylece aşağıdaki tüm filtreler gerçek fiyatla çalışır.
-        # =========================================================
+        sym_u = str(
+            symbol
+        ).upper().strip()
+
         try:
-            price_f = float(price or 0.0)
+            price_f = float(
+                price or 0.0
+            )
         except Exception:
             price_f = 0.0
 
@@ -10171,143 +10289,347 @@ class TradeExecutor:
 
         if price_f <= 0.0:
             try:
-                cached_px = self._get_cached_mid_price(sym_u)
-                if cached_px and float(cached_px) > 0.0:
-                    price_f = float(cached_px)
+                cached_px = (
+                    self._get_cached_mid_price(
+                        sym_u
+                    )
+                )
+
+                if (
+                    cached_px
+                    and float(cached_px) > 0.0
+                ):
+                    price_f = float(
+                        cached_px
+                    )
             except Exception:
                 pass
 
+        resolved_price = price
+
         if price_f > 0.0:
-            price = float(price_f)
-            extra0["price"] = float(price_f)
-            extra0["intent_price"] = float(price_f)
+            resolved_price = float(
+                price_f
+            )
+            extra0["price"] = float(
+                price_f
+            )
+            extra0["intent_price"] = float(
+                price_f
+            )
 
         try:
             if self.logger:
                 self.logger.info(
-                    "[EXEC][DECISION] enter | symbol=%s signal=%s interval=%s entry_interval=%s exit_interval=%s lifecycle_interval=%s price=%s size=%s extra_keys=%s",
+                    "[EXEC][DECISION] enter | "
+                    "symbol=%s signal=%s interval=%s "
+                    "entry_interval=%s exit_interval=%s "
+                    "lifecycle_interval=%s price=%s "
+                    "size=%s extra_keys=%s",
                     sym_u,
                     str(signal),
                     str(decision_interval),
                     str(entry_interval),
                     str(exit_interval),
                     str(lifecycle_interval),
-                    str(price),
+                    str(resolved_price),
                     str(size),
-                    sorted(list((extra or {}).keys())) if isinstance(extra, dict) else [],
+                    sorted(
+                        list(
+                            (extra or {}).keys()
+                        )
+                    )
+                    if isinstance(extra, dict)
+                    else [],
                 )
         except Exception:
             pass
 
-        # =========================================================
-        # HOLD → LONG CONVERSION
-        # Not: dönüşüm sonrası raw_signal / signal_u / side_norm güncellenecek
-        # =========================================================
-        try:
-            if raw_signal == "hold":
-                whale_dir_h = str((extra0 or {}).get("whale_dir") or "").strip().lower()
-                whale_score_h = float((extra0 or {}).get("whale_score", 0.0) or 0.0)
-                p_buy_h = float((extra0 or {}).get("p_buy_ema", 0.5) or 0.5)
+        return {
+            "extra": extra0,
+            "raw_signal": raw_signal,
+            "symbol": sym_u,
+            "price": resolved_price,
+            "decision_interval": (
+                decision_interval
+            ),
+            "entry_interval": (
+                entry_interval
+            ),
+            "exit_interval": (
+                exit_interval
+            ),
+            "lifecycle_interval": (
+                lifecycle_interval
+            ),
+            "interval": interval,
+        }
 
-                if whale_dir_h == "long" and whale_score_h >= 0.15 and p_buy_h > 0.50:
-                    signal = "long"
-                    raw_signal = "long"
+    def _apply_long_hold_conversion(
+        self,
+        *,
+        signal: str,
+        raw_signal: str,
+        symbol: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> tuple[str, str]:
+        """
+        Uygun whale ve model bağlamında HOLD sinyalini LONG'a dönüştürür.
+
+        Mevcut davranışı korur:
+        - yalnızca raw_signal == "hold" iken değerlendirilir,
+        - whale_dir long olmalıdır,
+        - whale_score en az 0.15 olmalıdır,
+        - p_buy_ema 0.50 üzerinde olmalıdır.
+
+        Her hata durumunda orijinal signal/raw_signal değerleri döner.
+        """
+        signal_out = signal
+        raw_signal_out = str(
+            raw_signal or ""
+        ).strip().lower()
+
+        extra0 = (
+            extra
+            if isinstance(extra, dict)
+            else {}
+        )
+
+        try:
+            if raw_signal_out == "hold":
+                whale_dir_h = str(
+                    extra0.get("whale_dir")
+                    or ""
+                ).strip().lower()
+
+                whale_score_h = float(
+                    extra0.get(
+                        "whale_score",
+                        0.0,
+                    )
+                    or 0.0
+                )
+
+                p_buy_h = float(
+                    extra0.get(
+                        "p_buy_ema",
+                        0.5,
+                    )
+                    or 0.5
+                )
+
+                if (
+                    whale_dir_h == "long"
+                    and whale_score_h >= 0.15
+                    and p_buy_h > 0.50
+                ):
+                    signal_out = "long"
+                    raw_signal_out = "long"
+
                     if self.logger:
                         self.logger.info(
-                            "[EXEC][HOLD→LONG] symbol=%s p_buy=%.3f whale_score=%.3f",
-                            sym_u,
+                            "[EXEC][HOLD→LONG] "
+                            "symbol=%s p_buy=%.3f "
+                            "whale_score=%.3f",
+                            str(symbol or "").upper().strip(),
                             p_buy_h,
                             whale_score_h,
                         )
         except Exception:
             pass
 
+        return (
+            signal_out,
+            raw_signal_out,
+        )
+
+    def _resolve_long_whale_open_context(
+        self,
+        *,
+        symbol: str,
+        raw_signal: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Long karar akışında kullanılacak whale open bağlamını hazırlar.
+
+        Bu katman yalnızca:
+        - whale context logunu üretir,
+        - whale open env ayarlarını çözer,
+        - whale action/direction/score değerlerini normalize eder.
+
+        Entry veya order kararı vermez.
+        """
+        sym_u = str(
+            symbol or ""
+        ).upper().strip()
+
+        extra0 = (
+            extra
+            if isinstance(extra, dict)
+            else {}
+        )
+
+        raw_signal_norm = str(
+            raw_signal or ""
+        ).strip().lower()
+
         try:
             if self.logger:
                 self.logger.info(
-                    "[EXEC][WHALE][CTX] symbol=%s side=%s whale_dir=%s whale_score=%.4f keys=%s",
+                    "[EXEC][WHALE][CTX] "
+                    "symbol=%s side=%s "
+                    "whale_dir=%s whale_score=%.4f "
+                    "keys=%s",
                     sym_u,
-                    raw_signal,
-                    str(extra0.get("whale_dir") or "none"),
-                    float(extra0.get("whale_score") or 0.0),
-                    sorted(list(extra0.keys())),
+                    raw_signal_norm,
+                    str(
+                        extra0.get("whale_dir")
+                        or "none"
+                    ),
+                    float(
+                        extra0.get("whale_score")
+                        or 0.0
+                    ),
+                    sorted(
+                        list(
+                            extra0.keys()
+                        )
+                    ),
                 )
         except Exception:
             pass
 
         try:
             whale_open_min_score = float(
-                os.getenv("WHALE_OPEN_MIN_SCORE", os.getenv("W_MIN", "0.54")) or 0.54
+                os.getenv(
+                    "WHALE_OPEN_MIN_SCORE",
+                    os.getenv(
+                        "W_MIN",
+                        "0.54",
+                    ),
+                )
+                or 0.54
             )
         except Exception:
             whale_open_min_score = 0.54
 
         require_whale_for_open = str(
-            os.getenv("REQUIRE_WHALE_FOR_OPEN", "0")
-        ).strip().lower() in ("1", "true", "yes", "on")
+            os.getenv(
+                "REQUIRE_WHALE_FOR_OPEN",
+                "0",
+            )
+        ).strip().lower() in (
+            "1",
+            "true",
+            "yes",
+            "on",
+        )
 
         strict_whale_alignment = str(
-            os.getenv("STRICT_WHALE_ALIGNMENT", "0")
-        ).strip().lower() in ("1", "true", "yes", "on")
+            os.getenv(
+                "STRICT_WHALE_ALIGNMENT",
+                "0",
+            )
+        ).strip().lower() in (
+            "1",
+            "true",
+            "yes",
+            "on",
+        )
 
-        whale_action = str(self._whale_action(extra0) or "").strip().lower()
-        whale_dir = str(extra0.get("whale_dir", "none") or "none").strip().lower()
-        whale_score = float(extra0.get("whale_score", 0.0) or 0.0)
+        whale_action = str(
+            self._whale_action(
+                extra0
+            )
+            or ""
+        ).strip().lower()
 
-        if whale_dir in ("buy", "bull", "up"):
+        whale_dir = str(
+            extra0.get(
+                "whale_dir",
+                "none",
+            )
+            or "none"
+        ).strip().lower()
+
+        whale_score = float(
+            extra0.get(
+                "whale_score",
+                0.0,
+            )
+            or 0.0
+        )
+
+        if whale_dir in (
+            "buy",
+            "bull",
+            "up",
+        ):
             whale_dir = "long"
-        elif whale_dir in ("sell", "bear", "down"):
+        elif whale_dir in (
+            "sell",
+            "bear",
+            "down",
+        ):
             whale_dir = "short"
-        elif whale_dir not in ("long", "short"):
+        elif whale_dir not in (
+            "long",
+            "short",
+        ):
             whale_dir = "none"
 
-        if raw_signal in ("close", "exit", "flat"):
-            try:
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][CLOSE] explicit close signal received | symbol=%s signal=%s interval=%s",
-                        sym_u,
-                        raw_signal,
-                        str(interval or ""),
-                    )
-            except Exception:
-                pass
+        return {
+            "whale_open_min_score": float(
+                whale_open_min_score
+            ),
+            "require_whale_for_open": bool(
+                require_whale_for_open
+            ),
+            "strict_whale_alignment": bool(
+                strict_whale_alignment
+            ),
+            "whale_action": whale_action,
+            "whale_dir": whale_dir,
+            "whale_score": float(
+                whale_score
+            ),
+        }
 
-            try:
-                self.close_position(
-                    symbol=sym_u,
-                    price=price,
-                    reason=f"signal_{raw_signal}",
-                    interval=str(interval or ""),
-                    intent_id=str(extra0.get("intent_id") or ""),
-                )
-            except Exception:
-                try:
-                    if self.logger:
-                        self.logger.exception(
-                            "[EXEC][CLOSE] explicit close execution failed | symbol=%s signal=%s",
-                            sym_u,
-                            raw_signal,
-                        )
-                except Exception:
-                    pass
-            return
+    def _resolve_long_decision_signal_context(
+        self,
+        *,
+        signal: str,
+        raw_signal: str,
+        symbol: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """Long sinyalini normalize eder ve yön modunu doğrular."""
+        sym_u = str(symbol or "").upper().strip()
+        raw_signal_norm = str(raw_signal or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
 
         signal_u = self._signal_u_from_any(signal)
         side_norm = self._normalize_side(signal_u)
 
         try:
-            bot_side_mode = str(os.getenv("BOT_SIDE_MODE", "both") or "both").strip().lower()
+            bot_side_mode = str(
+                os.getenv("BOT_SIDE_MODE", "both") or "both"
+            ).strip().lower()
         except Exception:
             bot_side_mode = "both"
 
         try:
             if self.logger:
                 self.logger.info(
-                    "[EXEC][SIDE-DEBUG] symbol=%s mode=%s raw_signal=%s signal_u=%s side_norm=%s p_buy_raw=%s p_buy_ema=%s best_side=%s signal_source=%s p_buy_source=%s whale_dir=%s whale_score=%s",
+                    "[EXEC][SIDE-DEBUG] symbol=%s mode=%s "
+                    "raw_signal=%s signal_u=%s side_norm=%s "
+                    "p_buy_raw=%s p_buy_ema=%s best_side=%s "
+                    "signal_source=%s p_buy_source=%s "
+                    "whale_dir=%s whale_score=%s",
                     sym_u,
                     bot_side_mode,
-                    raw_signal,
+                    raw_signal_norm,
                     signal_u,
                     side_norm,
                     extra0.get("p_buy_raw"),
@@ -10321,71 +10643,124 @@ class TradeExecutor:
         except Exception:
             pass
 
-        # =========================================================
-        # LONG MODE BEST_SIDE OVERRIDE
-        # If model is neutral p_buy=0.5 but selector says best_side=long,
-        # prevent fallback/default short from blocking long bot forever.
-        # =========================================================
         try:
-            _best_side_l = str(extra0.get("best_side") or "").strip().lower()
-            _pbr_l = float(extra0.get("p_buy_raw", 0.5) or 0.5)
-            _pbe_l = float(extra0.get("p_buy_ema", 0.5) or 0.5)
-            _long_best_override_on = str(os.getenv("LONG_BEST_SIDE_OVERRIDE_ENABLE", "1") or "1").strip().lower() in ("1", "true", "yes", "on")
-            _neutral_band_l = float(os.getenv("LONG_BEST_SIDE_OVERRIDE_NEUTRAL_BAND", "0.01") or 0.01)
+            best_side = str(
+                extra0.get("best_side") or ""
+            ).strip().lower()
+
+            p_buy_raw = float(
+                extra0.get("p_buy_raw", 0.5) or 0.5
+            )
+            p_buy_ema = float(
+                extra0.get("p_buy_ema", 0.5) or 0.5
+            )
+
+            override_enabled = str(
+                os.getenv(
+                    "LONG_BEST_SIDE_OVERRIDE_ENABLE",
+                    "1",
+                )
+                or "1"
+            ).strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
+            )
+
+            neutral_band = float(
+                os.getenv(
+                    "LONG_BEST_SIDE_OVERRIDE_NEUTRAL_BAND",
+                    "0.01",
+                )
+                or 0.01
+            )
 
             if (
-                _long_best_override_on
+                override_enabled
                 and bot_side_mode == "long"
                 and side_norm != "long"
-                and _best_side_l == "long"
-                and abs(_pbr_l - 0.5) <= _neutral_band_l
-                and abs(_pbe_l - 0.5) <= _neutral_band_l
+                and best_side == "long"
+                and abs(p_buy_raw - 0.5) <= neutral_band
+                and abs(p_buy_ema - 0.5) <= neutral_band
             ):
                 try:
                     if self.logger:
                         self.logger.info(
-                            "[EXEC][LONG-BEST-OVERRIDE] symbol=%s raw_signal=%s old_side=%s new_side=long p_buy_raw=%.4f p_buy_ema=%.4f best_side=%s",
-                            sym_u, raw_signal, side_norm, _pbr_l, _pbe_l, _best_side_l,
+                            "[EXEC][LONG-BEST-OVERRIDE] "
+                            "symbol=%s raw_signal=%s old_side=%s "
+                            "new_side=long p_buy_raw=%.4f "
+                            "p_buy_ema=%.4f best_side=%s",
+                            sym_u,
+                            raw_signal_norm,
+                            side_norm,
+                            p_buy_raw,
+                            p_buy_ema,
+                            best_side,
                         )
                 except Exception:
                     pass
+
                 signal_u = "BUY"
                 side_norm = "long"
         except Exception:
             pass
 
-        if bot_side_mode == "long" and side_norm != "long":
-            try:
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][SIDE-MODE-BLOCK] symbol=%s mode=%s side=%s",
-                        sym_u,
-                        bot_side_mode,
-                        side_norm,
-                    )
-            except Exception:
-                pass
-            return
+        side_allowed = True
 
-        if bot_side_mode == "short" and side_norm != "short":
+        if (
+            bot_side_mode == "long"
+            and side_norm != "long"
+        ):
+            side_allowed = False
+
+        elif (
+            bot_side_mode == "short"
+            and side_norm != "short"
+        ):
+            side_allowed = False
+
+        if not side_allowed:
             try:
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][SIDE-MODE-BLOCK] symbol=%s mode=%s side=%s",
+                        "[EXEC][SIDE-MODE-BLOCK] "
+                        "symbol=%s mode=%s side=%s",
                         sym_u,
                         bot_side_mode,
                         side_norm,
                     )
             except Exception:
                 pass
-            return
+
+        return {
+            "signal_u": signal_u,
+            "side_norm": side_norm,
+            "bot_side_mode": bot_side_mode,
+            "side_allowed": bool(side_allowed),
+        }
+
+    def _resolve_long_decision_open_score_context(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        extra: Optional[Dict[str, Any]] = None,
+        probs: Optional[Dict[str, float]] = None,
+    ) -> Dict[str, Any]:
+        """Long open score bağlamını karar akışı için sadeleştirir."""
+        extra0 = extra if isinstance(extra, dict) else {}
+        probs0 = probs if isinstance(probs, dict) else {}
 
         long_open_context = self._resolve_long_open_context(
-            symbol=sym_u,
-            side=side_norm,
+            symbol=str(symbol or "").upper().strip(),
+            side=str(side or "").strip().lower(),
             extra=extra0,
-            probs=probs,
+            probs=probs0,
         )
+
+        if not isinstance(long_open_context, dict):
+            long_open_context = {}
 
         signal_score = float(
             long_open_context.get("signal_score")
@@ -10397,182 +10772,323 @@ class TradeExecutor:
             or 0.0
         )
 
-        # =========================================================
-        # SNIPER ENTRY TIMING FILTER
-        # Low score'dan ÖNCE çalışır; böylece SNIPER logları görünür.
-        # =========================================================
+        return {
+            "context": long_open_context,
+            "signal_score": signal_score,
+            "open_min_score": open_min_score,
+        }
+
+    def _evaluate_long_sniper_timing_gate(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        entry_interval: str,
+        signal_score: float,
+        open_min_score: float,
+    ) -> bool:
+        """
+        Sniper mum ilerleme penceresini değerlendirir.
+
+        True:
+            Akış devam edebilir.
+
+        False:
+            Giriş erken veya geç olduğu için engellenmelidir.
+        """
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+
         try:
-            sniper_enable = str(os.getenv("SNIPER_ENTRY_ENABLE", "0")).strip().lower() in (
-                "1", "true", "yes", "on"
+            sniper_enable = str(
+                os.getenv(
+                    "SNIPER_ENTRY_ENABLE",
+                    "0",
+                )
+            ).strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
             )
 
-            if sniper_enable and side_norm in ("long", "short"):
+            if (
+                not sniper_enable
+                or side_norm not in ("long", "short")
+            ):
+                return True
 
-                max_progress = float(os.getenv("SNIPER_ENTRY_MAX_CANDLE_PROGRESS", "0.55") or 0.55)
-                min_progress = float(os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08") or 0.08)
+            max_progress = float(
+                os.getenv(
+                    "SNIPER_ENTRY_MAX_CANDLE_PROGRESS",
+                    "0.55",
+                )
+                or 0.55
+            )
 
+            min_progress = float(
+                os.getenv(
+                    "SNIPER_ENTRY_MIN_CANDLE_PROGRESS",
+                    "0.08",
+                )
+                or 0.08
+            )
+
+            interval_sec = 60.0
+
+            try:
+                interval_s = str(
+                    entry_interval or "1m"
+                ).strip().lower()
+
+                if interval_s.endswith("m"):
+                    interval_sec = float(
+                        interval_s.replace("m", "")
+                    ) * 60.0
+                elif interval_s.endswith("s"):
+                    interval_sec = float(
+                        interval_s.replace("s", "")
+                    )
+            except Exception:
                 interval_sec = 60.0
-                try:
-                    interval_s = str(entry_interval or "1m").strip().lower()
-                    if interval_s.endswith("m"):
-                        interval_sec = float(interval_s.replace("m", "")) * 60.0
-                    elif interval_s.endswith("s"):
-                        interval_sec = float(interval_s.replace("s", ""))
-                except Exception:
-                    interval_sec = 60.0
 
-                sniper_interval_label = str(entry_interval or "1m")
-                candle_progress = (time.time() % interval_sec) / max(interval_sec, 1.0)
+            interval_label = str(
+                entry_interval or "1m"
+            )
 
-                if candle_progress > max_progress:
-                    try:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][SNIPER-LATE] symbol=%s side=%s progress=%.3f max=%.3f interval=%s score=%.4f min_open=%.4f",
-                                sym_u,
-                                side_norm,
-                                float(candle_progress),
-                                float(max_progress),
-                                str(sniper_interval_label),
-                                float(signal_score),
-                                float(open_min_score),
-                            )
-                    except Exception:
-                        pass
-                    return
+            candle_progress = (
+                time.time() % interval_sec
+            ) / max(interval_sec, 1.0)
 
-                if candle_progress < min_progress:
-                    try:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][SNIPER-EARLY] symbol=%s side=%s progress=%.3f min=%.3f interval=%s score=%.4f min_open=%.4f",
-                                sym_u,
-                                side_norm,
-                                float(candle_progress),
-                                float(min_progress),
-                                str(sniper_interval_label),
-                                float(signal_score),
-                                float(open_min_score),
-                            )
-                    except Exception:
-                        pass
-                    return
-
+            if candle_progress > max_progress:
                 try:
                     if self.logger:
                         self.logger.info(
-                            "[EXEC][SNIPER-ENTRY] allow | symbol=%s side=%s progress=%.3f min=%.3f max=%.3f interval=%s score=%.4f min_open=%.4f",
+                            "[EXEC][OPEN-BLOCK][SNIPER-LATE] "
+                            "symbol=%s side=%s progress=%.3f "
+                            "max=%.3f interval=%s score=%.4f "
+                            "min_open=%.4f",
                             sym_u,
                             side_norm,
-                            float(candle_progress),
-                            float(min_progress),
-                            float(max_progress),
-                            str(sniper_interval_label),
+                            candle_progress,
+                            max_progress,
+                            interval_label,
                             float(signal_score),
                             float(open_min_score),
                         )
                 except Exception:
                     pass
 
-        except Exception as e:
+                return False
+
+            if candle_progress < min_progress:
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][OPEN-BLOCK][SNIPER-EARLY] "
+                            "symbol=%s side=%s progress=%.3f "
+                            "min=%.3f interval=%s score=%.4f "
+                            "min_open=%.4f",
+                            sym_u,
+                            side_norm,
+                            candle_progress,
+                            min_progress,
+                            interval_label,
+                            float(signal_score),
+                            float(open_min_score),
+                        )
+                except Exception:
+                    pass
+
+                return False
+
             try:
                 if self.logger:
-                    self.logger.warning(
-                        "[EXEC][SNIPER-ENTRY][WARN] symbol=%s side=%s err=%s",
+                    self.logger.info(
+                        "[EXEC][SNIPER-ENTRY] allow | "
+                        "symbol=%s side=%s progress=%.3f "
+                        "min=%.3f max=%.3f interval=%s "
+                        "score=%.4f min_open=%.4f",
                         sym_u,
                         side_norm,
-                        str(e)[:200],
+                        candle_progress,
+                        min_progress,
+                        max_progress,
+                        interval_label,
+                        float(signal_score),
+                        float(open_min_score),
                     )
             except Exception:
                 pass
 
-        # =========================================================
-        # EMA HARD DIRECTION VETO
-        # Long block : ema7 < ema25 < ema99
-        # Short block: ema7 > ema25 > ema99
-        # =========================================================
+            return True
+
+        except Exception as exc:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][SNIPER-ENTRY][WARN] "
+                        "symbol=%s side=%s err=%s",
+                        sym_u,
+                        side_norm,
+                        str(exc)[:200],
+                    )
+            except Exception:
+                pass
+
+            return True
+
+    def _evaluate_long_ema_hard_direction_gate(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        interval: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """
+        EMA7/EMA25/EMA99 hard direction veto kontrolü.
+
+        True:
+            Karar akışı devam edebilir.
+
+        False:
+            EMA hard veto nedeniyle giriş engellenmelidir.
+        """
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
         try:
-            if side_norm in ("long", "short"):
+            if side_norm not in ("long", "short"):
+                return True
 
-                ema_pack = self._backfill_ema_metrics(
-                    symbol=sym_u,
-                    interval=str(interval or "1m"),
-                    extra=extra if isinstance(extra, dict) else {},
-                ) or {}
+            ema_pack = self._backfill_ema_metrics(
+                symbol=sym_u,
+                interval=str(interval or "1m"),
+                extra=extra0,
+            ) or {}
 
-                ema7_v = float(ema_pack.get("ema7") or 0.0)
-                ema25_v = float(ema_pack.get("ema25") or 0.0)
-                ema99_v = float(ema_pack.get("ema99") or 0.0)
+            ema7_v = float(
+                ema_pack.get("ema7") or 0.0
+            )
+            ema25_v = float(
+                ema_pack.get("ema25") or 0.0
+            )
+            ema99_v = float(
+                ema_pack.get("ema99") or 0.0
+            )
 
-                if ema7_v > 0 and ema25_v > 0 and ema99_v > 0:
+            if not (
+                ema7_v > 0
+                and ema25_v > 0
+                and ema99_v > 0
+            ):
+                return True
 
-                    block_long = (
-                        side_norm == "long"
-                        and ema7_v < ema25_v
-                        and ema25_v < ema99_v
+            block_long = (
+                side_norm == "long"
+                and ema7_v < ema25_v
+                and ema25_v < ema99_v
+            )
+
+            block_short = (
+                side_norm == "short"
+                and ema7_v > ema25_v
+                and ema25_v > ema99_v
+            )
+
+            try:
+                hard_veto_enabled = str(
+                    os.getenv(
+                        "EMA_HARD_VETO_ENABLE",
+                        "0",
                     )
+                    or "0"
+                ).strip().lower() in (
+                    "1",
+                    "true",
+                    "yes",
+                    "on",
+                )
+            except Exception:
+                hard_veto_enabled = False
 
-                    block_short = (
-                        side_norm == "short"
-                        and ema7_v > ema25_v
-                        and ema25_v > ema99_v
-                    )
+            if (
+                hard_veto_enabled
+                and (block_long or block_short)
+            ):
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][OPEN-BLOCK][EMA-HARD-%s] "
+                            "symbol=%s side=%s "
+                            "ema7=%.6f ema25=%.6f ema99=%.6f",
+                            side_norm.upper(),
+                            sym_u,
+                            side_norm,
+                            ema7_v,
+                            ema25_v,
+                            ema99_v,
+                        )
+                except Exception:
+                    pass
 
-                    try:
-                        _ema_hard_veto_on = str(os.getenv("EMA_HARD_VETO_ENABLE", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
-                    except Exception:
-                        _ema_hard_veto_on = False
+                return False
 
-                    if _ema_hard_veto_on and (block_long or block_short):
+            return True
 
-                        try:
-                            if self.logger:
-                                self.logger.info(
-                                    "[EXEC][OPEN-BLOCK][EMA-HARD-%s] symbol=%s side=%s ema7=%.6f ema25=%.6f ema99=%.6f",
-                                    str(side_norm).upper(),
-                                    sym_u,
-                                    side_norm,
-                                    ema7_v,
-                                    ema25_v,
-                                    ema99_v,
-                                )
-                        except Exception:
-                            pass
-
-                        return
-
-        except Exception as e:
+        except Exception as exc:
             try:
                 if self.logger:
                     self.logger.warning(
-                        "[EXEC][EMA-HARD][WARN] symbol=%s side=%s err=%s",
+                        "[EXEC][EMA-HARD][WARN] "
+                        "symbol=%s side=%s err=%s",
                         sym_u,
                         side_norm,
-                        str(e)[:200],
+                        str(exc)[:200],
                     )
             except Exception:
                 pass
 
-        except Exception as e:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][SNIPER-ENTRY][WARN] symbol=%s side=%s err=%s",
-                        sym_u,
-                        side_norm,
-                        str(e)[:200],
-                    )
-            except Exception:
-                pass
+            return True
+
+    def _update_long_decision_snapshot(
+        self,
+        *,
+        symbol: str,
+        interval: str,
+        signal_u: str,
+        side: str,
+        signal_score: float,
+        whale_action: str,
+        whale_dir: str,
+        whale_score: float,
+        probs: Optional[Dict[str, float]] = None,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Son long karar snapshot kaydını günceller."""
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+        probs0 = probs if isinstance(probs, dict) else {}
 
         try:
             p_used = extra0.get("ensemble_p")
-            if p_used is None:
-                p_used = extra0.get("p_buy_ema") or extra0.get("p_buy_raw")
-            if p_used is None and isinstance(probs, dict):
-                p_used = probs.get("p_used") or probs.get("p_single")
 
-            snap = {
+            if p_used is None:
+                p_used = (
+                    extra0.get("p_buy_ema")
+                    or extra0.get("p_buy_raw")
+                )
+
+            if p_used is None:
+                p_used = (
+                    probs0.get("p_used")
+                    or probs0.get("p_single")
+                )
+
+            snapshot = {
                 "ts": datetime.utcnow().isoformat(),
                 "ts_epoch": time.time(),
                 "symbol": sym_u,
@@ -10580,10 +11096,12 @@ class TradeExecutor:
                 "signal": signal_u,
                 "signal_norm": side_norm,
                 "signal_source": str(
-                    extra0.get("signal_source") or extra0.get("p_buy_source") or ""
+                    extra0.get("signal_source")
+                    or extra0.get("p_buy_source")
+                    or ""
                 ),
                 "p_used": p_used,
-                "p_single": probs.get("p_single") if isinstance(probs, dict) else None,
+                "p_single": probs0.get("p_single"),
                 "p_buy_raw": extra0.get("p_buy_raw"),
                 "p_buy_ema": extra0.get("p_buy_ema"),
                 "whale_dir": whale_dir,
@@ -10592,119 +11110,198 @@ class TradeExecutor:
                 "signal_score": float(signal_score),
                 "extra": extra0,
             }
-            self.last_snapshot = snap
-            self.last_snapshot_by_symbol[sym_u] = snap
+
+            self.last_snapshot = snapshot
+            self.last_snapshot_by_symbol[sym_u] = snapshot
         except Exception:
             pass
 
-        if signal_u == "HOLD":
-            try:
-                ens = extra0.get("ensemble_p")
-                mcf = extra0.get("model_confidence_factor")
-                pbe = extra0.get("p_buy_ema")
-                pbr = extra0.get("p_buy_raw")
+    def _handle_long_hold_signal(
+        self,
+        *,
+        symbol: str,
+        price: float,
+        interval: str,
+        signal_score: float,
+        whale_action: str,
+        whale_dir: str,
+        whale_score: float,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """HOLD sinyalinde kayıt, takip ve isteğe bağlı close işlemlerini yürütür."""
+        sym_u = str(symbol or "").upper().strip()
+        extra0 = extra if isinstance(extra, dict) else {}
 
-                p_val = ens if ens is not None else (pbe if pbe is not None else pbr)
-                p_src = (
-                    "ensemble_p" if ens is not None
-                    else ("p_buy_ema" if pbe is not None else ("p_buy_raw" if pbr is not None else "none"))
+        try:
+            ens = extra0.get("ensemble_p")
+            mcf = extra0.get("model_confidence_factor")
+            pbe = extra0.get("p_buy_ema")
+            pbr = extra0.get("p_buy_raw")
+
+            p_val = (
+                ens
+                if ens is not None
+                else (pbe if pbe is not None else pbr)
+            )
+
+            p_src = (
+                "ensemble_p"
+                if ens is not None
+                else (
+                    "p_buy_ema"
+                    if pbe is not None
+                    else (
+                        "p_buy_raw"
+                        if pbr is not None
+                        else "none"
+                    )
+                )
+            )
+
+            pv = self._clip_float(p_val, None)
+
+            if pv is not None:
+                pv = max(0.0, min(1.0, pv))
+
+            self._append_hold_csv({
+                "timestamp": datetime.utcnow().isoformat(),
+                "symbol": sym_u,
+                "interval": interval,
+                "signal": "HOLD",
+                "p": pv,
+                "p_source": p_src,
+                "ensemble_p": ens,
+                "model_confidence_factor": mcf,
+                "p_buy_ema": pbe,
+                "p_buy_raw": pbr,
+            })
+        except Exception:
+            pass
+
+        try:
+            if self.logger:
+                self.logger.info(
+                    "[EXEC] Signal=HOLD symbol=%s "
+                    "whale_action=%s whale_dir=%s "
+                    "whale_score=%.3f signal_score=%.4f",
+                    sym_u,
+                    whale_action or "-",
+                    whale_dir,
+                    float(whale_score),
+                    float(signal_score),
+                )
+        except Exception:
+            pass
+
+        try:
+            current = self._get_effective_position(sym_u)
+
+            if not isinstance(current, dict):
+                return
+
+            hold_price = self._resolve_price(
+                symbol=sym_u,
+                price=price,
+                mark_price=extra0.get("mark_price"),
+                last_price=extra0.get("last_price"),
+            )
+
+            if hold_price is not None and hold_price > 0:
+                self._check_sl_tp_trailing(
+                    symbol=sym_u,
+                    price=float(hold_price),
+                    interval=str(interval or ""),
                 )
 
-                pv = self._clip_float(p_val, None)
-                if pv is not None:
-                    pv = max(0.0, min(1.0, pv))
+            if not self.hold_close_enabled:
+                return
 
-                self._append_hold_csv({
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "symbol": sym_u,
-                    "interval": interval,
-                    "signal": "HOLD",
-                    "p": pv,
-                    "p_source": p_src,
-                    "ensemble_p": ens,
-                    "model_confidence_factor": mcf,
-                    "p_buy_ema": pbe,
-                    "p_buy_raw": pbr,
-                })
-            except Exception:
-                pass
+            side_cur = str(
+                current.get("side") or ""
+            ).strip().lower()
 
+            entry_cur = float(
+                current.get("entry_price") or 0.0
+            )
+
+            if not (
+                side_cur in ("long", "short")
+                and entry_cur > 0
+                and hold_price
+                and hold_price > 0
+            ):
+                return
+
+            if side_cur == "long":
+                pnl_pct_cur = (
+                    float(hold_price) - entry_cur
+                ) / max(entry_cur, 1e-12)
+            else:
+                pnl_pct_cur = (
+                    entry_cur - float(hold_price)
+                ) / max(entry_cur, 1e-12)
+
+            if pnl_pct_cur >= float(
+                self.hold_close_min_pnl_pct
+            ):
+                self.close_position(
+                    symbol=sym_u,
+                    price=float(hold_price),
+                    reason="hold_take_profit",
+                    interval=str(interval or ""),
+                    intent_id=str(
+                        extra0.get("intent_id") or ""
+                    ),
+                )
+        except Exception:
             try:
                 if self.logger:
-                    self.logger.info(
-                        "[EXEC] Signal=HOLD symbol=%s whale_action=%s whale_dir=%s whale_score=%.3f signal_score=%.4f",
+                    self.logger.exception(
+                        "[EXEC][HOLD] monitor/close check failed | "
+                        "symbol=%s",
                         sym_u,
-                        whale_action or "-",
-                        whale_dir,
-                        float(whale_score),
-                        float(signal_score),
                     )
             except Exception:
                 pass
 
-            try:
-                cur = self._get_effective_position(sym_u)
-                if isinstance(cur, dict):
-                    hold_price = self._resolve_price(
-                        symbol=sym_u,
-                        price=price,
-                        mark_price=extra0.get("mark_price"),
-                        last_price=extra0.get("last_price"),
-                    )
+    def _evaluate_long_candidate_base_precheck(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        training_mode: bool,
+        signal_score: float,
+        open_min_score: float,
+    ) -> bool:
+        """
+        Temel long candidate açılış ön kontrollerini uygular.
 
-                    if hold_price is not None and hold_price > 0:
-                        self._check_sl_tp_trailing(
-                            symbol=sym_u,
-                            price=float(hold_price),
-                            interval=str(interval or ""),
-                        )
+        True:
+            Candidate akışı devam edebilir.
 
-                    if self.hold_close_enabled:
-                        side_cur = str(cur.get("side") or "").strip().lower()
-                        entry_cur = float(cur.get("entry_price") or 0.0)
-                        if side_cur in ("long", "short") and entry_cur > 0 and hold_price and hold_price > 0:
-                            if side_cur == "long":
-                                pnl_pct_cur = (
-                                    (float(hold_price) - float(entry_cur))
-                                    / max(float(entry_cur), 1e-12)
-                                )
-                            else:
-                                pnl_pct_cur = (
-                                    (float(entry_cur) - float(hold_price))
-                                    / max(float(entry_cur), 1e-12)
-                                )
-
-                            if pnl_pct_cur >= float(self.hold_close_min_pnl_pct):
-                                self.close_position(
-                                    symbol=sym_u,
-                                    price=float(hold_price),
-                                    reason="hold_take_profit",
-                                    interval=str(interval or ""),
-                                    intent_id=str(extra0.get("intent_id") or ""),
-                                )
-            except Exception:
-                try:
-                    if self.logger:
-                        self.logger.exception(
-                            "[EXEC][HOLD] monitor/close check failed | symbol=%s",
-                            sym_u,
-                        )
-                except Exception:
-                    pass
-            return
+        False:
+            Shadow, training, geçersiz yön veya düşük skor
+            nedeniyle candidate engellenmelidir.
+        """
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
 
         if self._truthy_env("SHADOW_MODE", "0"):
-            return
+            return False
+
         if training_mode:
-            return
+            return False
+
         if side_norm not in ("long", "short"):
-            return
+            return False
 
         if float(signal_score) < float(open_min_score):
             try:
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][OPEN-BLOCK] low score | symbol=%s side=%s signal_score=%.4f min_open=%.4f",
+                        "[EXEC][OPEN-BLOCK] low score | "
+                        "symbol=%s side=%s signal_score=%.4f "
+                        "min_open=%.4f",
                         sym_u,
                         side_norm,
                         float(signal_score),
@@ -10712,289 +11309,430 @@ class TradeExecutor:
                     )
             except Exception:
                 pass
-            return
 
-        # ------------------------------
-        # SMART ENTRY COOLDOWN
-        # ------------------------------
+            return False
+
+        return True
+
+    def _evaluate_long_smart_entry_cooldown(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        signal_score: float,
+    ) -> bool:
+        """
+        Smart entry cooldown kontrolünü uygular.
+
+        True:
+            Candidate akışı devam edebilir.
+
+        False:
+            Aktif cooldown nedeniyle giriş engellenmelidir.
+        """
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+
         try:
-            smart_entry_cooldown_enable = bool(
-                int(os.getenv("SMART_ENTRY_COOLDOWN_ENABLE", "1") or 1)
+            cooldown_enabled = bool(
+                int(
+                    os.getenv(
+                        "SMART_ENTRY_COOLDOWN_ENABLE",
+                        "1",
+                    )
+                    or 1
+                )
             )
         except Exception:
-            smart_entry_cooldown_enable = True
+            cooldown_enabled = True
 
-        if smart_entry_cooldown_enable:
-            try:
-                smart_entry_cooldown_sec = float(
-                    os.getenv("SMART_ENTRY_COOLDOWN_SEC", "90") or 90
+        if not cooldown_enabled:
+            return True
+
+        try:
+            cooldown_sec = float(
+                os.getenv(
+                    "SMART_ENTRY_COOLDOWN_SEC",
+                    "90",
                 )
-            except Exception:
-                smart_entry_cooldown_sec = 90.0
-
-            try:
-                smart_entry_same_side_only = bool(
-                    int(os.getenv("SMART_ENTRY_COOLDOWN_SAME_SIDE_ONLY", "1") or 1)
-                )
-            except Exception:
-                smart_entry_same_side_only = True
-
-            try:
-                smart_entry_min_score_bypass = float(
-                    os.getenv("SMART_ENTRY_COOLDOWN_BYPASS_SCORE", "0.72") or 0.72
-                )
-            except Exception:
-                smart_entry_min_score_bypass = 0.72
-
-            try:
-                cd_key = f"bot:smart_entry_cd:{sym_u}"
-                cd_raw = self.redis.get(cd_key) if getattr(self, "redis", None) is not None else None
-                cd_obj = json.loads(cd_raw) if cd_raw else {}
-                if not isinstance(cd_obj, dict):
-                    cd_obj = {}
-            except Exception:
-                cd_obj = {}
-
-            try:
-                last_ts = float(cd_obj.get("ts") or 0.0)
-            except Exception:
-                last_ts = 0.0
-
-            last_side = str(cd_obj.get("side") or "").strip().lower()
-            now_ts_cd = float(time.time())
-            cooldown_active = last_ts > 0 and (now_ts_cd - last_ts) < smart_entry_cooldown_sec
-
-            same_side_match = (not smart_entry_same_side_only) or (last_side == side_norm)
-            bypass_strong_signal = float(signal_score) >= float(smart_entry_min_score_bypass)
-
-            if cooldown_active and same_side_match and not bypass_strong_signal:
-                try:
-                    wait_left = float(smart_entry_cooldown_sec - (now_ts_cd - last_ts))
-                except Exception:
-                    wait_left = 0.0
-
-                try:
-                    if self.logger:
-                        self.logger.info(
-                            "[EXEC][OPEN-BLOCK][SMART-COOLDOWN] symbol=%s side=%s last_side=%s wait_left=%.1f cooldown=%.1f score=%.4f bypass=%.4f",
-                            sym_u,
-                            side_norm,
-                            last_side or "-",
-                            float(wait_left),
-                            float(smart_entry_cooldown_sec),
-                            float(signal_score),
-                            float(smart_entry_min_score_bypass),
-                        )
-                except Exception:
-                    pass
-                return
-
-        # ------------------------------
-        # ENTRY MARKET CONTEXT
-        # ------------------------------
-        try:
-            candle_progress = float(extra0.get("candle_progress") or 0.0)
-        except Exception:
-            candle_progress = 0.0
-
-        try:
-            candle_change = float(extra0.get("candle_change_pct") or 0.0)
-        except Exception:
-            candle_change = 0.0
-
-        try:
-            candle_open = float(extra0.get("candle_open") or extra0.get("open") or 0.0)
-        except Exception:
-            candle_open = 0.0
-
-        try:
-            candle_high = float(extra0.get("candle_high") or extra0.get("high") or 0.0)
-        except Exception:
-            candle_high = 0.0
-
-        try:
-            candle_low = float(extra0.get("candle_low") or extra0.get("low") or 0.0)
-        except Exception:
-            candle_low = 0.0
-
-        try:
-            candle_close = float(
-                extra0.get("candle_close") or extra0.get("close") or price or 0.0
+                or 90
             )
         except Exception:
-            candle_close = 0.0
+            cooldown_sec = 90.0
 
         try:
-            px_now = float(
-                price
-                or extra0.get("price")
-                or extra0.get("close")
-                or extra0.get("last_price")
-                or extra0.get("mark_price")
-                or extra0.get("mid_price")
+            same_side_only = bool(
+                int(
+                    os.getenv(
+                        "SMART_ENTRY_COOLDOWN_SAME_SIDE_ONLY",
+                        "1",
+                    )
+                    or 1
+                )
+            )
+        except Exception:
+            same_side_only = True
+
+        try:
+            bypass_score = float(
+                os.getenv(
+                    "SMART_ENTRY_COOLDOWN_BYPASS_SCORE",
+                    "0.72",
+                )
+                or 0.72
+            )
+        except Exception:
+            bypass_score = 0.72
+
+        try:
+            cooldown_key = (
+                f"bot:smart_entry_cd:{sym_u}"
+            )
+
+            cooldown_raw = (
+                self.redis.get(cooldown_key)
+                if getattr(self, "redis", None) is not None
+                else None
+            )
+
+            cooldown_obj = (
+                json.loads(cooldown_raw)
+                if cooldown_raw
+                else {}
+            )
+
+            if not isinstance(cooldown_obj, dict):
+                cooldown_obj = {}
+        except Exception:
+            cooldown_obj = {}
+
+        try:
+            last_ts = float(
+                cooldown_obj.get("ts")
                 or 0.0
             )
         except Exception:
-            px_now = 0.0
+            last_ts = 0.0
 
-        try:
-            atr_val = float(extra0.get("atr") or 0.0)
-        except Exception:
-            atr_val = 0.0
+        last_side = str(
+            cooldown_obj.get("side")
+            or ""
+        ).strip().lower()
 
-        try:
-            ema7 = float(extra0.get("ema7") or extra0.get("ema_fast") or 0.0)
-        except Exception:
-            ema7 = 0.0
+        now_ts = float(time.time())
 
-        try:
-            ema25 = float(extra0.get("ema25") or extra0.get("ema_slow") or 0.0)
-        except Exception:
-            ema25 = 0.0
+        cooldown_active = (
+            last_ts > 0
+            and (now_ts - last_ts) < cooldown_sec
+        )
 
-        try:
-            ema99 = float(extra0.get("ema99") or 0.0)
-        except Exception:
-            ema99 = 0.0
+        same_side_match = (
+            not same_side_only
+            or last_side == side_norm
+        )
 
-        try:
-            recent_high = float(extra0.get("recent_high") or 0.0)
-        except Exception:
-            recent_high = 0.0
+        bypass_strong_signal = (
+            float(signal_score)
+            >= float(bypass_score)
+        )
 
-        try:
-            recent_low = float(extra0.get("recent_low") or 0.0)
-        except Exception:
-            recent_low = 0.0
+        if (
+            cooldown_active
+            and same_side_match
+            and not bypass_strong_signal
+        ):
+            try:
+                wait_left = float(
+                    cooldown_sec
+                    - (now_ts - last_ts)
+                )
+            except Exception:
+                wait_left = 0.0
 
-        try:
-            whale_dir_now = str(extra0.get("whale_dir") or "").strip().lower()
-        except Exception:
-            whale_dir_now = ""
-
-        try:
-            whale_score_now = float(extra0.get("whale_score") or 0.0)
-        except Exception:
-            whale_score_now = 0.0
-        # ------------------------------
-        # ENV FLAGS / THRESHOLDS
-        # ------------------------------
-        late_candle_block = str(
-            os.getenv("OPEN_BLOCK_LATE_CANDLE", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        pump_chase_block = str(
-            os.getenv("OPEN_BLOCK_PUMP_CHASE", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        absorption_block = str(
-            os.getenv("OPEN_BLOCK_LIQUIDITY_ABSORPTION", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        whale_oppose_block = str(
-            os.getenv("OPEN_BLOCK_WHALE_OPPOSITE", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        ema_distance_block = str(
-            os.getenv("OPEN_BLOCK_EMA_DISTANCE", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        require_ema_trend = str(
-            os.getenv("OPEN_REQUIRE_EMA_TREND", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        fake_break_block = str(
-            os.getenv("OPEN_BLOCK_FAKE_BREAKOUT_KILLER", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        whale_momentum_block = str(
-            os.getenv("OPEN_BLOCK_WHALE_MOMENTUM", "1")
-        ).strip().lower() in ("1", "true", "yes", "on")
-
-        try:
-            late_candle_max = float(
-                os.getenv("OPEN_MAX_CANDLE_PROGRESS", "0.45") or 0.45
-            )
-        except Exception:
-            late_candle_max = 0.45
-
-        try:
-            pump_max = float(os.getenv("OPEN_MAX_CANDLE_CHANGE", "0.0055") or 0.0055)
-        except Exception:
-            pump_max = 0.0055
-
-        try:
-            wick_ratio_thr = float(
-                os.getenv("OPEN_ABSORPTION_WICK_RATIO", "0.45") or 0.45
-            )
-        except Exception:
-            wick_ratio_thr = 0.45
-
-        try:
-            body_ratio_max = float(
-                os.getenv("OPEN_ABSORPTION_BODY_RATIO_MAX", "0.35") or 0.35
-            )
-        except Exception:
-            body_ratio_max = 0.35
-
-        try:
-            whale_oppose_min = float(
-                os.getenv("OPEN_WHALE_OPPOSE_BLOCK_MIN_SCORE", "0.12") or 0.12
-            )
-        except Exception:
-            whale_oppose_min = 0.12
-
-        try:
-            pump_factor = float(os.getenv("PUMP_CHASE_ATR_FACTOR", "0.95") or 0.95)
-        except Exception:
-            pump_factor = 0.95
-
-        try:
-            ema_distance_max = float(
-                os.getenv("OPEN_EMA_DISTANCE_MAX_PCT", "0.0012") or 0.0012
-            )
-        except Exception:
-            ema_distance_max = 0.0012
-
-        try:
-            chase_entry_pct = float(os.getenv("CHASE_ENTRY_PCT", "0.0015") or 0.0015)
-        except Exception:
-            chase_entry_pct = 0.0015
-
-        try:
-            ema_extension_pct = float(os.getenv("EMA_EXTENSION_PCT", "0.0012") or 0.0012)
-        except Exception:
-            ema_extension_pct = 0.0012
-
-        try:
-            fake_wick_thr = float(
-                os.getenv("OPEN_FAKE_BREAKOUT_WICK_RATIO", "0.50") or 0.50
-            )
-        except Exception:
-            fake_wick_thr = 0.50
-
-        try:
-            fake_body_max = float(
-                os.getenv("OPEN_FAKE_BREAKOUT_BODY_RATIO_MAX", "0.30") or 0.30
-            )
-        except Exception:
-            fake_body_max = 0.30
-
-        try:
-            whale_momentum_min = float(
-                os.getenv("OPEN_WHALE_MOMENTUM_MIN_SCORE", "0.18") or 0.18
-            )
-        except Exception:
-            whale_momentum_min = 0.18
-
-        # ------------------------------
-        # LATE CANDLE FILTER
-        # ------------------------------
-        if late_candle_block and candle_progress > late_candle_max:
             try:
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][OPEN-BLOCK][LATE-CANDLE] symbol=%s side=%s progress=%.3f max=%.3f",
+                        "[EXEC][OPEN-BLOCK][SMART-COOLDOWN] "
+                        "symbol=%s side=%s last_side=%s "
+                        "wait_left=%.1f cooldown=%.1f "
+                        "score=%.4f bypass=%.4f",
+                        sym_u,
+                        side_norm,
+                        last_side or "-",
+                        float(wait_left),
+                        float(cooldown_sec),
+                        float(signal_score),
+                        float(bypass_score),
+                    )
+            except Exception:
+                pass
+
+            return False
+
+        return True
+
+    def _resolve_long_entry_market_context(
+        self,
+        *,
+        price: float,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """Long entry filtreleri için ortak piyasa bağlamını çözer."""
+        extra0 = extra if isinstance(extra, dict) else {}
+
+        def as_float(*values: Any) -> float:
+            try:
+                for value in values:
+                    if value is not None:
+                        return float(value)
+            except Exception:
+                pass
+            return 0.0
+
+        candle_progress = as_float(
+            extra0.get("candle_progress")
+        )
+        candle_change = as_float(
+            extra0.get("candle_change_pct")
+        )
+        candle_open = as_float(
+            extra0.get("candle_open"),
+            extra0.get("open"),
+        )
+        candle_high = as_float(
+            extra0.get("candle_high"),
+            extra0.get("high"),
+        )
+        candle_low = as_float(
+            extra0.get("candle_low"),
+            extra0.get("low"),
+        )
+        candle_close = as_float(
+            extra0.get("candle_close"),
+            extra0.get("close"),
+            price,
+        )
+        px_now = as_float(
+            price,
+            extra0.get("price"),
+            extra0.get("close"),
+            extra0.get("last_price"),
+            extra0.get("mark_price"),
+            extra0.get("mid_price"),
+        )
+        atr_val = as_float(
+            extra0.get("atr")
+        )
+        ema7 = as_float(
+            extra0.get("ema7"),
+            extra0.get("ema_fast"),
+        )
+        ema25 = as_float(
+            extra0.get("ema25"),
+            extra0.get("ema_slow"),
+        )
+        ema99 = as_float(
+            extra0.get("ema99")
+        )
+        recent_high = as_float(
+            extra0.get("recent_high")
+        )
+        recent_low = as_float(
+            extra0.get("recent_low")
+        )
+
+        try:
+            whale_dir_now = str(
+                extra0.get("whale_dir")
+                or ""
+            ).strip().lower()
+        except Exception:
+            whale_dir_now = ""
+
+        whale_score_now = as_float(
+            extra0.get("whale_score")
+        )
+
+        return {
+            "candle_progress": candle_progress,
+            "candle_change": candle_change,
+            "candle_open": candle_open,
+            "candle_high": candle_high,
+            "candle_low": candle_low,
+            "candle_close": candle_close,
+            "px_now": px_now,
+            "atr_val": atr_val,
+            "ema7": ema7,
+            "ema25": ema25,
+            "ema99": ema99,
+            "recent_high": recent_high,
+            "recent_low": recent_low,
+            "whale_dir_now": whale_dir_now,
+            "whale_score_now": whale_score_now,
+        }
+
+    def _resolve_long_entry_filter_config(
+        self,
+    ) -> Dict[str, Any]:
+        """Long entry filtrelerinin env ayarlarını çözer."""
+
+        def env_bool(name: str, default: str) -> bool:
+            return str(
+                os.getenv(name, default)
+            ).strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
+            )
+
+        def env_float(
+            name: str,
+            default: float,
+        ) -> float:
+            try:
+                return float(
+                    os.getenv(name, str(default))
+                    or default
+                )
+            except Exception:
+                return float(default)
+
+        return {
+            "late_candle_block": env_bool(
+                "OPEN_BLOCK_LATE_CANDLE",
+                "1",
+            ),
+            "pump_chase_block": env_bool(
+                "OPEN_BLOCK_PUMP_CHASE",
+                "1",
+            ),
+            "absorption_block": env_bool(
+                "OPEN_BLOCK_LIQUIDITY_ABSORPTION",
+                "1",
+            ),
+            "whale_oppose_block": env_bool(
+                "OPEN_BLOCK_WHALE_OPPOSITE",
+                "1",
+            ),
+            "ema_distance_block": env_bool(
+                "OPEN_BLOCK_EMA_DISTANCE",
+                "1",
+            ),
+            "require_ema_trend": env_bool(
+                "OPEN_REQUIRE_EMA_TREND",
+                "1",
+            ),
+            "fake_break_block": env_bool(
+                "OPEN_BLOCK_FAKE_BREAKOUT_KILLER",
+                "1",
+            ),
+            "whale_momentum_block": env_bool(
+                "OPEN_BLOCK_WHALE_MOMENTUM",
+                "1",
+            ),
+            "late_candle_max": env_float(
+                "OPEN_MAX_CANDLE_PROGRESS",
+                0.45,
+            ),
+            "pump_max": env_float(
+                "OPEN_MAX_CANDLE_CHANGE",
+                0.0055,
+            ),
+            "wick_ratio_thr": env_float(
+                "OPEN_ABSORPTION_WICK_RATIO",
+                0.45,
+            ),
+            "body_ratio_max": env_float(
+                "OPEN_ABSORPTION_BODY_RATIO_MAX",
+                0.35,
+            ),
+            "whale_oppose_min": env_float(
+                "OPEN_WHALE_OPPOSE_BLOCK_MIN_SCORE",
+                0.12,
+            ),
+            "pump_factor": env_float(
+                "PUMP_CHASE_ATR_FACTOR",
+                0.95,
+            ),
+            "ema_distance_max": env_float(
+                "OPEN_EMA_DISTANCE_MAX_PCT",
+                0.0012,
+            ),
+            "chase_entry_pct": env_float(
+                "CHASE_ENTRY_PCT",
+                0.0015,
+            ),
+            "ema_extension_pct": env_float(
+                "EMA_EXTENSION_PCT",
+                0.0012,
+            ),
+            "fake_wick_thr": env_float(
+                "OPEN_FAKE_BREAKOUT_WICK_RATIO",
+                0.50,
+            ),
+            "fake_body_max": env_float(
+                "OPEN_FAKE_BREAKOUT_BODY_RATIO_MAX",
+                0.30,
+            ),
+            "whale_momentum_min": env_float(
+                "OPEN_WHALE_MOMENTUM_MIN_SCORE",
+                0.18,
+            ),
+        }
+
+    def _evaluate_long_primary_entry_filters(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        candle_progress: float,
+        candle_change: float,
+        candle_open: float,
+        candle_close: float,
+        atr_val: float,
+        whale_dir: str,
+        whale_score: float,
+        config: Dict[str, Any],
+    ) -> bool:
+        """İlk long candidate filtre grubunu değerlendirir."""
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        whale_dir_now = str(whale_dir or "").strip().lower()
+        config0 = config if isinstance(config, dict) else {}
+
+        late_candle_block = bool(
+            config0.get("late_candle_block")
+        )
+        pump_chase_block = bool(
+            config0.get("pump_chase_block")
+        )
+        whale_oppose_block = bool(
+            config0.get("whale_oppose_block")
+        )
+
+        late_candle_max = float(
+            config0.get("late_candle_max") or 0.45
+        )
+        pump_max = float(
+            config0.get("pump_max") or 0.0055
+        )
+        whale_oppose_min = float(
+            config0.get("whale_oppose_min") or 0.12
+        )
+        pump_factor = float(
+            config0.get("pump_factor") or 0.95
+        )
+
+        if (
+            late_candle_block
+            and candle_progress > late_candle_max
+        ):
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN-BLOCK][LATE-CANDLE] "
+                        "symbol=%s side=%s progress=%.3f max=%.3f",
                         sym_u,
                         side_norm,
                         float(candle_progress),
@@ -11002,735 +11740,1158 @@ class TradeExecutor:
                     )
             except Exception:
                 pass
-            return
 
-        # ------------------------------
-        # CANDLE CHANGE PUMP-CHASE FILTER
-        # ------------------------------
-        if pump_chase_block and side_norm == "long" and candle_change > pump_max:
-            try:
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][OPEN-BLOCK][PUMP-CHASE] symbol=%s side=%s change=%.4f max=%.4f",
-                        sym_u,
-                        side_norm,
-                        float(candle_change),
-                        float(pump_max),
-                    )
-            except Exception:
-                pass
-            return
+            return False
 
-        if pump_chase_block and side_norm == "short" and candle_change < -pump_max:
-            try:
-                if self.logger:
-                    self.logger.info(
-                        "[EXEC][OPEN-BLOCK][PUMP-CHASE] symbol=%s side=%s change=%.4f max=%.4f",
-                        sym_u,
-                        side_norm,
-                        float(candle_change),
-                        float(pump_max),
-                    )
-            except Exception:
-                pass
-            return
-
-        # ------------------------------
-        # WHALE OPPOSITE FILTER
-        # ------------------------------
         if (
-            whale_oppose_block
+            pump_chase_block
             and side_norm == "long"
-            and whale_dir_now == "short"
-            and whale_score_now >= whale_oppose_min
+            and candle_change > pump_max
         ):
             try:
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][OPEN-BLOCK] whale opposite long veto | symbol=%s side=%s whale_dir=%s whale_score=%.4f min_score=%.4f",
+                        "[EXEC][OPEN-BLOCK][PUMP-CHASE] "
+                        "symbol=%s side=%s change=%.4f max=%.4f",
+                        sym_u,
+                        side_norm,
+                        float(candle_change),
+                        float(pump_max),
+                    )
+            except Exception:
+                pass
+
+            return False
+
+        if (
+            pump_chase_block
+            and side_norm == "short"
+            and candle_change < -pump_max
+        ):
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN-BLOCK][PUMP-CHASE] "
+                        "symbol=%s side=%s change=%.4f max=%.4f",
+                        sym_u,
+                        side_norm,
+                        float(candle_change),
+                        float(pump_max),
+                    )
+            except Exception:
+                pass
+
+            return False
+
+        if (
+            whale_oppose_block
+            and side_norm == "long"
+            and whale_dir_now == "short"
+            and whale_score >= whale_oppose_min
+        ):
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN-BLOCK] whale opposite long veto | "
+                        "symbol=%s side=%s whale_dir=%s "
+                        "whale_score=%.4f min_score=%.4f",
                         sym_u,
                         side_norm,
                         whale_dir_now,
-                        float(whale_score_now),
+                        float(whale_score),
                         float(whale_oppose_min),
                     )
             except Exception:
                 pass
-            return
+
+            return False
 
         if (
             whale_oppose_block
             and side_norm == "short"
             and whale_dir_now == "long"
-            and whale_score_now >= whale_oppose_min
+            and whale_score >= whale_oppose_min
         ):
             try:
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][OPEN-BLOCK] whale opposite short veto | symbol=%s side=%s whale_dir=%s whale_score=%.4f min_score=%.4f",
+                        "[EXEC][OPEN-BLOCK] whale opposite short veto | "
+                        "symbol=%s side=%s whale_dir=%s "
+                        "whale_score=%.4f min_score=%.4f",
                         sym_u,
                         side_norm,
                         whale_dir_now,
-                        float(whale_score_now),
+                        float(whale_score),
                         float(whale_oppose_min),
                     )
             except Exception:
                 pass
-            return
 
-        # ------------------------------
-        # ATR PUMP-CHASE FILTER
-        # ------------------------------
-        if atr_val > 0 and candle_open > 0 and candle_close > 0:
+            return False
+
+        if (
+            atr_val > 0
+            and candle_open > 0
+            and candle_close > 0
+        ):
             try:
-                move = abs(float(candle_close) - float(candle_open))
+                move = abs(
+                    float(candle_close)
+                    - float(candle_open)
+                )
+
                 if move > atr_val * pump_factor:
                     if self.logger:
                         self.logger.info(
-                            "[EXEC][OPEN-BLOCK][ATR-PUMP-CHASE] symbol=%s move=%.6f atr=%.6f factor=%.3f",
+                            "[EXEC][OPEN-BLOCK][ATR-PUMP-CHASE] "
+                            "symbol=%s move=%.6f atr=%.6f factor=%.3f",
                             sym_u,
                             float(move),
                             float(atr_val),
                             float(pump_factor),
                         )
-                    return
+
+                    return False
             except Exception:
                 pass
 
-        # ------------------------------
-        # EARLY MOMENTUM ENTRY (SCALP)
-        # ------------------------------
+        return True
+
+    def _evaluate_long_early_momentum_gate(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """
+        Erken 1m momentum giriş kapısını değerlendirir.
+
+        True:
+            Veri yoktur veya erken momentum yeterlidir.
+
+        False:
+            Mumun çok erken bölümünde momentum oluşmadığı için
+            candidate engellenmelidir.
+        """
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
         try:
-            candle_progress = float(extra0.get("candle_progress_1m") or 0.0)
+            candle_progress = float(
+                extra0.get("candle_progress_1m")
+                or 0.0
+            )
         except Exception:
             candle_progress = 0.0
 
         try:
-            close_jump_pct = float(extra0.get("close_jump_pct") or 0.0)
+            close_jump_pct = float(
+                extra0.get("close_jump_pct")
+                or 0.0
+            )
         except Exception:
             close_jump_pct = 0.0
 
         try:
-            range_1m = float(extra0.get("range_1m") or 0.0)
+            range_1m = float(
+                extra0.get("range_1m")
+                or 0.0
+            )
         except Exception:
             range_1m = 0.0
 
         try:
-            avg_range_1m = float(extra0.get("avg_range_1m") or 0.0)
-        except Exception:
-            avg_range_1m = 0.0
-
-
-        # ------------------------------------------------
-        # veri yoksa EARLY GATE çalışmasın
-        # ------------------------------------------------
-        early_gate_has_data = (
-            candle_progress > 0.0
-            and (close_jump_pct > 0.0 or range_1m > 0.0 or avg_range_1m > 0.0)
-        )
-
-        if early_gate_has_data:
-
-            early_momentum = False
-
-            # mumun ilk %20'si
-            if candle_progress < 0.20:
-
-                # küçük momentum
-                if close_jump_pct > 0.0006:
-                    early_momentum = True
-
-                # normalden büyük mum
-                if avg_range_1m > 0 and range_1m > avg_range_1m * 1.4:
-                    early_momentum = True
-
-
-            # erken momentum yoksa scalp erken giriş engelle
-            if candle_progress < 0.12 and not early_momentum:
-
-                try:
-                    if self.logger:
-                        self.logger.info(
-                            "[EXEC][OPEN-BLOCK][EARLY-GATE] symbol=%s side=%s candle_progress_1m=%.4f close_jump_pct=%.6f range_1m=%.6f avg_range_1m=%.6f",
-                            sym_u,
-                            side_norm,
-                            float(candle_progress),
-                            float(close_jump_pct),
-                            float(range_1m),
-                            float(avg_range_1m),
-                        )
-                except Exception:
-                    pass
-
-                return
-
-        # ------------------------------
-        # MICRO PULLBACK ENTRY (SCALP)
-        # ------------------------------
-        try:
-            px_now_mp = float(
-                price
-                or extra0.get("price")
-                or extra0.get("close")
-                or extra0.get("last_price")
-                or extra0.get("mark_price")
-                or extra0.get("mid_price")
+            avg_range_1m = float(
+                extra0.get("avg_range_1m")
                 or 0.0
             )
         except Exception:
-            px_now_mp = 0.0
+            avg_range_1m = 0.0
 
-        try:
-            ema7_now_mp = float(extra0.get("ema7") or extra0.get("ema_fast") or 0.0)
-        except Exception:
-            ema7_now_mp = 0.0
+        early_gate_has_data = (
+            candle_progress > 0.0
+            and (
+                close_jump_pct > 0.0
+                or range_1m > 0.0
+                or avg_range_1m > 0.0
+            )
+        )
 
-        try:
-            ema25_now_mp = float(extra0.get("ema25") or extra0.get("ema_slow") or 0.0)
-        except Exception:
-            ema25_now_mp = 0.0
+        if not early_gate_has_data:
+            return True
 
-        try:
-            candle_progress_mp = float(extra0.get("candle_progress_1m") or 0.0)
-        except Exception:
-            candle_progress_mp = 0.0
+        early_momentum = False
 
-        try:
-            close_jump_pct_mp = float(extra0.get("close_jump_pct") or 0.0)
-        except Exception:
-            close_jump_pct_mp = 0.0
+        if candle_progress < 0.20:
+            if close_jump_pct > 0.0006:
+                early_momentum = True
 
-        try:
-            range_1m_mp = float(extra0.get("range_1m") or 0.0)
-        except Exception:
-            range_1m_mp = 0.0
+            if (
+                avg_range_1m > 0
+                and range_1m > avg_range_1m * 1.4
+            ):
+                early_momentum = True
 
-        try:
-            avg_range_1m_mp = float(extra0.get("avg_range_1m") or 0.0)
-        except Exception:
-            avg_range_1m_mp = 0.0
-
-        micro_pullback_block = False
-        micro_pullback_reason = ""
-
-        if px_now_mp > 0.0 and ema7_now_mp > 0.0 and ema25_now_mp > 0.0:
-            try:
-                dist_to_ema7 = abs(px_now_mp - ema7_now_mp) / max(abs(ema7_now_mp), 1e-12)
-            except Exception:
-                dist_to_ema7 = 0.0
-
-            try:
-                dist_to_ema25 = abs(px_now_mp - ema25_now_mp) / max(abs(ema25_now_mp), 1e-12)
-            except Exception:
-                dist_to_ema25 = 0.0
-
-            if side_norm == "long":
-                # Long için: fiyat çok kaçmışsa bekle, ema7/ema25 civarına çekilirse izin ver
-                if candle_progress_mp <= 0.55 and close_jump_pct_mp >= 0.0018 and dist_to_ema7 >= 0.0018:
-                    micro_pullback_block = True
-                    micro_pullback_reason = "wait_long_pullback"
-
-                if micro_pullback_block and px_now_mp <= ema7_now_mp * 1.0012:
-                    micro_pullback_block = False
-                    micro_pullback_reason = ""
-
-            elif side_norm == "short":
-                # Short için: fiyat çok kaçmışsa bekle, ema7/ema25 civarına çekilirse izin ver
-                if candle_progress_mp <= 0.55 and close_jump_pct_mp >= 0.0018 and dist_to_ema7 >= 0.0018:
-                    micro_pullback_block = True
-                    micro_pullback_reason = "wait_short_pullback"
-
-                if micro_pullback_block and px_now_mp >= ema7_now_mp * 0.9988:
-                    micro_pullback_block = False
-                    micro_pullback_reason = ""
-
-            # Mum aşırı genişlemişse, pullback bekle
-            if not micro_pullback_block and avg_range_1m_mp > 0.0 and range_1m_mp >= avg_range_1m_mp * 1.8:
-                if candle_progress_mp <= 0.60:
-                    micro_pullback_block = True
-                    micro_pullback_reason = "range_expanded_wait_pullback"
-
-        if micro_pullback_block:
+        if (
+            candle_progress < 0.12
+            and not early_momentum
+        ):
             try:
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][OPEN-BLOCK][MICRO-PULLBACK] symbol=%s side=%s reason=%s px=%.6f ema7=%.6f ema25=%.6f candle_progress_1m=%.4f close_jump_pct=%.6f range_1m=%.6f avg_range_1m=%.6f",
+                        "[EXEC][OPEN-BLOCK][EARLY-GATE] "
+                        "symbol=%s side=%s "
+                        "candle_progress_1m=%.4f "
+                        "close_jump_pct=%.6f "
+                        "range_1m=%.6f avg_range_1m=%.6f",
                         sym_u,
                         side_norm,
-                        micro_pullback_reason,
-                        float(px_now_mp),
-                        float(ema7_now_mp),
-                        float(ema25_now_mp),
-                        float(candle_progress_mp),
-                        float(close_jump_pct_mp),
-                        float(range_1m_mp),
-                        float(avg_range_1m_mp),
+                        float(candle_progress),
+                        float(close_jump_pct),
+                        float(range_1m),
+                        float(avg_range_1m),
                     )
             except Exception:
                 pass
-            return
 
-        # ------------------------------
-        # FAKE BREAKOUT / WICK TRAP FILTER
-        # ------------------------------
+            return False
+
+        return True
+
+    def _evaluate_long_micro_pullback_gate(
+        self, *, symbol: str, side: str,
+        price: float, extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """Micro pullback bekleme kapısını değerlendirir."""
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
+        def num(*values: Any) -> float:
+            try:
+                for value in values:
+                    if value is not None:
+                        return float(value)
+            except Exception:
+                pass
+            return 0.0
+
+        px_now = num(
+            price, extra0.get("price"), extra0.get("close"),
+            extra0.get("last_price"), extra0.get("mark_price"),
+            extra0.get("mid_price"),
+        )
+        ema7 = num(extra0.get("ema7"), extra0.get("ema_fast"))
+        ema25 = num(extra0.get("ema25"), extra0.get("ema_slow"))
+        progress = num(extra0.get("candle_progress_1m"))
+        jump = num(extra0.get("close_jump_pct"))
+        range_1m = num(extra0.get("range_1m"))
+        avg_range = num(extra0.get("avg_range_1m"))
+
+        blocked = False
+        reason = ""
+
+        if px_now > 0.0 and ema7 > 0.0 and ema25 > 0.0:
+            dist7 = abs(px_now - ema7) / max(abs(ema7), 1e-12)
+
+            if side_norm == "long":
+                if progress <= 0.55 and jump >= 0.0018 and dist7 >= 0.0018:
+                    blocked = True
+                    reason = "wait_long_pullback"
+                if blocked and px_now <= ema7 * 1.0012:
+                    blocked = False
+                    reason = ""
+
+            elif side_norm == "short":
+                if progress <= 0.55 and jump >= 0.0018 and dist7 >= 0.0018:
+                    blocked = True
+                    reason = "wait_short_pullback"
+                if blocked and px_now >= ema7 * 0.9988:
+                    blocked = False
+                    reason = ""
+
+            if (
+                not blocked
+                and avg_range > 0.0
+                and range_1m >= avg_range * 1.8
+                and progress <= 0.60
+            ):
+                blocked = True
+                reason = "range_expanded_wait_pullback"
+
+        if blocked:
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN-BLOCK][MICRO-PULLBACK] "
+                        "symbol=%s side=%s reason=%s px=%.6f "
+                        "ema7=%.6f ema25=%.6f candle_progress_1m=%.4f "
+                        "close_jump_pct=%.6f range_1m=%.6f avg_range_1m=%.6f",
+                        sym_u, side_norm, reason, px_now, ema7, ema25,
+                        progress, jump, range_1m, avg_range,
+                    )
+            except Exception:
+                pass
+            return False
+
+        return True
+
+    def _evaluate_long_wick_trap_gate(
+        self, *, symbol: str, side: str,
+        price: float, extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """1m wick trap filtresini değerlendirir."""
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
+        enabled = str(
+            os.getenv("WICK_TRAP_FILTER_ENABLE", "1")
+        ).strip().lower() in ("1", "true", "yes", "on")
+
+        if not enabled:
+            return True
+
         try:
-            wick_filter_enable = str(
-                os.getenv("WICK_TRAP_FILTER_ENABLE", "1")
-            ).strip().lower() in ("1", "true", "yes", "on")
+            open_1m = float(
+                extra0.get("open_1m")
+                or extra0.get("candle_open_1m")
+                or extra0.get("open")
+                or 0.0
+            )
+            high_1m = float(
+                extra0.get("high_1m")
+                or extra0.get("candle_high_1m")
+                or extra0.get("high")
+                or 0.0
+            )
+            low_1m = float(
+                extra0.get("low_1m")
+                or extra0.get("candle_low_1m")
+                or extra0.get("low")
+                or 0.0
+            )
+            close_1m = float(
+                extra0.get("close_1m")
+                or extra0.get("candle_close_1m")
+                or extra0.get("close")
+                or price
+                or 0.0
+            )
+        except Exception:
+            return True
 
-            if wick_filter_enable:
-                try:
-                    open_1m = float(extra0.get("open_1m") or extra0.get("candle_open_1m") or extra0.get("open") or 0.0)
-                    high_1m = float(extra0.get("high_1m") or extra0.get("candle_high_1m") or extra0.get("high") or 0.0)
-                    low_1m = float(extra0.get("low_1m") or extra0.get("candle_low_1m") or extra0.get("low") or 0.0)
-                    close_1m = float(extra0.get("close_1m") or extra0.get("candle_close_1m") or extra0.get("close") or price or 0.0)
-                except Exception:
-                    open_1m = high_1m = low_1m = close_1m = 0.0
+        try:
+            max_upper = float(
+                os.getenv("WICK_TRAP_MAX_UPPER_WICK_LONG", "0.48")
+            )
+        except Exception:
+            max_upper = 0.48
 
-                try:
-                    max_upper_wick_long = float(os.getenv("WICK_TRAP_MAX_UPPER_WICK_LONG", "0.48"))
-                except Exception:
-                    max_upper_wick_long = 0.48
+        try:
+            max_lower = float(
+                os.getenv("WICK_TRAP_MAX_LOWER_WICK_SHORT", "0.48")
+            )
+        except Exception:
+            max_lower = 0.48
 
-                try:
-                    max_lower_wick_short = float(os.getenv("WICK_TRAP_MAX_LOWER_WICK_SHORT", "0.48"))
-                except Exception:
-                    max_lower_wick_short = 0.48
+        candle_range = max(high_1m - low_1m, 0.0)
+        if candle_range <= 0.0:
+            return True
 
-                candle_range = max(float(high_1m) - float(low_1m), 0.0)
+        body_high = max(open_1m, close_1m)
+        body_low = min(open_1m, close_1m)
 
-                if candle_range > 0:
-                    body_high = max(open_1m, close_1m)
-                    body_low = min(open_1m, close_1m)
+        upper_ratio = max(
+            high_1m - body_high, 0.0
+        ) / candle_range
+        lower_ratio = max(
+            body_low - low_1m, 0.0
+        ) / candle_range
 
-                    upper_wick = max(high_1m - body_high, 0.0)
-                    lower_wick = max(body_low - low_1m, 0.0)
+        blocked = (
+            side_norm == "long" and upper_ratio >= max_upper
+        ) or (
+            side_norm == "short" and lower_ratio >= max_lower
+        )
 
-                    upper_ratio = upper_wick / candle_range
-                    lower_ratio = lower_wick / candle_range
+        if not blocked:
+            return True
 
-                    if side_norm == "long" and upper_ratio >= max_upper_wick_long:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][WICK-TRAP] long upper_wick | symbol=%s upper_ratio=%.4f lower_ratio=%.4f open=%.6f high=%.6f low=%.6f close=%.6f",
-                                sym_u,
-                                float(upper_ratio),
-                                float(lower_ratio),
-                                float(open_1m),
-                                float(high_1m),
-                                float(low_1m),
-                                float(close_1m),
-                            )
-                        return
-
-                    if side_norm == "short" and lower_ratio >= max_lower_wick_short:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][WICK-TRAP] short lower_wick | symbol=%s upper_ratio=%.4f lower_ratio=%.4f open=%.6f high=%.6f low=%.6f close=%.6f",
-                                sym_u,
-                                float(upper_ratio),
-                                float(lower_ratio),
-                                float(open_1m),
-                                float(high_1m),
-                                float(low_1m),
-                                float(close_1m),
-                            )
-                        return
-
+        try:
+            if self.logger:
+                self.logger.info(
+                    "[EXEC][OPEN-BLOCK][WICK-TRAP] "
+                    "%s | symbol=%s upper_ratio=%.4f "
+                    "lower_ratio=%.4f open=%.6f high=%.6f "
+                    "low=%.6f close=%.6f",
+                    "long upper_wick"
+                    if side_norm == "long"
+                    else "short lower_wick",
+                    sym_u, upper_ratio, lower_ratio,
+                    open_1m, high_1m, low_1m, close_1m,
+                )
         except Exception:
             pass
 
-        # ------------------------------
-        # SPIKE REJECTION FILTER
-        # pump/dump sonrası tepe/dip girişini keser
-        # ------------------------------
+        return False
+
+    def _evaluate_long_spike_rejection_gate(
+        self, *, symbol: str, side: str,
+        price: float, extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """1m spike rejection filtresini değerlendirir."""
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
+        enabled = str(
+            os.getenv("SPIKE_REJECTION_ENABLE", "1")
+        ).strip().lower() in ("1", "true", "yes", "on")
+
+        if not enabled:
+            return True
+
         try:
-            spike_filter_enable = str(
-                os.getenv("SPIKE_REJECTION_ENABLE", "1")
+            if not extra0.get("kline"):
+                k1 = self._backfill_ema_metrics(
+                    symbol=sym_u, interval="1m", extra=extra0,
+                )
+                if isinstance(k1, dict):
+                    extra0["kline"] = k1
+                    extra0["open_1m"] = k1.get("open")
+                    extra0["high_1m"] = k1.get("high")
+                    extra0["low_1m"] = k1.get("low")
+                    extra0["close_1m"] = k1.get("close")
+                    extra0["prev_close_1m"] = k1.get("prev_close")
+        except Exception:
+            pass
+
+        try:
+            k = extra0.get("kline") or {}
+            if not isinstance(k, dict):
+                k = {}
+
+            o = float(extra0.get("open_1m") or k.get("open") or price or 0.0)
+            h = float(extra0.get("high_1m") or k.get("high") or price or 0.0)
+            l = float(extra0.get("low_1m") or k.get("low") or price or 0.0)
+            c = float(extra0.get("close_1m") or k.get("close") or price or 0.0)
+            prev = float(
+                extra0.get("prev_close_1m")
+                or extra0.get("prev_close")
+                or k.get("prev_close")
+                or o or c or 0.0
+            )
+        except Exception:
+            return True
+
+        try:
+            max_long = float(
+                os.getenv("SPIKE_MAX_PCT_LONG",
+                          os.getenv("SPIKE_MAX_PCT", "0.0030")) or 0.0030
+            )
+            max_short = float(
+                os.getenv("SPIKE_MAX_PCT_SHORT",
+                          os.getenv("SPIKE_MAX_PCT", "0.0030")) or 0.0030
+            )
+            retrace = float(
+                os.getenv("SPIKE_REJECT_RETRACE_PCT", "0.35") or 0.35
+            )
+        except Exception:
+            max_long = max_short = 0.0030
+            retrace = 0.35
+
+        rng = max(h - l, 0.0)
+        if prev <= 0.0 or rng <= 0.0:
+            return True
+
+        up = max(h - prev, 0.0) / max(abs(prev), 1e-12)
+        down = max(prev - l, 0.0) / max(abs(prev), 1e-12)
+        top = max(h - c, 0.0) / max(rng, 1e-12)
+        bottom = max(c - l, 0.0) / max(rng, 1e-12)
+
+        blocked = (
+            side_norm == "long" and up >= max_long and top >= retrace
+        ) or (
+            side_norm == "short" and down >= max_short and bottom >= retrace
+        )
+
+        if blocked:
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][OPEN-BLOCK][SPIKE-REJECT] "
+                        "symbol=%s side=%s up=%.5f down=%.5f "
+                        "top=%.4f bottom=%.4f",
+                        sym_u, side_norm, up, down, top, bottom,
+                    )
+            except Exception:
+                pass
+            return False
+
+        return True
+
+    def _evaluate_long_5m_trend_gate(
+        self, *, symbol: str, side: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> bool:
+        """Opsiyonel 5m yön filtresini değerlendirir."""
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
+        try:
+            enabled = str(
+                os.getenv("EMA_TREND_USE_5M_FILTER", "0")
             ).strip().lower() in ("1", "true", "yes", "on")
 
-            if spike_filter_enable:
-                try:
-                    if not extra0.get("kline"):
-                        k1 = self._backfill_ema_metrics(
-                            symbol=sym_u,
-                            interval="1m",
-                            extra=extra0,
-                        )
-                        if isinstance(k1, dict):
-                            extra0["kline"] = k1
-                            extra0["open_1m"] = k1.get("open")
-                            extra0["high_1m"] = k1.get("high")
-                            extra0["low_1m"] = k1.get("low")
-                            extra0["close_1m"] = k1.get("close")
-                            extra0["prev_close_1m"] = k1.get("prev_close")
-                except Exception:
-                    pass
-                try:
-                    kline = extra0.get("kline") or {}
-                    if not isinstance(kline, dict):
-                        kline = {}
+            only_dir = str(
+                os.getenv("EMA_TREND_5M_ONLY_DIRECTION", "0")
+            ).strip().lower() in ("1", "true", "yes", "on")
 
-                    open_1m = float(
-                        extra0.get("open_1m")
-                        or extra0.get("candle_open_1m")
-                        or kline.get("open")
-                        or extra0.get("open")
-                        or price
-                        or 0.0
-                    )
+            if not enabled:
+                return True
 
-                    high_1m = float(
-                        extra0.get("high_1m")
-                        or extra0.get("candle_high_1m")
-                        or kline.get("high")
-                        or extra0.get("high")
-                        or price
-                        or 0.0
-                    )
+            try:
+                ema = self._backfill_ema_metrics(
+                    symbol=sym_u,
+                    interval="3m",
+                    extra=extra0,
+                ) or {}
+            except Exception:
+                ema = {}
 
-                    low_1m = float(
-                        extra0.get("low_1m")
-                        or extra0.get("candle_low_1m")
-                        or kline.get("low")
-                        or extra0.get("low")
-                        or price
-                        or 0.0
-                    )
+            try:
+                e7 = float(ema.get("ema7") or ema.get("ema_fast") or 0.0)
+                e25 = float(ema.get("ema25") or ema.get("ema_slow") or 0.0)
+                e99 = float(ema.get("ema99") or 0.0)
+            except Exception:
+                e7 = e25 = e99 = 0.0
 
-                    close_1m = float(
-                        extra0.get("close_1m")
-                        or extra0.get("candle_close_1m")
-                        or kline.get("close")
-                        or extra0.get("close")
-                        or price
-                        or 0.0
-                    )
+            trend = "flat"
+            if e7 > 0 and e25 > 0:
+                if e7 > e25:
+                    trend = "long"
+                elif e7 < e25:
+                    trend = "short"
 
-                    prev_close_1m = float(
-                        extra0.get("prev_close_1m")
-                        or extra0.get("prev_close")
-                        or kline.get("prev_close")
-                        or open_1m
-                        or close_1m
-                        or 0.0
-                    )
+            opposed = (
+                side_norm == "long" and trend == "short"
+            ) or (
+                side_norm == "short" and trend == "long"
+            )
 
-                except Exception:
-                    open_1m = high_1m = low_1m = close_1m = prev_close_1m = 0.0
-
+            if opposed and not only_dir:
                 try:
                     if self.logger:
                         self.logger.info(
-                            "[DEBUG][SPIKE-DATA] symbol=%s side=%s open=%.6f high=%.6f low=%.6f close=%.6f prev=%.6f",
-                            sym_u,
-                            side_norm,
-                            float(open_1m),
-                            float(high_1m),
-                            float(low_1m),
-                            float(close_1m),
-                            float(prev_close_1m),
+                            "[EXEC][OPEN-BLOCK][5M-TREND] "
+                            "%s blocked | symbol=%s "
+                            "ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                            side_norm, sym_u, e7, e25, e99,
+                        )
+                except Exception:
+                    pass
+                return False
+
+            if opposed and only_dir:
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][5M-TREND][WARN] "
+                            "%s vs 5m %s | symbol=%s "
+                            "ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                            side_norm, trend, sym_u, e7, e25, e99,
                         )
                 except Exception:
                     pass
 
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][5M-TREND] allow | "
+                        "symbol=%s side=%s trend_5m=%s only_dir=%s "
+                        "ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
+                        sym_u, side_norm, trend, str(only_dir),
+                        e7, e25, e99,
+                    )
+            except Exception:
+                pass
+
+            return True
+
+        except Exception as exc:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][5M-TREND][WARN] "
+                        "symbol=%s side=%s err=%s",
+                        sym_u, side_norm, str(exc)[:200],
+                    )
+            except Exception:
+                pass
+            return True
+
+    def _evaluate_long_early_entry_gate(
+        self, *, symbol, side, candle_progress,
+        close_jump, range_1m, avg_range_1m,
+        ema7_now, ema7_prev,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        enabled = str(os.getenv("EARLY_ENTRY_GATE_ENABLE", "1")).strip().lower() in ("1","true","yes","on")
+        if not enabled:
+            return True
+        try:
+            max_progress = float(os.getenv("EARLY_ENTRY_MAX_CANDLE_PROGRESS", "0.45") or 0.45)
+            max_jump = float(os.getenv("EARLY_ENTRY_MAX_CLOSE_JUMP_PCT", "0.0018") or 0.0018)
+            max_range = float(os.getenv("EARLY_ENTRY_MAX_RANGE_VS_AVG", "1.60") or 1.60)
+            min_slope = float(os.getenv("EARLY_ENTRY_MIN_EMA_SLOPE_PCT", "0.00010") or 0.00010)
+        except Exception:
+            max_progress, max_jump, max_range, min_slope = 0.45, 0.0018, 1.60, 0.00010
+        cp = float(candle_progress or 0.0)
+        cj = float(close_jump or 0.0)
+        rr = float(range_1m or 0.0)
+        ar = float(avg_range_1m or 0.0)
+        e7n = float(ema7_now or 0.0)
+        e7p = float(ema7_prev or 0.0)
+        if not (cp > 0.0 and (rr > 0.0 or ar > 0.0 or cj > 0.0)):
+            return True
+        slope = ((e7n - e7p) / max(abs(e7p), 1e-12)) if e7p > 0.0 and e7n > 0.0 else 0.0
+        reason = ""
+        if cp >= max_progress:
+            reason = "late_progress"
+        elif cj > 0.0 and cj >= max_jump:
+            reason = "late_close_jump"
+        elif ar > 0.0 and rr > 0.0 and rr >= ar * max_range:
+            reason = "late_range_expansion"
+        elif e7p > 0.0 and e7n > 0.0:
+            if side_norm == "long" and slope <= min_slope:
+                reason = "weak_early_long"
+            elif side_norm == "short" and (-slope) <= min_slope:
+                reason = "weak_early_short"
+        if not reason:
+            return True
+        try:
+            if self.logger:
+                self.logger.info("[EXEC][OPEN-BLOCK][EARLY-GATE] symbol=%s side=%s reason=%s candle_progress_1m=%.4f close_jump_pct=%.6f range_1m=%.6f avg_range_1m=%.6f ema7_now_1m=%.6f ema7_prev_1m=%.6f", sym_u, side_norm, reason, cp, cj, rr, ar, e7n, e7p)
+        except Exception:
+            pass
+        return False
+
+    def _evaluate_long_execution_risk_gate(
+        self, *, symbol, side, price, interval, extra=None,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+        cur = self._get_effective_position(sym_u)
+        cur_side = str(cur.get("side")).lower().strip() if isinstance(cur, dict) else None
+        if cur_side in ("long", "short"):
+            if cur_side == side_norm:
                 try:
-                    spike_max_pct_long = float(os.getenv("SPIKE_MAX_PCT_LONG", os.getenv("SPIKE_MAX_PCT", "0.0030")) or 0.0030)
+                    current_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
+                    if current_price is not None and current_price > 0:
+                        self._check_sl_tp_trailing(symbol=sym_u, price=float(current_price), interval=str(interval or ""))
                 except Exception:
-                    spike_max_pct_long = 0.0030
-
+                    pass
                 try:
-                    spike_max_pct_short = float(os.getenv("SPIKE_MAX_PCT_SHORT", os.getenv("SPIKE_MAX_PCT", "0.0030")) or 0.0030)
+                    if self.logger:
+                        self.logger.info("[EXEC][OPEN-BLOCK] symbol already open same-side | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
                 except Exception:
-                    spike_max_pct_short = 0.0030
-
+                    pass
+                return False
+            if not self.reverse_close_enabled:
                 try:
-                    reject_retrace_pct = float(os.getenv("SPIKE_REJECT_RETRACE_PCT", "0.35") or 0.35)
+                    if self.logger:
+                        self.logger.info("[EXEC][REVERSE] reverse close disabled | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
                 except Exception:
-                    reject_retrace_pct = 0.35
+                    pass
+                return False
+            try:
+                if self.logger:
+                    self.logger.info("[EXEC][REVERSE] opposite-side signal -> closing current position | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
+                self.close_position(symbol=sym_u, price=price, reason=f"reverse_to_{side_norm}", interval=str(interval or ""), intent_id=str(extra0.get("intent_id") or ""))
+            except Exception:
+                try:
+                    if self.logger:
+                        self.logger.exception("[EXEC][REVERSE] close-before-open failed | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
+                except Exception:
+                    pass
+                return False
+        try:
+            open_count = int(self._count_open_positions_for_side(side_norm))
+            if open_count >= int(self.max_open_positions):
+                if self.logger:
+                    self.logger.info("[EXEC][OPEN-BLOCK] max_open_positions reached | symbol=%s side=%s side_open_count=%s limit=%s", sym_u, side_norm, open_count, int(self.max_open_positions))
+                return False
+        except Exception:
+            pass
+        return True
 
-                candle_range = max(float(high_1m) - float(low_1m), 0.0)
 
-                if prev_close_1m > 0.0 and candle_range > 0.0:
-                    up_spike_pct = max(float(high_1m) - float(prev_close_1m), 0.0) / max(abs(float(prev_close_1m)), 1e-12)
-                    down_spike_pct = max(float(prev_close_1m) - float(low_1m), 0.0) / max(abs(float(prev_close_1m)), 1e-12)
+    def _resolve_long_intent_price(self, *, symbol, price, extra=None):
+        sym_u = str(symbol or "").upper().strip()
+        extra0 = extra if isinstance(extra, dict) else {}
+        intent_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
+        if intent_price is None or intent_price <= 0:
+            try:
+                if self.logger:
+                    self.logger.info("[EXEC][PRICECACHE-FALLBACK][TRY] symbol=%s", sym_u)
+                intent_price = self._get_cached_mid_price(sym_u)
+                if self.logger:
+                    self.logger.info("[EXEC][PRICECACHE-FALLBACK][RESULT] symbol=%s price=%s", sym_u, intent_price)
+                if intent_price and intent_price > 0 and self.logger:
+                    self.logger.info("[EXEC][PRICECACHE-FALLBACK] symbol=%s price=%.8f", sym_u, float(intent_price))
+            except Exception as e:
+                if self.logger:
+                    self.logger.warning("[EXEC][PRICECACHE-FALLBACK][ERR] symbol=%s err=%s", sym_u, e)
+                intent_price = None
+        return intent_price
 
-                    # long için: yukarı spike oldu ama close tepeye yakın kapanamadıysa trap
-                    top_retrace = max(float(high_1m) - float(close_1m), 0.0) / max(float(candle_range), 1e-12)
 
-                    # short için: aşağı spike oldu ama close dibe yakın kapanamadıysa trap
-                    bottom_retrace = max(float(close_1m) - float(low_1m), 0.0) / max(float(candle_range), 1e-12)
+    def _resolve_long_order_price(self, *, symbol, price, intent_price, extra=None):
+        sym_u = str(symbol or "").upper().strip()
+        extra0 = extra if isinstance(extra, dict) else {}
+        order_price = None
+        try:
+            client = getattr(self, "client", None)
+            fn = getattr(client, "futures_mark_price", None) if client is not None else None
+            if callable(fn):
+                mp = fn(symbol=sym_u)
+                if isinstance(mp, dict):
+                    order_price = self._clip_float(mp.get("markPrice"), None)
+        except Exception:
+            order_price = None
+        if order_price is None or order_price <= 0:
+            try:
+                order_price = self._get_cached_mid_price(sym_u)
+            except Exception:
+                order_price = None
+        if order_price is None or order_price <= 0:
+            order_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
+        if order_price is None or order_price <= 0:
+            order_price = float(intent_price)
+        return order_price
 
-                    if side_norm == "long" and up_spike_pct >= spike_max_pct_long and top_retrace >= reject_retrace_pct:
+
+    async def _execute_long_order_pipeline(
+        self, *, symbol, side, order_price, intent_price,
+        signal_score, decision_interval, entry_interval,
+        exit_interval, lifecycle_interval, extra=None,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        extra0 = extra if isinstance(extra, dict) else {}
+        try:
+            self._check_sl_tp_trailing(
+                symbol=sym_u,
+                price=float(order_price),
+                interval=str(exit_interval or "1m"),
+            )
+        except Exception:
+            pass
+        await asyncio.to_thread(
+            self.open_position_from_signal,
+            sym_u,
+            str(side or "").strip().lower(),
+            str(entry_interval or "1m"),
+            dict(
+                extra0,
+                price=float(intent_price),
+                signal_score=float(signal_score),
+                decision_interval=str(decision_interval),
+                entry_interval=str(entry_interval),
+                exit_interval=str(exit_interval),
+                lifecycle_interval=str(lifecycle_interval),
+            ),
+        )
+
+
+    def _dispatch_long_candidate_decision(self, decision):
+        """Candidate kararını standart LONG EntryDecision formatına çevirir."""
+        normalized = self._normalize_long_entry_decision(decision)
+        action = str(normalized.get("action") or "block").strip().lower()
+        if action not in ("open", "block", "pending", "close", "hold"):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="invalid_candidate_action",
+                retryable=False,
+            )
+        return normalized
+
+
+    def _store_long_pending_candidate(
+        self, *, symbol, side, decision, interval="1m", extra=None,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        interval_norm = str(interval or "1m").strip().lower()
+        normalized = self._normalize_long_entry_decision(decision)
+        created_ts = float(time.time())
+        item = {
+            "symbol": sym_u,
+            "side": side_norm,
+            "decision": normalized,
+            "created_ts": created_ts,
+            "interval": interval_norm,
+            "candle_id": int(self._get_long_candle_id(interval_norm, created_ts)),
+            "extra": dict(extra) if isinstance(extra, dict) else {},
+        }
+        self.long_pending_by_symbol[sym_u] = item
+        return item
+
+
+
+    def _clear_long_pending_candidate(self, *, symbol):
+        sym_u = str(symbol or "").upper().strip()
+        if not sym_u:
+            return None
+        return self.long_pending_by_symbol.pop(sym_u, None)
+
+
+    def _get_long_pending_candidate(self, *, symbol):
+        sym_u = str(symbol or "").upper().strip()
+        if not sym_u:
+            return None
+        item = self.long_pending_by_symbol.get(sym_u)
+        return item if isinstance(item, dict) else None
+
+
+    @staticmethod
+    def _interval_to_seconds(interval: str) -> int:
+        value = str(interval or "").strip().lower()
+        if not value:
+            return 60
+        unit = value[-1]
+        try:
+            amount = int(value[:-1])
+        except (TypeError, ValueError):
+            return 60
+        if amount <= 0:
+            return 60
+        multipliers = {
+            "s": 1,
+            "m": 60,
+            "h": 60 * 60,
+            "d": 24 * 60 * 60,
+            "w": 7 * 24 * 60 * 60,
+        }
+        multiplier = multipliers.get(unit)
+        if multiplier is None:
+            return 60
+        return int(amount * multiplier)
+
+
+    def _get_long_candle_id(
+        self, interval: str, timestamp=None,
+    ) -> int:
+        interval_sec = self._interval_to_seconds(interval)
+        ts = float(time.time() if timestamp is None else timestamp)
+        return int(ts // interval_sec)
+
+
+    def _classify_long_pending_window(
+        self, *, created_candle_id, current_candle_id,
+        progress, max_pending_progress,
+    ):
+        created_id = int(created_candle_id or 0)
+        current_id = int(current_candle_id or 0)
+        if created_id <= 0 or current_id <= 0:
+            return "invalid", 0
+        candle_age = current_id - created_id
+        if candle_age <= 0:
+            return "wait_same_candle", candle_age
+        if candle_age > 1:
+            return "expired", candle_age
+        try:
+            min_progress = float(
+                os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08") or 0.08
+            )
+        except Exception:
+            min_progress = 0.08
+        if float(progress) < min_progress or float(progress) > float(max_pending_progress):
+            return "wait_window", candle_age
+        return "ready", candle_age
+
+
+    def _evaluate_long_remaining_entry_filters(
+        self, *, symbol, side, signal_score, extra,
+        px_now, ema7, recent_high, recent_low,
+        candle_open, candle_high, candle_low, candle_close,
+        ema_distance_block, ema_distance_max,
+        ema_extension_pct, chase_entry_pct,
+        absorption_block, wick_ratio_thr, body_ratio_max,
+        whale_momentum_block, whale_dir_now, whale_score_now,
+        whale_momentum_min, require_whale_for_open,
+        whale_score, whale_open_min_score, whale_dir,
+        strict_whale_alignment,
+    ) -> bool:
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+        # REMAINING FILTERS / OPEN FLOW
+        # ------------------------------
+        if ema_distance_block and px_now > 0 and ema7 > 0:
+            try:
+                ema_dist_pct = abs(float(px_now) - float(ema7)) / max(abs(float(ema7)), 1e-12)
+                if ema_dist_pct > ema_distance_max:
+                    if self.logger:
+                        self.logger.info("[EXEC][OPEN-BLOCK][EMA-DIST] symbol=%s side=%s price=%.6f ema7=%.6f dist_pct=%.4f max=%.4f", sym_u, side_norm, float(px_now), float(ema7), float(ema_dist_pct), float(ema_distance_max))
+                    return False
+            except Exception:
+                pass
+
+        if px_now > 0 and side_norm == "long":
+            if ema7 > 0:
+                ext_long = (float(px_now) - float(ema7)) / max(float(ema7), 1e-12)
+                if ext_long > ema_extension_pct:
+                    try:
                         if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][SPIKE-REJECT] long top trap | symbol=%s up_spike_pct=%.5f top_retrace=%.4f open=%.6f high=%.6f low=%.6f close=%.6f prev=%.6f",
-                                sym_u,
-                                float(up_spike_pct),
-                                float(top_retrace),
-                                float(open_1m),
-                                float(high_1m),
-                                float(low_1m),
-                                float(close_1m),
-                                float(prev_close_1m),
-                            )
-                        return
-
-                    if side_norm == "short" and down_spike_pct >= spike_max_pct_short and bottom_retrace >= reject_retrace_pct:
+                            self.logger.info("[EXEC][OPEN-BLOCK] late long entry | symbol=%s price=%.6f ema_fast=%.6f ext=%.6f thr=%.6f", sym_u, float(px_now), float(ema7), float(ext_long), float(ema_extension_pct))
+                    except Exception:
+                        pass
+                    return False
+            if recent_high > 0:
+                dist_to_high = (float(recent_high) - float(px_now)) / max(float(px_now), 1e-12)
+                if 0.0 <= dist_to_high < chase_entry_pct:
+                    try:
                         if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][SPIKE-REJECT] short bottom trap | symbol=%s down_spike_pct=%.5f bottom_retrace=%.4f open=%.6f high=%.6f low=%.6f close=%.6f prev=%.6f",
-                                sym_u,
-                                float(down_spike_pct),
-                                float(bottom_retrace),
-                                float(open_1m),
-                                float(high_1m),
-                                float(low_1m),
-                                float(close_1m),
-                                float(prev_close_1m),
-                            )
-                        return
+                            self.logger.info("[EXEC][OPEN-BLOCK] chasing top | symbol=%s price=%.6f recent_high=%.6f dist=%.6f thr=%.6f", sym_u, float(px_now), float(recent_high), float(dist_to_high), float(chase_entry_pct))
+                    except Exception:
+                        pass
+                    return False
 
+        if px_now > 0 and side_norm == "short":
+            if ema7 > 0:
+                ext_short = (float(ema7) - float(px_now)) / max(float(ema7), 1e-12)
+                if ext_short > ema_extension_pct:
+                    try:
+                        if self.logger:
+                            self.logger.info("[EXEC][OPEN-BLOCK] late short entry | symbol=%s price=%.6f ema_fast=%.6f ext=%.6f thr=%.6f", sym_u, float(px_now), float(ema7), float(ext_short), float(ema_extension_pct))
+                    except Exception:
+                        pass
+                    return False
+            if recent_low > 0:
+                dist_to_low = (float(px_now) - float(recent_low)) / max(float(px_now), 1e-12)
+                if 0.0 <= dist_to_low < chase_entry_pct:
+                    try:
+                        if self.logger:
+                            self.logger.info("[EXEC][OPEN-BLOCK] chasing bottom | symbol=%s price=%.6f recent_low=%.6f dist=%.6f thr=%.6f", sym_u, float(px_now), float(recent_low), float(dist_to_low), float(chase_entry_pct))
+                    except Exception:
+                        pass
+                    return False
+
+        if absorption_block and candle_high > 0 and candle_low > 0 and candle_close > 0 and candle_open > 0:
+            full_range = max(candle_high - candle_low, 1e-12)
+            body_size = abs(candle_close - candle_open)
+            upper_wick = candle_high - max(candle_open, candle_close)
+            lower_wick = min(candle_open, candle_close) - candle_low
+            upper_wick_ratio_ctx = upper_wick / full_range
+            lower_wick_ratio_ctx = lower_wick / full_range
+            body_ratio = body_size / full_range
+            if side_norm == "long" and upper_wick_ratio_ctx >= wick_ratio_thr and body_ratio <= body_ratio_max:
+                try:
+                    if self.logger:
+                        self.logger.info("[EXEC][OPEN-BLOCK][ABSORPTION] symbol=%s side=%s upper_wick_ratio=%.4f body_ratio=%.4f wick_thr=%.4f body_max=%.4f", sym_u, side_norm, float(upper_wick_ratio_ctx), float(body_ratio), float(wick_ratio_thr), float(body_ratio_max))
+                except Exception:
+                    pass
+                return False
+            if side_norm == "short" and lower_wick_ratio_ctx >= wick_ratio_thr and body_ratio <= body_ratio_max:
+                try:
+                    if self.logger:
+                        self.logger.info("[EXEC][OPEN-BLOCK][ABSORPTION] symbol=%s side=%s lower_wick_ratio=%.4f body_ratio=%.4f wick_thr=%.4f body_max=%.4f", sym_u, side_norm, float(lower_wick_ratio_ctx), float(body_ratio), float(wick_ratio_thr), float(body_ratio_max))
+                except Exception:
+                    pass
+                return False
+
+        try:
+            ok_pullback, pullback_reason = self._micro_pullback_entry_ok(side=side_norm, price_now=float(px_now or 0.0), extra=extra0)
+            if not ok_pullback:
+                try:
+                    if self.logger:
+                        self.logger.info("[EXEC][OPEN-BLOCK] micro pullback reject | symbol=%s side=%s reason=%s score=%.4f", sym_u, side_norm, str(pullback_reason), float(signal_score))
+                except Exception:
+                    pass
+                return False
         except Exception:
             pass
 
-        # ------------------------------
-        # EMA TREND FILTER (RELAXED MTF)
-        # ------------------------------
-        if require_ema_trend:
+        if whale_momentum_block and whale_dir_now in ("long", "short") and whale_score_now < whale_momentum_min:
             try:
-                ema_1m = self._backfill_ema_metrics(symbol=sym_u, interval="1m", extra=extra0)
+                if self.logger:
+                    self.logger.info("[EXEC][OPEN-BLOCK][WHALE-MOMENTUM] symbol=%s side=%s whale_dir=%s whale_score=%.4f min_score=%.4f", sym_u, side_norm, whale_dir_now, float(whale_score_now), float(whale_momentum_min))
             except Exception:
-                ema_1m = {}
+                pass
+            return False
 
-            try:
-                ema_3m = self._backfill_ema_metrics(symbol=sym_u, interval="3m", extra=extra0)
-            except Exception:
-                ema_3m = {}
-
-            try:
-                ema7_1m = float(ema_1m.get("ema7") or ema_1m.get("ema_fast") or 0.0)
-            except Exception:
-                ema7_1m = 0.0
-            try:
-                ema25_1m = float(ema_1m.get("ema25") or ema_1m.get("ema_slow") or 0.0)
-            except Exception:
-                ema25_1m = 0.0
-            try:
-                ema99_1m = float(ema_1m.get("ema99") or 0.0)
-            except Exception:
-                ema99_1m = 0.0
-
-            try:
-                ema7_3m = float(ema_3m.get("ema7") or ema_3m.get("ema_fast") or 0.0)
-            except Exception:
-                ema7_3m = 0.0
-            try:
-                ema25_3m = float(ema_3m.get("ema25") or ema_3m.get("ema_slow") or 0.0)
-            except Exception:
-                ema25_3m = 0.0
-            try:
-                ema99_3m = float(ema_3m.get("ema99") or 0.0)
-            except Exception:
-                ema99_3m = 0.0
-
-            trend_px_now = 0.0
-            try:
-                trend_px_now = float(
-                    price
-                    or extra0.get("price")
-                    or extra0.get("close")
-                    or extra0.get("last_price")
-                    or extra0.get("mark_price")
-                    or extra0.get("mid_price")
-                    or 0.0
-                )
-            except Exception:
-                trend_px_now = 0.0
-
-            # flat market toleransı
-            flat_market = False
-            try:
-                flat_thr = float(os.getenv("EMA_TREND_FLAT_TOL_PCT", "0.0015") or 0.0015)
-            except Exception:
-                flat_thr = 0.0015
-
-            try:
-                dist_1m = abs(float(ema7_1m) - float(ema25_1m)) / max(abs(float(ema25_1m)), 1e-12) if ema25_1m > 0 else 0.0
-            except Exception:
-                dist_1m = 0.0
-
-            try:
-                dist_3m = abs(float(ema7_3m) - float(ema25_3m)) / max(abs(float(ema25_3m)), 1e-12) if ema25_3m > 0 else 0.0
-            except Exception:
-                dist_3m = 0.0
-
-            if max(dist_1m, dist_3m) <= float(flat_thr):
-                flat_market = True
-
-            trend_long_score = 0
-            trend_short_score = 0
-
-            # 1m trend
-            if ema7_1m > 0 and ema25_1m > 0 and ema7_1m >= ema25_1m:
-                trend_long_score += 1
-            if ema7_1m > 0 and ema25_1m > 0 and ema7_1m <= ema25_1m:
-                trend_short_score += 1
-
-            # 3m trend
-            if ema7_3m > 0 and ema25_3m > 0 and ema7_3m >= ema25_3m:
-                trend_long_score += 1
-            if ema7_3m > 0 and ema25_3m > 0 and ema7_3m <= ema25_3m:
-                trend_short_score += 1
-
-            # 3m major trend confirm
-            if ema25_3m > 0 and ema99_3m > 0:
-                if ema25_3m >= ema99_3m:
-                    trend_long_score += 1
-                if ema25_3m <= ema99_3m:
-                    trend_short_score += 1
-
-            # price location confirm
-            if trend_px_now > 0:
-                if ema7_1m > 0 and trend_px_now >= ema7_1m:
-                    trend_long_score += 1
-                if ema25_1m > 0 and trend_px_now <= ema25_1m:
-                    trend_short_score += 1
-
-            # relaxed rules:
-            # long için 4 kriterden en az 2
-            # short için 4 kriterden en az 2
-            long_ok = flat_market or (trend_long_score >= 2)
-            short_ok = flat_market or (trend_short_score >= 2)
-
-            # =========================
-            # 5M TREND FILTER
-            # 5m sadece yön filtresi olsun, entry timing'i yavaşlatmasın
-            # EMA_TREND_5M_ONLY_DIRECTION=1 ise BLOCK yapmaz, sadece WARN basar
-            # =========================
-            try:
-                use_5m_filter = str(os.getenv("EMA_TREND_USE_5M_FILTER", "0")).strip().lower() in (
-                    "1", "true", "yes", "on"
-                )
-
-                only_dir_5m = str(os.getenv("EMA_TREND_5M_ONLY_DIRECTION", "0")).strip().lower() in (
-                    "1", "true", "yes", "on"
-                )
-
-                if use_5m_filter:
-                    try:
-                        ema_5m = self._backfill_ema_metrics(
-                            symbol=sym_u,
-                            interval="3m",
-                            extra=extra0,
-                        )
-                    except Exception:
-                        ema_5m = {}
-
-                    try:
-                        ema7_5m = float(ema_5m.get("ema7") or ema_5m.get("ema_fast") or 0.0)
-                    except Exception:
-                        ema7_5m = 0.0
-
-                    try:
-                        ema25_5m = float(ema_5m.get("ema25") or ema_5m.get("ema_slow") or 0.0)
-                    except Exception:
-                        ema25_5m = 0.0
-
-                    try:
-                        ema99_5m = float(ema_5m.get("ema99") or 0.0)
-                    except Exception:
-                        ema99_5m = 0.0
-
-                    trend_5m = "flat"
-                    if ema7_5m > 0 and ema25_5m > 0:
-                        if ema7_5m > ema25_5m:
-                            trend_5m = "long"
-                        elif ema7_5m < ema25_5m:
-                            trend_5m = "short"
-
-                    if side_norm == "long" and trend_5m == "short":
-                        if only_dir_5m:
-                            try:
-                                if self.logger:
-                                    self.logger.info(
-                                        "[EXEC][5M-TREND][WARN] long vs 5m short | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                        sym_u,
-                                        float(ema7_5m),
-                                        float(ema25_5m),
-                                        float(ema99_5m),
-                                    )
-                            except Exception:
-                                pass
-                        else:
-                            try:
-                                if self.logger:
-                                    self.logger.info(
-                                        "[EXEC][OPEN-BLOCK][5M-TREND] long blocked | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                        sym_u,
-                                        float(ema7_5m),
-                                        float(ema25_5m),
-                                        float(ema99_5m),
-                                    )
-                            except Exception:
-                                pass
-                            return
-
-                    if side_norm == "short" and trend_5m == "long":
-                        if only_dir_5m:
-                            try:
-                                if self.logger:
-                                    self.logger.info(
-                                        "[EXEC][5M-TREND][WARN] short vs 5m long | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                        sym_u,
-                                        float(ema7_5m),
-                                        float(ema25_5m),
-                                        float(ema99_5m),
-                                    )
-                            except Exception:
-                                pass
-                        else:
-                            try:
-                                if self.logger:
-                                    self.logger.info(
-                                        "[EXEC][OPEN-BLOCK][5M-TREND] short blocked | symbol=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                        sym_u,
-                                        float(ema7_5m),
-                                        float(ema25_5m),
-                                        float(ema99_5m),
-                                    )
-                            except Exception:
-                                pass
-                            return
-
-                    try:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][5M-TREND] allow | symbol=%s side=%s trend_5m=%s only_dir=%s ema7_5m=%.6f ema25_5m=%.6f ema99_5m=%.6f",
-                                sym_u,
-                                side_norm,
-                                str(trend_5m),
-                                str(only_dir_5m),
-                                float(ema7_5m),
-                                float(ema25_5m),
-                                float(ema99_5m),
-                            )
-                    except Exception:
-                        pass
-
-            except Exception as e:
+        try:
+            ok_vol, vol_reason = self._volume_spike_trigger_ok(side=side_norm, extra=extra0)
+            if not ok_vol:
                 try:
                     if self.logger:
-                        self.logger.warning(
-                            "[EXEC][5M-TREND][WARN] symbol=%s side=%s err=%s",
-                            sym_u,
-                            side_norm,
-                            str(e)[:200],
-                        )
+                        self.logger.info("[EXEC][OPEN-BLOCK] volume spike reject | symbol=%s side=%s reason=%s score=%.4f", sym_u, side_norm, str(vol_reason), float(signal_score))
                 except Exception:
                     pass
+                return False
+        except Exception:
+            pass
 
-        # ------------------------------
+        try:
+            fb2_block, fb2_reason = self._fake_breakout_filter_v2(side=side_norm, price_now=float(px_now or 0.0), extra=extra0)
+            if fb2_block:
+                try:
+                    if self.logger:
+                        self.logger.info("[EXEC][OPEN-BLOCK] fake breakout v2 | symbol=%s side=%s reason=%s score=%.4f", sym_u, side_norm, str(fb2_reason), float(signal_score))
+                except Exception:
+                    pass
+                return False
+        except Exception:
+            pass
+
+        if require_whale_for_open and float(whale_score) < float(whale_open_min_score):
+            try:
+                if self.logger:
+                    self.logger.info("[EXEC][OPEN-BLOCK] whale score too low | symbol=%s side=%s whale_score=%.4f min_whale=%.4f", sym_u, side_norm, float(whale_score), float(whale_open_min_score))
+            except Exception:
+                pass
+            return False
+        if require_whale_for_open and whale_dir not in ("long", "short"):
+            try:
+                if self.logger:
+                    self.logger.info("[EXEC][OPEN-BLOCK] whale required but missing direction | symbol=%s side=%s whale_dir=%s whale_score=%.4f", sym_u, side_norm, whale_dir, float(whale_score))
+            except Exception:
+                pass
+            return False
+        if strict_whale_alignment and whale_dir in ("long", "short") and whale_dir != side_norm:
+            try:
+                if self.logger:
+                    self.logger.info("[EXEC][OPEN-BLOCK] whale misaligned | symbol=%s side=%s whale_dir=%s whale_score=%.4f", sym_u, side_norm, whale_dir, float(whale_score))
+            except Exception:
+                pass
+            return False
+
+        return True
+
+
+    def _check_long_pending_window(
+        self, *, symbol, pending, current_candle_id,
+        progress, max_pending_progress,
+    ) -> bool:
+        sym_u = str(symbol or "").upper().strip()
+        created_candle_id = int(
+            pending.get("candle_id") or 0
+        ) if isinstance(pending, dict) else 0
+        window_state, candle_age = (
+            self._classify_long_pending_window(
+                created_candle_id=created_candle_id,
+                current_candle_id=current_candle_id,
+                progress=progress,
+                max_pending_progress=max_pending_progress,
+            )
+        )
+        if window_state == "invalid":
+            self._clear_long_pending_candidate(symbol=sym_u)
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][PENDING-CANCEL] symbol=%s reason=invalid_candle_id",
+                        sym_u,
+                    )
+            except Exception:
+                pass
+            return False
+        if window_state == "expired":
+            self._clear_long_pending_candidate(symbol=sym_u)
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][PENDING-EXPIRE] symbol=%s created_candle=%s current_candle=%s age=%s",
+                        sym_u,
+                        created_candle_id,
+                        current_candle_id,
+                        candle_age,
+                    )
+            except Exception:
+                pass
+            return False
+        return window_state == "ready"
+
+
+    def _evaluate_long_ema_trend_filter(
+        self, *, symbol, side, price, extra=None, require_ema_trend=True,
+    ) -> bool:
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+        if not require_ema_trend:
+            return True
+        try:
+            ema_1m = self._backfill_ema_metrics(symbol=sym_u, interval="1m", extra=extra0)
+        except Exception:
+            ema_1m = {}
+        try:
+            ema_3m = self._backfill_ema_metrics(symbol=sym_u, interval="3m", extra=extra0)
+        except Exception:
+            ema_3m = {}
+        try:
+            ema7_1m = float(ema_1m.get("ema7") or ema_1m.get("ema_fast") or 0.0)
+            ema25_1m = float(ema_1m.get("ema25") or ema_1m.get("ema_slow") or 0.0)
+            ema99_1m = float(ema_1m.get("ema99") or 0.0)
+            ema7_3m = float(ema_3m.get("ema7") or ema_3m.get("ema_fast") or 0.0)
+            ema25_3m = float(ema_3m.get("ema25") or ema_3m.get("ema_slow") or 0.0)
+            ema99_3m = float(ema_3m.get("ema99") or 0.0)
+        except Exception:
+            ema7_1m = ema25_1m = ema99_1m = 0.0
+            ema7_3m = ema25_3m = ema99_3m = 0.0
+        try:
+            trend_px_now = float(
+                price or extra0.get("price") or extra0.get("close") or
+                extra0.get("last_price") or extra0.get("mark_price") or
+                extra0.get("mid_price") or 0.0
+            )
+        except Exception:
+            trend_px_now = 0.0
+        try:
+            flat_thr = float(os.getenv("EMA_TREND_FLAT_TOL_PCT", "0.0015") or 0.0015)
+        except Exception:
+            flat_thr = 0.0015
+        try:
+            dist_1m = abs(ema7_1m - ema25_1m) / max(abs(ema25_1m), 1e-12) if ema25_1m > 0 else 0.0
+            dist_3m = abs(ema7_3m - ema25_3m) / max(abs(ema25_3m), 1e-12) if ema25_3m > 0 else 0.0
+        except Exception:
+            dist_1m = dist_3m = 0.0
+        flat_market = max(dist_1m, dist_3m) <= flat_thr
+        trend_long_score = 0
+        trend_short_score = 0
+        if ema7_1m > 0 and ema25_1m > 0:
+            trend_long_score += int(ema7_1m >= ema25_1m)
+            trend_short_score += int(ema7_1m <= ema25_1m)
+        if ema7_3m > 0 and ema25_3m > 0:
+            trend_long_score += int(ema7_3m >= ema25_3m)
+            trend_short_score += int(ema7_3m <= ema25_3m)
+        if ema25_3m > 0 and ema99_3m > 0:
+            trend_long_score += int(ema25_3m >= ema99_3m)
+            trend_short_score += int(ema25_3m <= ema99_3m)
+        if trend_px_now > 0:
+            trend_long_score += int(ema7_1m > 0 and trend_px_now >= ema7_1m)
+            trend_short_score += int(ema25_1m > 0 and trend_px_now <= ema25_1m)
+        long_ok = flat_market or trend_long_score >= 2
+        short_ok = flat_market or trend_short_score >= 2
+        _ = (long_ok, short_ok, ema99_1m)
+        return self._evaluate_long_5m_trend_gate(
+            symbol=sym_u, side=side_norm, extra=extra0,
+        )
+
+
+    def _evaluate_long_scalp_entry_boost(
+        self, *, symbol, side, extra=None,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
         # SCALP ENTRY BOOST FILTER
         # ------------------------------
         try:
@@ -11876,396 +13037,926 @@ class TradeExecutor:
                         )
                 except Exception:
                     pass
-                return
-
-        # ------------------------------
-        # EARLY ENTRY GATE / LATE MOVE PENALTY
-        # ------------------------------
-        try:
-            early_entry_gate_enable = str(
-                os.getenv("EARLY_ENTRY_GATE_ENABLE", "1")
-            ).strip().lower() in ("1", "true", "yes", "on")
-        except Exception:
-            early_entry_gate_enable = True
-
-        if early_entry_gate_enable:
-            try:
-                early_entry_max_progress = float(
-                    os.getenv("EARLY_ENTRY_MAX_CANDLE_PROGRESS", "0.45") or 0.45
+                return (
+                    False,
+                    float(candle_progress_1m),
+                    float(close_jump_pct),
+                    float(range_1m),
+                    float(avg_range_1m),
+                    float(ema7_now_1m),
+                    float(ema7_prev_1m),
                 )
-                early_entry_max_close_jump_pct = float(
-                    os.getenv("EARLY_ENTRY_MAX_CLOSE_JUMP_PCT", "0.0018") or 0.0018
-                )
-                early_entry_max_range_vs_avg = float(
-                    os.getenv("EARLY_ENTRY_MAX_RANGE_VS_AVG", "1.60") or 1.60
-                )
-                early_entry_min_ema_slope_pct = float(
-                    os.getenv("EARLY_ENTRY_MIN_EMA_SLOPE_PCT", "0.00010") or 0.00010
-                )
-            except Exception:
-                early_entry_max_progress = 0.45
-                early_entry_max_close_jump_pct = 0.0018
-                early_entry_max_range_vs_avg = 1.60
-                early_entry_min_ema_slope_pct = 0.00010
 
-            try:
-                cp_1m = float(candle_progress_1m or 0.0)
-            except Exception:
-                cp_1m = 0.0
+        return (
+            True,
+            float(candle_progress_1m),
+            float(close_jump_pct),
+            float(range_1m),
+            float(avg_range_1m),
+            float(ema7_now_1m),
+            float(ema7_prev_1m),
+        )
 
-            try:
-                cj_1m = float(close_jump_pct or 0.0)
-            except Exception:
-                cj_1m = 0.0
-
-            try:
-                r_1m = float(range_1m or 0.0)
-            except Exception:
-                r_1m = 0.0
-
-            try:
-                ar_1m = float(avg_range_1m or 0.0)
-            except Exception:
-                ar_1m = 0.0
-
-            try:
-                e7_now_1m = float(ema7_now_1m or 0.0)
-            except Exception:
-                e7_now_1m = 0.0
-
-            try:
-                e7_prev_1m = float(ema7_prev_1m or 0.0)
-            except Exception:
-                e7_prev_1m = 0.0
-
-            # Veri yoksa gate çalışmasın
-            early_gate_has_data = (
-                cp_1m > 0.0
-                and (r_1m > 0.0 or ar_1m > 0.0 or cj_1m > 0.0)
+    def _evaluate_long_candidate_pipeline(
+        self, *, symbol, side, price, signal_score,
+        open_min_score, extra=None,
+        require_whale_for_open=False,
+        whale_open_min_score=0.0,
+        whale_dir="", whale_score=0.0,
+        strict_whale_alignment=False,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+        entry_market_context = self._resolve_long_entry_market_context(
+            price=price,
+            extra=extra0,
+        )
+        entry_filter_config = self._resolve_long_entry_filter_config()
+        candle_progress = float(entry_market_context["candle_progress"])
+        candle_change = float(entry_market_context["candle_change"])
+        candle_open = float(entry_market_context["candle_open"])
+        candle_close = float(entry_market_context["candle_close"])
+        atr_val = float(entry_market_context["atr_val"])
+        whale_dir_now = str(entry_market_context["whale_dir_now"])
+        whale_score_now = float(entry_market_context["whale_score_now"])
+        if not self._evaluate_long_primary_entry_filters(
+            symbol=sym_u,
+            side=side_norm,
+            candle_progress=candle_progress,
+            candle_change=candle_change,
+            candle_open=candle_open,
+            candle_close=candle_close,
+            atr_val=atr_val,
+            whale_dir=whale_dir_now,
+            whale_score=whale_score_now,
+            config=entry_filter_config,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="primary_entry_filters_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
             )
 
-            if early_gate_has_data:
-                try:
-                    ema_slope_pct_gate = (
-                        (e7_now_1m - e7_prev_1m) / max(abs(e7_prev_1m), 1e-12)
-                        if e7_prev_1m > 0.0 and e7_now_1m > 0.0
-                        else 0.0
-                    )
-                except Exception:
-                    ema_slope_pct_gate = 0.0
+        if not self._evaluate_long_early_momentum_gate(
+            symbol=sym_u,
+            side=side_norm,
+            extra=extra0,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="early_momentum_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
 
-                late_gate_reason = ""
+        if not self._evaluate_long_micro_pullback_gate(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            extra=extra0,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="micro_pullback_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
 
-                if cp_1m >= early_entry_max_progress:
-                    late_gate_reason = "late_progress"
+        if not self._evaluate_long_wick_trap_gate(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            extra=extra0,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="wick_trap_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
 
-                if (
-                    not late_gate_reason
-                    and cj_1m > 0.0
-                    and cj_1m >= early_entry_max_close_jump_pct
-                ):
-                    late_gate_reason = "late_close_jump"
+        if not self._evaluate_long_spike_rejection_gate(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            extra=extra0,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="spike_rejection_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
 
-                if (
-                    not late_gate_reason
-                    and ar_1m > 0.0
-                    and r_1m > 0.0
-                    and r_1m >= ar_1m * early_entry_max_range_vs_avg
-                ):
-                    late_gate_reason = "late_range_expansion"
 
-                if not late_gate_reason and e7_prev_1m > 0.0 and e7_now_1m > 0.0:
-                    if side_norm == "long" and ema_slope_pct_gate <= early_entry_min_ema_slope_pct:
-                        late_gate_reason = "weak_early_long"
-                    elif side_norm == "short" and (-ema_slope_pct_gate) <= early_entry_min_ema_slope_pct:
-                        late_gate_reason = "weak_early_short"
+        require_ema_trend = bool(
+            entry_filter_config["require_ema_trend"]
+        )
+        if not self._evaluate_long_ema_trend_filter(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            extra=extra0,
+            require_ema_trend=require_ema_trend,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="ema_trend_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
 
-                if late_gate_reason:
-                    try:
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][OPEN-BLOCK][EARLY-GATE] symbol=%s side=%s reason=%s candle_progress_1m=%.4f close_jump_pct=%.6f range_1m=%.6f avg_range_1m=%.6f ema7_now_1m=%.6f ema7_prev_1m=%.6f",
-                                sym_u,
-                                side_norm,
-                                late_gate_reason,
-                                float(cp_1m),
-                                float(cj_1m),
-                                float(r_1m),
-                                float(ar_1m),
-                                float(e7_now_1m),
-                                float(e7_prev_1m),
-                            )
-                    except Exception:
-                        pass
-                    return
 
-        # ------------------------------
-        # REMAINING FILTERS / OPEN FLOW
-        # ------------------------------
-        if ema_distance_block and px_now > 0 and ema7 > 0:
+        (
+            scalp_boost_ok,
+            candle_progress_1m,
+            close_jump_pct,
+            range_1m,
+            avg_range_1m,
+            ema7_now_1m,
+            ema7_prev_1m,
+        ) = self._evaluate_long_scalp_entry_boost(
+            symbol=sym_u,
+            side=side_norm,
+            extra=extra0,
+        )
+        if not scalp_boost_ok:
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="scalp_boost_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
+
+        if not self._evaluate_long_early_entry_gate(
+            symbol=sym_u,
+            side=side_norm,
+            candle_progress=candle_progress_1m,
+            close_jump=close_jump_pct,
+            range_1m=range_1m,
+            avg_range_1m=avg_range_1m,
+            ema7_now=ema7_now_1m,
+            ema7_prev=ema7_prev_1m,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="early_entry_gate_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
+
+
+        px_now = float(entry_market_context["px_now"])
+        ema7 = float(entry_market_context["ema7"])
+        recent_high = float(entry_market_context["recent_high"])
+        recent_low = float(entry_market_context["recent_low"])
+        candle_high = float(entry_market_context["candle_high"])
+        candle_low = float(entry_market_context["candle_low"])
+
+        ema_distance_block = bool(entry_filter_config["ema_distance_block"])
+        absorption_block = bool(entry_filter_config["absorption_block"])
+        whale_momentum_block = bool(entry_filter_config["whale_momentum_block"])
+        ema_distance_max = float(entry_filter_config["ema_distance_max"])
+        ema_extension_pct = float(entry_filter_config["ema_extension_pct"])
+        chase_entry_pct = float(entry_filter_config["chase_entry_pct"])
+        wick_ratio_thr = float(entry_filter_config["wick_ratio_thr"])
+        body_ratio_max = float(entry_filter_config["body_ratio_max"])
+        whale_momentum_min = float(entry_filter_config["whale_momentum_min"])
+
+
+        if not self._evaluate_long_remaining_entry_filters(
+            symbol=sym_u,
+            side=side_norm,
+            signal_score=signal_score,
+            extra=extra0,
+            px_now=px_now,
+            ema7=ema7,
+            recent_high=recent_high,
+            recent_low=recent_low,
+            candle_open=candle_open,
+            candle_high=candle_high,
+            candle_low=candle_low,
+            candle_close=candle_close,
+            ema_distance_block=ema_distance_block,
+            ema_distance_max=ema_distance_max,
+            ema_extension_pct=ema_extension_pct,
+            chase_entry_pct=chase_entry_pct,
+            absorption_block=absorption_block,
+            wick_ratio_thr=wick_ratio_thr,
+            body_ratio_max=body_ratio_max,
+            whale_momentum_block=whale_momentum_block,
+            whale_dir_now=whale_dir_now,
+            whale_score_now=whale_score_now,
+            whale_momentum_min=whale_momentum_min,
+            require_whale_for_open=require_whale_for_open,
+            whale_score=whale_score,
+            whale_open_min_score=whale_open_min_score,
+            whale_dir=whale_dir,
+            strict_whale_alignment=strict_whale_alignment,
+        ):
+            return self._make_long_entry_decision(
+                allow=False,
+                action="block",
+                reason="remaining_entry_filters_blocked",
+                signal_score=signal_score,
+                required_score=open_min_score,
+                retryable=False,
+            )
+
+
+
+        return self._make_long_entry_decision(
+            allow=True,
+            action="open",
+            reason="candidate_filters_passed",
+            signal_score=signal_score,
+            required_score=open_min_score,
+            retryable=False,
+        )
+
+
+    def _handle_long_pending_candidate_result(
+        self, *, symbol, candidate,
+        signal_score, min_score,
+    ) -> bool:
+        sym_u = str(symbol or "").upper().strip()
+        normalized = self._normalize_long_entry_decision(candidate)
+        if normalized.get("allow", False):
+            return False
+        reason = str(
+            normalized.get("reason") or "candidate_block"
+        ).strip().lower()
+        retryable = bool(normalized.get("retryable", False))
+        if not retryable:
+            self._clear_long_pending_candidate(symbol=sym_u)
             try:
-                ema_dist_pct = abs(float(px_now) - float(ema7)) / max(abs(float(ema7)), 1e-12)
-                if ema_dist_pct > ema_distance_max:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK][EMA-DIST] symbol=%s side=%s price=%.6f ema7=%.6f dist_pct=%.4f max=%.4f", sym_u, side_norm, float(px_now), float(ema7), float(ema_dist_pct), float(ema_distance_max))
-                    return
-            except Exception:
-                pass
-
-        if px_now > 0 and side_norm == "long":
-            if ema7 > 0:
-                ext_long = (float(px_now) - float(ema7)) / max(float(ema7), 1e-12)
-                if ext_long > ema_extension_pct:
-                    try:
-                        if self.logger:
-                            self.logger.info("[EXEC][OPEN-BLOCK] late long entry | symbol=%s price=%.6f ema_fast=%.6f ext=%.6f thr=%.6f", sym_u, float(px_now), float(ema7), float(ext_long), float(ema_extension_pct))
-                    except Exception:
-                        pass
-                    return
-            if recent_high > 0:
-                dist_to_high = (float(recent_high) - float(px_now)) / max(float(px_now), 1e-12)
-                if 0.0 <= dist_to_high < chase_entry_pct:
-                    try:
-                        if self.logger:
-                            self.logger.info("[EXEC][OPEN-BLOCK] chasing top | symbol=%s price=%.6f recent_high=%.6f dist=%.6f thr=%.6f", sym_u, float(px_now), float(recent_high), float(dist_to_high), float(chase_entry_pct))
-                    except Exception:
-                        pass
-                    return
-
-        if px_now > 0 and side_norm == "short":
-            if ema7 > 0:
-                ext_short = (float(ema7) - float(px_now)) / max(float(ema7), 1e-12)
-                if ext_short > ema_extension_pct:
-                    try:
-                        if self.logger:
-                            self.logger.info("[EXEC][OPEN-BLOCK] late short entry | symbol=%s price=%.6f ema_fast=%.6f ext=%.6f thr=%.6f", sym_u, float(px_now), float(ema7), float(ext_short), float(ema_extension_pct))
-                    except Exception:
-                        pass
-                    return
-            if recent_low > 0:
-                dist_to_low = (float(px_now) - float(recent_low)) / max(float(px_now), 1e-12)
-                if 0.0 <= dist_to_low < chase_entry_pct:
-                    try:
-                        if self.logger:
-                            self.logger.info("[EXEC][OPEN-BLOCK] chasing bottom | symbol=%s price=%.6f recent_low=%.6f dist=%.6f thr=%.6f", sym_u, float(px_now), float(recent_low), float(dist_to_low), float(chase_entry_pct))
-                    except Exception:
-                        pass
-                    return
-
-        if absorption_block and candle_high > 0 and candle_low > 0 and candle_close > 0 and candle_open > 0:
-            full_range = max(candle_high - candle_low, 1e-12)
-            body_size = abs(candle_close - candle_open)
-            upper_wick = candle_high - max(candle_open, candle_close)
-            lower_wick = min(candle_open, candle_close) - candle_low
-            upper_wick_ratio_ctx = upper_wick / full_range
-            lower_wick_ratio_ctx = lower_wick / full_range
-            body_ratio = body_size / full_range
-            if side_norm == "long" and upper_wick_ratio_ctx >= wick_ratio_thr and body_ratio <= body_ratio_max:
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK][ABSORPTION] symbol=%s side=%s upper_wick_ratio=%.4f body_ratio=%.4f wick_thr=%.4f body_max=%.4f", sym_u, side_norm, float(upper_wick_ratio_ctx), float(body_ratio), float(wick_ratio_thr), float(body_ratio_max))
-                except Exception:
-                    pass
-                return
-            if side_norm == "short" and lower_wick_ratio_ctx >= wick_ratio_thr and body_ratio <= body_ratio_max:
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK][ABSORPTION] symbol=%s side=%s lower_wick_ratio=%.4f body_ratio=%.4f wick_thr=%.4f body_max=%.4f", sym_u, side_norm, float(lower_wick_ratio_ctx), float(body_ratio), float(wick_ratio_thr), float(body_ratio_max))
-                except Exception:
-                    pass
-                return
-
-        try:
-            ok_pullback, pullback_reason = self._micro_pullback_entry_ok(side=side_norm, price_now=float(px_now or 0.0), extra=extra0)
-            if not ok_pullback:
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK] micro pullback reject | symbol=%s side=%s reason=%s score=%.4f", sym_u, side_norm, str(pullback_reason), float(signal_score))
-                except Exception:
-                    pass
-                return
-        except Exception:
-            pass
-
-        if whale_momentum_block and whale_dir_now in ("long", "short") and whale_score_now < whale_momentum_min:
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][OPEN-BLOCK][WHALE-MOMENTUM] symbol=%s side=%s whale_dir=%s whale_score=%.4f min_score=%.4f", sym_u, side_norm, whale_dir_now, float(whale_score_now), float(whale_momentum_min))
-            except Exception:
-                pass
-            return
-
-        try:
-            ok_vol, vol_reason = self._volume_spike_trigger_ok(side=side_norm, extra=extra0)
-            if not ok_vol:
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK] volume spike reject | symbol=%s side=%s reason=%s score=%.4f", sym_u, side_norm, str(vol_reason), float(signal_score))
-                except Exception:
-                    pass
-                return
-        except Exception:
-            pass
-
-        try:
-            fb2_block, fb2_reason = self._fake_breakout_filter_v2(side=side_norm, price_now=float(px_now or 0.0), extra=extra0)
-            if fb2_block:
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK] fake breakout v2 | symbol=%s side=%s reason=%s score=%.4f", sym_u, side_norm, str(fb2_reason), float(signal_score))
-                except Exception:
-                    pass
-                return
-        except Exception:
-            pass
-
-        if require_whale_for_open and float(whale_score) < float(whale_open_min_score):
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][OPEN-BLOCK] whale score too low | symbol=%s side=%s whale_score=%.4f min_whale=%.4f", sym_u, side_norm, float(whale_score), float(whale_open_min_score))
-            except Exception:
-                pass
-            return
-        if require_whale_for_open and whale_dir not in ("long", "short"):
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][OPEN-BLOCK] whale required but missing direction | symbol=%s side=%s whale_dir=%s whale_score=%.4f", sym_u, side_norm, whale_dir, float(whale_score))
-            except Exception:
-                pass
-            return
-        if strict_whale_alignment and whale_dir in ("long", "short") and whale_dir != side_norm:
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][OPEN-BLOCK] whale misaligned | symbol=%s side=%s whale_dir=%s whale_score=%.4f", sym_u, side_norm, whale_dir, float(whale_score))
-            except Exception:
-                pass
-            return
-
-        cur = self._get_effective_position(sym_u)
-        cur_side = str(cur.get("side")).lower().strip() if isinstance(cur, dict) else None
-        if cur_side in ("long", "short"):
-            if cur_side == side_norm:
-                try:
-                    current_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
-                    if current_price is not None and current_price > 0:
-                        self._check_sl_tp_trailing(symbol=sym_u, price=float(current_price), interval=str(interval or ""))
-                except Exception:
-                    pass
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][OPEN-BLOCK] symbol already open same-side | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
-                except Exception:
-                    pass
-                return
-            if not self.reverse_close_enabled:
-                try:
-                    if self.logger:
-                        self.logger.info("[EXEC][REVERSE] reverse close disabled | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
-                except Exception:
-                    pass
-                return
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][REVERSE] opposite-side signal -> closing current position | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
-            except Exception:
-                pass
-            try:
-                self.close_position(symbol=sym_u, price=price, reason=f"reverse_to_{side_norm}", interval=str(interval or ""), intent_id=str(extra0.get("intent_id") or ""))
-            except Exception:
-                try:
-                    if self.logger:
-                        self.logger.exception("[EXEC][REVERSE] close-before-open failed | symbol=%s current=%s incoming=%s", sym_u, cur_side, side_norm)
-                except Exception:
-                    pass
-            return
-
-        try:
-            open_count = int(self._count_open_positions_for_side(side_norm))
-            if open_count >= int(self.max_open_positions):
                 if self.logger:
                     self.logger.info(
-                        "[EXEC][OPEN-BLOCK] max_open_positions reached | symbol=%s side=%s side_open_count=%s limit=%s",
-                        sym_u,
-                        side_norm,
-                        int(open_count),
-                        int(self.max_open_positions),
+                        "[EXEC][PENDING-CANCEL] symbol=%s reason=%s score=%.4f min=%.4f",
+                        sym_u, reason, float(signal_score), float(min_score),
                     )
-                return
-        except Exception:
-            pass
-
-        intent_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
-
-        # >>> PRICECACHE FALLBACK BEFORE SKIP
-        if intent_price is None or intent_price <= 0:
-            try:
-                if self.logger:
-                    self.logger.info("[EXEC][PRICECACHE-FALLBACK][TRY] symbol=%s", sym_u)
-
-                intent_price = self._get_cached_mid_price(sym_u)
-
-                if self.logger:
-                    self.logger.info("[EXEC][PRICECACHE-FALLBACK][RESULT] symbol=%s price=%s", sym_u, intent_price)
-
-                if intent_price and intent_price > 0 and self.logger:
-                    self.logger.info("[EXEC][PRICECACHE-FALLBACK] symbol=%s price=%.8f", sym_u, float(intent_price))
-            except Exception as e:
-                if self.logger:
-                    self.logger.warning("[EXEC][PRICECACHE-FALLBACK][ERR] symbol=%s err=%s", sym_u, e)
-                intent_price = None
-
-        if intent_price is None or intent_price <= 0:
-            try:
-                if self.logger:
-                    self.logger.warning("[EXEC] live_price unavailable -> skip | symbol=%s signal=%s", sym_u, signal_u)
             except Exception:
                 pass
+        else:
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][PENDING-WAIT] symbol=%s reason=%s retryable=true",
+                        sym_u, reason,
+                    )
+            except Exception:
+                pass
+        return True
+
+
+    def _prepare_long_pending_candidate(
+        self, *, symbol, pending,
+        require_whale_for_open=False,
+        whale_open_min_score=0.0,
+        whale_dir="", whale_score=0.0,
+        strict_whale_alignment=False,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        if not isinstance(pending, dict):
+            return None
+        decision0 = pending.get("decision")
+        decision0 = decision0 if isinstance(decision0, dict) else {}
+        try:
+            pending_score = float(decision0.get("score") or 0.0)
+        except Exception:
+            pending_score = 0.0
+        try:
+            pending_min_score = float(decision0.get("required_score") or 0.0)
+        except Exception:
+            pending_min_score = 0.0
+        extra0 = pending.get("extra")
+        extra0 = extra0 if isinstance(extra0, dict) else {}
+        pending_price = self._resolve_long_intent_price(
+            symbol=sym_u,
+            price=extra0.get("price"),
+            extra=extra0,
+        )
+        if pending_price is None or pending_price <= 0:
+            try:
+                if self.logger:
+                    self.logger.info(
+                        "[EXEC][PENDING-WAIT] symbol=%s reason=missing_price",
+                        sym_u,
+                    )
+            except Exception:
+                pass
+            return None
+        candidate = self._evaluate_long_candidate_pipeline(
+            symbol=sym_u,
+            side=str(pending.get("side") or "").strip().lower(),
+            price=float(pending_price),
+            signal_score=pending_score,
+            open_min_score=pending_min_score,
+            extra=extra0,
+            require_whale_for_open=require_whale_for_open,
+            whale_open_min_score=whale_open_min_score,
+            whale_dir=whale_dir,
+            whale_score=whale_score,
+            strict_whale_alignment=strict_whale_alignment,
+        )
+        candidate = self._dispatch_long_candidate_decision(candidate)
+        return (
+            float(pending_price),
+            pending_score,
+            pending_min_score,
+            candidate,
+        )
+
+
+    def _process_long_pending_candidate(
+        self, *, symbol, pending, current_candle_id,
+        progress, max_pending_progress,
+        require_whale_for_open=False,
+        whale_open_min_score=0.0,
+        whale_dir="", whale_score=0.0,
+        strict_whale_alignment=False,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+
+        window_ok = self._check_long_pending_window(
+            symbol=sym_u,
+            pending=pending,
+            current_candle_id=current_candle_id,
+            progress=progress,
+            max_pending_progress=max_pending_progress,
+        )
+
+        if not window_ok:
+            still_pending = self._get_long_pending_candidate(
+                symbol=sym_u
+            )
+            if still_pending is None:
+                return {"status": "cleared"}
+            return {"status": "wait"}
+
+        prepared = self._prepare_long_pending_candidate(
+            symbol=sym_u,
+            pending=pending,
+            require_whale_for_open=require_whale_for_open,
+            whale_open_min_score=whale_open_min_score,
+            whale_dir=whale_dir,
+            whale_score=whale_score,
+            strict_whale_alignment=strict_whale_alignment,
+        )
+
+        if prepared is None:
+            return {"status": "wait"}
+
+        (
+            pending_price,
+            pending_score,
+            pending_min_score,
+            candidate,
+        ) = prepared
+
+        if self._handle_long_pending_candidate_result(
+            symbol=sym_u,
+            candidate=candidate,
+            signal_score=pending_score,
+            min_score=pending_min_score,
+        ):
+            still_pending = self._get_long_pending_candidate(
+                symbol=sym_u
+            )
+            return {
+                "status": (
+                    "wait"
+                    if still_pending is not None
+                    else "blocked"
+                )
+            }
+
+        return {
+            "status": "ready",
+            "price": float(pending_price),
+            "signal_score": float(pending_score),
+            "min_score": float(pending_min_score),
+            "candidate": candidate,
+        }
+
+
+    def _evaluate_long_sniper_timing_decision(
+        self, *, symbol, side, entry_interval,
+        signal_score, open_min_score, allow_pending=True,
+    ):
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        try:
+            sniper_enable = str(
+                os.getenv("SNIPER_ENTRY_ENABLE", "0")
+            ).strip().lower() in ("1", "true", "yes", "on")
+            if not sniper_enable or side_norm not in ("long", "short"):
+                return None
+            max_progress = float(
+                os.getenv("SNIPER_ENTRY_MAX_CANDLE_PROGRESS", "0.55") or 0.55
+            )
+            min_progress = float(
+                os.getenv("SNIPER_ENTRY_MIN_CANDLE_PROGRESS", "0.08") or 0.08
+            )
+            interval_sec = float(
+                self._interval_to_seconds(str(entry_interval or "1m"))
+            )
+            progress = (time.time() % interval_sec) / max(interval_sec, 1.0)
+            if progress > max_progress:
+                return self._make_long_entry_decision(
+                    allow=False,
+                    action="pending" if allow_pending else "block",
+                    reason="sniper_window_passed" if allow_pending else "pending_window_passed",
+                    signal_score=signal_score,
+                    required_score=open_min_score,
+                    progress=progress,
+                    retryable=bool(allow_pending),
+                )
+            if progress < min_progress:
+                return self._make_long_entry_decision(
+                    allow=False,
+                    action="block",
+                    reason="sniper_window_early",
+                    signal_score=signal_score,
+                    required_score=open_min_score,
+                    progress=progress,
+                    retryable=False,
+                )
+            return None
+        except Exception as exc:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][SNIPER-DECISION][WARN] symbol=%s side=%s err=%s",
+                        sym_u, side_norm, str(exc)[:200],
+                    )
+            except Exception:
+                pass
+            return None
+
+
+    async def _execute_long_validated_candidate(
+        self, *, symbol, side, price, signal_score,
+        decision_interval, entry_interval,
+        exit_interval, lifecycle_interval,
+        interval, extra=None, signal_label="",
+    ) -> bool:
+        sym_u = str(symbol or "").upper().strip()
+        side_norm = str(side or "").strip().lower()
+        extra0 = extra if isinstance(extra, dict) else {}
+
+        if not self._evaluate_long_execution_risk_gate(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            interval=str(interval or ""),
+            extra=extra0,
+        ):
+            return False
+
+        intent_price = self._resolve_long_intent_price(
+            symbol=sym_u,
+            price=price,
+            extra=extra0,
+        )
+
+        if intent_price is None or intent_price <= 0:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC] live_price unavailable -> skip | "
+                        "symbol=%s signal=%s",
+                        sym_u,
+                        str(signal_label or ""),
+                    )
+            except Exception:
+                pass
+
+            return False
+
+        order_price = self._resolve_long_order_price(
+            symbol=sym_u,
+            price=price,
+            intent_price=intent_price,
+            extra=extra0,
+        )
+
+        await self._execute_long_order_pipeline(
+            symbol=sym_u,
+            side=side_norm,
+            order_price=order_price,
+            intent_price=intent_price,
+            signal_score=signal_score,
+            decision_interval=decision_interval,
+            entry_interval=entry_interval,
+            exit_interval=exit_interval,
+            lifecycle_interval=lifecycle_interval,
+            extra=extra0,
+        )
+
+        return True
+
+
+    async def execute_decision(
+        self,
+        signal: str,
+        symbol: str,
+        price: float,
+        size: Optional[float],
+        interval: str,
+        training_mode: bool,
+        hybrid_mode: bool,
+        probs: Dict[str, float],
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        decision_request = self._prepare_long_decision_request(
+            signal=signal,
+            symbol=symbol,
+            price=price,
+            size=size,
+            extra=extra,
+        )
+
+        extra0 = decision_request["extra"]
+        raw_signal = str(
+            decision_request["raw_signal"]
+        )
+        sym_u = str(
+            decision_request["symbol"]
+        )
+        price = decision_request["price"]
+        decision_interval = str(
+            decision_request["decision_interval"]
+        )
+        entry_interval = str(
+            decision_request["entry_interval"]
+        )
+        exit_interval = str(
+            decision_request["exit_interval"]
+        )
+        lifecycle_interval = str(
+            decision_request["lifecycle_interval"]
+        )
+        interval = str(
+            decision_request["interval"]
+        )
+
+        signal, raw_signal = self._apply_long_hold_conversion(
+            signal=signal,
+            raw_signal=raw_signal,
+            symbol=sym_u,
+            extra=extra0,
+        )
+
+        whale_open_context = self._resolve_long_whale_open_context(
+            symbol=sym_u,
+            raw_signal=raw_signal,
+            extra=extra0,
+        )
+
+        whale_open_min_score = float(
+            whale_open_context["whale_open_min_score"]
+        )
+        require_whale_for_open = bool(
+            whale_open_context["require_whale_for_open"]
+        )
+        strict_whale_alignment = bool(
+            whale_open_context["strict_whale_alignment"]
+        )
+        whale_action = str(
+            whale_open_context["whale_action"]
+        )
+        whale_dir = str(
+            whale_open_context["whale_dir"]
+        )
+        whale_score = float(
+            whale_open_context["whale_score"]
+        )
+
+        if self._handle_long_explicit_close_signal(
+            raw_signal=raw_signal,
+            symbol=sym_u,
+            price=price,
+            interval=str(interval or ""),
+            extra=extra0,
+        ):
             return
 
-        order_price = None
-        try:
-            client = getattr(self, "client", None)
-            fn = getattr(client, "futures_mark_price", None) if client is not None else None
-            if callable(fn):
-                mp = fn(symbol=sym_u)
-                if isinstance(mp, dict):
-                    order_price = self._clip_float(mp.get("markPrice"), None)
-        except Exception:
-            order_price = None
+        pending = self._get_long_pending_candidate(
+            symbol=sym_u
+        )
 
-        if order_price is None or order_price <= 0:
-            try:
-                order_price = self._get_cached_mid_price(sym_u)
-            except Exception:
-                order_price = None
-        if order_price is None or order_price <= 0:
-            order_price = self._resolve_price(symbol=sym_u, price=price, mark_price=extra0.get("mark_price"), last_price=extra0.get("last_price"))
-        if order_price is None or order_price <= 0:
-            order_price = float(intent_price)
+        if isinstance(pending, dict):
+            pending_side = str(
+                pending.get("side") or ""
+            ).strip().lower()
 
-        try:
-            self._check_sl_tp_trailing(
+            if pending_side not in ("long", "short"):
+                self._clear_long_pending_candidate(
+                    symbol=sym_u
+                )
+                pending = None
+
+            else:
+                pending_extra = pending.get("extra")
+                pending_extra = (
+                    dict(pending_extra)
+                    if isinstance(pending_extra, dict)
+                    else {}
+                )
+                pending_extra.update(extra0)
+                pending_extra["price"] = price
+                pending["extra"] = pending_extra
+
+                pending_interval = str(
+                    pending.get("interval")
+                    or entry_interval
+                    or "1m"
+                ).strip().lower()
+
+                interval_sec = float(
+                    self._interval_to_seconds(
+                        pending_interval
+                    )
+                )
+
+                current_candle_id = (
+                    self._get_long_candle_id(
+                        pending_interval
+                    )
+                )
+
+                pending_progress = (
+                    time.time() % interval_sec
+                ) / max(interval_sec, 1.0)
+
+                try:
+                    pending_max_progress = min(
+                        float(
+                            os.getenv(
+                                "SNIPER_ENTRY_MAX_CANDLE_PROGRESS",
+                                "0.55",
+                            )
+                            or 0.55
+                        ),
+                        0.20,
+                    )
+                except Exception:
+                    pending_max_progress = 0.20
+
+                pending_result = (
+                    self._process_long_pending_candidate(
+                        symbol=sym_u,
+                        pending=pending,
+                        current_candle_id=current_candle_id,
+                        progress=pending_progress,
+                        max_pending_progress=pending_max_progress,
+                        require_whale_for_open=require_whale_for_open,
+                        whale_open_min_score=whale_open_min_score,
+                        whale_dir=whale_dir,
+                        whale_score=whale_score,
+                        strict_whale_alignment=strict_whale_alignment,
+                    )
+                )
+
+                pending_status = str(
+                    (pending_result or {}).get("status")
+                    or "wait"
+                ).strip().lower()
+
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][PENDING-RECHECK] "
+                            "symbol=%s side=%s status=%s "
+                            "progress=%.3f max=%.3f",
+                            sym_u,
+                            pending_side,
+                            pending_status,
+                            float(pending_progress),
+                            float(pending_max_progress),
+                        )
+                except Exception:
+                    pass
+
+                if pending_status in ("wait", "blocked"):
+                    return
+
+                if pending_status == "ready":
+                    pending_price = float(
+                        pending_result["price"]
+                    )
+                    pending_score = float(
+                        pending_result["signal_score"]
+                    )
+
+                    executed = await self._execute_long_validated_candidate(
+                        symbol=sym_u,
+                        side=pending_side,
+                        price=pending_price,
+                        signal_score=pending_score,
+                        decision_interval=decision_interval,
+                        entry_interval=pending_interval,
+                        exit_interval=exit_interval,
+                        lifecycle_interval=lifecycle_interval,
+                        interval=interval,
+                        extra=pending_extra,
+                        signal_label="pending_revalidated",
+                    )
+
+                    if executed:
+                        self._clear_long_pending_candidate(
+                            symbol=sym_u
+                        )
+
+                    return
+
+                # cleared:
+                # Eski pending invalid/expired olduğu için
+                # normal yeni-entry akışı devam eder.
+
+        decision_signal_context = (
+            self._resolve_long_decision_signal_context(
+                signal=signal,
+                raw_signal=raw_signal,
                 symbol=sym_u,
-                price=float(order_price),
-                interval=str(exit_interval or "1m")
+                extra=extra0,
             )
-        except Exception:
-            pass
+        )
 
-        await asyncio.to_thread(
-            self.open_position_from_signal,
-            sym_u,
-            side_norm,
-            str(entry_interval or "1m"),
-            dict(
-                extra0,
-                price=float(intent_price),
-                signal_score=float(signal_score),
-                decision_interval=str(decision_interval),
-                entry_interval=str(entry_interval),
-                exit_interval=str(exit_interval),
-                lifecycle_interval=str(lifecycle_interval),
-            ),
+        signal_u = str(
+            decision_signal_context["signal_u"]
+        )
+        side_norm = str(
+            decision_signal_context["side_norm"]
+        )
+        bot_side_mode = str(
+            decision_signal_context["bot_side_mode"]
+        )
+
+        if not bool(
+            decision_signal_context["side_allowed"]
+        ):
+            return
+
+        open_score_context = (
+            self._resolve_long_decision_open_score_context(
+                symbol=sym_u,
+                side=side_norm,
+                extra=extra0,
+                probs=probs,
+            )
+        )
+
+        long_open_context = open_score_context["context"]
+        signal_score = float(
+            open_score_context["signal_score"]
+        )
+        open_min_score = float(
+            open_score_context["open_min_score"]
+        )
+
+        sniper_decision = self._evaluate_long_sniper_timing_decision(
+            symbol=sym_u,
+            side=side_norm,
+            entry_interval=entry_interval,
+            signal_score=signal_score,
+            open_min_score=open_min_score,
+            allow_pending=True,
+        )
+        if sniper_decision is not None:
+            sniper_decision = self._dispatch_long_candidate_decision(
+                sniper_decision
+            )
+            sniper_action = str(
+                sniper_decision.get("action") or "block"
+            ).strip().lower()
+            if sniper_action == "pending":
+                pending_extra = dict(extra0)
+                pending_extra["price"] = price
+                pending_extra["entry_interval"] = str(entry_interval or "1m")
+                self._store_long_pending_candidate(
+                    symbol=sym_u,
+                    side=side_norm,
+                    decision=sniper_decision,
+                    interval=str(entry_interval or "1m"),
+                    extra=pending_extra,
+                )
+                try:
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][PENDING-STORE] symbol=%s side=%s reason=%s progress=%s interval=%s",
+                            sym_u,
+                            side_norm,
+                            str(sniper_decision.get("reason") or ""),
+                            str(sniper_decision.get("progress") or ""),
+                            str(entry_interval or "1m"),
+                        )
+                except Exception:
+                    pass
+                return
+            return
+
+        if not self._evaluate_long_ema_hard_direction_gate(
+            symbol=sym_u,
+            side=side_norm,
+            interval=str(interval or "1m"),
+            extra=extra if isinstance(extra, dict) else {},
+        ):
+            return
+
+        self._update_long_decision_snapshot(
+            symbol=sym_u,
+            interval=interval,
+            signal_u=signal_u,
+            side=side_norm,
+            signal_score=signal_score,
+            whale_action=whale_action,
+            whale_dir=whale_dir,
+            whale_score=whale_score,
+            probs=probs,
+            extra=extra0,
+        )
+
+        if signal_u == "HOLD":
+            self._handle_long_hold_signal(
+                symbol=sym_u,
+                price=price,
+                interval=str(interval or ""),
+                signal_score=signal_score,
+                whale_action=whale_action,
+                whale_dir=whale_dir,
+                whale_score=whale_score,
+                extra=extra0,
+            )
+            return
+
+        if not self._evaluate_long_candidate_base_precheck(
+            symbol=sym_u,
+            side=side_norm,
+            training_mode=training_mode,
+            signal_score=signal_score,
+            open_min_score=open_min_score,
+        ):
+            return
+
+        if not self._evaluate_long_smart_entry_cooldown(
+            symbol=sym_u,
+            side=side_norm,
+            signal_score=signal_score,
+        ):
+            return
+
+        candidate_decision = self._evaluate_long_candidate_pipeline(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            signal_score=signal_score,
+            open_min_score=open_min_score,
+            extra=extra0,
+            require_whale_for_open=require_whale_for_open,
+            whale_open_min_score=whale_open_min_score,
+            whale_dir=whale_dir,
+            whale_score=whale_score,
+            strict_whale_alignment=strict_whale_alignment,
+        )
+        candidate_decision = self._dispatch_long_candidate_decision(
+            candidate_decision
+        )
+        if candidate_decision.get("action") != "open":
+            return
+
+
+        await self._execute_long_validated_candidate(
+            symbol=sym_u,
+            side=side_norm,
+            price=price,
+            signal_score=signal_score,
+            decision_interval=decision_interval,
+            entry_interval=entry_interval,
+            exit_interval=exit_interval,
+            lifecycle_interval=lifecycle_interval,
+            interval=interval,
+            extra=extra0,
+            signal_label=signal_u,
         )
         return
 
