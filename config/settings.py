@@ -31,7 +31,6 @@ class Settings:
     MAX_RISK_PER_TRADE: float = float(os.getenv("MAX_RISK_PER_TRADE", "0.02"))
     MAX_DAILY_LOSS_PCT: float = float(os.getenv("MAX_DAILY_LOSS_PCT", "0.05"))
     STOP_LOSS_PCT: float = float(os.getenv("STOP_LOSS_PCT", "0.01"))
-    DEFAULT_LEVERAGE: int = int(os.getenv("DEFAULT_LEVERAGE", "3"))
 
     # ───────────── Sinyal eşikleri ─────────────
     BUY_THRESHOLD: float = float(os.getenv("BUY_THRESHOLD", "0.60"))

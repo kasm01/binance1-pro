@@ -69,6 +69,47 @@ def _safe_list(x: Any) -> List[Any]:
     return x if isinstance(x, list) else []
 
 
+def _extract_market_context(item: Dict[str, Any]) -> Dict[str, Any]:
+    keys = (
+        "model_score",
+        "atr_pct",
+        "spread_pct",
+        "confidence",
+        "micro_score",
+        "liq_score",
+        "whale_dir",
+        "whale_score",
+    )
+
+    out: Dict[str, Any] = {}
+    cur: Any = item
+
+    for _ in range(4):
+        if isinstance(cur, str):
+            try:
+                cur = json.loads(cur)
+            except Exception:
+                break
+
+        if not isinstance(cur, dict):
+            break
+
+        meta = cur.get("meta")
+        if not isinstance(meta, dict):
+            meta = {}
+
+        for key in keys:
+            if key not in out:
+                if cur.get(key) is not None:
+                    out[key] = cur.get(key)
+                elif meta.get(key) is not None:
+                    out[key] = meta.get(key)
+
+        cur = cur.get("raw")
+
+    return out
+
+
 def _json_dumps_safe(x: Any, *, limit: int = 12000) -> str:
     """
     raw pass-through'u şişirmemek için truncate'lı json.
@@ -436,6 +477,9 @@ class IntentBridge:
             "trail_pct": float(self._trail_pct_of(item)),
             "stall_ttl_sec": int(self._stall_ttl_of(item)),
         }
+
+        market_ctx = _extract_market_context(item)
+        payload_item.update(market_ctx)
 
         if self.pass_raw:
             payload_item["raw"] = _json_dumps_safe(_safe_dict(item), limit=self.raw_max_chars)

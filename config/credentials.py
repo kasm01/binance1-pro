@@ -49,7 +49,6 @@ class Credentials:
     THE_GRAPH_API_KEY: Optional[str] = None  # alias: GRAPH_API_KEY
 
     # --- Data providers ---
-    COINGLASS_API_KEY: Optional[str] = None
     BSCSCAN_API_KEY: Optional[str] = None
     CRYPTOQUANT_API_KEY: Optional[str] = None
     COINMARKETCAP_API_KEY: Optional[str] = None
@@ -90,7 +89,6 @@ class Credentials:
         cls.THE_GRAPH_API_KEY = _env_any("THE_GRAPH_API_KEY", "GRAPH_API_KEY")
 
         # Data providers
-        cls.COINGLASS_API_KEY = _env_any("COINGLASS_API_KEY")
         cls.BSCSCAN_API_KEY = _env_any("BSCSCAN_API_KEY")
         cls.CRYPTOQUANT_API_KEY = _env_any("CRYPTOQUANT_API_KEY")
         cls.COINMARKETCAP_API_KEY = _env_any("COINMARKETCAP_API_KEY")
@@ -126,7 +124,6 @@ class Credentials:
             "THE_GRAPH_API_KEY": getattr(cls, "THE_GRAPH_API_KEY", None),
 
             # Providers
-            "COINGLASS_API_KEY": getattr(cls, "COINGLASS_API_KEY", None),
             "BSCSCAN_API_KEY": getattr(cls, "BSCSCAN_API_KEY", None),
             "CRYPTOQUANT_API_KEY": getattr(cls, "CRYPTOQUANT_API_KEY", None),
             "COINMARKETCAP_API_KEY": getattr(cls, "COINMARKETCAP_API_KEY", None),

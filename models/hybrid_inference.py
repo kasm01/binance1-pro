@@ -66,6 +66,7 @@ class HybridModel:
         self,
         model_dir: Optional[str],
         interval: str,
+        symbol: Optional[str] = None,
         logger: Optional[logging.Logger] = None,
         startup_log_level: Optional[str] = None,
         disable_startup_log: Optional[bool] = None,
@@ -74,6 +75,7 @@ class HybridModel:
     ) -> None:
         self.model_dir = model_dir or MODELS_DIR
         self.interval = interval
+        self.symbol = str(symbol or "").upper().strip()
         self.logger = logger or logging.getLogger("system")
 
         # --- SGD helper (aux) ---
@@ -161,17 +163,37 @@ class HybridModel:
     # Loaders
     # --------------------------
     def _load_sgd_model(self) -> None:
-        path = os.path.join(self.model_dir, f"online_model_{self.interval}_best.joblib")
-        try:
-            self.sgd_model = load(path)
-            level = getattr(logging, self.hybrid_model_startup_log_level, logging.INFO)
-            self._log_startup(level, "[HYBRID] SGD model loaded from %s (interval=%s)", path, self.interval)
-        except Exception as e:
-            self._log_startup(logging.WARNING, "[HYBRID] Could not load SGD model from %s: %s", path, e)
-            self.sgd_model = None
+        candidates = []
+        if self.symbol:
+            candidates.append(os.path.join(self.model_dir, f"online_model_{self.symbol}_{self.interval}_best.joblib"))
+            if _env_bool("ALLOW_GENERIC_MODEL_FALLBACK", False):
+                candidates.append(os.path.join(self.model_dir, f"online_model_{self.interval}_best.joblib"))
+        else:
+            candidates.append(os.path.join(self.model_dir, f"online_model_{self.interval}_best.joblib"))
+
+        self.sgd_model = None
+        last_err = None
+        for path in candidates:
+            try:
+                self.sgd_model = load(path)
+                level = getattr(logging, self.hybrid_model_startup_log_level, logging.INFO)
+                self._log_startup(level, "[HYBRID] SGD model loaded from %s (symbol=%s interval=%s)", path, self.symbol or "GENERIC", self.interval)
+                return
+            except Exception as e:
+                last_err = e
+
+        self._log_startup(logging.WARNING, "[HYBRID] Could not load SGD model candidates=%s err=%s", candidates, last_err)
 
     def _load_meta(self) -> None:
-        path = os.path.join(self.model_dir, f"model_meta_{self.interval}.json")
+        candidates = []
+        if self.symbol:
+            candidates.append(os.path.join(self.model_dir, f"model_meta_{self.symbol}_{self.interval}.json"))
+            if _env_bool("ALLOW_GENERIC_MODEL_FALLBACK", False):
+                candidates.append(os.path.join(self.model_dir, f"model_meta_{self.interval}.json"))
+        else:
+            candidates.append(os.path.join(self.model_dir, f"model_meta_{self.interval}.json"))
+
+        path = next((x for x in candidates if os.path.exists(x)), candidates[0])
         try:
             with open(path, "r", encoding="utf-8") as f:
                 meta_file = json.load(f) or {}

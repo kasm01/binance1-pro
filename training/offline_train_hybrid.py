@@ -221,6 +221,16 @@ def train_interval(interval: str) -> None:
     # --- align + clean ---
     X, y = align_xy(X, y)
 
+    # Son horizon satırının future close'u yoktur.
+    # Bunları yapay class=0 olarak eğitime sokma.
+    if int(HORIZON) > 0:
+        if X.shape[0] <= int(HORIZON):
+            raise RuntimeError(
+                f"[{interval}] not enough rows after horizon trim"
+            )
+        X = X[:-int(HORIZON)]
+        y = y[:-int(HORIZON)]
+
     if X.shape[0] < 1000:
         logger.warning("[%s] Too few clean samples: n=%d, skip.", interval, int(X.shape[0]))
         return
@@ -289,12 +299,20 @@ def train_interval(interval: str) -> None:
 
     # save
     os.makedirs(MODELS_DIR, exist_ok=True)
-    model_path = os.path.join(MODELS_DIR, f"online_model_{interval}_best.joblib")
+    symbol_tag = str(SYMBOL).upper().strip()
+
+    model_path = os.path.join(
+        MODELS_DIR,
+        f"online_model_{symbol_tag}_{interval}_best.joblib",
+    )
     joblib.dump(clf, model_path)
 
     best_side = "long" if auc >= 0.5 else "short"
 
-    meta_path = os.path.join(MODELS_DIR, f"model_meta_{interval}.json")
+    meta_path = os.path.join(
+        MODELS_DIR,
+        f"model_meta_{symbol_tag}_{interval}.json",
+    )
 
     meta: Dict[str, Any] = {
         "interval": interval,

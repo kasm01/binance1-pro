@@ -36,7 +36,6 @@ def _log_secret_env_presence(logger):
         "ARBI_API_KEY",
         "THE_GRAPH_API_KEY",
         "GRAPH_API_KEY",
-        "COINGLASS_API_KEY",
         "BSCSCAN_API_KEY",
         "ETHERSCAN_API_KEY",
         "CRYPTOQUANT_API_KEY",
@@ -59,6 +58,8 @@ os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
 import signal
 import json
 import time
+import uuid
+from datetime import datetime, timezone
 import random
 from typing import Any, Dict, Optional, List
 import redis  # type: ignore
@@ -76,7 +77,7 @@ from core.binance_client import create_binance_client
 from core.position_manager import PositionManager
 from core.risk_manager import RiskManager
 from core.trade_executor import TradeExecutor
-from core.trade_executor_spot import SpotTradeExecutor
+from orchestration.event_bus.redis_bus import RedisBus
 
 from core.market_meta_builder import MarketMetaBuilder
 from core.price_cache import PriceCache
@@ -311,6 +312,133 @@ def _compute_adaptive_alpha(atr_value: float) -> float:
     return float(alpha)
 
 
+def _resolve_long_dynamic_model_threshold(*, symbol: str, raw_df, base_threshold: float):
+    """Resolve LONG model threshold from recent closed 3m market structure.
+
+    Single authority for LONG1 dynamic MODEL SCORE GATE. The gate only relaxes
+    below the base threshold when volatility is elevated and the completed
+    candle shows a strong rejection/recovery from its low.
+    """
+    base = float(base_threshold)
+    details = {
+        "enabled": False,
+        "applied": False,
+        "threshold": base,
+        "base_threshold": base,
+        "reason": "disabled",
+    }
+
+    enabled = str(
+        os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE", "0") or "0"
+    ).strip().lower() in ("1", "true", "yes", "on")
+    if not enabled:
+        return base, details
+
+    target_symbol = str(
+        os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL", "NEARUSDT") or "NEARUSDT"
+    ).upper().strip()
+    sym = str(symbol or "").upper().strip()
+    if target_symbol and sym != target_symbol:
+        details.update({"enabled": True, "reason": "symbol_mismatch"})
+        return base, details
+
+    details["enabled"] = True
+
+    try:
+        floor = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_FLOOR", "0.516") or 0.516)
+        lookback = max(80, int(os.getenv("LONG_DYNAMIC_MODEL_GATE_LOOKBACK", "240") or 240))
+        min_history = max(30, int(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_HISTORY", "80") or 80))
+        min_atr_rank = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_ATR_RANK", "0.60") or 0.60)
+        min_close_loc = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_CLOSE_LOC", "0.25") or 0.25)
+        min_lower_wick_frac = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_LOWER_WICK_FRAC", "0.25") or 0.25)
+
+        if raw_df is None or len(raw_df) < max(30, min_history):
+            details["reason"] = "insufficient_history"
+            return base, details
+
+        d = raw_df.copy()
+        for col in ("open", "high", "low", "close"):
+            if col not in d.columns:
+                details["reason"] = f"missing_{col}"
+                return base, details
+            d[col] = pd.to_numeric(d[col], errors="coerce")
+
+        d = d.dropna(subset=["open", "high", "low", "close"])
+        if len(d) < max(30, min_history):
+            details["reason"] = "insufficient_clean_history"
+            return base, details
+
+        close = d["close"]
+        high = d["high"]
+        low = d["low"]
+        open_ = d["open"]
+        prev_close = close.shift(1)
+
+        tr = pd.concat(
+            [
+                (high - low).abs(),
+                (high - prev_close).abs(),
+                (low - prev_close).abs(),
+            ],
+            axis=1,
+        ).max(axis=1)
+        atr = tr.ewm(alpha=1.0 / 14.0, adjust=False, min_periods=14).mean()
+        atr_pct = atr / close.replace(0.0, float("nan"))
+
+        current_atr = float(atr_pct.iloc[-1])
+        hist = atr_pct.iloc[max(0, len(atr_pct) - lookback - 1):-1].dropna()
+        if len(hist) < min_history or not (current_atr == current_atr):
+            details["reason"] = "insufficient_atr_history"
+            return base, details
+
+        atr_rank = float((hist <= current_atr).mean())
+
+        op = float(open_.iloc[-1])
+        hi = float(high.iloc[-1])
+        lo = float(low.iloc[-1])
+        cl = float(close.iloc[-1])
+        candle_range = hi - lo
+        if op <= 0.0 or candle_range <= 0.0:
+            details.update({"atr_rank": atr_rank, "reason": "invalid_candle"})
+            return base, details
+
+        close_loc = max(0.0, min(1.0, (cl - lo) / candle_range))
+        lower_wick = max(0.0, min(op, cl) - lo)
+        lower_wick_frac = max(0.0, min(1.0, lower_wick / candle_range))
+
+        elevated_vol = atr_rank >= min_atr_rank
+        strong_recovery = (
+            close_loc >= min_close_loc
+            or lower_wick_frac >= min_lower_wick_frac
+        )
+
+        resolved = base
+        reason = "base"
+        if elevated_vol and strong_recovery:
+            resolved = min(base, floor)
+            reason = "strong_recovery"
+
+        details.update(
+            {
+                "applied": bool(resolved < base),
+                "threshold": float(resolved),
+                "base_threshold": base,
+                "floor": floor,
+                "atr_rank": atr_rank,
+                "close_loc": close_loc,
+                "lower_wick_frac": lower_wick_frac,
+                "elevated_vol": bool(elevated_vol),
+                "strong_recovery": bool(strong_recovery),
+                "reason": reason,
+            }
+        )
+        return float(resolved), details
+
+    except Exception as exc:
+        details.update({"reason": "error", "error": str(exc)[:200]})
+        return base, details
+
+
 def _select_binance_keys_for_mode() -> tuple[Optional[str], Optional[str], bool]:
     is_testnet = get_bool_env("BINANCE_TESTNET", False)
     if is_testnet:
@@ -454,6 +582,24 @@ def _normalize_kline_df(df: pd.DataFrame) -> pd.DataFrame:
     df = df.replace([float("inf"), float("-inf")], pd.NA)
     df = df.ffill().bfill().fillna(0)
     return df
+
+
+def _closed_kline_df(df: pd.DataFrame, *, min_rows: int = 30) -> pd.DataFrame:
+    """Return only fully closed Binance candles; fail closed on bad schema/age."""
+    if df is None or df.empty:
+        raise RuntimeError("closed-kline filter: empty dataframe")
+    if "close_time" not in df.columns:
+        raise RuntimeError("closed-kline filter: close_time missing")
+
+    now_ms = int(time.time() * 1000)
+    ct = pd.to_numeric(df["close_time"], errors="coerce")
+    out = df.loc[ct > 0].loc[ct <= now_ms].copy().reset_index(drop=True)
+
+    if len(out) < int(min_rows):
+        raise RuntimeError(
+            f"closed-kline filter: insufficient closed rows={len(out)} min={int(min_rows)}"
+        )
+    return out
 
 
 @lru_cache(maxsize=128)
@@ -602,6 +748,98 @@ async def fetch_klines(
             logger.error("[DATA] LIVE(PUBLIC) REST de başarısız: %s", e)
 
     raise RuntimeError(f"DATA_MODE=LIVE fakat live fetch başarısız. last_err={last_err!r}")
+
+
+async def build_entry_market_context(
+    *,
+    client,
+    symbol: str,
+    decision_interval: str,
+    entry_interval: str,
+    logger: Optional[logging.Logger] = None,
+    current_df: Optional[pd.DataFrame] = None,
+) -> Dict[str, Any]:
+    """
+    Canonical Entry Confirmation candle context provider.
+
+    HeavyEngine mevcut dataframe'i aynı intervalde tekrar kullanabilir.
+    Exec-events adapter ise gerekirse Binance'tan yalnız 2 kline çeker.
+    Failure durumunda stale/legacy candle'a düşmez; unavailable döner.
+    """
+    decision_itv = str(decision_interval or "").strip() or "1m"
+    entry_itv = str(entry_interval or decision_itv).strip() or decision_itv
+
+    df = None
+    source = "unavailable"
+
+    try:
+        if (
+            current_df is not None
+            and len(current_df) > 0
+            and entry_itv == decision_itv
+        ):
+            df = current_df
+            source = f"current_df:{entry_itv}"
+        else:
+            df = await fetch_klines(
+                client=client,
+                symbol=str(symbol).upper().strip(),
+                interval=entry_itv,
+                limit=2,
+                logger=logger,
+            )
+            source = f"fetch_klines:{entry_itv}"
+    except Exception as e:
+        df = None
+        source = "unavailable"
+        try:
+            if logger:
+                logger.warning(
+                    "[ENTRY-CONTEXT] fetch failed | "
+                    "symbol=%s interval=%s err=%s",
+                    symbol,
+                    entry_itv,
+                    str(e),
+                )
+        except Exception:
+            pass
+
+    op = hi = lo = cl = 0.0
+
+    try:
+        if df is not None and len(df) > 0:
+            op = float(df["open"].iloc[-1])
+            hi = float(df["high"].iloc[-1])
+            lo = float(df["low"].iloc[-1])
+            cl = float(df["close"].iloc[-1])
+
+            valid = (
+                op > 0.0
+                and hi > 0.0
+                and lo > 0.0
+                and cl > 0.0
+                and hi >= max(op, cl)
+                and lo <= min(op, cl)
+                and hi >= lo
+            )
+
+            if not valid:
+                op = hi = lo = cl = 0.0
+                source = "invalid"
+    except Exception:
+        op = hi = lo = cl = 0.0
+        source = "invalid"
+
+    return {
+        "entry_candle_open": float(op),
+        "entry_candle_high": float(hi),
+        "entry_candle_low": float(lo),
+        "entry_candle_close": float(cl),
+        "entry_candle_interval": entry_itv,
+        "entry_context_source": source,
+    }
+
+
 class ShutdownManager:
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -821,18 +1059,6 @@ def create_trading_objects(
     redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     redis_key_prefix = os.getenv("REDIS_KEY_PREFIX", "bot:positions")
 
-    try:
-        _trading_mode_pm = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
-        _spot_mode_pm = (
-            _trading_mode_pm == "spot"
-            or str(os.getenv("USE_SPOT", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
-        )
-    except Exception:
-        _spot_mode_pm = False
-
-    if _spot_mode_pm and (not os.getenv("REDIS_KEY_PREFIX")):
-        redis_key_prefix = "bot:spot_positions"
-
     enable_pg = str(os.getenv("ENABLE_PG_POS_LOG", "0")).strip()
     enable_pg_flag = enable_pg.lower() not in ("0", "false", "no", "off", "")
     pg_dsn = (os.getenv("PG_DSN") or "").strip() if enable_pg_flag else None
@@ -909,7 +1135,9 @@ def create_trading_objects(
         market_meta_builder = None
         if system_logger:
             system_logger.warning("[DEPTHWS] init failed: %s", e)
-    hybrid_model = registry.get_hybrid(interval, model_dir=MODELS_DIR, logger=system_logger)
+    hybrid_model = registry.get_hybrid(
+        interval, model_dir=MODELS_DIR, logger=system_logger, symbol=symbol
+    )
 
     mtf_ensemble = None
     models_by_interval: Dict[str, Any] = {}
@@ -948,15 +1176,14 @@ def create_trading_objects(
         if system_logger:
             system_logger.warning("[WHALE] MultiTimeframeWhaleDetector init hata: %s", e)
 
-    base_order_notional = float(os.getenv("BASE_ORDER_NOTIONAL", "50"))
-    max_position_notional = float(os.getenv("MAX_POSITION_NOTIONAL", "500"))
     max_leverage = float(os.getenv("MAX_LEVERAGE", "3"))
+
     if system_logger:
         system_logger.info(
-            "[MAIN][EXECUTOR-CONFIG] BASE_ORDER_NOTIONAL=%s MAX_POSITION_NOTIONAL=%s MAX_LEVERAGE=%s",
-            os.getenv("BASE_ORDER_NOTIONAL", "50"),
-            os.getenv("MAX_POSITION_NOTIONAL", "500"),
+            "[MAIN][EXECUTOR-CONFIG] "
+            "MAX_LEVERAGE=%s PER_POSITION_BALANCE_PCT=%s",
             os.getenv("MAX_LEVERAGE", "3"),
+            os.getenv("PER_POSITION_BALANCE_PCT", "0.50"),
         )
     sl_pct = float(os.getenv("SL_PCT", "0.01"))
     tp_pct = float(os.getenv("TP_PCT", "0.02"))
@@ -970,18 +1197,13 @@ def create_trading_objects(
 
     exec_redis = redis.Redis.from_url(redis_url, decode_responses=True)
 
-    _trading_mode_exec = str(os.getenv("TRADING_MODE", "futures") or "futures").strip().lower()
-    _executor_cls = SpotTradeExecutor if _trading_mode_exec == "spot" else TradeExecutor
-
-    trade_executor = _executor_cls(
+    trade_executor = TradeExecutor(
         client=client,
         redis_client=exec_redis,
         risk_manager=risk_manager,
         position_manager=position_manager,
         logger=system_logger,
         dry_run=bool(DRY_RUN),
-        base_order_notional=base_order_notional,
-        max_position_notional=max_position_notional,
         max_leverage=max_leverage,
         sl_pct=sl_pct,
         tp_pct=tp_pct,
@@ -1029,18 +1251,48 @@ def create_trading_objects(
             pass
 
     try:
-        if hasattr(trade_executor, "_position_lifecycle_loop"):
-            asyncio.create_task(trade_executor._position_lifecycle_loop())
+        lifecycle_enabled = bool(
+            getattr(
+                trade_executor,
+                "position_lifecycle_enabled",
+                True,
+            )
+        )
+
+        if not lifecycle_enabled:
+            system_logger.info(
+                "[MAIN][LIFECYCLE] periodic position lifecycle disabled"
+            )
+
+        elif hasattr(trade_executor, "_position_lifecycle_loop"):
+            asyncio.create_task(
+                trade_executor._position_lifecycle_loop()
+            )
+
             system_logger.info(
                 "[MAIN][LIFECYCLE] periodic position lifecycle loop started interval_sec=%s",
-                int(getattr(trade_executor, "position_lifecycle_interval_sec", 15)),
+                int(
+                    getattr(
+                        trade_executor,
+                        "position_lifecycle_interval_sec",
+                        15,
+                    )
+                ),
             )
+
         else:
-            system_logger.warning("[MAIN][LIFECYCLE] _position_lifecycle_loop missing on TradeExecutor")
+            system_logger.warning(
+                "[MAIN][LIFECYCLE] "
+                "_position_lifecycle_loop missing on TradeExecutor"
+            )
+
     except Exception:
         try:
             if system_logger:
-                system_logger.exception("[MAIN][LIFECYCLE] failed to start lifecycle loop")
+                system_logger.exception(
+                    "[MAIN][LIFECYCLE] "
+                    "failed to start lifecycle loop"
+                )
         except Exception:
             pass
 
@@ -1100,6 +1352,7 @@ def create_trading_objects(
         "position_manager": position_manager,
         "trade_executor": trade_executor,
         "hybrid_model": hybrid_model,
+        "model_registry": registry,
         "mtf_ensemble": mtf_ensemble,
         "mtf_intervals": mtf_intervals,
         "whale_detector": whale_detector,
@@ -1126,6 +1379,7 @@ class HeavyEngine:
         self.client = objs["client"]
         self.trade_executor = objs["trade_executor"]
         self.hybrid_model = objs["hybrid_model"]
+        self.model_registry = objs.get("model_registry")
         self.mtf_ensemble = objs.get("mtf_ensemble")
         self.whale_detector = objs.get("whale_detector")
         self.tg_bot = objs.get("tg_bot")
@@ -1146,6 +1400,21 @@ class HeavyEngine:
         self._prev_signal: Dict[str, str] = {}
         self._prev_notif_ts: Dict[str, float] = {}
         self._schema_missing_warned_itv: set[str] = set()
+
+        # Real-model SignalEvent shadow publisher.
+        # Disabled by default; isolated from production orchestration.
+        # Production SignalEvent bus is lazy; no Redis connection
+        # is created unless orchestration route actually publishes.
+        self._model_signal_bus = None
+
+        self._model_signal_shadow_r = None
+        self._model_signal_shadow_stream = str(
+            os.getenv(
+                "MODEL_SIGNAL_SHADOW_STREAM",
+                "model_signals_shadow_long",
+            )
+            or "model_signals_shadow_long"
+        ).strip()
 
     def _get_prob_stab(self, symbol: str) -> ProbStabilizer:
         if symbol in self._prob_stab_by_symbol:
@@ -1178,7 +1447,7 @@ class HeavyEngine:
         return None
 
     def _fallback_schema_from_model(self) -> Optional[List[str]]:
-        meta = getattr(self.hybrid_model, "meta", {}) or {}
+        meta = getattr(active_model, "meta", {}) or {}
         sch = meta.get("feature_schema")
         if isinstance(sch, list) and sch and all(isinstance(x, str) for x in sch):
             return sch
@@ -1217,17 +1486,411 @@ class HeavyEngine:
 
         return normalize_to_schema(feat_df, sch, log_missing=_log_missing)
 
+    def _build_model_signal_event_payload(
+        self,
+        *,
+        symbol: str,
+        interval: str,
+        side: str,
+        p_used: float,
+        p_single: float,
+        price: float,
+        atr_value: float,
+        whale_dir: str,
+        whale_score: float,
+        signal_source: str,
+        shadow: bool = False,
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Canonical HeavyEngine -> SignalEvent payload builder.
+
+        This function owns:
+        - side-specific model_score
+        - ATR -> atr_pct conversion
+        - quality metric availability semantics
+        - event identity / dedupe contract
+
+        It has no Redis or execution side effects.
+        """
+        side0 = str(side or "").strip().lower()
+        if side0 not in ("long", "short"):
+            return None
+
+        try:
+            p_used_f = max(
+                0.0,
+                min(1.0, float(p_used)),
+            )
+        except Exception:
+            return None
+
+        try:
+            p_single_f = max(
+                0.0,
+                min(1.0, float(p_single)),
+            )
+        except Exception:
+            p_single_f = 0.0
+
+        model_score = (
+            p_used_f
+            if side0 == "long"
+            else 1.0 - p_used_f
+        )
+
+        try:
+            price_f = float(price)
+        except Exception:
+            return None
+
+        if price_f <= 0.0:
+            return None
+
+        try:
+            atr_f = max(0.0, float(atr_value))
+        except Exception:
+            atr_f = 0.0
+
+        atr_pct_f = (
+            float(atr_f / price_f)
+            if price_f > 0.0
+            else 0.0
+        )
+
+        try:
+            whale_score_f = max(
+                0.0,
+                min(1.0, float(whale_score)),
+            )
+        except Exception:
+            whale_score_f = 0.0
+
+        symbol0 = str(symbol).upper().strip()
+        interval0 = str(interval or "").strip()
+
+        return {
+            "ts_utc": datetime.now(
+                timezone.utc
+            ).isoformat(),
+            "event_id": str(uuid.uuid4()),
+            "producer_id": "heavy_engine",
+            "source": str(
+                signal_source or "HYBRID"
+            ),
+            "symbol": symbol0,
+            "interval": interval0,
+            "side_candidate": side0,
+
+            "p_used": float(p_used_f),
+            "p_single": float(p_single_f),
+            "model_score": float(model_score),
+
+            # Aggregator ranking input. For real-model events
+            # this begins from the immutable side model score.
+            "score_edge": float(model_score),
+
+            "price": float(price_f),
+
+            "atr_value": float(atr_f),
+            "atr_pct": float(atr_pct_f),
+
+            # Unknown != zero-quality.
+            "confidence": 0.0,
+            "confidence_available": False,
+
+            "spread_pct": 0.0,
+            "spread_available": False,
+
+            "liq_score": 0.0,
+            "liq_score_available": False,
+
+            "whale_dir": str(
+                whale_dir or "none"
+            ).strip().lower(),
+            "whale_score": float(whale_score_f),
+
+            "dedup_key": (
+                f"{symbol0}|{interval0}|{side0}"
+            ),
+
+            "meta": {
+                "kind": (
+                    "SignalEventShadow"
+                    if shadow
+                    else "SignalEvent"
+                ),
+                "shadow": bool(shadow),
+                "producer": "HeavyEngine",
+                "model_score_formula": (
+                    "p_used"
+                    if side0 == "long"
+                    else "1-p_used"
+                ),
+            },
+        }
+
+    def _publish_model_signal_production(
+        self,
+        *,
+        symbol: str,
+        interval: str,
+        side: str,
+        p_used: float,
+        p_single: float,
+        price: float,
+        atr_value: float,
+        whale_dir: str,
+        whale_score: float,
+        signal_source: str,
+    ) -> str:
+        """
+        Publish one canonical HeavyEngine SignalEvent to the
+        production orchestration signals stream.
+
+        No order/execution authority exists here.
+        Empty stream-id means publish failed -> fail closed.
+        """
+        payload = self._build_model_signal_event_payload(
+            symbol=symbol,
+            interval=interval,
+            side=side,
+            p_used=p_used,
+            p_single=p_single,
+            price=price,
+            atr_value=atr_value,
+            whale_dir=whale_dir,
+            whale_score=whale_score,
+            signal_source=signal_source,
+            shadow=False,
+        )
+
+        if not isinstance(payload, dict):
+            return ""
+
+        try:
+            if self._model_signal_bus is None:
+                self._model_signal_bus = RedisBus(
+                    signals_stream=str(
+                        os.getenv(
+                            "SIGNALS_STREAM",
+                            "signals_stream",
+                        )
+                        or "signals_stream"
+                    ).strip()
+                )
+
+            sid = self._model_signal_bus.publish_signal(
+                payload
+            )
+
+            if not sid:
+                if system_logger:
+                    system_logger.error(
+                        "[MODEL-PROD] publish failed | "
+                        "symbol=%s side=%s stream=%s",
+                        payload.get("symbol"),
+                        payload.get("side_candidate"),
+                        getattr(
+                            self._model_signal_bus,
+                            "signals_stream",
+                            "unknown",
+                        ),
+                    )
+                return ""
+
+            if system_logger:
+                system_logger.info(
+                    "[MODEL-PROD] published | "
+                    "symbol=%s side=%s "
+                    "model_score=%.4f stream=%s id=%s",
+                    payload.get("symbol"),
+                    payload.get("side_candidate"),
+                    float(
+                        payload.get(
+                            "model_score",
+                            0.0,
+                        )
+                        or 0.0
+                    ),
+                    getattr(
+                        self._model_signal_bus,
+                        "signals_stream",
+                        "unknown",
+                    ),
+                    sid,
+                )
+
+            return str(sid)
+
+        except Exception as e:
+            if system_logger:
+                system_logger.exception(
+                    "[MODEL-PROD] publish exception | "
+                    "symbol=%s side=%s err=%s",
+                    symbol,
+                    side,
+                    str(e),
+                )
+            return ""
+
+    def _publish_model_signal_shadow(
+        self,
+        *,
+        symbol: str,
+        interval: str,
+        side: str,
+        p_used: float,
+        p_single: float,
+        price: float,
+        atr_value: float,
+        whale_dir: str,
+        whale_score: float,
+        signal_source: str,
+    ) -> str:
+        """
+        Publish real HeavyEngine model output to an isolated shadow stream.
+
+        Important:
+        - Never publishes HOLD as an OPEN candidate.
+        - Does not invent confidence / liquidity / spread values.
+        - Does not feed production signals_stream.
+        - No execution authority.
+        """
+        enabled = str(
+            os.getenv(
+                "MODEL_SIGNAL_SHADOW_ENABLE",
+                "0",
+            )
+            or "0"
+        ).strip().lower() in (
+            "1",
+            "true",
+            "yes",
+            "on",
+        )
+
+        if not enabled:
+            return ""
+
+        payload = self._build_model_signal_event_payload(
+            symbol=symbol,
+            interval=interval,
+            side=side,
+            p_used=p_used,
+            p_single=p_single,
+            price=price,
+            atr_value=atr_value,
+            whale_dir=whale_dir,
+            whale_score=whale_score,
+            signal_source=signal_source,
+            shadow=True,
+        )
+
+        if not isinstance(payload, dict):
+            return ""
+
+        side0 = str(
+            payload.get("side_candidate") or ""
+        )
+        model_score = float(
+            payload.get("model_score", 0.0) or 0.0
+        )
+
+        try:
+            if self._model_signal_shadow_r is None:
+                redis_url = os.getenv(
+                    "REDIS_URL",
+                    "redis://localhost:6379/0",
+                )
+                self._model_signal_shadow_r = (
+                    redis.Redis.from_url(
+                        redis_url,
+                        decode_responses=True,
+                    )
+                )
+
+            raw = json.dumps(
+                payload,
+                ensure_ascii=False,
+            )
+
+            sid = self._model_signal_shadow_r.xadd(
+                self._model_signal_shadow_stream,
+                {"json": raw},
+                maxlen=int(
+                    os.getenv(
+                        "MODEL_SIGNAL_SHADOW_MAXLEN",
+                        "5000",
+                    )
+                    or 5000
+                ),
+                approximate=True,
+            )
+
+            if system_logger:
+                system_logger.info(
+                    "[MODEL-SHADOW] published | "
+                    "symbol=%s side=%s "
+                    "model_score=%.4f stream=%s id=%s",
+                    payload["symbol"],
+                    side0,
+                    float(model_score),
+                    self._model_signal_shadow_stream,
+                    sid,
+                )
+
+            return str(sid or "")
+
+        except Exception as e:
+            try:
+                if system_logger:
+                    system_logger.warning(
+                        "[MODEL-SHADOW] publish failed | "
+                        "symbol=%s side=%s err=%s",
+                        symbol,
+                        side0,
+                        str(e),
+                    )
+            except Exception:
+                pass
+
+            return ""
+
     async def run_once(self, symbol: str) -> Dict[str, Any]:
+
         global HYBRID_MODE, TRAINING_MODE, USE_MTF_ENS
 
         interval = self.interval
         timer = _StepTimer()
 
+        active_model = self.hybrid_model
+        if self.model_registry is not None:
+            try:
+                active_model = self.model_registry.get_hybrid(
+                    interval,
+                    model_dir=MODELS_DIR,
+                    logger=system_logger,
+                    symbol=symbol,
+                )
+            except Exception as e:
+                if system_logger:
+                    system_logger.error(
+                        "[MODEL-ROUTE] symbol model load failed | symbol=%s interval=%s err=%s",
+                        symbol, interval, str(e),
+                    )
+                raise
+
         # >>> REDIS-FIRST KLINE READ
         raw_df = None
         cache_hit = False
         try:
-            cached_rows = read_kline_cache(symbol, interval, max_age_sec=15.0)
+            cached_rows = read_kline_cache(
+                symbol,
+                interval,
+                max_age_sec=float(
+                    os.environ["KLINE_CACHE_MAX_AGE_SEC"]
+                ),
+            )
             if isinstance(cached_rows, list) and len(cached_rows) >= 30:
                 import pandas as pd
                 raw_df = pd.DataFrame(cached_rows)
@@ -1297,12 +1960,15 @@ class HeavyEngine:
                     symbol=symbol,
                     interval=interval,
                     rows=raw_df.tail(100).to_dict("records"),
-                    ttl_sec=90,
+                    ttl_sec=int(
+                        os.environ["KLINE_CACHE_TTL_SEC"]
+                    ),
                 )
         except Exception:
             pass
 
-        feat_df = build_features(raw_df)
+        model_raw_df = _closed_kline_df(raw_df, min_rows=30)
+        feat_df = build_features(model_raw_df)
         feat_df = self._normalize_feat_df(feat_df, interval)
         timer.mark("features+schema")
 
@@ -1316,7 +1982,7 @@ class HeavyEngine:
 
         X_live = feat_df.tail(500)
 
-        p_arr_single, debug_single = self.hybrid_model.predict_proba(X_live)
+        p_arr_single, debug_single = active_model.predict_proba(X_live)
         p_single = float(p_arr_single[-1])
         timer.mark("predict_single")
 
@@ -1326,7 +1992,7 @@ class HeavyEngine:
         best_side = meta.get("best_side", "long")
 
         mtf_feats: Dict[str, pd.DataFrame] = {interval: feat_df}
-        mtf_whale_raw: Dict[str, pd.DataFrame] = {interval: raw_df}
+        mtf_whale_raw: Dict[str, pd.DataFrame] = {interval: model_raw_df}
         if USE_MTF_ENS and self.mtf_ensemble is not None:
             for itv in self.mtf_intervals:
                 if itv == interval:
@@ -1340,7 +2006,8 @@ class HeavyEngine:
                         logger=system_logger,
                     )
 
-                    feat_df_itv = build_features(raw_df_itv)
+                    model_raw_df_itv = _closed_kline_df(raw_df_itv, min_rows=30)
+                    feat_df_itv = build_features(model_raw_df_itv)
                     feat_df_itv = self._normalize_feat_df(feat_df_itv, itv)
 
                     sch_itv = self._schema_for(itv)
@@ -1351,7 +2018,7 @@ class HeavyEngine:
                     )
 
                     mtf_feats[itv] = feat_df_itv
-                    mtf_whale_raw[itv] = raw_df_itv
+                    mtf_whale_raw[itv] = model_raw_df_itv
 
                 except Exception as e:
                     if system_logger:
@@ -1480,12 +2147,69 @@ class HeavyEngine:
         atr_period = int(os.getenv("ATR_PERIOD", "14"))
         atr_value = compute_atr_from_klines(raw_df, period=atr_period)
         timer.mark("atr")
+
+        # ====================================================
+        # ENTRY INTERVAL MARKET CONTEXT
+        # Shared canonical provider.
+        # ====================================================
+        entry_interval_ctx = str(
+            os.getenv(
+                "ENTRY_INTERVAL",
+                os.getenv(
+                    "SNIPER_ENTRY_INTERVAL",
+                    interval,
+                ),
+            )
+            or interval
+        ).strip() or str(interval)
+
+        entry_ctx = await build_entry_market_context(
+            client=self.client,
+            symbol=symbol,
+            decision_interval=interval,
+            entry_interval=entry_interval_ctx,
+            logger=system_logger,
+            current_df=raw_df,
+        )
+
+        entry_candle_open = float(
+            entry_ctx["entry_candle_open"]
+        )
+        entry_candle_high = float(
+            entry_ctx["entry_candle_high"]
+        )
+        entry_candle_low = float(
+            entry_ctx["entry_candle_low"]
+        )
+        entry_candle_close = float(
+            entry_ctx["entry_candle_close"]
+        )
+        entry_context_source = str(
+            entry_ctx["entry_context_source"]
+        )
+
+        timer.mark("entry_context")
+
         probs: Dict[str, Any] = {
             "p_used": p_used,
             "p_single": p_single,
             "p_sgd_mean": float(debug_single.get("p_sgd_mean", 0.0)) if isinstance(debug_single, dict) else 0.0,
             "p_lstm_mean": float(debug_single.get("p_lstm_mean", 0.5)) if isinstance(debug_single, dict) else 0.5,
         }
+
+        candle_open = 0.0
+        candle_high = 0.0
+        candle_low = 0.0
+        candle_close = 0.0
+
+        try:
+            if len(raw_df) > 0:
+                candle_open = float(raw_df["open"].iloc[-1])
+                candle_high = float(raw_df["high"].iloc[-1])
+                candle_low = float(raw_df["low"].iloc[-1])
+                candle_close = float(raw_df["close"].iloc[-1])
+        except Exception:
+            pass
 
         extra: Dict[str, Any] = {
             "model_confidence_factor": model_conf_factor,
@@ -1494,6 +2218,16 @@ class HeavyEngine:
             "mtf_debug": mtf_debug,
             "whale_meta": whale_meta,
             "atr": atr_value,
+            "candle_open": candle_open,
+            "candle_high": candle_high,
+            "candle_low": candle_low,
+            "candle_close": candle_close,
+            "entry_candle_open": entry_candle_open,
+            "entry_candle_high": entry_candle_high,
+            "entry_candle_low": entry_candle_low,
+            "entry_candle_close": entry_candle_close,
+            "entry_candle_interval": entry_interval_ctx,
+            "entry_context_source": entry_context_source,
             "p_buy_source": (debug_single.get("mode") if isinstance(debug_single, dict) else "unknown"),
             "whale_dir": whale_dir,
             "whale_score": float(whale_score),
@@ -1539,8 +2273,31 @@ class HeavyEngine:
             signal_side = None
 
         if signal_side is None:
-            long_thr = float(os.getenv("LONG_THRESHOLD", "0.60"))
+            long_thr_base = float(os.getenv("LONG_THRESHOLD", "0.60"))
+            long_thr, long_dynamic_gate = _resolve_long_dynamic_model_threshold(
+                symbol=symbol,
+                raw_df=model_raw_df,
+                base_threshold=long_thr_base,
+            )
             short_thr = float(os.getenv("SHORT_THRESHOLD", "0.60"))
+            try:
+                extra["long_dynamic_model_gate"] = dict(long_dynamic_gate)
+            except Exception:
+                pass
+            try:
+                if system_logger and long_dynamic_gate.get("enabled"):
+                    system_logger.info(
+                        "[MODEL][LONG-DYNAMIC-GATE] symbol=%s base=%.4f final=%.4f reason=%s atr_rank=%s close_loc=%s lower_wick_frac=%s",
+                        symbol,
+                        float(long_thr_base),
+                        float(long_thr),
+                        str(long_dynamic_gate.get("reason") or ""),
+                        str(long_dynamic_gate.get("atr_rank")),
+                        str(long_dynamic_gate.get("close_loc")),
+                        str(long_dynamic_gate.get("lower_wick_frac")),
+                    )
+            except Exception:
+                pass
 
             # p_used = buy/long probability.
             # long  score = p_used
@@ -1584,17 +2341,147 @@ class HeavyEngine:
             last_price = 0.0
             extra["price_source"] = "unknown"
 
-        await self.trade_executor.execute_decision(
-            signal=signal_side,
+        self._publish_model_signal_shadow(
             symbol=symbol,
-            price=float(last_price),
-            size=None,
             interval=interval,
-            training_mode=TRAINING_MODE,
-            hybrid_mode=HYBRID_MODE,
-            probs=probs,
-            extra=extra,
+            side=signal_side,
+            p_used=float(p_used),
+            p_single=float(p_single),
+            price=float(last_price),
+            atr_value=float(atr_value),
+            whale_dir=whale_dir,
+            whale_score=float(whale_score),
+            signal_source=str(
+                extra.get("signal_source")
+                or "HYBRID"
+            ),
         )
+
+        # =====================================================
+        # MODEL SIGNAL ROUTE — single execution authority
+        #
+        # direct:
+        #   current legacy path -> TradeExecutor
+        #
+        # orchestration:
+        #   reserved for canonical Redis SignalEvent pipeline.
+        #   Until production publisher is installed this route
+        #   intentionally fails closed.
+        #
+        # off:
+        #   model produces telemetry only; no OPEN decision route.
+        # =====================================================
+        model_signal_route = str(
+            os.getenv("MODEL_SIGNAL_ROUTE", "direct")
+            or "direct"
+        ).strip().lower()
+
+        if model_signal_route == "direct":
+            # Direct route must carry the same immutable
+            # side-specific model_score contract as orchestration.
+            direct_model_evt = (
+                self._build_model_signal_event_payload(
+                    symbol=symbol,
+                    interval=interval,
+                    side=signal_side,
+                    p_used=float(p_used),
+                    p_single=float(p_single),
+                    price=float(last_price),
+                    atr_value=float(atr_value),
+                    whale_dir=whale_dir,
+                    whale_score=float(whale_score),
+                    signal_source=str(
+                        extra.get("signal_source")
+                        or "HYBRID"
+                    ),
+                    shadow=False,
+                )
+            )
+
+            if isinstance(direct_model_evt, dict):
+                extra["model_score"] = float(
+                    direct_model_evt.get(
+                        "model_score",
+                        0.0,
+                    )
+                    or 0.0
+                )
+                extra["score_edge"] = float(
+                    direct_model_evt.get(
+                        "score_edge",
+                        extra["model_score"],
+                    )
+                    or 0.0
+                )
+                extra["model_score_source"] = (
+                    "heavy_engine_canonical"
+                )
+
+            await self.trade_executor.execute_decision(
+                signal=signal_side,
+                symbol=symbol,
+                price=float(last_price),
+                size=None,
+                interval=interval,
+                training_mode=TRAINING_MODE,
+                hybrid_mode=HYBRID_MODE,
+                probs=probs,
+                extra=extra,
+            )
+
+        elif model_signal_route == "orchestration":
+            side_route = str(
+                signal_side or ""
+            ).strip().lower()
+
+            # HOLD never becomes an OPEN candidate.
+            if side_route in ("long", "short"):
+                sid = self._publish_model_signal_production(
+                    symbol=symbol,
+                    interval=interval,
+                    side=side_route,
+                    p_used=float(p_used),
+                    p_single=float(p_single),
+                    price=float(last_price),
+                    atr_value=float(atr_value),
+                    whale_dir=whale_dir,
+                    whale_score=float(whale_score),
+                    signal_source=str(
+                        extra.get("signal_source")
+                        or "HYBRID"
+                    ),
+                )
+
+                # Empty stream id = transport failed.
+                # Do not fall back to direct execution.
+                if not sid and system_logger:
+                    system_logger.error(
+                        "[MODEL-ROUTE] production publish failed | "
+                        "symbol=%s side=%s -> FAIL_CLOSED",
+                        symbol,
+                        side_route,
+                    )
+
+        elif model_signal_route == "off":
+            if system_logger and get_bool_env(
+                "LOG_MODEL_ROUTE_OFF",
+                False,
+            ):
+                system_logger.info(
+                    "[MODEL-ROUTE] off | symbol=%s side=%s",
+                    symbol,
+                    signal_side,
+                )
+
+        else:
+            if system_logger:
+                system_logger.error(
+                    "[MODEL-ROUTE] invalid route=%r | "
+                    "symbol=%s side=%s -> NO_EXECUTION",
+                    model_signal_route,
+                    symbol,
+                    signal_side,
+                )
 
         extra["latency_total_sec"] = float(timer.total())
         if system_logger and get_bool_env("LOG_LATENCY", False):
@@ -1827,7 +2714,13 @@ def _pick_method(obj, names):
             return getattr(obj, n)
     return None
 
-async def consume_exec_events_stream(logger, executor, *, redis_url: str):
+async def consume_exec_events_stream(
+    logger,
+    executor,
+    *,
+    redis_url: str,
+    client=None,
+):
     if os.getenv("EXEC_EVENTS_ENABLE", "1").strip() not in (
         "1",
         "true",
@@ -1866,12 +2759,6 @@ async def consume_exec_events_stream(logger, executor, *, redis_url: str):
     if not callable(store_signal_m):
         store_signal_m = None
 
-    open_m = getattr(executor, "open_position_from_signal", None)
-    if not callable(open_m):
-        open_m = getattr(executor, "open_position", None)
-    if not callable(open_m):
-        open_m = None
-
     close_m = getattr(executor, "close_position", None)
     if not callable(close_m):
         close_m = getattr(executor, "close_position_from_signal", None)
@@ -1880,16 +2767,15 @@ async def consume_exec_events_stream(logger, executor, *, redis_url: str):
 
     try:
         logger.info(
-            "[EXEC-EVENTS] methods resolved | decision=%s store_signal=%s open=%s close=%s",
+            "[EXEC-EVENTS] methods resolved | decision=%s store_signal=%s close=%s",
             getattr(decision_m, "__name__", None),
             getattr(store_signal_m, "__name__", None),
-            getattr(open_m, "__name__", None),
             getattr(close_m, "__name__", None),
         )
     except Exception:
         pass
 
-    if decision_m is None and open_m is None and close_m is None:
+    if decision_m is None and close_m is None:
         logger.error(
             "[EXEC-EVENTS] TradeExecutor decision/open/close method not found | executor_type=%s",
             type(executor).__name__,
@@ -2029,6 +2915,37 @@ async def consume_exec_events_stream(logger, executor, *, redis_url: str):
                 intent_id,
             )
 
+        # Fresh Entry Confirmation context.
+        # Orchestration intent'in eski/raw candle verisine güvenilmez.
+        decision_extra = (
+            dict(raw)
+            if isinstance(raw, dict)
+            else {"raw": raw}
+        )
+
+        entry_interval_ctx = str(
+            os.getenv(
+                "ENTRY_INTERVAL",
+                os.getenv(
+                    "SNIPER_ENTRY_INTERVAL",
+                    "1m",
+                ),
+            )
+            or "1m"
+        ).strip() or "1m"
+
+        entry_ctx = await build_entry_market_context(
+            client=client,
+            symbol=symbol,
+            decision_interval=interval,
+            entry_interval=entry_interval_ctx,
+            logger=logger,
+            current_df=None,
+        )
+
+        decision_extra.update(entry_ctx)
+        decision_extra["entry_interval"] = entry_interval_ctx
+
         handled = False
 
         if callable(decision_m):
@@ -2052,7 +2969,7 @@ async def consume_exec_events_stream(logger, executor, *, redis_url: str):
                         training_mode=False,
                         hybrid_mode=True,
                         probs={},
-                        extra=raw,
+                        extra=decision_extra,
                     )
                 )
 
@@ -2075,56 +2992,18 @@ async def consume_exec_events_stream(logger, executor, *, redis_url: str):
                     raw,
                 )
 
-        if handled or open_m is None:
-            if not handled and open_m is None:
-                logger.warning("[EXEC-EVENTS] open method missing; skip %s", intent_id)
+        if handled:
             return
 
-        try:
-            if getattr(open_m, "__name__", "") in (
-                "open_position_from_signal",
-                "open_from_intent",
-            ):
-                await _maybe_await(
-                    open_m(
-                        symbol=symbol,
-                        side=side,
-                        interval=interval,
-                        meta={
-                            "price": price,
-                            "trail_pct": data["trail_pct"],
-                            "stall_ttl_sec": data["stall_ttl_sec"],
-                            "intent_id": intent_id,
-                            "score": score,
-                            "raw": raw,
-                        },
-                    )
-                )
-            else:
-                await _maybe_await(
-                    open_m(
-                        symbol=symbol,
-                        side=side,
-                        interval=interval,
-                        price=price,
-                        trail_pct=data["trail_pct"],
-                        stall_ttl_sec=data["stall_ttl_sec"],
-                        intent_id=intent_id,
-                        raw=raw,
-                    )
-                )
-
-            logger.info(
-                "[EXEC-EVENTS] fallback open applied | symbol=%s side=%s score=%.4f intent=%s",
-                symbol,
-                side,
-                score,
-                intent_id,
-            )
-        except TypeError:
-            logger.exception("[EXEC-EVENTS] fallback open signature mismatch | item=%s", raw)
-        except Exception:
-            logger.exception("[EXEC-EVENTS] fallback open failed | item=%s", raw)
+        logger.error(
+            "[EXEC-EVENTS][OPEN-BLOCK] "
+            "canonical execute_decision did not handle OPEN | "
+            "symbol=%s side=%s intent=%s",
+            symbol,
+            side,
+            intent_id,
+        )
+        return
 
     async def _dispatch_close_like(data):
         symbol = data["symbol"]
@@ -2404,7 +3283,12 @@ async def async_main() -> None:
         te = trading_objects.get("trade_executor")
         if te is not None:
             asyncio.create_task(
-                consume_exec_events_stream(system_logger, te, redis_url=redis_url),
+                consume_exec_events_stream(
+                    system_logger,
+                    te,
+                    redis_url=redis_url,
+                    client=trading_objects.get("client"),
+                ),
                 name="exec-events-consumer",
             )
             if system_logger:

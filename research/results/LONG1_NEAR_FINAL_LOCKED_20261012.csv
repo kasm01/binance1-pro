@@ -1,0 +1,4 @@
+horizon,mean_return_pct,worst_seed_pct,best_seed_pct,mean_entries,win_rate_pct,profit_factor,mean_closed_dd_pct,worst_closed_dd_pct,mean_fees_usdt
+6m,96.1421,78.2097,111.0518,248.8333,87.8844,2.0139,-15.2361,-16.1263,191.0631
+1y,87.4075,45.6682,117.5508,655.3333,82.8314,1.4277,-26.6172,-28.3940,278.0404
+forward_27d,15.4804,9.5293,24.5504,26.6667,86.8421,2.6097,-8.3089,-9.5079,17.3736

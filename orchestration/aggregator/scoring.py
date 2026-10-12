@@ -145,15 +145,34 @@ def _trend_veto_hit(evt: Dict[str, Any]) -> Tuple[bool, str]:
 
 def compute_score(evt: Dict[str, Any]) -> Tuple[float, List[str], List[str]]:
     """
-    SignalEvent -> (score_total 0..1, reasons, risk_tags)
+    SignalEvent -> (score_total 0..1, reasons, risk_tags).
 
-    Whale-first overlay:
-      - aligned whale => bonus
-      - contra whale => penalty
-      - strong contra whale => reason/tag
+    Canonical HeavyEngine events carry immutable side-specific ``model_score``.
+    For those events, ranking starts from that exact score; policy/context must
+    not replace model authority. Legacy producers without model_score retain
+    the older composite scoring path below.
     """
     reasons: List[str] = []
     risk_tags: List[str] = []
+
+    if "model_score" in evt:
+        try:
+            model_score = _clamp(float(evt.get("model_score")), 0.0, 1.0)
+        except Exception:
+            model_score = 0.0
+
+        if model_score > 0.0:
+            reasons.append("canonical_model_score")
+
+            spread_available = bool(evt.get("spread_available", False))
+            spread = max(0.0, _safe_float(evt.get("spread_pct", 0.0), 0.0))
+            atr = max(0.0, _safe_float(evt.get("atr_pct", 0.0), 0.0))
+            if spread_available and spread >= _env_float("TAG_WIDE_SPREAD_AT", 0.0009):
+                risk_tags.append("wide_spread")
+            if atr >= _env_float("TAG_HIGH_VOL_ATR_AT", 0.030):
+                risk_tags.append("high_vol")
+
+            return float(model_score), reasons, risk_tags
 
     W_EDGE = _env_float("SCORE_W_EDGE", 0.52)
     W_CONF = _env_float("SCORE_W_CONF", 0.22)
@@ -185,39 +204,89 @@ def compute_score(evt: Dict[str, Any]) -> Tuple[float, List[str], List[str]]:
     spread = max(0.0, _safe_float(evt.get("spread_pct", 0.0), 0.0))
     atr = max(0.0, _safe_float(evt.get("atr_pct", 0.0), 0.0))
 
-    spr_pen = min(1.0, spread / max(SPR_REF, 1e-9)) if spread > 0 else 0.0
-    vol_pen = min(1.0, atr / max(ATR_REF, 1e-9)) if atr > 0 else 0.0
-
-    score_raw = (
-        (W_EDGE * edge)
-        + (W_CONF * conf)
-        + (W_LIQ * liq)
-        + (W_WHALE * whale)
-        - (W_SPREAD_PEN * spr_pen)
-        - (W_VOL_PEN * vol_pen)
+    confidence_available = bool(
+        evt.get(
+            "confidence_available",
+            ("confidence" in evt or "conf" in evt),
+        )
     )
+    liq_available = bool(
+        evt.get(
+            "liq_score_available",
+            "liq_score" in evt,
+        )
+    )
+    spread_available = bool(
+        evt.get(
+            "spread_available",
+            "spread_pct" in evt,
+        )
+    )
+
+    spr_pen = (
+        min(1.0, spread / max(SPR_REF, 1e-9))
+        if spread_available and spread > 0.0
+        else 0.0
+    )
+    vol_pen = (
+        min(1.0, atr / max(ATR_REF, 1e-9))
+        if atr > 0.0
+        else 0.0
+    )
+
+    # Missing quality metrics are UNKNOWN, not zero-quality.
+    # Normalize only across available positive components.
+    positive_sum = (
+        (W_EDGE * edge)
+        + (W_WHALE * whale)
+    )
+    positive_weight = (
+        W_EDGE
+        + W_WHALE
+    )
+
+    if confidence_available:
+        positive_sum += W_CONF * conf
+        positive_weight += W_CONF
+
+    if liq_available:
+        positive_sum += W_LIQ * liq
+        positive_weight += W_LIQ
+
+    if positive_weight > 0.0:
+        score_raw = positive_sum / positive_weight
+    else:
+        score_raw = 0.0
+
+    if spread_available:
+        score_raw -= W_SPREAD_PEN * spr_pen
+
+    # ATR is a real HeavyEngine metric and remains authoritative.
+    score_raw -= W_VOL_PEN * vol_pen
 
     if edge >= 0.55:
         reasons.append("edge_strong")
     elif edge >= 0.35:
         reasons.append("edge_ok")
 
-    if conf >= 0.70:
-        reasons.append("conf_strong")
-    elif conf >= 0.55:
-        reasons.append("conf_ok")
+    if confidence_available:
+        if conf >= 0.70:
+            reasons.append("conf_strong")
+        elif conf >= 0.55:
+            reasons.append("conf_ok")
 
-    if liq >= 0.60:
-        reasons.append("liq_ok")
-    elif liq >= 0.40:
-        reasons.append("liq_mid")
+    if liq_available:
+        if liq >= 0.60:
+            reasons.append("liq_ok")
+        elif liq >= 0.40:
+            reasons.append("liq_mid")
 
     if whale >= 0.20:
         reasons.append("whale_seen")
     if whale >= WHALE_STRONG_TAG:
         reasons.append("whale_strong")
 
-    if spr_pen <= 0.30:
+    if spread_available and spr_pen <= 0.30:
         reasons.append("tight_spread")
     if vol_pen <= 0.50:
         reasons.append("vol_ok")
@@ -247,11 +316,11 @@ def compute_score(evt: Dict[str, Any]) -> Tuple[float, List[str], List[str]]:
         reasons.append("range_whale_penalty")
         risk_tags.append("range_regime")
 
-    if spread >= WIDE_SPREAD_TAG:
+    if spread_available and spread >= WIDE_SPREAD_TAG:
         risk_tags.append("wide_spread")
     if atr >= HIGH_VOL_TAG:
         risk_tags.append("high_vol")
-    if liq <= LOW_LIQ_TAG:
+    if liq_available and liq <= LOW_LIQ_TAG:
         risk_tags.append("low_liq")
     if whale >= WHALE_STRONG_TAG:
         risk_tags.append("whale_strong")
@@ -274,9 +343,24 @@ def pass_quality_gates(evt: Dict[str, Any]) -> Tuple[bool, str]:
     if side not in ("long", "short"):
         return False, "side_none"
 
+    # HeavyEngine canonical events are transported without MARKET CONTEXT
+    # hard vetoes. Immutable model_score is authorized later by the single
+    # MODEL SCORE GATE in TradeExecutor; execution/safety gates remain later.
+    if "model_score" in evt:
+        try:
+            ms = float(evt.get("model_score"))
+        except Exception:
+            return False, "invalid_model_score"
+        if not (0.0 < ms <= 1.0):
+            return False, "invalid_model_score"
+        return True, "canonical_model_transport"
+
     spread = float(_safe_float(evt.get("spread_pct", 0.0), 0.0))
     max_spread = _env_float("GATE_MAX_SPREAD_PCT", 0.0015)
-    if spread > max_spread:
+    spread_available = bool(
+        evt.get("spread_available", "spread_pct" in evt)
+    )
+    if spread_available and spread > max_spread:
         return False, "spread_too_high"
 
     atr = float(_safe_float(evt.get("atr_pct", 0.0), 0.0))
@@ -286,12 +370,24 @@ def pass_quality_gates(evt: Dict[str, Any]) -> Tuple[bool, str]:
 
     conf = float(_safe_float(evt.get("confidence", 0.0), 0.0))
     min_conf = _env_float("GATE_MIN_CONF", 0.35)
-    if conf < min_conf:
+    confidence_available = bool(
+        evt.get(
+            "confidence_available",
+            ("confidence" in evt or "conf" in evt),
+        )
+    )
+    if confidence_available and conf < min_conf:
         return False, "conf_too_low"
 
     liq = float(_safe_float(evt.get("liq_score", 0.0), 0.0))
     min_liq = _env_float("GATE_MIN_LIQ", 0.0)
-    if liq < min_liq:
+    liq_score_available = bool(
+        evt.get(
+            "liq_score_available",
+            "liq_score" in evt,
+        )
+    )
+    if liq_score_available and liq < min_liq:
         return False, "liq_too_low"
 
     min_whale = _env_float("GATE_MIN_WHALE_SCORE", 0.0)

@@ -434,6 +434,15 @@ def offline_train_for_interval(
     - Long & short için SGDClassifier tuning (mode'a göre daha az/çok tur)
     - En iyi modeli kaydet (long/short/best)
     """
+    # SAFETY: this legacy trainer currently derives its target from backward-looking
+    # return_5 and writes generic interval model names. It is not allowed to create
+    # production models unless explicitly unlocked for forensic/legacy reproduction.
+    if str(os.getenv("ALLOW_LEGACY_NONCAUSAL_PRETRAIN", "0")).strip().lower() not in ("1", "true", "yes", "on"):
+        raise RuntimeError(
+            "offline_pretrain_six_months is legacy/non-causal for current production. "
+            "Use training/offline_train_hybrid.py or a validated causal trainer."
+        )
+
     # Mode -> N_ROUNDS, N_ITER (partial_fit step sayısı)
     if mode == "shallow":
         N_ROUNDS, N_ITER = 3, 200

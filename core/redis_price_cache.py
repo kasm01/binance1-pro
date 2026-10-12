@@ -159,10 +159,6 @@ def read_kline_cache(symbol: str, interval: str, max_age_sec: float = 20.0) -> O
     try:
         raw = client.get(_kline_key(symbol, interval))
 
-        # fallback: supervisor env REDIS_PREFIX eksikse short prefix'i de dene
-        if not raw:
-            raw = client.get(f"binance1_short:kline_cache:{str(symbol).upper()}:{str(interval)}")
-
         if not raw:
             return None
 

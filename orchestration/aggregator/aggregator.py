@@ -148,10 +148,28 @@ class Aggregator:
         price = _safe_float(e.get("price", 0.0), 0.0)
         e["price"] = float(price) if price > 0 else 0.0
 
-        e["score_edge"] = _clamp01(e.get("score_edge", e.get("model_score", 0.0)))
+        # model_score is immutable model metadata.
+        # score_edge remains ranking input and must not overwrite it.
+        e["model_score"] = _clamp01(e.get("model_score", 0.0))
+        e["score_edge"] = _clamp01(
+            e.get("score_edge", e.get("model_score", 0.0))
+        )
         e["confidence"] = _clamp01(e.get("confidence", 0.0))
         e["liq_score"] = _clamp01(e.get("liq_score", 0.0))
-        e["spread_pct"] = max(0.0, _safe_float(e.get("spread_pct", 0.0), 0.0))
+        e["spread_pct"] = max(
+            0.0,
+            _safe_float(e.get("spread_pct", 0.0), 0.0),
+        )
+
+        e["confidence_available"] = bool(
+            e.get("confidence_available", False)
+        )
+        e["spread_available"] = bool(
+            e.get("spread_available", False)
+        )
+        e["liq_score_available"] = bool(
+            e.get("liq_score_available", False)
+        )
         e["atr_pct"] = max(0.0, _safe_float(e.get("atr_pct", 0.0), 0.0))
 
         meta = e.get("meta") if isinstance(e.get("meta"), dict) else {}
@@ -235,8 +253,16 @@ class Aggregator:
             "side": side,
             "price": float(price),
             "score_total": float(_clamp01(evt.get("_score_total", 0.0))),
-            "recommended_leverage": int(evt.get("recommended_leverage", 5) or 5),
-            "recommended_notional_pct": float(evt.get("recommended_notional_pct", 0.05) or 0.05),
+            "model_score": float(_clamp01(evt.get("model_score", 0.0))),
+            "confidence_available": bool(
+                evt.get("confidence_available", False)
+            ),
+            "spread_available": bool(
+                evt.get("spread_available", False)
+            ),
+            "liq_score_available": bool(
+                evt.get("liq_score_available", False)
+            ),
             "risk_tags": list(evt.get("_risk_tags", []) or []),
             "reason_codes": list(evt.get("_reason_codes", []) or []),
             "source": src,
@@ -358,12 +384,24 @@ class Aggregator:
                     continue
 
                 score_total, reason_codes, risk_tags = compute_score(e)
-                score_total, reason_codes, risk_tags, blocked = self._apply_whale_overlay(
-                    e,
-                    score_total,
-                    list(reason_codes or []),
-                    list(risk_tags or []),
-                )
+                if "model_score" in e:
+                    # MARKET CONTEXT is telemetry/context for canonical model events,
+                    # not a second hard decision authority. Preserve exact model score.
+                    blocked = False
+                    whale_score = float(e.get("whale_score", 0.0) or 0.0)
+                    whale_dir = str(e.get("whale_dir", "none") or "none")
+                    side0 = str(e.get("side_candidate", "none") or "none")
+                    if whale_score > 0.0:
+                        reason_codes = list(reason_codes or []) + ["whale_context_seen"]
+                    if whale_dir in ("long", "short") and side0 in ("long", "short") and whale_dir != side0:
+                        risk_tags = list(risk_tags or []) + ["whale_contra_context"]
+                else:
+                    score_total, reason_codes, risk_tags, blocked = self._apply_whale_overlay(
+                        e,
+                        score_total,
+                        list(reason_codes or []),
+                        list(risk_tags or []),
+                    )
 
                 if blocked:
                     if self.debug_drops:

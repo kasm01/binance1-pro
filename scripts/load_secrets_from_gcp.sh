@@ -25,7 +25,6 @@ write_secret BINANCE_API_SECRET
 write_secret BINANCE_TESTNET_API_KEY
 write_secret BINANCE_TESTNET_API_SECRET
 write_secret BSCSCAN_API_KEY
-write_secret COINGLASS_API_KEY
 write_secret COINMARKETCAP_API_KEY
 write_secret CRYPTOQUANT_API_KEY
 write_secret ETH_API_KEY

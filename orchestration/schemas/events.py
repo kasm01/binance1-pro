@@ -49,7 +49,18 @@ class SignalEvent:
     # model outputs
     p_used: float = 0.0
     p_single: float = 0.0
+    # Canonical side-specific model probability.
+    # Shadow metadata only for now; no gate reads this yet.
+    model_score: float = 0.0
     confidence: float = 0.0  # 0-1
+
+    # Explicit metric availability.
+    # Missing market-quality data must not silently become
+    # "bad quality" merely because its numeric fallback is 0.
+    confidence_available: bool = False
+    spread_available: bool = False
+    liq_score_available: bool = False
+
     source: str = "HYBRID"
 
     # risk/market quality hints
@@ -130,11 +141,46 @@ class SignalEvent:
 
         # normalize numerics (safe)
         out["price"] = max(0.0, _safe_float(out.get("price", 0.0), 0.0))
-        out["confidence"] = _clamp01(out.get("confidence", out.get("conf", 0.0)))
+        out["confidence"] = _clamp01(
+            out.get("confidence", out.get("conf", 0.0))
+        )
+
+        # Availability compatibility:
+        # - explicit flag wins
+        # - legacy producer with metric key present => available
+        # - missing flag + missing metric key => unavailable
+        if "confidence_available" in out:
+            out["confidence_available"] = bool(
+                out.get("confidence_available")
+            )
+        else:
+            out["confidence_available"] = (
+                "confidence" in d or "conf" in d
+            )
+
+        if "spread_available" in out:
+            out["spread_available"] = bool(
+                out.get("spread_available")
+            )
+        else:
+            out["spread_available"] = (
+                "spread_pct" in d
+            )
+
+        if "liq_score_available" in out:
+            out["liq_score_available"] = bool(
+                out.get("liq_score_available")
+            )
+        else:
+            out["liq_score_available"] = (
+                "liq_score" in d
+            )
+
         out["whale_score"] = _clamp01(out.get("whale_score", 0.0))
 
         out["p_used"] = _clamp01(out.get("p_used", 0.0))
         out["p_single"] = _clamp01(out.get("p_single", 0.0))
+        out["model_score"] = _clamp01(out.get("model_score", 0.0))
 
         out["atr_pct"] = max(0.0, _safe_float(out.get("atr_pct", 0.0), 0.0))
         out["spread_pct"] = max(0.0, _safe_float(out.get("spread_pct", 0.0), 0.0))
@@ -161,6 +207,10 @@ class CandidateTrade:
 
     score_total: float = 0.0
 
+    # Immutable side-specific model probability.
+    # Ranking/policy scores must not overwrite this field.
+    model_score: float = 0.0
+
     # provenance / dedupe
     source: str = ""
     dedup_key: str = ""
@@ -172,8 +222,6 @@ class CandidateTrade:
     risk_tags: List[str] = field(default_factory=list)
 
     # sizing hints
-    recommended_notional_pct: float = 0.0
-    recommended_leverage: int = 3
 
     # optional debug
     raw: Dict[str, Any] = field(default_factory=dict)
@@ -183,9 +231,8 @@ class CandidateTrade:
         # normalize numeric fields defensively
         d["price"] = max(0.0, _safe_float(d.get("price", 0.0), 0.0))
         d["score_total"] = _clamp01(d.get("score_total", 0.0))
+        d["model_score"] = _clamp01(d.get("model_score", 0.0))
         d["whale_score"] = _clamp01(d.get("whale_score", 0.0))
-        d["recommended_notional_pct"] = max(0.0, _safe_float(d.get("recommended_notional_pct", 0.0), 0.0))
-        d["recommended_leverage"] = max(0, _safe_int(d.get("recommended_leverage", 3), 3))
         return d
 
 

@@ -78,7 +78,6 @@ def load_secrets_from_manager(
             "POLYGON_API_KEY",
             "ARBI_API_KEY",
             "THE_GRAPH_API_KEY",
-            "COINGLASS_API_KEY",
             "BSCSCAN_API_KEY",
             "CRYPTOQUANT_API_KEY",
             "COINMARKETCAP_API_KEY",

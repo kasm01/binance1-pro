@@ -155,8 +155,6 @@ class TradeIntent:
     side: str
     price: float
     score: float
-    recommended_leverage: int
-    recommended_notional_pct: float
     reasons: List[str]
     risk_tags: List[str]
     raw: Dict[str, Any]
@@ -174,7 +172,6 @@ class MasterExecutor:
       - whale alignment / contra / veto
       - max open position gate
       - same-symbol dedup gate
-      - leverage / notional sizing refinement
     """
 
     def __init__(self) -> None:
@@ -237,20 +234,10 @@ class MasterExecutor:
         self.w_mtf = _env_float("MASTER_W_SCORE_MTF", 0.25)
         self.w_micro = _env_float("MASTER_W_SCORE_MICRO", 0.15)
 
-        self.lev_min = _env_int("LEV_MIN", 3)
-        self.lev_max = _env_int("LEV_MAX", 30)
-        self.notional_min_pct = _env_float("NOTIONAL_MIN_PCT", 0.02)
-        self.notional_max_pct = _env_float("NOTIONAL_MAX_PCT", 0.25)
 
         self.whale_boost_thr = _env_float("MASTER_WHALE_BOOST_THR", 0.20)
-        self.whale_lev_boost = _env_float("MASTER_WHALE_LEV_BOOST", 1.35)
-        self.whale_npct_boost = _env_float("MASTER_WHALE_NPCT_BOOST", 1.20)
-        self.whale_lev_floor = _env_int("MASTER_WHALE_LEV_FLOOR", 8)
-        self.whale_npct_floor = _env_float("MASTER_WHALE_NPCT_FLOOR", 0.04)
 
         self.high_vol_tag = os.getenv("HIGH_VOL_TAG", "high_vol")
-        self.high_vol_npct_mult = _env_float("HIGH_VOL_NPCT_MULT", 0.80)
-        self.high_vol_lev_mult = _env_float("HIGH_VOL_LEV_MULT", 0.85)
 
         self.drop_if_whale_contra = _env_bool("MASTER_DROP_WHALE_CONTRA", True)
 
@@ -272,8 +259,6 @@ class MasterExecutor:
         )
 
         self.whale_soft_block_score_cap = _env_float("MASTER_WHALE_SOFT_BLOCK_SCORE_CAP", 0.55)
-        self.whale_reduce_npct_mult = _env_float("MASTER_WHALE_REDUCE_NPCT_MULT", 0.70)
-        self.whale_reduce_lev_mult = _env_float("MASTER_WHALE_REDUCE_LEV_MULT", 0.80)
         self.whale_confirm_score_bonus = _env_float("MASTER_WHALE_CONFIRM_SCORE_BONUS", 0.08)
         self.whale_strong_confirm_score_bonus = _env_float(
             "MASTER_WHALE_STRONG_CONFIRM_SCORE_BONUS",
@@ -511,6 +496,19 @@ class MasterExecutor:
 
     def _compute_final_score(self, c: Dict[str, Any]) -> float:
         raw_evt = self._get_raw_evt(c)
+
+        # Canonical HeavyEngine model_score is immutable execution metadata.
+        # MasterExecutor may rank/contextualize candidates, but must not replace
+        # the model probability that TradeExecutor will gate on.
+        canonical = _first_non_empty(
+            raw_evt.get("model_score"),
+            c.get("model_score"),
+            default=None,
+        )
+        if canonical is not None:
+            return float(_clamp(_safe_float(canonical, 0.0), 0.0, 1.0))
+
+        # Legacy fallback only for old payloads without canonical model_score.
         ctx = self._extract_whale_context(raw_evt)
 
         whale = _safe_float(ctx.get("whale_score", c.get("whale_score", 0.0)), 0.0)
@@ -525,11 +523,24 @@ class MasterExecutor:
             0.0,
         )
 
+        # Canonical model probability:
+        #   LONG  -> p_used
+        #   SHORT -> 1 - p_used
+        #
+        # HeavyEngine publishes this once as immutable
+        # model_score. Master policy/ranking must not reinterpret
+        # raw p_used for SHORT.
+        #
+        # Legacy fields remain fallback-only until old stream
+        # payloads are fully drained.
         mtf = _safe_float(
             _first_non_empty(
+                raw_evt.get("model_score"),
+                _meta_get(raw_evt, "model_score", None),
+                c.get("model_score"),
                 _meta_get(raw_evt, "fast_model_score", None),
-                _meta_get(raw_evt, "p_used", None),
                 raw_evt.get("fast_model_score"),
+                _meta_get(raw_evt, "p_used", None),
                 raw_evt.get("p_used"),
                 c.get("score_total", 0.0),
                 0.0,
@@ -594,7 +605,10 @@ class MasterExecutor:
         for v in candidates:
             pv = _safe_float(v, 0.0)
 
-            if pv > 10:
+            # Any positive futures price is valid.
+            # The legacy >10 guard incorrectly rejected real
+            # markets such as XRP/ADA/DOGE/SUI/NEAR.
+            if pv > 0.0:
                 return float(pv)
 
         return 0.0
@@ -663,6 +677,111 @@ class MasterExecutor:
         whale_score = self._get_whale_confidence(raw_evt)
         whale_contra = self._is_whale_contra(side, raw_evt)
 
+        # ----------------------------------------------------
+        # CANONICAL WHALE OPEN POLICY
+        #
+        # Legacy TradeExecutor final whale semantics burada
+        # merkezi hale getirilir. TradeExecutor gate'leri
+        # sonraki ayrı adımda kaldırılacaktır.
+        # ----------------------------------------------------
+        whale_open_min_score = _env_float(
+            "WHALE_OPEN_MIN_SCORE",
+            0.10,
+        )
+        require_whale_for_open = _env_bool(
+            "REQUIRE_WHALE_FOR_OPEN",
+            False,
+        )
+        strict_whale_alignment = _env_bool(
+            "STRICT_WHALE_ALIGNMENT",
+            False,
+        )
+
+        whale_dir = self._get_whale_direction(
+            raw_evt
+        )
+
+        whale_dir_norm = str(
+            whale_dir or "none"
+        ).strip().lower()
+
+        if whale_dir_norm in (
+            "buy",
+            "bull",
+            "up",
+            "in",
+            "inflow",
+        ):
+            whale_dir_norm = "long"
+        elif whale_dir_norm in (
+            "sell",
+            "bear",
+            "down",
+            "out",
+            "outflow",
+        ):
+            whale_dir_norm = "short"
+        elif whale_dir_norm not in (
+            "long",
+            "short",
+        ):
+            whale_dir_norm = "none"
+
+        if (
+            require_whale_for_open
+            and float(whale_score)
+            < float(whale_open_min_score)
+        ):
+            print(
+                f"[MasterExecutor][WHALE][DROP] "
+                f"{symbol} {interval} {side} "
+                f"reason=whale_score_too_low "
+                f"whale={whale_score:.3f} "
+                f"need={whale_open_min_score:.3f}"
+            )
+            return True
+
+        if (
+            require_whale_for_open
+            and whale_dir_norm
+            not in ("long", "short")
+        ):
+            print(
+                f"[MasterExecutor][WHALE][DROP] "
+                f"{symbol} {interval} {side} "
+                f"reason=whale_direction_missing"
+            )
+            return True
+
+        if (
+            strict_whale_alignment
+            and whale_dir_norm in ("long", "short")
+            and whale_dir_norm != side
+        ):
+            print(
+                f"[MasterExecutor][WHALE][DROP] "
+                f"{symbol} {interval} {side} "
+                f"reason=whale_misaligned "
+                f"whale_dir={whale_dir_norm} "
+                f"whale={whale_score:.3f}"
+            )
+            return True
+
+        # Legacy final OPEN action veto semantiği.
+        if action in {
+            "block",
+            "avoid",
+            "hard_block",
+        }:
+            print(
+                f"[MasterExecutor][WHALE][DROP] "
+                f"{symbol} {interval} {side} "
+                f"reason=whale_action_block "
+                f"action={action} "
+                f"whale={whale_score:.3f}"
+            )
+            return True
+
         if float(self.w_min) > 0.0 and float(whale_score) < float(self.w_min):
             print(
                 f"[MasterExecutor][WHALE][DROP] {symbol} {interval} {side} "
@@ -721,45 +840,6 @@ class MasterExecutor:
         whale_action = self._get_whale_action(raw_evt)
         whale_aligned = whale_action in self.whale_boost_actions
 
-        base_lev = int(_safe_float(c.get("recommended_leverage", 5), 5))
-        base_npct = float(_safe_float(c.get("recommended_notional_pct", 0.05), 0.05))
-
-        conf = _safe_float(raw_evt.get("confidence", c.get("confidence", 0.5)), 0.5)
-        atr_pct = _safe_float(raw_evt.get("atr_pct", c.get("atr_pct", 0.01)), 0.01)
-        spread_pct = _safe_float(raw_evt.get("spread_pct", c.get("spread_pct", 0.0003)), 0.0003)
-
-        conf_adj = _clamp(0.7 + conf, 0.7, 1.7)
-        atr_adj = _clamp(0.015 / max(atr_pct, 1e-6), 0.4, 1.2)
-        spr_adj = _clamp(0.0004 / max(spread_pct, 1e-9), 0.4, 1.2)
-
-        whale_mult_lev = 1.0
-        whale_mult_npct = 1.0
-
-        if whale_aligned and whale_score >= float(self.whale_boost_thr):
-            whale_mult_lev = float(self.whale_lev_boost)
-            whale_mult_npct = float(self.whale_npct_boost)
-            reasons.append("master_whale_boost")
-
-        lev = int(round(base_lev * conf_adj * atr_adj * spr_adj * whale_mult_lev))
-        lev = int(_clamp(lev, self.lev_min, self.lev_max))
-
-        npct = base_npct * conf_adj * _clamp(atr_adj, 0.6, 1.1) * _clamp(spr_adj, 0.6, 1.1) * whale_mult_npct
-        npct = float(_clamp(npct, self.notional_min_pct, self.notional_max_pct))
-
-        if whale_action in self.whale_reduce_actions:
-            lev = int(_clamp(lev * self.whale_reduce_lev_mult, self.lev_min, self.lev_max))
-            npct = float(_clamp(npct * self.whale_reduce_npct_mult, self.notional_min_pct, self.notional_max_pct))
-            reasons.append("master_whale_reduce")
-
-        if self.high_vol_tag in (risk_tags or []):
-            lev = int(_clamp(round(lev * self.high_vol_lev_mult), self.lev_min, self.lev_max))
-            npct = float(_clamp(npct * self.high_vol_npct_mult, self.notional_min_pct, self.notional_max_pct))
-            reasons.append("master_high_vol_clamp")
-
-        if whale_aligned and whale_score >= float(self.whale_boost_thr):
-            lev = max(lev, int(self.whale_lev_floor))
-            npct = max(npct, float(self.whale_npct_floor))
-
         c2 = dict(c)
         c2["_score_total_final"] = float(score)
         c2["trail_pct"] = float(self.trail_pct)
@@ -797,8 +877,6 @@ class MasterExecutor:
             side=side,
             price=float(price),
             score=float(score),
-            recommended_leverage=int(lev),
-            recommended_notional_pct=float(npct),
             reasons=reasons,
             risk_tags=risk_tags,
             raw=dict(c2),
@@ -905,8 +983,6 @@ class MasterExecutor:
                     "side": it.side,
                     "price": float(p),
                     "score": float(it.score),
-                    "recommended_leverage": int(it.recommended_leverage),
-                    "recommended_notional_pct": float(it.recommended_notional_pct),
                     "trail_pct": float(it.trail_pct or 0.0),
                     "stall_ttl_sec": int(it.stall_ttl_sec or 0),
                     "reasons": it.reasons,
@@ -961,8 +1037,7 @@ class MasterExecutor:
                     if out_id:
                         summary = ", ".join(
                             [
-                                f"{it.symbol}:{it.side}@L{it.recommended_leverage} "
-                                f"npct={it.recommended_notional_pct:.3f}"
+                                f"{it.symbol}:{it.side}"
                                 for it in intents
                             ]
                         )
@@ -1000,8 +1075,7 @@ class MasterExecutor:
                 if out_id:
                     summary = ", ".join(
                         [
-                            f"{it.symbol}:{it.side}@L{it.recommended_leverage} "
-                            f"npct={it.recommended_notional_pct:.3f}"
+                            f"{it.symbol}:{it.side}"
                             for it in intents
                         ]
                     )

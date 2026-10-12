@@ -569,15 +569,23 @@ fi
 # -----------------------------
 must_names=()
 
-for n in 1 2 3 4 5 6 7 8; do
+ORCH_SCANNERS_ENABLE="${ORCH_SCANNERS_ENABLE:-0}"
+
+case "${ORCH_SCANNERS_ENABLE}" in
+  1|true|TRUE|True|yes|YES|on|ON|y|Y)
+    for n in 1 2 3 4 5 6 7 8; do
   var="W${n}_SYMBOLS"
   syms="$(eval echo \${$var})"
   syms="$(echo "$syms" | xargs 2>/dev/null || true)"
 
-  if [[ -n "${syms:-}" ]]; then
-    must_names+=("scanner_w${n}")
-  fi
-done
+      if [[ -n "${syms:-}" ]]; then
+        must_names+=("scanner_w${n}")
+      fi
+    done
+    ;;
+  *)
+    ;;
+esac
 
 must_names+=(
   aggregator
