@@ -763,7 +763,7 @@ async def build_entry_market_context(
     Canonical Entry Confirmation candle context provider.
 
     HeavyEngine mevcut dataframe'i aynı intervalde tekrar kullanabilir.
-    Exec-events adapter ise gerekirse Binance'tan yalnız 2 kline çeker.
+    Exec-events adapter ise gerekirse Binance'tan tek istekte 20 kline çeker; 15m price/flow context aynı cevaptan üretilir.
     Failure durumunda stale/legacy candle'a düşmez; unavailable döner.
     """
     decision_itv = str(decision_interval or "").strip() or "1m"
@@ -785,7 +785,7 @@ async def build_entry_market_context(
                 client=client,
                 symbol=str(symbol).upper().strip(),
                 interval=entry_itv,
-                limit=2,
+                limit=20,
                 logger=logger,
             )
             source = f"fetch_klines:{entry_itv}"
@@ -805,6 +805,9 @@ async def build_entry_market_context(
             pass
 
     op = hi = lo = cl = 0.0
+    confirmation_open_ms = 0
+    entry_price_return_15m = None
+    entry_money_flow_15m = None
 
     try:
         if df is not None and len(df) > 0:
@@ -812,6 +815,26 @@ async def build_entry_market_context(
             hi = float(df["high"].iloc[-1])
             lo = float(df["low"].iloc[-1])
             cl = float(df["close"].iloc[-1])
+            confirmation_open_ms = int(float(df["open_time"].iloc[-1])) if "open_time" in df.columns else 0
+
+            # Causal entry-time 15m context. The current/forming confirmation
+            # candle is excluded explicitly; only rows strictly before its
+            # open timestamp may contribute. No extra request is made.
+            if confirmation_open_ms > 0 and {
+                "open_time", "close", "quote_asset_volume", "taker_buy_quote_volume"
+            }.issubset(df.columns):
+                completed = df[pd.to_numeric(df["open_time"], errors="coerce") < confirmation_open_ms].copy()
+                if len(completed) >= 16:
+                    closes = pd.to_numeric(completed["close"], errors="coerce")
+                    latest_close = float(closes.iloc[-1])
+                    prior_close = float(closes.iloc[-16])
+                    q = pd.to_numeric(completed["quote_asset_volume"], errors="coerce").tail(15)
+                    b = pd.to_numeric(completed["taker_buy_quote_volume"], errors="coerce").tail(15)
+                    qsum = float(q.sum())
+                    if latest_close > 0.0 and prior_close > 0.0:
+                        entry_price_return_15m = float(latest_close / prior_close - 1.0)
+                    if qsum > 0.0:
+                        entry_money_flow_15m = float((2.0 * b.sum() - qsum) / qsum)
 
             valid = (
                 op > 0.0
@@ -837,6 +860,10 @@ async def build_entry_market_context(
         "entry_candle_close": float(cl),
         "entry_candle_interval": entry_itv,
         "entry_context_source": source,
+        "entry_confirmation_open_ms": int(confirmation_open_ms or 0),
+        "entry_price_return_15m": entry_price_return_15m,
+        "entry_money_flow_15m": entry_money_flow_15m,
+        "entry_market_context_schema": "entry_market_context.v1.telemetry_inputs",
     }
 
 
@@ -2187,6 +2214,9 @@ class HeavyEngine:
         entry_context_source = str(
             entry_ctx["entry_context_source"]
         )
+        entry_confirmation_open_ms = int(entry_ctx.get("entry_confirmation_open_ms") or 0)
+        entry_price_return_15m = entry_ctx.get("entry_price_return_15m")
+        entry_money_flow_15m = entry_ctx.get("entry_money_flow_15m")
 
         timer.mark("entry_context")
 
@@ -2228,6 +2258,10 @@ class HeavyEngine:
             "entry_candle_close": entry_candle_close,
             "entry_candle_interval": entry_interval_ctx,
             "entry_context_source": entry_context_source,
+            "entry_confirmation_open_ms": entry_confirmation_open_ms,
+            "entry_price_return_15m": entry_price_return_15m,
+            "entry_money_flow_15m": entry_money_flow_15m,
+            "entry_market_context_schema": "entry_market_context.v1.telemetry_inputs",
             "p_buy_source": (debug_single.get("mode") if isinstance(debug_single, dict) else "unknown"),
             "whale_dir": whale_dir,
             "whale_score": float(whale_score),

@@ -1,0 +1,68 @@
+{
+  "schema_version": "strategy_isolation_registry.v1",
+  "shared": {
+    "services": ["binance1-oi-context.service"],
+    "redis_patterns": [
+      "context:oi:{symbol}",
+      "shadow:market_context:okx_oi:{symbol}",
+      "shadow:market_context:binance_structure:{symbol}",
+      "shadow:market_context:microstructure:{symbol}",
+      "shadow:market_context:combined:{symbol}"
+    ],
+    "notes": "Market data/context is shared by symbol and must not be duplicated per strategy."
+  },
+  "strategies": {
+    "LONG1": {
+      "symbol": "NEARUSDT",
+      "side": "long",
+      "redis_owned": [
+        "signals_stream_long1",
+        "candidates_stream_long1",
+        "top5_stream_long1",
+        "trade_intents_stream_long1",
+        "exec_events_stream_long1",
+        "open_positions_state_long1",
+        "shadow:telemetry:long1:model_candidate_v1",
+        "shadow:telemetry:long1:entry_hazard_v1",
+        "shadow:telemetry:long1:entry_hazard_v1_outcomes"
+      ],
+      "pid_files": [
+        "run/shadow/long1_near_structure.pid",
+        "run/shadow/long1_near_microstructure.pid"
+      ],
+      "logs": [
+        "logs/long1_near_structure.log",
+        "logs/long1_near_microstructure.log"
+      ],
+      "services": []
+    },
+    "SHORT1": {
+      "symbol": "INJUSDT",
+      "side": "short",
+      "redis_owned": [
+        "signals_stream_short1",
+        "candidates_stream_short1",
+        "top5_stream_short1",
+        "exec_events_stream_short1",
+        "open_positions_state_short1",
+        "telemetry:short1:inj:model_shadow_v5",
+        "telemetry:short1:inj:model_shadow_v5_outcomes",
+        "telemetry:short1:inj:model_shadow_v5:finalized",
+        "telemetry:short1:v30:lifecycle_shadow_v5",
+        "shadow:short1:v30:v5:state",
+        "shadow:short1:v30:v5:last_source_id",
+        "telemetry:short1:inj:entry_hazard_orderbook_v44_shadow",
+        "telemetry:short1:inj:entry_hazard_orderbook_v44_outcomes"
+      ],
+      "pid_files": [],
+      "logs": [],
+      "services": [
+        "binance1-short1-model-shadow.service",
+        "binance1-short1-model-shadow-finalizer.service",
+        "binance1-short1-model-shadow-finalizer.timer",
+        "binance1-short1-v30-shadow.service",
+        "binance1-short1-entry-hazard-v44.service"
+      ]
+    }
+  }
+}

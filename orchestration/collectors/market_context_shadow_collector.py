@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, sys, time
+import argparse, json, os, sys, time
 from pathlib import Path
 from typing import Any, Dict
 ROOT=Path(__file__).resolve().parents[2]
@@ -37,6 +37,9 @@ def build_context(r: Any, symbol: str) -> Dict[str,Any]:
     accel_short=bool(st_ok and accel is not None and float(accel)<0.0)
     flow_long=bool(st_ok and imb3 is not None and float(imb3)>0.0)
     flow_short=bool(st_ok and imb3 is not None and float(imb3)<0.0)
+    flow15=st.get('research_m3_flow15_completed'); flow60=st.get('research_m3_flow60_completed')
+    long_exhaustion_threshold=float(os.getenv('LONG_MONEY_FLOW_EXHAUSTION_60M','0.15') or .15)
+    long_exhaustion=bool(st_ok and flow60 is not None and float(flow60)>=long_exhaustion_threshold)
     return {
       'schema_version':3,'shadow_only':True,'observed_at_ms':now_ms,'symbol':symbol,
       'status':'OK' if (oi_ok and st_ok) else 'DEGRADED',
@@ -45,6 +48,10 @@ def build_context(r: Any, symbol: str) -> Dict[str,Any]:
                  'm3_persistence_long':persist_long,'m3_persistence_short':persist_short,
                  'm3_accel_long':accel_long,'m3_accel_short':accel_short,
                  'm3_flow_long':flow_long,'m3_flow_short':flow_short,
+                 'taker_flow15_completed':flow15,'taker_flow60_completed':flow60,
+                 'long_money_flow_exhaustion':long_exhaustion,
+                 'long_money_flow_exhaustion_threshold':long_exhaustion_threshold,
+                 'long_money_flow_policy':'SHADOW_ONLY_NEW_ENTRY_VETO_CANDIDATE',
                  'oi_context_available':oi_ok,'structure_context_available':st_ok,
                  'microstructure_context_available':micro_ok}
     }
@@ -74,7 +81,7 @@ def main() -> int:
             try:
                 p=build_context(r,sym); store(r,p,a.ttl_sec)
                 oi=p['okx_oi']; st=p['binance_structure']; micro=p['binance_microstructure']
-                print(f"OK symbol={sym} status={p['status']} oi={oi.get('oi_direction')} struct={st.get('status')} micro={micro.get('status')} spread={micro.get('spread_bps')} support={p['derived']['structure_oi_support']}",flush=True)
+                print(f"OK symbol={sym} status={p['status']} oi={oi.get('oi_direction')} struct={st.get('status')} micro={micro.get('status')} spread={micro.get('spread_bps')} support={p['derived']['structure_oi_support']} flow60={p['derived'].get('taker_flow60_completed')} long_exh={p['derived'].get('long_money_flow_exhaustion')}",flush=True)
             except Exception as e:
                 print(f"ERR symbol={sym} type={type(e).__name__} msg={str(e)[:160]}",flush=True)
         time.sleep(max(0.5,a.poll_sec))

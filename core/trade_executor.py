@@ -9603,6 +9603,68 @@ class TradeExecutor:
             "side_allowed": bool(side_allowed),
         }
 
+    def _resolve_long_dynamic_model_threshold(
+        self,
+        *,
+        symbol: str,
+        side: str,
+        signal_score: float,
+        base_threshold: float,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """LONG conditional recovery threshold authority.
+
+        Base threshold remains authoritative by default. A lower recovery floor
+        is allowed only for the configured LONG symbol when fresh 3m structure
+        context proves the locked research recovery condition. Missing/stale
+        context never relaxes the threshold.
+        """
+        sym_u=str(symbol or "").upper().strip()
+        side_norm=str(side or "").lower().strip()
+        base=float(base_threshold)
+        score=float(signal_score)
+        enabled=str(os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE","0") or "0").strip().lower() in ("1","true","yes","on")
+        target=str(os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL","") or "").upper().strip()
+        if not enabled or side_norm!="long" or (target and sym_u!=target):
+            return {"threshold":base,"base_threshold":base,"mode":"base","recovery":False}
+        try: floor=float(os.getenv("LONG_DYNAMIC_MODEL_GATE_FLOOR",str(base)) or base)
+        except Exception: floor=base
+        floor=min(base,max(0.0,floor))
+        if score>=base or score<floor:
+            return {"threshold":base,"base_threshold":base,"floor":floor,"mode":"base","recovery":False}
+        try: min_hist=max(1,int(float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_HISTORY","80") or 80)))
+        except Exception: min_hist=80
+        try: min_atr=float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_ATR_RANK","0.60") or 0.60)
+        except Exception: min_atr=0.60
+        try: min_close=float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_CLOSE_LOC","0.25") or 0.25)
+        except Exception: min_close=0.25
+        try: min_wick=float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_LOWER_WICK_FRAC","0.25") or 0.25)
+        except Exception: min_wick=0.25
+        st={}
+        try:
+            if self.redis is not None and _read_binance_structure_shadow is not None:
+                obj=_read_binance_structure_shadow(self.redis,sym_u)
+                if isinstance(obj,dict): st=obj
+        except Exception:
+            st={}
+        status=str(st.get("status") or "").upper()
+        try: atr_rank=float(st.get("research_m3_atr_rank_240"))
+        except Exception: atr_rank=float("nan")
+        try: hist=int(float(st.get("research_m3_atr_rank_history") or 0))
+        except Exception: hist=0
+        try: close_loc=float(st.get("research_m3_close_loc"))
+        except Exception: close_loc=float("nan")
+        try: wick=float(st.get("research_m3_lower_wick_frac"))
+        except Exception: wick=float("nan")
+        fresh=status=="OK"
+        recovery=bool(fresh and hist>=min_hist and math.isfinite(atr_rank) and atr_rank>=min_atr and ((math.isfinite(close_loc) and close_loc>=min_close) or (math.isfinite(wick) and wick>=min_wick)))
+        threshold=floor if recovery else base
+        try:
+            if self.logger:
+                self.logger.info("[EXEC][LONG-DYN-GATE] symbol=%s score=%.4f base=%.4f floor=%.4f effective=%.4f recovery=%s atr_rank=%s hist=%s close_loc=%s lower_wick=%s status=%s",sym_u,score,base,floor,threshold,recovery,str(atr_rank),hist,str(close_loc),str(wick),status or "MISSING")
+        except Exception: pass
+        return {"threshold":float(threshold),"base_threshold":base,"floor":floor,"mode":"recovery" if recovery else "base","recovery":recovery,"atr_rank":atr_rank,"history":hist,"close_loc":close_loc,"lower_wick_frac":wick,"context_status":status or "MISSING"}
+
     def _resolve_long_decision_open_score_context(
         self,
         *,
@@ -9634,11 +9696,31 @@ class TradeExecutor:
             long_open_context.get("open_min_score")
             or 0.0
         )
+        dyn_enabled = str(os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE","0") or "0").strip().lower() in ("1","true","yes","on")
+        dyn_symbol = str(os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL","") or "").upper().strip()
+        sym_u = str(symbol or "").upper().strip()
+        if dyn_enabled and str(side or "").strip().lower()=="long" and (not dyn_symbol or sym_u==dyn_symbol):
+            try:
+                open_min_score=float(os.getenv(f"COIN_LONG_THRESHOLD_{sym_u}", os.getenv("LONG_THRESHOLD", str(open_min_score))) or open_min_score)
+            except Exception:
+                pass
+        dyn_gate = self._resolve_long_dynamic_model_threshold(
+            symbol=str(symbol or "").upper().strip(),
+            side=str(side or "").strip().lower(),
+            signal_score=signal_score,
+            base_threshold=open_min_score,
+            extra=extra0,
+        )
+        open_min_score=float(dyn_gate.get("threshold") or open_min_score)
+        long_open_context=dict(long_open_context)
+        long_open_context["dynamic_model_gate"]=dict(dyn_gate)
+        long_open_context["open_min_score"]=open_min_score
 
         return {
             "context": long_open_context,
             "signal_score": signal_score,
             "open_min_score": open_min_score,
+            "dynamic_model_gate": dyn_gate,
         }
 
 

@@ -5,6 +5,9 @@ import os
 import time
 from typing import Any, Dict, Optional
 
+from orchestration.context.entry_context_snapshot import strictly_prior_oi_snapshot
+from orchestration.context.market_context_contract import classify_confirmed_position_build
+
 SNAPSHOT_PREFIX = "shadow:market_context:okx_oi:"
 STRUCTURE_PREFIX = "shadow:market_context:binance_structure:"
 COMBINED_PREFIX = "shadow:market_context:combined:"
@@ -145,9 +148,15 @@ def read_binance_structure_shadow(
             "research_m3_buy_ratio": _f(obj.get("research_m3_buy_ratio")),
             "research_m3_imbalance": _f(obj.get("research_m3_imbalance")),
             "research_m3_imb_mean3": _f(obj.get("research_m3_imb_mean3")),
+            "research_m3_flow15_completed": _f(obj.get("research_m3_flow15_completed")),
+            "research_m3_flow60_completed": _f(obj.get("research_m3_flow60_completed")),
             "research_m3_body": _f(obj.get("research_m3_body")),
             "research_m3_range": _f(obj.get("research_m3_range")),
             "research_m3_close_loc": _f(obj.get("research_m3_close_loc")),
+            "research_m3_lower_wick_frac": _f(obj.get("research_m3_lower_wick_frac")),
+            "research_m3_atr14_pct": _f(obj.get("research_m3_atr14_pct")),
+            "research_m3_atr_rank_240": _f(obj.get("research_m3_atr_rank_240")),
+            "research_m3_atr_rank_history": obj.get("research_m3_atr_rank_history"),
         })
         if cache_age is None or cache_age > max_cache_age_sec or source_age is None or source_age > max_source_age_sec:
             out["status"] = "STALE"
@@ -222,6 +231,56 @@ def emit_entry_context_shadow(
             and st.get("deep_pullback") is True and st.get("low_recovery") is True
             and st.get("price_down_3m") is True
         )
+
+        # Canonical SHORT-style entry-time OI/price/flow context, telemetry only.
+        # OI comes from one central 5m collector; price/flow inputs are reused
+        # from the same 1m request that supplied ENTRY CONFIRMATION.
+        entry_ctx_v1: Dict[str, Any] = {
+            "available": False,
+            "schema_version": "entry_market_context.v1",
+            "reason": "missing_entry_inputs",
+            "policy_effect": "TELEMETRY_ONLY",
+        }
+        try:
+            confirm_open_ms = int(float(x.get("entry_confirmation_open_ms") or 0))
+            ret15 = x.get("entry_price_return_15m")
+            flow15 = x.get("entry_money_flow_15m")
+            raw_oi = redis_client.get(f"context:oi:{sym}")
+            oi_obj = json.loads(raw_oi) if isinstance(raw_oi, str) else (raw_oi if isinstance(raw_oi, dict) else {})
+            if confirm_open_ms > 0 and ret15 is not None and flow15 is not None and isinstance(oi_obj, dict):
+                oi_sel = strictly_prior_oi_snapshot(oi_obj, cutoff_open_ms=confirm_open_ms)
+                if oi_sel.get("available"):
+                    regime = classify_confirmed_position_build(
+                        oi_delta_15m=oi_sel.get("oi_delta_15m"),
+                        price_return_15m=ret15,
+                        money_flow_15m=flow15,
+                    )
+                    entry_ctx_v1 = {
+                        "available": True,
+                        "schema_version": "entry_market_context.v1",
+                        "snapshot_stage": "preorder_completed_1m",
+                        "confirmation_open_ms": confirm_open_ms,
+                        "price_response": {"return_15m": float(ret15)},
+                        "money_flow": {"flow_15m": float(flow15)},
+                        "open_interest": oi_sel,
+                        "regime": {
+                            "name": regime.get("name"),
+                            "build_direction": regime.get("build_direction"),
+                        },
+                        "policy_effect": "TELEMETRY_ONLY",
+                    }
+                else:
+                    entry_ctx_v1["reason"] = "missing_causal_oi"
+                    entry_ctx_v1["open_interest"] = oi_sel
+        except Exception as exc:
+            entry_ctx_v1 = {
+                "available": False,
+                "schema_version": "entry_market_context.v1",
+                "reason": "entry_context_exception",
+                "error": type(exc).__name__,
+                "policy_effect": "TELEMETRY_ONLY",
+            }
+
         payload = {
             "schema_version": 1,
             "shadow_only": True,
@@ -255,6 +314,15 @@ def emit_entry_context_shadow(
             "research_m3_buy_ratio": st.get("research_m3_buy_ratio"),
             "research_m3_imbalance": st.get("research_m3_imbalance"),
             "research_m3_imb_mean3": st.get("research_m3_imb_mean3"),
+            "research_m3_flow15_completed": st.get("research_m3_flow15_completed"),
+            "research_m3_flow60_completed": st.get("research_m3_flow60_completed"),
+            "long_money_flow_exhaustion": bool(
+                st_ok
+                and st.get("research_m3_flow60_completed") is not None
+                and float(st.get("research_m3_flow60_completed")) >= float(os.getenv("LONG_MONEY_FLOW_EXHAUSTION_60M", "0.15") or 0.15)
+            ),
+            "long_money_flow_exhaustion_threshold": float(os.getenv("LONG_MONEY_FLOW_EXHAUSTION_60M", "0.15") or 0.15),
+            "long_money_flow_policy": "SHADOW_ONLY_NEW_ENTRY_VETO_CANDIDATE",
             "research_m3_body": st.get("research_m3_body"),
             "research_m3_range": st.get("research_m3_range"),
             "research_m3_close_loc": st.get("research_m3_close_loc"),
@@ -282,6 +350,7 @@ def emit_entry_context_shadow(
             "micro_t30_count": micro.get("t30_count"),
             "micro_t30_signed_ratio": micro.get("t30_signed_ratio"),
             "structure_oi_support": structure_oi_support,
+            "entry_market_context": entry_ctx_v1,
             "quality_band": x.get("quality_band"),
             "near_oi_recovery_support": "UNKNOWN",
         }
