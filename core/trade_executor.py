@@ -14,6 +14,12 @@ from typing import Any, Dict, List, Optional, Tuple, Set
 
 import redis
 
+from core.binance_futures_v3 import (
+    account as _futures_v3_account,
+    balance as _futures_v3_balance,
+    position_risk as _futures_v3_position_risk,
+)
+
 try:
     from monitoring.okx_oi_shadow_context import (
         emit_entry_context_shadow as _emit_okx_oi_entry_shadow,
@@ -834,7 +840,7 @@ class TradeExecutor:
             except Exception:
                 pass
 
-        # 2) Fallback: futures_position_information()
+        # 2) Legacy fallback: futures_position_information()
         try:
             fn = getattr(client, "futures_position_information", None)
             if callable(fn):
@@ -849,6 +855,20 @@ class TradeExecutor:
                     )
             except Exception:
                 pass
+
+        # 3) Binance Futures current API fallback: /fapi/v3/positionRisk.
+        if not out:
+            try:
+                _append_from_rows(_futures_v3_position_risk())
+            except Exception as e:
+                try:
+                    if self.logger:
+                        self.logger.warning(
+                            "[EXEC][EXCHANGE-POS] v3 positionRisk read failed | err=%s",
+                            str(e)[:300],
+                        )
+                except Exception:
+                    pass
 
         return out
 
@@ -1014,13 +1034,17 @@ class TradeExecutor:
 
         try:
             fn = getattr(client, "futures_account", None)
-            if not callable(fn):
-                return 0.0
+            if callable(fn):
+                acc = fn()
+                if isinstance(acc, dict):
+                    available = float(acc.get("availableBalance", 0.0) or 0.0)
+                    if available > 0:
+                        return available
+        except Exception:
+            pass
 
-            acc = fn()
-            if not isinstance(acc, dict):
-                return 0.0
-
+        try:
+            acc = _futures_v3_account()
             available = float(acc.get("availableBalance", 0.0) or 0.0)
             if available > 0:
                 return available
@@ -2373,6 +2397,18 @@ class TradeExecutor:
                             if cw is not None and cw > 0:
                                 return float(cw)
                             return float(bal)
+        except Exception:
+            pass
+
+        try:
+            rows = _futures_v3_balance()
+            for r in rows:
+                if str(r.get("asset", "")).upper() == "USDT":
+                    bal = self._clip_float(r.get("balance"), 0.0) or 0.0
+                    cw = self._clip_float(r.get("crossWalletBalance"), None)
+                    if cw is not None and cw > 0:
+                        return float(cw)
+                    return float(bal)
         except Exception:
             pass
 
@@ -5521,19 +5557,21 @@ class TradeExecutor:
             }
 
         try:
+            rows: Any = None
             fn = getattr(
                 client,
                 "futures_position_information",
                 None,
             )
-            if not callable(fn):
-                return {
-                    "verify": "skip",
-                    "symbol": sym,
-                    "reason": "fn_missing",
-                }
+            if callable(fn):
+                try:
+                    rows = fn(symbol=sym)
+                except Exception:
+                    rows = None
 
-            rows = fn(symbol=sym)
+            if rows is None:
+                rows = _futures_v3_position_risk(sym)
+
             if not isinstance(rows, list):
                 rows = [rows]
 
