@@ -1,0 +1,11 @@
+[Unit]
+Description=binance1 central risk shadow observer (read-only authority)
+After=network-online.target redis-server.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/kasm920/binance1-pro
+EnvironmentFile=-/home/kasm920/binance1-pro/.env
+EnvironmentFile=-/home/kasm920/binance1-pro/.runtime_secrets.env
+ExecStart=/home/kasm920/venv/bin/python /home/kasm920/binance1-pro/scripts/central_risk_shadow_observer.py
+Nice=10

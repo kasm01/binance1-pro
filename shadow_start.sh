@@ -16,6 +16,10 @@ SHORT_SERVICES=(
   binance1-short1-entry-hazard-v44.service
 )
 
+CENTRAL_TIMERS=(
+  binance1-central-risk-shadow.timer
+)
+
 SHORT_TIMERS=(
   binance1-short1-model-shadow-finalizer.timer
   binance1-short1-entry-hazard-finalizer.timer
@@ -31,6 +35,22 @@ LEGACY_HAZARD_SERVICES=(
 
 cd "$BASE"
 mkdir -p "$LOGDIR" "$PIDDIR"
+
+# Keep tracked central-risk shadow systemd units in sync with the user unit dir.
+UNIT_DIR="$HOME/.config/systemd/user"
+mkdir -p "$UNIT_DIR"
+NEED_DAEMON_RELOAD=0
+for unit in binance1-central-risk-shadow.service binance1-central-risk-shadow.timer; do
+  src="$BASE/scripts/systemd/$unit"
+  dst="$UNIT_DIR/$unit"
+  if [[ ! -f "$dst" ]] || ! cmp -s "$src" "$dst"; then
+    cp -f "$src" "$dst"
+    NEED_DAEMON_RELOAD=1
+  fi
+done
+if [[ "$NEED_DAEMON_RELOAD" == "1" ]]; then
+  systemctl --user daemon-reload
+fi
 
 stop_pidfile() {
   local file="$1"
@@ -100,6 +120,11 @@ nohup "$PY" -u orchestration/collectors/market_context_shadow_collector.py \
   > "$LOGDIR/shared_near_market_context.log" 2>&1 </dev/null &
 echo $! > "$PIDDIR/shared_near_market_context.pid"
 
+echo "[SHADOW] Starting central risk shadow timer..."
+for u in "${CENTRAL_TIMERS[@]}"; do
+  systemctl --user start "$u"
+done
+
 echo "[SHADOW] Starting SHORT1 systemd shadow services..."
 for u in "${SHORT_SERVICES[@]}"; do
   systemctl --user start "$u"
@@ -121,6 +146,10 @@ ps -eo pid,etime,%cpu,%mem,cmd \
 echo
 echo "[SHADOW] Shared services:"
 for u in "${SHARED_SERVICES[@]}"; do
+  printf '  %-55s %s\n' "$u" "$(systemctl --user is-active "$u" 2>/dev/null || true)"
+done
+echo "[SHADOW] Central risk timers:"
+for u in "${CENTRAL_TIMERS[@]}"; do
   printf '  %-55s %s\n' "$u" "$(systemctl --user is-active "$u" 2>/dev/null || true)"
 done
 echo "[SHADOW] SHORT1 services:"

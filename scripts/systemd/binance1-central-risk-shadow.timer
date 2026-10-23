@@ -1,0 +1,11 @@
+[Unit]
+Description=Run central risk shadow observer every 5 minutes
+
+[Timer]
+OnActiveSec=60
+OnUnitActiveSec=300
+AccuracySec=15
+Unit=binance1-central-risk-shadow.service
+
+[Install]
+WantedBy=timers.target
