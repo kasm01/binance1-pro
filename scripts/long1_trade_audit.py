@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import csv, json, re, subprocess
+import argparse, csv, json, re, subprocess, time
 from pathlib import Path
 from typing import Any
 ROOT=Path(__file__).resolve().parents[1]
 LOG=ROOT/'logs/main.log'; JOURNAL=ROOT/'logs/trade_journal.csv'
+CENTRAL_KEY='telemetry:central_risk:shadow:current'
 PREP=re.compile(r"\[EXEC\]\[ORDER\]\[PREP\] symbol=(\S+) side=(\S+).*?signal_score=([0-9.]+).*?lev_target=(\d+)")
 ORDER=re.compile(r"\[EXEC\]\[ORDER\] OPEN OK .*?symbol=(\S+) side=(\S+) qty=([0-9.]+).*?lev=(\d+).*?summary=(\{.*\})")
 COMMIT=re.compile(r"\[EXEC\]\[OPEN\]\[COMMIT\] symbol=(\S+) side=(\S+) source=(\S+) qty=([0-9.]+) price=([0-9.]+) notional=([0-9.]+)")
@@ -20,7 +21,42 @@ def latest_journal(symbol='NEARUSDT') -> dict[str,Any] | None:
         rows=[r for r in csv.DictReader(f) if str(r.get('symbol','')).upper()==symbol]
     return rows[-1] if rows else None
 
+
+
+def central_snapshot(refresh: bool=False) -> dict[str,Any] | None:
+    if refresh:
+        try:
+            subprocess.run([str(ROOT/'venv/bin/python'), str(ROOT/'scripts/central_risk_shadow_observer.py')], cwd=str(ROOT), check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
+        except Exception as e:
+            print(f'central_refresh_warning: {type(e).__name__}:{e}')
+    try:
+        raw=subprocess.check_output(['redis-cli','--raw','GET',CENTRAL_KEY], cwd=str(ROOT), text=True, timeout=3).strip()
+        return json.loads(raw) if raw else None
+    except Exception:
+        return None
+
+def print_central(report: dict[str,Any] | None) -> None:
+    if not report:
+        print('central_risk: no snapshot available')
+        return
+    age=max(0.0,time.time()-float(report.get('ts') or 0.0))
+    acct=report.get('account') or {}; st=report.get('portfolio_state') or {}; h=report.get('exposure_health') or {}; caps=report.get('caps') or {}; sh=report.get('symbol_health') or {}
+    print('central_risk:', f"authority={report.get('authority')} age_sec={age:.1f} status={h.get('status')} mode={st.get('mode')} equity={float(acct.get('mtm_equity') or 0):.8f} prod_ready={report.get('production_ready')}")
+    print('central_exposure:', f"gross={float(h.get('gross_ratio') or 0):.4f}/{caps.get('gross')} long={float(h.get('long_ratio') or 0):.4f}/{caps.get('long')} short={float(h.get('short_ratio') or 0):.4f}/{caps.get('short')} abs_net={float(h.get('abs_net_ratio') or 0):.4f}/{caps.get('abs_net')} warnings={h.get('warning_caps') or []} breaches={h.get('breached_caps') or []}")
+    near=(sh or {}).get('NEARUSDT')
+    if isinstance(near,dict):
+        print('central_near:', f"notional={float(near.get('notional') or 0):.4f} ratio={float(near.get('ratio') or 0):.4f}/{caps.get('symbol')} status={near.get('status')}")
+    pos=report.get('positions') or []
+    if pos:
+        for r in pos:
+            if str(r.get('symbol') or '').upper()=='NEARUSDT':
+                print('central_position:', json.dumps(r,separators=(',',':'),default=str))
+
 def main():
+    ap=argparse.ArgumentParser(description='LONG1 first/last real trade audit')
+    ap.add_argument('--refresh-central', action='store_true', help='refresh central-risk snapshot with one account REST call before reporting')
+    args=ap.parse_args()
+    central=central_snapshot(refresh=args.refresh_central)
     ls=lines(); commits=[]
     for i,line in enumerate(ls):
         m=COMMIT.search(line)
@@ -29,6 +65,7 @@ def main():
     if not commits:
         print('status: WAITING_FIRST_REAL_COMMIT')
         print('note: no [EXEC][OPEN][COMMIT] for NEARUSDT yet')
+        print_central(central)
         return
     i,c=commits[-1]
     window=ls[max(0,i-250):i+1]
@@ -66,6 +103,7 @@ def main():
             slip=(commit['entry_price']/avg-1)*10000
             print(f'fill_vs_commit_bps={slip:.3f}')
     else: print('order: not found')
+    print_central(central)
     j=latest_journal()
     if j:
         print('latest_close_journal:', json.dumps(j,separators=(',',':')))
