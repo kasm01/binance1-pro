@@ -117,6 +117,9 @@ class TradeExecutor:
         self.position_sync_interval_sec = int(
             float(os.getenv("POSITION_SYNC_INTERVAL_SEC", "300") or 300)
         )
+        # Timestamp of the last completed exchange/local reconciliation.
+        # Used only to avoid duplicate empty-portfolio sync calls from lifecycle.
+        self._last_position_sync_ts = 0.0
 
         self.position_sync_remove_orphans = str(
             os.getenv("POSITION_SYNC_REMOVE_ORPHANS", "1")
@@ -129,6 +132,8 @@ class TradeExecutor:
         self.position_lifecycle_interval_sec = int(
             float(os.getenv("POSITION_LIFECYCLE_INTERVAL_SEC", "15") or 15)
         )
+        # Last lifecycle-visible active-position count; observability only.
+        self._last_lifecycle_active_count = 0
         # === ULTRA FAST SCALP EXIT ENGINE ===
         self.scalp_exit_enable = str(
             os.getenv("SCALP_EXIT_ENABLE", "1")
@@ -568,7 +573,8 @@ class TradeExecutor:
 
                 try:
                     if self.logger:
-                        self.logger.info(
+                        log_fn = self.logger.info if norm_symbols else self.logger.debug
+                        log_fn(
                             "[EXEC][STATE] position_manager symbols | count=%s symbols=%s",
                             len(norm_symbols),
                             norm_symbols,
@@ -613,7 +619,8 @@ class TradeExecutor:
 
                     try:
                         if self.logger:
-                            self.logger.info(
+                            log_fn = self.logger.info if key_list else self.logger.debug
+                            log_fn(
                                 "[EXEC][STATE] redis keys scan | count=%s keys=%s",
                                 len(key_list),
                                 key_list,
@@ -765,7 +772,8 @@ class TradeExecutor:
 
         try:
             if self.logger:
-                self.logger.info(
+                log_fn = self.logger.info if norm else self.logger.debug
+                log_fn(
                     "[EXEC][STATE] local positions resolved | count=%s symbols=%s",
                     len(norm),
                     list(norm.keys()),
@@ -4178,7 +4186,9 @@ class TradeExecutor:
 
         try:
             if self.logger:
-                self.logger.info(
+                has_state = bool(summary["exchange_open"] or summary["local_open"] or summary["bridge_open"] )
+                log_fn = self.logger.info if has_state else self.logger.debug
+                log_fn(
                     "[EXEC][SYNC] start | exchange_open=%s local_open=%s bridge_open=%s",
                     int(summary["exchange_open"]),
                     int(summary["local_open"]),
@@ -4662,8 +4672,21 @@ class TradeExecutor:
             pass
 
         try:
+            self._last_position_sync_ts = float(time.time())
+        except Exception:
+            pass
+
+        try:
             if self.logger:
-                self.logger.info(
+                has_activity = bool(
+                    summary["exchange_open"] or summary["local_open"] or summary["bridge_open"]
+                    or summary["removed_local"] or summary["removed_bridge"]
+                    or summary["added_local"] or summary["added_bridge"]
+                    or summary["kept"] or summary["skipped_fresh_local"]
+                    or summary["skipped_fresh_bridge"]
+                )
+                log_fn = self.logger.info if has_activity else self.logger.debug
+                log_fn(
                     "[EXEC][SYNC] done | exchange_open=%s local_open=%s bridge_open=%s removed_local=%s removed_bridge=%s added_local=%s added_bridge=%s kept=%s skipped_fresh_local=%s skipped_fresh_bridge=%s",
                     int(summary["exchange_open"]),
                     int(summary["local_open"]),
@@ -5149,33 +5172,46 @@ class TradeExecutor:
         while True:
             try:
                 self._check_lifecycle_freeze()
+                # Heartbeat tracks the lifecycle loop itself, not only active positions.
+                # This prevents false FREEZE-WARN spam while the portfolio is empty.
+                self._mark_lifecycle_heartbeat()
 
                 positions = self._get_all_local_positions()
+                self._last_lifecycle_active_count = int(len(positions))
 
-                # local boş ama exchange/local senkron kaçmış olabilir -> hydrate dene
+                # Empty portfolio normally relies on the dedicated periodic sync loop.
+                # Lifecycle only performs a fallback reconciliation when that sync has
+                # been stale for >= 2 intervals (minimum 60s). This avoids duplicate
+                # exchange REST work every lifecycle tick while preserving self-heal.
                 if not positions and bool(getattr(self, "position_sync_enabled", True)):
-                    try:
-                        sync_summary = self.sync_positions_with_exchange()
-                        positions = self._get_all_local_positions()
-                        if self.logger:
-                            self.logger.info(
-                                "[EXEC][LIFECYCLE] post-sync refresh | positions=%s summary=%s",
-                                len(positions),
-                                sync_summary,
-                            )
-                    except Exception as e:
+                    now_sync = float(time.time())
+                    last_sync = float(getattr(self, "_last_position_sync_ts", 0.0) or 0.0)
+                    fallback_after = max(60.0, 2.0 * max(30.0, float(getattr(self, "position_sync_interval_sec", 30) or 30)))
+                    if last_sync <= 0.0 or (now_sync - last_sync) >= fallback_after:
                         try:
+                            sync_summary = self.sync_positions_with_exchange()
+                            positions = self._get_all_local_positions()
                             if self.logger:
-                                self.logger.exception(
-                                    "[EXEC][LIFECYCLE] sync-on-empty failed | err=%s",
-                                    str(e),
+                                log_fn = self.logger.info if positions else self.logger.debug
+                                log_fn(
+                                    "[EXEC][LIFECYCLE] fallback sync refresh | positions=%s summary=%s",
+                                    len(positions),
+                                    sync_summary,
                                 )
-                        except Exception:
-                            pass
+                        except Exception as e:
+                            try:
+                                if self.logger:
+                                    self.logger.exception(
+                                        "[EXEC][LIFECYCLE] fallback sync-on-empty failed | err=%s",
+                                        str(e),
+                                    )
+                            except Exception:
+                                pass
 
                 try:
                     if self.logger:
-                        self.logger.info(
+                        log_fn = self.logger.info if positions else self.logger.debug
+                        log_fn(
                             "[EXEC][LIFECYCLE] tick | positions=%s symbols=%s",
                             len(positions),
                             list(positions.keys()),
@@ -7004,15 +7040,21 @@ class TradeExecutor:
             return
 
         if (now_ts - last_ts) >= force_every:
-            try:
-                if self.logger:
-                    self.logger.warning(
-                        "[EXEC][LIFECYCLE][FREEZE-WARN] last_seen_sec=%.1f last_symbol=%s",
-                        float(now_ts - last_ts),
-                        str(getattr(self, "_last_lifecycle_symbol", "") or "-"),
-                    )
-            except Exception:
-                pass
+            # With no active position this is only event-loop/scanner latency, not
+            # a lifecycle risk freeze. Preserve the warning unchanged when a
+            # position is actually being managed.
+            active_count = int(getattr(self, "_last_lifecycle_active_count", 0) or 0)
+            if active_count > 0:
+                try:
+                    if self.logger:
+                        self.logger.warning(
+                            "[EXEC][LIFECYCLE][FREEZE-WARN] last_seen_sec=%.1f last_symbol=%s active_positions=%s",
+                            float(now_ts - last_ts),
+                            str(getattr(self, "_last_lifecycle_symbol", "") or "-"),
+                            active_count,
+                        )
+                except Exception:
+                    pass
 
             self._last_lifecycle_ts = now_ts
 
