@@ -1,0 +1,11 @@
+[Unit]
+Description=Run SHORT1 model shadow outcome finalizer every 30 minutes
+
+[Timer]
+OnActiveSec=10min
+OnUnitActiveSec=30min
+Persistent=true
+Unit=binance1-short1-model-shadow-finalizer.service
+
+[Install]
+WantedBy=timers.target

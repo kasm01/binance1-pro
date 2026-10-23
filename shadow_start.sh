@@ -40,7 +40,13 @@ mkdir -p "$LOGDIR" "$PIDDIR"
 UNIT_DIR="$HOME/.config/systemd/user"
 mkdir -p "$UNIT_DIR"
 NEED_DAEMON_RELOAD=0
-for unit in binance1-central-risk-shadow.service binance1-central-risk-shadow.timer; do
+for unit in \
+  binance1-central-risk-shadow.service \
+  binance1-central-risk-shadow.timer \
+  binance1-short1-model-shadow-finalizer.timer \
+  binance1-short1-entry-hazard-finalizer.timer \
+  binance1-short1-entry-hazard-policy-analyzer.timer \
+  binance1-short1-v30-gate.timer; do
   src="$BASE/scripts/systemd/$unit"
   dst="$UNIT_DIR/$unit"
   if [[ ! -f "$dst" ]] || ! cmp -s "$src" "$dst"; then

@@ -1,0 +1,11 @@
+[Unit]
+Description=Analyze SHORT1 entry hazard policy every 10 minutes
+
+[Timer]
+OnActiveSec=3min
+OnUnitActiveSec=10min
+Persistent=true
+Unit=binance1-short1-entry-hazard-policy-analyzer.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run SHORT1 entry hazard labeler every 10 minutes
+
+[Timer]
+OnActiveSec=3min
+OnUnitActiveSec=10min
+Persistent=true
+Unit=binance1-short1-entry-hazard-finalizer.service
+
+[Install]
+WantedBy=timers.target
