@@ -2359,12 +2359,8 @@ class HeavyEngine:
             # Low-cost production observability: one score line per completed 3m candle.
             # No API/Redis call and no effect on MODEL -> ORDER routing.
             try:
-                close_id = 0
-                if isinstance(model_raw_df, pd.DataFrame) and len(model_raw_df) > 0 and "close_time" in model_raw_df.columns:
-                    close_id = int(float(model_raw_df["close_time"].iloc[-1]))
-                elif isinstance(raw_df, pd.DataFrame) and len(raw_df) > 0 and "close_time" in raw_df.columns:
-                    close_id = int(float(raw_df["close_time"].iloc[-1]))
-                if close_id > 0 and self._model_score_log_last_close.get(symbol) != close_id:
+                close_id = int(time.time() // 180)
+                if self._model_score_log_last_close.get(symbol) != close_id:
                     self._model_score_log_last_close[symbol] = close_id
                     if system_logger:
                         system_logger.info(
