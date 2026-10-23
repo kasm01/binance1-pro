@@ -1427,6 +1427,9 @@ class HeavyEngine:
         self._prev_signal: Dict[str, str] = {}
         self._prev_notif_ts: Dict[str, float] = {}
         self._schema_missing_warned_itv: set[str] = set()
+        # Observability only: remember the last completed model candle logged per symbol.
+        # This never changes routing, thresholds, or execution decisions.
+        self._model_score_log_last_close: Dict[str, int] = {}
 
         # Real-model SignalEvent shadow publisher.
         # Disabled by default; isolated from production orchestration.
@@ -2350,6 +2353,24 @@ class HeavyEngine:
                 extra["short_score"] = float(short_score)
                 extra["long_thr"] = float(long_thr)
                 extra["short_thr"] = float(short_thr)
+            except Exception:
+                pass
+
+            # Low-cost production observability: one score line per completed 3m candle.
+            # No API/Redis call and no effect on MODEL -> ORDER routing.
+            try:
+                close_id = 0
+                if isinstance(model_raw_df, pd.DataFrame) and len(model_raw_df) > 0 and "close_time" in model_raw_df.columns:
+                    close_id = int(float(model_raw_df["close_time"].iloc[-1]))
+                if close_id > 0 and self._model_score_log_last_close.get(symbol) != close_id:
+                    self._model_score_log_last_close[symbol] = close_id
+                    if system_logger:
+                        system_logger.info(
+                            "[MODEL-SCORE] symbol=%s close_id=%s p_used=%.6f long_thr=%.4f side=%s gate_reason=%s atr_rank=%s",
+                            symbol, close_id, float(p_used), float(long_thr), signal_side,
+                            str(long_dynamic_gate.get("reason") or ""),
+                            str(long_dynamic_gate.get("atr_rank")),
+                        )
             except Exception:
                 pass
 
