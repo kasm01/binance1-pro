@@ -20,6 +20,10 @@ CENTRAL_TIMERS=(
   binance1-central-risk-shadow.timer
 )
 
+CENTRAL_SERVICES=(
+  binance1-central-risk-enforce-dry.service
+)
+
 LONG_ORCH_TIMERS=(
   binance1-long-orch-health.timer
 )
@@ -47,6 +51,7 @@ NEED_DAEMON_RELOAD=0
 for unit in \
   binance1-central-risk-shadow.service \
   binance1-central-risk-shadow.timer \
+  binance1-central-risk-enforce-dry.service \
   binance1-long-orch-health.service \
   binance1-long-orch-health.timer \
   binance1-short1-model-shadow-finalizer.timer \
@@ -137,6 +142,11 @@ for u in "${CENTRAL_TIMERS[@]}"; do
   systemctl --user start "$u"
 done
 
+echo "[SHADOW] Starting central risk enforce-dry service..."
+for u in "${CENTRAL_SERVICES[@]}"; do
+  systemctl --user start "$u"
+done
+
 echo "[SHADOW] Starting LONG orchestration health timer..."
 for u in "${LONG_ORCH_TIMERS[@]}"; do
   systemctl --user start "$u"
@@ -167,6 +177,10 @@ for u in "${SHARED_SERVICES[@]}"; do
 done
 echo "[SHADOW] Central risk timers:"
 for u in "${CENTRAL_TIMERS[@]}"; do
+  printf '  %-55s %s\n' "$u" "$(systemctl --user is-active "$u" 2>/dev/null || true)"
+done
+echo "[SHADOW] Central risk services:"
+for u in "${CENTRAL_SERVICES[@]}"; do
   printf '  %-55s %s\n' "$u" "$(systemctl --user is-active "$u" 2>/dev/null || true)"
 done
 echo "[SHADOW] LONG orchestration health timers:"

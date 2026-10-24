@@ -22,6 +22,10 @@ CENTRAL_TIMERS=(
   binance1-central-risk-shadow.timer
 )
 
+CENTRAL_SERVICES=(
+  binance1-central-risk-enforce-dry.service
+)
+
 LONG_ORCH_TIMERS=(
   binance1-long-orch-health.timer
 )
@@ -68,8 +72,11 @@ for u in "${LONG_ORCH_ONESHOTS[@]}"; do
   systemctl --user stop "$u" >/dev/null 2>&1 || true
 done
 
-echo "[SHADOW] Stopping central risk timer first..."
+echo "[SHADOW] Stopping central risk timer/service first..."
 for u in "${CENTRAL_TIMERS[@]}"; do
+  systemctl --user stop "$u" >/dev/null 2>&1 || true
+done
+for u in "${CENTRAL_SERVICES[@]}"; do
   systemctl --user stop "$u" >/dev/null 2>&1 || true
 done
 for u in "${CENTRAL_ONESHOTS[@]}"; do
