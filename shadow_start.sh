@@ -20,6 +20,10 @@ CENTRAL_TIMERS=(
   binance1-central-risk-shadow.timer
 )
 
+LONG_ORCH_TIMERS=(
+  binance1-long-orch-health.timer
+)
+
 SHORT_TIMERS=(
   binance1-short1-model-shadow-finalizer.timer
   binance1-short1-entry-hazard-finalizer.timer
@@ -43,6 +47,8 @@ NEED_DAEMON_RELOAD=0
 for unit in \
   binance1-central-risk-shadow.service \
   binance1-central-risk-shadow.timer \
+  binance1-long-orch-health.service \
+  binance1-long-orch-health.timer \
   binance1-short1-model-shadow-finalizer.timer \
   binance1-short1-entry-hazard-finalizer.timer \
   binance1-short1-entry-hazard-policy-analyzer.timer \
@@ -131,6 +137,11 @@ for u in "${CENTRAL_TIMERS[@]}"; do
   systemctl --user start "$u"
 done
 
+echo "[SHADOW] Starting LONG orchestration health timer..."
+for u in "${LONG_ORCH_TIMERS[@]}"; do
+  systemctl --user start "$u"
+done
+
 echo "[SHADOW] Starting SHORT1 systemd shadow services..."
 for u in "${SHORT_SERVICES[@]}"; do
   systemctl --user start "$u"
@@ -156,6 +167,10 @@ for u in "${SHARED_SERVICES[@]}"; do
 done
 echo "[SHADOW] Central risk timers:"
 for u in "${CENTRAL_TIMERS[@]}"; do
+  printf '  %-55s %s\n' "$u" "$(systemctl --user is-active "$u" 2>/dev/null || true)"
+done
+echo "[SHADOW] LONG orchestration health timers:"
+for u in "${LONG_ORCH_TIMERS[@]}"; do
   printf '  %-55s %s\n' "$u" "$(systemctl --user is-active "$u" 2>/dev/null || true)"
 done
 echo "[SHADOW] SHORT1 services:"

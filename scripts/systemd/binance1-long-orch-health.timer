@@ -1,0 +1,11 @@
+[Unit]
+Description=Check LONG orchestration workers every minute
+
+[Timer]
+OnActiveSec=60
+OnUnitActiveSec=60
+AccuracySec=5
+Unit=binance1-long-orch-health.service
+
+[Install]
+WantedBy=timers.target

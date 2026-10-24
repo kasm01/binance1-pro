@@ -1,0 +1,10 @@
+[Unit]
+Description=binance1-pro LONG orchestration worker healthcheck
+After=binance1-long-orch.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/binance1-pro
+EnvironmentFile=%h/binance1-pro/.env
+EnvironmentFile=-%h/binance1-pro/.runtime_secrets.env
+ExecStart=%h/binance1-pro/scripts/long_orch_healthcheck.sh

@@ -22,6 +22,14 @@ CENTRAL_TIMERS=(
   binance1-central-risk-shadow.timer
 )
 
+LONG_ORCH_TIMERS=(
+  binance1-long-orch-health.timer
+)
+
+LONG_ORCH_ONESHOTS=(
+  binance1-long-orch-health.service
+)
+
 CENTRAL_ONESHOTS=(
   binance1-central-risk-shadow.service
 )
@@ -51,6 +59,14 @@ stop_pidfile() {
     rm -f "$file"
   fi
 }
+
+echo "[SHADOW] Stopping LONG orchestration health timer first..."
+for u in "${LONG_ORCH_TIMERS[@]}"; do
+  systemctl --user stop "$u" >/dev/null 2>&1 || true
+done
+for u in "${LONG_ORCH_ONESHOTS[@]}"; do
+  systemctl --user stop "$u" >/dev/null 2>&1 || true
+done
 
 echo "[SHADOW] Stopping central risk timer first..."
 for u in "${CENTRAL_TIMERS[@]}"; do
@@ -107,7 +123,7 @@ for u in "${SHARED_SERVICES[@]}"; do
   systemctl --user stop "$u" >/dev/null 2>&1 || true
 done
 
-for u in "${CENTRAL_TIMERS[@]}" "${CENTRAL_ONESHOTS[@]}" "${SHORT_SERVICES[@]}" "${SHORT_TIMERS[@]}" "${SHORT_ONESHOTS[@]}" "${SHARED_SERVICES[@]}"; do
+for u in "${LONG_ORCH_TIMERS[@]}" "${LONG_ORCH_ONESHOTS[@]}" "${CENTRAL_TIMERS[@]}" "${CENTRAL_ONESHOTS[@]}" "${SHORT_SERVICES[@]}" "${SHORT_TIMERS[@]}" "${SHORT_ONESHOTS[@]}" "${SHARED_SERVICES[@]}"; do
   state="$(systemctl --user is-active "$u" 2>/dev/null || true)"
   if [[ "$state" == "active" || "$state" == "activating" ]]; then
     echo "[SHADOW][WARN] $u is still $state"

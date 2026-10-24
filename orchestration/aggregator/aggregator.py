@@ -5,7 +5,7 @@ import os
 import time
 import uuid
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from orchestration.aggregator.scoring import compute_score, pass_quality_gates
 from orchestration.event_bus.redis_bus import RedisBus
@@ -79,6 +79,25 @@ def _safe_float(x: Any, default: float = 0.0) -> float:
         return default
 
 
+def _event_age_sec(evt: Dict[str, Any]) -> Optional[float]:
+    """Best-effort wall-clock age; safety TTL only, not alpha."""
+    ts = str(evt.get("ts_utc") or "").strip()
+    if ts:
+        try:
+            dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return max(0.0, (datetime.now(timezone.utc) - dt.astimezone(timezone.utc)).total_seconds())
+        except Exception:
+            pass
+    mid = str(evt.get("_source_stream_id") or "").strip()
+    try:
+        ms = int(mid.split("-", 1)[0])
+        return max(0.0, time.time() - (ms / 1000.0))
+    except Exception:
+        return None
+
+
 class Aggregator:
     """
     signals_stream -> candidates_stream
@@ -118,6 +137,8 @@ class Aggregator:
         self.read_count = int(_env_int("AGG_READ_COUNT", 300))
         self.block_ms = int(_env_int("AGG_BLOCK_MS", 1000))
         self.debug_drops = _env_bool("AGG_DEBUG_DROPS", False)
+        # Safety-only replay guard: delayed signals must not become live trades.
+        self.max_signal_age_sec = max(0.0, _env_float("AGG_MAX_SIGNAL_AGE_SEC", 180.0))
 
         self.require_price = _env_bool("AGG_REQUIRE_PRICE", True)
 
@@ -297,7 +318,8 @@ class Aggregator:
             f"[Aggregator] started. reading {self.bus.signals_stream} -> {self.bus.candidates_stream} "
             f"group={self.group} consumer={self.consumer} topk_out={self.topk_out} "
             f"min_score={self.min_score:.3f} include_raw={self.include_raw} "
-            f"require_price={self.require_price} debug_drops={self.debug_drops}",
+            f"require_price={self.require_price} debug_drops={self.debug_drops} "
+            f"max_signal_age_sec={self.max_signal_age_sec:.1f}",
             flush=True,
         )
 
@@ -329,6 +351,17 @@ class Aggregator:
 
                 evt = SignalEvent.normalize(evt)
                 e = self._normalize_event(mid, evt)
+
+                if self.max_signal_age_sec > 0.0:
+                    age_sec = _event_age_sec(e)
+                    if age_sec is not None and age_sec > self.max_signal_age_sec:
+                        if self.debug_drops:
+                            print(
+                                f"[Aggregator][DROP] stale_signal age_sec={age_sec:.1f} "
+                                f"> {self.max_signal_age_sec:.1f} mid={mid}",
+                                flush=True,
+                            )
+                        continue
 
                 if e.get("side_candidate") not in ("long", "short"):
                     if self.debug_drops:
