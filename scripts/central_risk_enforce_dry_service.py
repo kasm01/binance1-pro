@@ -42,6 +42,12 @@ SNAPSHOT_MAX_AGE_SEC = float(os.getenv("CENTRAL_RISK_MAX_AGE_SEC", "420") or 420
 RESPONSE_TTL_SEC = int(os.getenv("CENTRAL_RISK_RESPONSE_TTL_SEC", "30") or 30)
 RESERVATION_TTL_SEC = int(os.getenv("CENTRAL_RISK_DRY_RESERVATION_TTL_SEC", "21600") or 21600)
 MAXLEN = int(os.getenv("CENTRAL_RISK_DECISION_MAXLEN", "10000") or 10000)
+# Transitional zero-REST overlay for already-live LONG1 executor state.
+# Canonical per-strategy central position registry can replace this adapter when
+# LONG2-4 / SHORT2-4 are introduced.
+LIVE_POSITION_OVERLAYS = (
+    ("LONG1", "NEARUSDT", "long", "bot:positions:NEARUSDT"),
+)
 
 
 def _f(v: Any, default: float = 0.0) -> float:
@@ -74,6 +80,35 @@ def _actual_positions(snapshot: Dict[str, Any]) -> List[PositionExposure]:
             side=side,
             notional=notional,
             opened_risk_mode=str(row.get("opened_risk_mode") or "NORMAL"),
+        ))
+    return out
+
+
+def _load_live_position_overlays(r: redis.Redis, actual: List[PositionExposure]) -> List[PositionExposure]:
+    """Overlay executor-confirmed positions that may be newer than the REST snapshot."""
+    actual_ids = {p.strategy_id.upper() for p in actual if p.strategy_id}
+    out: List[PositionExposure] = []
+    for strategy_id, symbol, expected_side, key in LIVE_POSITION_OVERLAYS:
+        if strategy_id in actual_ids:
+            continue
+        try:
+            obj = _load_json(r.get(key))
+        except Exception:
+            obj = {}
+        side = str(obj.get("side") or "").lower().strip()
+        qty = max(0.0, _f(obj.get("qty")))
+        notional = max(0.0, _f(obj.get("notional")))
+        entry_price = max(0.0, _f(obj.get("entry_price")))
+        if notional <= 0.0 and qty > 0.0 and entry_price > 0.0:
+            notional = qty * entry_price
+        if side != expected_side or qty <= 0.0 or notional <= 0.0:
+            continue
+        out.append(PositionExposure(
+            strategy_id=strategy_id,
+            symbol=symbol,
+            side=side,
+            notional=notional,
+            opened_risk_mode=str(obj.get("opened_risk_mode") or "NORMAL"),
         ))
     return out
 
@@ -163,7 +198,9 @@ def _handle(r: redis.Redis, req: Dict[str, Any]) -> Dict[str, Any]:
         recovery_successes=int(_f(portfolio.get("recovery_successes"), 0)),
     )
 
-    actual = _actual_positions(snap)
+    snapshot_positions = _actual_positions(snap)
+    live_overlays = _load_live_position_overlays(r, snapshot_positions)
+    actual = snapshot_positions + live_overlays
     reservations = _clean_and_load_reservations(r, actual)
     positions = actual + reservations
 
@@ -220,6 +257,9 @@ def _handle(r: redis.Redis, req: Dict[str, Any]) -> Dict[str, Any]:
         "snapshot_ts": snap.get("ts"),
         "snapshot_authority": snap.get("authority"),
         "base_budget_ratio": base_budget,
+        "snapshot_position_count": len(snapshot_positions),
+        "live_overlay_count": len(live_overlays),
+        "live_overlay_strategies": [p.strategy_id for p in live_overlays],
         "reservation_count_before": len(reservations),
         "decision": decision,
     }
