@@ -226,7 +226,16 @@ def _handle(r: redis.Redis, req: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def main() -> int:
-    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True, socket_timeout=2.0)
+    # XREADGROUP blocks for up to 5s; socket timeout must be comfortably longer
+    # or an idle gate will self-terminate with redis.exceptions.TimeoutError.
+    r = redis.Redis(
+        host=REDIS_HOST,
+        port=REDIS_PORT,
+        db=REDIS_DB,
+        decode_responses=True,
+        socket_timeout=10.0,
+        socket_connect_timeout=2.0,
+    )
     r.ping()
     try:
         r.xgroup_create(REQUEST_STREAM, GROUP, id="$", mkstream=True)
