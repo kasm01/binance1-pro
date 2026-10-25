@@ -57,12 +57,15 @@ os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
 
 import signal
 import json
+import math
 import time
 import uuid
 from datetime import datetime, timezone
 import random
 from typing import Any, Dict, Optional, List
 import redis  # type: ignore
+
+_LONG_GATE_REDIS = None
 from core.stream_io import ensure_group, xreadgroup_json as read_group, xack_safe
 import pandas as pd
 import threading
@@ -312,12 +315,32 @@ def _compute_adaptive_alpha(atr_value: float) -> float:
     return float(alpha)
 
 
-def _resolve_long_dynamic_model_threshold(*, symbol: str, raw_df, base_threshold: float):
-    """Resolve LONG model threshold from recent closed 3m market structure.
+def _linear_quantile(values, q: float) -> float:
+    vals = sorted(float(v) for v in values if v is not None and math.isfinite(float(v)))
+    if not vals:
+        raise ValueError("empty_values")
+    q = max(0.0, min(1.0, float(q)))
+    if len(vals) == 1:
+        return vals[0]
+    pos = (len(vals) - 1) * q
+    lo = int(math.floor(pos))
+    hi = int(math.ceil(pos))
+    if lo == hi:
+        return vals[lo]
+    frac = pos - lo
+    return vals[lo] + (vals[hi] - vals[lo]) * frac
 
-    Single authority for LONG1 dynamic MODEL SCORE GATE. The gate only relaxes
-    below the base threshold when volatility is elevated and the completed
-    candle shows a strong rejection/recovery from its low.
+
+def _resolve_long_dynamic_model_threshold(*, symbol: str, raw_df, base_threshold: float, current_score: float = None, redis_client=None):
+    """Resolve LONG1 MODEL SCORE GATE.
+
+    Production authority order:
+      1) Rolling causal score calibration (Q99.4 / 480 completed 3m bars),
+         hard-clamped to configured min/max. Current bar is excluded from the
+         percentile to avoid look-ahead, then persisted once per 3m candle.
+      2) Legacy structure recovery gate only when rolling calibration is OFF.
+
+    Any Redis/history error fails safe to the fixed base threshold.
     """
     base = float(base_threshold)
     details = {
@@ -327,22 +350,129 @@ def _resolve_long_dynamic_model_threshold(*, symbol: str, raw_df, base_threshold
         "base_threshold": base,
         "reason": "disabled",
     }
+    sym = str(symbol or "").upper().strip()
 
-    enabled = str(
-        os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE", "0") or "0"
-    ).strip().lower() in ("1", "true", "yes", "on")
+    rolling_enabled = str(os.getenv("LONG_ROLLING_MODEL_GATE_ENABLE", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+    rolling_symbol = str(os.getenv("LONG_ROLLING_MODEL_GATE_SYMBOL", "NEARUSDT") or "NEARUSDT").upper().strip()
+    if rolling_enabled and (not rolling_symbol or sym == rolling_symbol):
+        details.update({"enabled": True, "mode": "rolling_percentile"})
+        try:
+            lookback = max(60, int(float(os.getenv("LONG_ROLLING_MODEL_GATE_LOOKBACK", "480") or 480)))
+            min_history = max(30, int(float(os.getenv("LONG_ROLLING_MODEL_GATE_MIN_HISTORY", "240") or 240)))
+            quantile = float(os.getenv("LONG_ROLLING_MODEL_GATE_QUANTILE", "0.994") or 0.994)
+            hard_min = float(os.getenv("LONG_ROLLING_MODEL_GATE_MIN", "0.500") or 0.500)
+            hard_max = float(os.getenv("LONG_ROLLING_MODEL_GATE_MAX", "0.525") or 0.525)
+            history_key = str(os.getenv("LONG_ROLLING_MODEL_GATE_HISTORY_KEY", f"long1:model_gate:rolling:{sym}:history:v1") or f"long1:model_gate:rolling:{sym}:history:v1")
+            state_key = str(os.getenv("LONG_ROLLING_MODEL_GATE_STATE_KEY", f"long1:model_gate:rolling:{sym}:state:v1") or f"long1:model_gate:rolling:{sym}:state:v1")
+            if hard_min > hard_max:
+                hard_min, hard_max = hard_max, hard_min
+
+            candle_id = None
+            if raw_df is not None and len(raw_df):
+                for col in ("close_time", "open_time"):
+                    if col in raw_df.columns:
+                        try:
+                            raw_ts = raw_df[col].iloc[-1]
+                            ts_num = float(raw_ts)
+                            if ts_num > 1e12:
+                                candle_id = int(ts_num // 180000)
+                            elif ts_num > 1e9:
+                                candle_id = int(ts_num // 180)
+                            if candle_id is not None:
+                                break
+                        except Exception:
+                            pass
+            if candle_id is None:
+                candle_id = int(time.time() // 180)
+
+            if redis_client is None:
+                details["reason"] = "rolling_redis_missing"
+                return base, details
+
+            raw_items = redis_client.lrange(history_key, 0, lookback - 1) or []
+            history_scores = []
+            latest_same_candle = False
+            for idx, item in enumerate(raw_items):
+                try:
+                    obj = json.loads(item) if isinstance(item, str) else json.loads(item.decode("utf-8"))
+                    cid = int(obj.get("candle_id"))
+                    sc = float(obj.get("score"))
+                    if idx == 0 and cid == candle_id:
+                        latest_same_candle = True
+                        continue
+                    if math.isfinite(sc):
+                        history_scores.append(sc)
+                except Exception:
+                    continue
+
+            history_n = len(history_scores)
+            resolved = base
+            raw_quantile = None
+            reason = "rolling_warmup"
+            if history_n >= min_history:
+                raw_quantile = _linear_quantile(history_scores[-lookback:], quantile)
+                resolved = max(hard_min, min(hard_max, float(raw_quantile)))
+                reason = "rolling_q"
+
+            now_ts = time.time()
+            if current_score is not None and math.isfinite(float(current_score)):
+                payload = json.dumps({"candle_id": int(candle_id), "score": float(current_score), "ts": now_ts}, separators=(",", ":"))
+                pipe = redis_client.pipeline(transaction=False)
+                if latest_same_candle:
+                    pipe.lset(history_key, 0, payload)
+                else:
+                    pipe.lpush(history_key, payload)
+                pipe.ltrim(history_key, 0, lookback - 1)
+                state = {
+                    "symbol": sym,
+                    "mode": "rolling_percentile",
+                    "threshold": float(resolved),
+                    "base_threshold": base,
+                    "quantile": quantile,
+                    "lookback": lookback,
+                    "min_history": min_history,
+                    "history_n": history_n,
+                    "hard_min": hard_min,
+                    "hard_max": hard_max,
+                    "raw_quantile": raw_quantile,
+                    "candle_id": int(candle_id),
+                    "score": float(current_score),
+                    "ts": now_ts,
+                    "reason": reason,
+                }
+                pipe.set(state_key, json.dumps(state, separators=(",", ":")), ex=max(900, int(180 * lookback * 2)))
+                pipe.execute()
+
+            details.update({
+                "applied": bool(abs(float(resolved) - base) > 1e-12),
+                "threshold": float(resolved),
+                "base_threshold": base,
+                "reason": reason,
+                "history_n": history_n,
+                "lookback": lookback,
+                "min_history": min_history,
+                "quantile": quantile,
+                "raw_quantile": raw_quantile,
+                "hard_min": hard_min,
+                "hard_max": hard_max,
+                "candle_id": int(candle_id),
+            })
+            return float(resolved), details
+        except Exception as exc:
+            details.update({"reason": "rolling_error", "error": str(exc)[:200]})
+            return base, details
+
+    enabled = str(os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
     if not enabled:
         return base, details
 
-    target_symbol = str(
-        os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL", "NEARUSDT") or "NEARUSDT"
-    ).upper().strip()
-    sym = str(symbol or "").upper().strip()
+    target_symbol = str(os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL", "NEARUSDT") or "NEARUSDT").upper().strip()
     if target_symbol and sym != target_symbol:
         details.update({"enabled": True, "reason": "symbol_mismatch"})
         return base, details
 
     details["enabled"] = True
+    details["mode"] = "legacy_recovery"
 
     try:
         floor = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_FLOOR", "0.516") or 0.516)
@@ -351,91 +481,42 @@ def _resolve_long_dynamic_model_threshold(*, symbol: str, raw_df, base_threshold
         min_atr_rank = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_ATR_RANK", "0.60") or 0.60)
         min_close_loc = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_CLOSE_LOC", "0.25") or 0.25)
         min_lower_wick_frac = float(os.getenv("LONG_DYNAMIC_MODEL_GATE_MIN_LOWER_WICK_FRAC", "0.25") or 0.25)
-
         if raw_df is None or len(raw_df) < max(30, min_history):
             details["reason"] = "insufficient_history"
             return base, details
-
         d = raw_df.copy()
         for col in ("open", "high", "low", "close"):
             if col not in d.columns:
                 details["reason"] = f"missing_{col}"
                 return base, details
             d[col] = pd.to_numeric(d[col], errors="coerce")
-
         d = d.dropna(subset=["open", "high", "low", "close"])
         if len(d) < max(30, min_history):
             details["reason"] = "insufficient_clean_history"
             return base, details
-
-        close = d["close"]
-        high = d["high"]
-        low = d["low"]
-        open_ = d["open"]
+        close = d["close"]; high = d["high"]; low = d["low"]; open_ = d["open"]
         prev_close = close.shift(1)
-
-        tr = pd.concat(
-            [
-                (high - low).abs(),
-                (high - prev_close).abs(),
-                (low - prev_close).abs(),
-            ],
-            axis=1,
-        ).max(axis=1)
-        atr = tr.ewm(alpha=1.0 / 14.0, adjust=False, min_periods=14).mean()
+        tr = pd.concat([(high-low).abs(), (high-prev_close).abs(), (low-prev_close).abs()], axis=1).max(axis=1)
+        atr = tr.ewm(alpha=1.0/14.0, adjust=False, min_periods=14).mean()
         atr_pct = atr / close.replace(0.0, float("nan"))
-
         current_atr = float(atr_pct.iloc[-1])
-        hist = atr_pct.iloc[max(0, len(atr_pct) - lookback - 1):-1].dropna()
+        hist = atr_pct.iloc[max(0, len(atr_pct)-lookback-1):-1].dropna()
         if len(hist) < min_history or not (current_atr == current_atr):
             details["reason"] = "insufficient_atr_history"
             return base, details
-
         atr_rank = float((hist <= current_atr).mean())
-
-        op = float(open_.iloc[-1])
-        hi = float(high.iloc[-1])
-        lo = float(low.iloc[-1])
-        cl = float(close.iloc[-1])
-        candle_range = hi - lo
+        op=float(open_.iloc[-1]); hi=float(high.iloc[-1]); lo=float(low.iloc[-1]); cl=float(close.iloc[-1]); candle_range=hi-lo
         if op <= 0.0 or candle_range <= 0.0:
-            details.update({"atr_rank": atr_rank, "reason": "invalid_candle"})
-            return base, details
-
-        close_loc = max(0.0, min(1.0, (cl - lo) / candle_range))
-        lower_wick = max(0.0, min(op, cl) - lo)
-        lower_wick_frac = max(0.0, min(1.0, lower_wick / candle_range))
-
-        elevated_vol = atr_rank >= min_atr_rank
-        strong_recovery = (
-            close_loc >= min_close_loc
-            or lower_wick_frac >= min_lower_wick_frac
-        )
-
-        resolved = base
-        reason = "base"
+            details.update({"atr_rank": atr_rank, "reason": "invalid_candle"}); return base, details
+        close_loc=max(0.0,min(1.0,(cl-lo)/candle_range)); lower_wick=max(0.0,min(op,cl)-lo); lower_wick_frac=max(0.0,min(1.0,lower_wick/candle_range))
+        elevated_vol=atr_rank>=min_atr_rank; strong_recovery=(close_loc>=min_close_loc or lower_wick_frac>=min_lower_wick_frac)
+        resolved=base; reason="base"
         if elevated_vol and strong_recovery:
-            resolved = min(base, floor)
-            reason = "strong_recovery"
-
-        details.update(
-            {
-                "applied": bool(resolved < base),
-                "threshold": float(resolved),
-                "base_threshold": base,
-                "floor": floor,
-                "atr_rank": atr_rank,
-                "close_loc": close_loc,
-                "lower_wick_frac": lower_wick_frac,
-                "elevated_vol": bool(elevated_vol),
-                "strong_recovery": bool(strong_recovery),
-                "reason": reason,
-            }
-        )
+            resolved=min(base,floor); reason="strong_recovery"
+        details.update({"applied":bool(resolved<base),"threshold":float(resolved),"base_threshold":base,"floor":floor,"atr_rank":atr_rank,"close_loc":close_loc,"lower_wick_frac":lower_wick_frac,"elevated_vol":bool(elevated_vol),"strong_recovery":bool(strong_recovery),"reason":reason})
         return float(resolved), details
-
     except Exception as exc:
-        details.update({"reason": "error", "error": str(exc)[:200]})
+        details.update({"reason":"error","error":str(exc)[:200]})
         return base, details
 
 
@@ -1223,6 +1304,8 @@ def create_trading_objects(
     whale_risk_boost = float(os.getenv("WHALE_RISK_BOOST", "2.0"))
 
     exec_redis = redis.Redis.from_url(redis_url, decode_responses=True)
+    global _LONG_GATE_REDIS
+    _LONG_GATE_REDIS = exec_redis
 
     trade_executor = TradeExecutor(
         client=client,
@@ -2315,6 +2398,8 @@ class HeavyEngine:
                 symbol=symbol,
                 raw_df=model_raw_df,
                 base_threshold=long_thr_base,
+                current_score=float(p_used),
+                redis_client=_LONG_GATE_REDIS,
             )
             short_thr = float(os.getenv("SHORT_THRESHOLD", "0.60"))
             try:
@@ -2324,11 +2409,15 @@ class HeavyEngine:
             try:
                 if system_logger and long_dynamic_gate.get("enabled"):
                     system_logger.info(
-                        "[MODEL][LONG-DYNAMIC-GATE] symbol=%s base=%.4f final=%.4f reason=%s atr_rank=%s close_loc=%s lower_wick_frac=%s",
+                        "[MODEL][LONG-DYNAMIC-GATE] symbol=%s mode=%s base=%.4f final=%.4f reason=%s hist=%s q=%s raw_q=%s atr_rank=%s close_loc=%s lower_wick_frac=%s",
                         symbol,
+                        str(long_dynamic_gate.get("mode") or "legacy"),
                         float(long_thr_base),
                         float(long_thr),
                         str(long_dynamic_gate.get("reason") or ""),
+                        str(long_dynamic_gate.get("history_n")),
+                        str(long_dynamic_gate.get("quantile")),
+                        str(long_dynamic_gate.get("raw_quantile")),
                         str(long_dynamic_gate.get("atr_rank")),
                         str(long_dynamic_gate.get("close_loc")),
                         str(long_dynamic_gate.get("lower_wick_frac")),

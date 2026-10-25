@@ -9703,6 +9703,29 @@ class TradeExecutor:
         side_norm=str(side or "").lower().strip()
         base=float(base_threshold)
         score=float(signal_score)
+        rolling_enabled=str(os.getenv("LONG_ROLLING_MODEL_GATE_ENABLE","0") or "0").strip().lower() in ("1","true","yes","on")
+        rolling_target=str(os.getenv("LONG_ROLLING_MODEL_GATE_SYMBOL","NEARUSDT") or "NEARUSDT").upper().strip()
+        if rolling_enabled and side_norm=="long" and (not rolling_target or sym_u==rolling_target):
+            try:
+                state_key=str(os.getenv("LONG_ROLLING_MODEL_GATE_STATE_KEY",f"long1:model_gate:rolling:{sym_u}:state:v1") or f"long1:model_gate:rolling:{sym_u}:state:v1")
+                max_age=max(30.0,float(os.getenv("LONG_ROLLING_MODEL_GATE_MAX_STATE_AGE_SEC","300") or 300))
+                min_hist=max(30,int(float(os.getenv("LONG_ROLLING_MODEL_GATE_MIN_HISTORY","240") or 240)))
+                hard_min=float(os.getenv("LONG_ROLLING_MODEL_GATE_MIN","0.500") or 0.500)
+                hard_max=float(os.getenv("LONG_ROLLING_MODEL_GATE_MAX","0.525") or 0.525)
+                if hard_min>hard_max: hard_min,hard_max=hard_max,hard_min
+                raw=self.redis.get(state_key) if self.redis is not None else None
+                obj=json.loads(raw) if raw else {}
+                age=max(0.0,time.time()-float(obj.get("ts") or 0.0))
+                hist_n=int(float(obj.get("history_n") or 0))
+                threshold=float(obj.get("threshold") or base)
+                valid=bool(raw and age<=max_age and hist_n>=min_hist and math.isfinite(threshold))
+                if valid:
+                    threshold=max(hard_min,min(hard_max,threshold))
+                    return {"threshold":threshold,"base_threshold":base,"mode":"rolling_percentile","recovery":False,"history":hist_n,"quantile":obj.get("quantile"),"raw_quantile":obj.get("raw_quantile"),"state_age_sec":age,"state_valid":True}
+                return {"threshold":base,"base_threshold":base,"mode":"rolling_fallback","recovery":False,"history":hist_n,"state_age_sec":age,"state_valid":False}
+            except Exception as exc:
+                return {"threshold":base,"base_threshold":base,"mode":"rolling_error","recovery":False,"state_valid":False,"error":str(exc)[:160]}
+
         enabled=str(os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE","0") or "0").strip().lower() in ("1","true","yes","on")
         target=str(os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL","") or "").upper().strip()
         if not enabled or side_norm!="long" or (target and sym_u!=target):
@@ -9777,9 +9800,13 @@ class TradeExecutor:
             or 0.0
         )
         dyn_enabled = str(os.getenv("LONG_DYNAMIC_MODEL_GATE_ENABLE","0") or "0").strip().lower() in ("1","true","yes","on")
+        rolling_enabled = str(os.getenv("LONG_ROLLING_MODEL_GATE_ENABLE","0") or "0").strip().lower() in ("1","true","yes","on")
         dyn_symbol = str(os.getenv("LONG_DYNAMIC_MODEL_GATE_SYMBOL","") or "").upper().strip()
+        rolling_symbol = str(os.getenv("LONG_ROLLING_MODEL_GATE_SYMBOL","NEARUSDT") or "NEARUSDT").upper().strip()
         sym_u = str(symbol or "").upper().strip()
-        if dyn_enabled and str(side or "").strip().lower()=="long" and (not dyn_symbol or sym_u==dyn_symbol):
+        gate_enabled = dyn_enabled or rolling_enabled
+        gate_symbol = rolling_symbol if rolling_enabled else dyn_symbol
+        if gate_enabled and str(side or "").strip().lower()=="long" and (not gate_symbol or sym_u==gate_symbol):
             try:
                 open_min_score=float(os.getenv(f"COIN_LONG_THRESHOLD_{sym_u}", os.getenv("LONG_THRESHOLD", str(open_min_score))) or open_min_score)
             except Exception:
