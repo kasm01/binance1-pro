@@ -4,6 +4,7 @@ import json
 import os
 import time
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from typing import Any, Dict, List, Optional, Tuple
 
 import redis
@@ -154,6 +155,14 @@ class TopSelector:
             "TOPSEL_COOLDOWN_SEC",
             _env_int("TG_DUPLICATE_SIGNAL_COOLDOWN_SEC", 90),
         )
+        self.daily_max = max(0, _env_int("TOPSEL_DAILY_MAX", 0))
+        self.daily_count_prefix = str(os.getenv("TOPSEL_DAILY_COUNT_PREFIX", "topsel:daily_count") or "topsel:daily_count").strip()
+        self.daily_tz_name = str(os.getenv("TOPSEL_DAILY_TZ", "Europe/Istanbul") or "Europe/Istanbul").strip()
+        try:
+            self.daily_tz = ZoneInfo(self.daily_tz_name)
+        except Exception:
+            self.daily_tz_name = "UTC"
+            self.daily_tz = timezone.utc
 
         self.min_score = _env_float(
             "TOPSEL_MIN_SCORE",
@@ -198,6 +207,7 @@ class TopSelector:
             f"[TopSelector] init ok. in={self.in_stream} out={self.out_stream} "
             f"group={self.group} consumer={self.consumer} "
             f"topk={self.topk} window={self.window_sec}s cooldown={self.cooldown_sec}s "
+            f"daily_max={self.daily_max} daily_tz={self.daily_tz_name} "
             f"min_score={self.min_score} w_min={self.w_min} "
             f"ack_immediate={self.ack_immediate}",
             flush=True,
@@ -863,9 +873,29 @@ class TopSelector:
 
         return out
 
+    def _daily_count_key(self, now_sec: Optional[float] = None) -> str:
+        ts = float(now_sec if now_sec is not None else time.time())
+        day = datetime.fromtimestamp(ts, tz=self.daily_tz).strftime("%Y%m%d")
+        return f"{self.daily_count_prefix}:{day}"
+
     def _publish(self, top: List[Dict[str, Any]]) -> Optional[str]:
         if not top:
             return None
+
+        daily_key = None
+        if int(self.daily_max) > 0:
+            daily_key = self._daily_count_key()
+            try:
+                current = int(self.r.get(daily_key) or 0)
+            except Exception as e:
+                print(f"[TopSelector][DAILY-CAP] read failed key={daily_key} err={e}; fail_closed", flush=True)
+                return None
+            remaining = int(self.daily_max) - current
+            if remaining <= 0:
+                print(f"[TopSelector][DAILY-CAP] blocked current={current} max={self.daily_max} key={daily_key}", flush=True)
+                return None
+            if len(top) > remaining:
+                top = top[:remaining]
 
         payload = TopKBatchEvent(
             ts_utc=_now_utc_iso(),
@@ -896,6 +926,14 @@ class TopSelector:
             return None
 
         now_sec = time.time()
+        if daily_key is not None:
+            try:
+                pipe = self.r.pipeline()
+                pipe.incrby(daily_key, len(top))
+                pipe.expire(daily_key, 3 * 24 * 3600)
+                pipe.execute()
+            except Exception as e:
+                print(f"[TopSelector][DAILY-CAP] counter update failed key={daily_key} err={e}", flush=True)
         for c in top:
             ck = self._cooldown_key(c)
             self.last_sent[ck] = now_sec
