@@ -10816,6 +10816,99 @@ class TradeExecutor:
         )
 
 
+    def _read_long_micro_stability_snapshot(self, symbol: str):
+        try:
+            r = getattr(self, "redis", None) or getattr(self, "redis_client", None)
+            if r is None:
+                return None
+            stream = str(os.getenv("LONG_MICRO_STABILITY_SHADOW_SOURCE_STREAM", "shadow:telemetry:microstructure") or "shadow:telemetry:microstructure")
+            rows = r.xrevrange(stream, count=1) or []
+            if not rows:
+                return None
+            sid, fields = rows[0]
+            obj = json.loads(fields.get("json", "{}") or "{}")
+            if str(obj.get("symbol") or "").upper() != str(symbol or "").upper():
+                return None
+            return {
+                "stream_id": str(sid),
+                "observed_at_ms": int(float(obj.get("observed_at_ms") or sid.split("-")[0])),
+                "t1_signed_ratio": float(obj.get("t1_signed_ratio") or 0.0),
+                "t5_signed_ratio": float(obj.get("t5_signed_ratio") or 0.0),
+                "t15_signed_ratio": float(obj.get("t15_signed_ratio") or 0.0),
+                "t30_signed_ratio": float(obj.get("t30_signed_ratio") or 0.0),
+                "t5_delta_quote": float(obj.get("t5_delta_quote") or 0.0),
+                "t15_delta_quote": float(obj.get("t15_delta_quote") or 0.0),
+                "depth5_imbalance": float(obj.get("depth5_imbalance") or 0.0),
+                "depth20_imbalance": float(obj.get("depth20_imbalance") or 0.0),
+                "microprice_dev_bps": float(obj.get("microprice_dev_bps") or 0.0),
+                "live1m_progress": float(obj.get("live1m_progress") or 0.0),
+                "live1m_long_retrace_ratio": float(obj.get("live1m_long_retrace_ratio") or 0.0),
+                "live1m_body_ratio": float(obj.get("live1m_body_ratio") or 0.0),
+                "live1m_long_location": float(obj.get("live1m_long_location") or 0.0),
+                "live1m_long_direction_support": bool(obj.get("live1m_long_direction_support", False)),
+            }
+        except Exception:
+            return None
+
+    def _schedule_long_micro_stability_shadow(self, *, symbol: str, signal_score: float, entry_decision=None):
+        enabled = str(os.getenv("LONG_MICRO_STABILITY_SHADOW_ENABLE", "0") or "0").strip().lower() in ("1","true","yes","on")
+        if not enabled:
+            return
+        snap_a = self._read_long_micro_stability_snapshot(symbol)
+        if not isinstance(snap_a, dict):
+            return
+        delay_sec = max(1.0, float(os.getenv("LONG_MICRO_STABILITY_SHADOW_DELAY_SEC", "8") or 8))
+        stream_out = str(os.getenv("LONG_MICRO_STABILITY_SHADOW_STREAM", "telemetry:long1:micro_stability_shadow:v1") or "telemetry:long1:micro_stability_shadow:v1")
+        maxlen = int(os.getenv("LONG_MICRO_STABILITY_SHADOW_MAXLEN", "10000") or 10000)
+        t5_drop_thr = float(os.getenv("LONG_MICRO_STABILITY_T5_DROP_THR", "-0.80") or -0.80)
+        t15_flip_start = float(os.getenv("LONG_MICRO_STABILITY_T15_FLIP_START", "0.25") or 0.25)
+        retrace_bad = float(os.getenv("LONG_MICRO_STABILITY_RETRACE_BAD", "0.75") or 0.75)
+        retrace_jump = float(os.getenv("LONG_MICRO_STABILITY_RETRACE_JUMP", "0.30") or 0.30)
+
+        def _worker():
+            try:
+                time.sleep(delay_sec)
+                snap_b = self._read_long_micro_stability_snapshot(symbol)
+                if not isinstance(snap_b, dict):
+                    return
+                dt5 = float(snap_b["t5_signed_ratio"] - snap_a["t5_signed_ratio"])
+                dt15 = float(snap_b["t15_signed_ratio"] - snap_a["t15_signed_ratio"])
+                dretrace = float(snap_b["live1m_long_retrace_ratio"] - snap_a["live1m_long_retrace_ratio"])
+                t5_collapse = dt5 <= t5_drop_thr
+                t15_flip = snap_a["t15_signed_ratio"] >= t15_flip_start and snap_b["t15_signed_ratio"] < 0.0
+                retrace_break = snap_b["live1m_long_retrace_ratio"] >= retrace_bad and dretrace >= retrace_jump
+                support_lost = bool(snap_a["live1m_long_direction_support"] and not snap_b["live1m_long_direction_support"])
+                pending_candidate = bool((t5_collapse and t15_flip) or (retrace_break and snap_b["t5_signed_ratio"] < 0.0) or (support_lost and snap_b["t5_signed_ratio"] < -0.30))
+                payload = {
+                    "schema_version": "long1_micro_stability_shadow.v1",
+                    "ts_utc": datetime.now(timezone.utc).isoformat(),
+                    "symbol": str(symbol or "").upper(),
+                    "signal_score": float(signal_score),
+                    "delay_sec": float(delay_sec),
+                    "snapshot_a": snap_a,
+                    "snapshot_b": snap_b,
+                    "delta": {"t5_signed_ratio": dt5, "t15_signed_ratio": dt15, "retrace_ratio": dretrace},
+                    "flags": {"t5_collapse": t5_collapse, "t15_flip": t15_flip, "retrace_break": retrace_break, "support_lost": support_lost},
+                    "shadow_decision": "PENDING_CANDIDATE" if pending_candidate else "READY_CANDIDATE",
+                    "routing_changed": False,
+                    "policy_effect": "TELEMETRY_ONLY",
+                }
+                if isinstance(entry_decision, dict):
+                    payload["entry_decision"] = {k: entry_decision.get(k) for k in ("reason","score","required_score","action") if k in entry_decision}
+                r = getattr(self, "redis", None) or getattr(self, "redis_client", None)
+                if r is not None:
+                    r.xadd(stream_out, {"json": json.dumps(payload, ensure_ascii=False)}, maxlen=maxlen, approximate=True)
+                if self.logger:
+                    self.logger.info("[EXEC][MICRO-STABILITY-SHADOW] symbol=%s score=%.6f decision=%s dt5=%.3f dt15=%.3f retrace=%.3f->%.3f", str(symbol).upper(), float(signal_score), payload["shadow_decision"], dt5, dt15, snap_a["live1m_long_retrace_ratio"], snap_b["live1m_long_retrace_ratio"])
+            except Exception as exc:
+                try:
+                    if self.logger:
+                        self.logger.warning("[EXEC][MICRO-STABILITY-SHADOW][WARN] %s", str(exc)[:180])
+                except Exception:
+                    pass
+
+        threading.Thread(target=_worker, name=f"micro-stability-{str(symbol).upper()}", daemon=True).start()
+
     def _evaluate_long_candidate_pipeline(
         self, *, symbol, side, price, signal_score,
         open_min_score, extra=None,
@@ -11641,6 +11734,13 @@ class TradeExecutor:
 
         if candidate_action != "open":
             return
+
+        try:
+            self._schedule_long_micro_stability_shadow(
+                symbol=sym_u, signal_score=signal_score, entry_decision=candidate_decision,
+            )
+        except Exception:
+            pass
 
         await self._execute_long_validated_candidate(
             symbol=sym_u,
