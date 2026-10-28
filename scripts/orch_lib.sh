@@ -146,7 +146,7 @@ start_one() {
   fi
 
   echo "[START] $name -> $logfile"
-  nohup env PYTHONPATH="$ROOT_DIR" "$@" >>"$logfile" 2>&1 &
+  nohup env PYTHONPATH="$ROOT_DIR" "$@" 9>&- >>"$logfile" 2>&1 &
   local newpid="$!"
   echo "$newpid" > "$pidfile"
 
