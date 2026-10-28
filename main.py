@@ -331,6 +331,102 @@ def _linear_quantile(values, q: float) -> float:
     return vals[lo] + (vals[hi] - vals[lo]) * frac
 
 
+def _evaluate_long_context_adaptive_gate_shadow(*, symbol: str, current_score: float, normal_threshold: float, whale_dir: str = "none", whale_score: float = 0.0, redis_client=None):
+    """Research-only second LONG model gate using already-collected market context.
+
+    This function NEVER changes production routing. It only evaluates whether a
+    sub-threshold LONG score deserves PENDING/REVALIDATION research treatment.
+    No exchange/API calls are made; only existing Redis shadow telemetry is read.
+    """
+    out = {
+        "enabled": False, "shadow_only": True, "eligible_band": False,
+        "pass": False, "reason": "disabled", "symbol": str(symbol or "").upper(),
+        "score": float(current_score), "normal_threshold": float(normal_threshold),
+    }
+    enabled = str(os.getenv("LONG_CONTEXT_ADAPTIVE_GATE_ENABLE", "0") or "0").strip().lower() in ("1", "true", "yes", "on")
+    if not enabled:
+        return out
+    out["enabled"] = True
+    try:
+        floor = float(os.getenv("LONG_CONTEXT_ADAPTIVE_GATE_FLOOR", "0.487") or 0.487)
+        min_signed = float(os.getenv("LONG_CONTEXT_MIN_T15_SIGNED_RATIO", "0.35") or 0.35)
+        min_quote = float(os.getenv("LONG_CONTEXT_MIN_T15_QUOTE", "40000") or 40000)
+        min_abs_delta_quote = float(os.getenv("LONG_CONTEXT_MIN_ABS_T15_DELTA_QUOTE", "15000") or 15000)
+        require_oi_down = str(os.getenv("LONG_CONTEXT_REQUIRE_OI_DOWN", "1") or "1").strip().lower() in ("1", "true", "yes", "on")
+        require_1m_long = str(os.getenv("LONG_CONTEXT_REQUIRE_1M_LONG_SUPPORT", "1") or "1").strip().lower() in ("1", "true", "yes", "on")
+        max_contra_whale = float(os.getenv("LONG_CONTEXT_MAX_CONTRA_WHALE", "0.45") or 0.45)
+        micro_max_age = float(os.getenv("LONG_CONTEXT_MICRO_MAX_AGE_SEC", "30") or 30)
+        oi_max_age = float(os.getenv("LONG_CONTEXT_OI_MAX_AGE_SEC", "900") or 900)
+        stream = str(os.getenv("LONG_CONTEXT_MICRO_STREAM", "shadow:telemetry:microstructure") or "shadow:telemetry:microstructure")
+        oi_stream = str(os.getenv("LONG_CONTEXT_OI_STREAM", "shadow:telemetry:okx_oi") or "shadow:telemetry:okx_oi")
+        out.update({
+            "floor": floor, "min_t15_signed_ratio": min_signed, "min_t15_quote": min_quote,
+            "min_abs_t15_delta_quote": min_abs_delta_quote, "require_oi_down": require_oi_down,
+            "require_1m_long_support": require_1m_long, "max_contra_whale": max_contra_whale,
+        })
+        score = float(current_score); normal = float(normal_threshold)
+        out["eligible_band"] = bool(floor <= score < normal)
+        if not out["eligible_band"]:
+            out["reason"] = "outside_soft_band"
+            return out
+        if redis_client is None:
+            out["reason"] = "redis_missing"
+            return out
+        now_ms = int(time.time() * 1000)
+        mx = redis_client.xrevrange(stream, count=1) or []
+        if not mx:
+            out["reason"] = "micro_missing"
+            return out
+        msid, mf = mx[0]
+        mo = json.loads(mf.get("json", "{}") or "{}")
+        micro_ts = int(float(mo.get("observed_at_ms") or msid.split("-")[0]))
+        micro_age = max(0.0, (now_ms - micro_ts) / 1000.0)
+        signed = float(mo.get("t15_signed_ratio") or 0.0)
+        t15_quote = float(mo.get("t15_quote") or 0.0)
+        delta_quote = float(mo.get("t15_delta_quote") or 0.0)
+        one_m_long = bool(mo.get("live1m_long_direction_support", False))
+        out.update({
+            "micro_age_sec": micro_age, "t15_signed_ratio": signed, "t15_quote": t15_quote,
+            "t15_delta_quote": delta_quote, "live1m_long_direction_support": one_m_long,
+            "depth20_imbalance": float(mo.get("depth20_imbalance") or 0.0),
+            "basis_bps": float(mo.get("basis_bps") or 0.0),
+        })
+        if micro_age > micro_max_age:
+            out["reason"] = "micro_stale"
+            return out
+        ox = redis_client.xrevrange(oi_stream, count=1) or []
+        if not ox:
+            out["reason"] = "oi_missing"
+            return out
+        osid, of = ox[0]
+        oi_ts = int(float(of.get("observed_at_ms") or osid.split("-")[0]))
+        oi_age = max(0.0, (now_ms - oi_ts) / 1000.0)
+        oi_ret = float(of.get("oi_ret_period") or 0.0)
+        out.update({"oi_age_sec": oi_age, "oi_ret_period": oi_ret, "oi_direction": str(of.get("oi_direction") or "")})
+        if oi_age > oi_max_age:
+            out["reason"] = "oi_stale"
+            return out
+        whale_dir0 = str(whale_dir or "none").lower()
+        whale_score0 = float(whale_score or 0.0)
+        contra_whale = whale_dir0 in ("short", "sell", "out", "outflow") and whale_score0 >= max_contra_whale
+        checks = {
+            "signed_flow": signed >= min_signed,
+            "quote_intensity": t15_quote >= min_quote,
+            "delta_intensity": abs(delta_quote) >= min_abs_delta_quote,
+            "oi_down": (oi_ret < 0.0) if require_oi_down else True,
+            "one_m_long": one_m_long if require_1m_long else True,
+            "whale_ok": not contra_whale,
+        }
+        out["checks"] = checks
+        out["pass"] = bool(all(checks.values()))
+        out["reason"] = "context_soft_pass" if out["pass"] else "context_not_confirmed"
+        return out
+    except Exception as exc:
+        out["reason"] = "context_eval_error"
+        out["error"] = str(exc)[:180]
+        return out
+
+
 def _resolve_long_dynamic_model_threshold(*, symbol: str, raw_df, base_threshold: float, current_score: float = None, redis_client=None):
     """Resolve LONG1 MODEL SCORE GATE.
 
@@ -2402,6 +2498,14 @@ class HeavyEngine:
                 redis_client=_LONG_GATE_REDIS,
             )
             short_thr = float(os.getenv("SHORT_THRESHOLD", "0.60"))
+            long_context_adaptive_shadow = _evaluate_long_context_adaptive_gate_shadow(
+                symbol=symbol, current_score=float(p_used), normal_threshold=float(long_thr),
+                whale_dir=whale_dir, whale_score=float(whale_score), redis_client=_LONG_GATE_REDIS,
+            )
+            try:
+                extra["long_context_adaptive_gate_shadow"] = dict(long_context_adaptive_shadow)
+            except Exception:
+                pass
             try:
                 extra["long_dynamic_model_gate"] = dict(long_dynamic_gate)
             except Exception:
@@ -2451,6 +2555,34 @@ class HeavyEngine:
                 close_id = int(time.time() // 180)
                 if self._model_score_log_last_close.get(symbol) != close_id:
                     self._model_score_log_last_close[symbol] = close_id
+                    try:
+                        if long_context_adaptive_shadow.get("enabled") and long_context_adaptive_shadow.get("eligible_band") and _LONG_GATE_REDIS is not None:
+                            payload = dict(long_context_adaptive_shadow)
+                            payload.update({
+                                "schema_version": "long1_context_adaptive_gate_shadow.v1",
+                                "ts_utc": datetime.now(timezone.utc).isoformat(),
+                                "close_id": int(close_id),
+                                "routing_changed": False,
+                                "policy_effect": "TELEMETRY_ONLY",
+                            })
+                            _LONG_GATE_REDIS.xadd(
+                                str(os.getenv("LONG_CONTEXT_ADAPTIVE_GATE_STREAM", "telemetry:long1:context_adaptive_gate:v1") or "telemetry:long1:context_adaptive_gate:v1"),
+                                {"json": json.dumps(payload, ensure_ascii=False)},
+                                maxlen=int(os.getenv("LONG_CONTEXT_ADAPTIVE_GATE_MAXLEN", "10000") or 10000),
+                                approximate=True,
+                            )
+                            if system_logger:
+                                system_logger.info(
+                                    "[MODEL][CONTEXT-ADAPTIVE-SHADOW] symbol=%s score=%.6f normal=%.6f floor=%.6f pass=%s reason=%s flow15=%.3f quote15=%.0f dquote15=%.0f oi=%.5f 1m_long=%s",
+                                    symbol, float(p_used), float(long_thr), float(long_context_adaptive_shadow.get("floor") or 0.0),
+                                    bool(long_context_adaptive_shadow.get("pass")), str(long_context_adaptive_shadow.get("reason") or ""),
+                                    float(long_context_adaptive_shadow.get("t15_signed_ratio") or 0.0), float(long_context_adaptive_shadow.get("t15_quote") or 0.0),
+                                    float(long_context_adaptive_shadow.get("t15_delta_quote") or 0.0), float(long_context_adaptive_shadow.get("oi_ret_period") or 0.0),
+                                    bool(long_context_adaptive_shadow.get("live1m_long_direction_support", False)),
+                                )
+                    except Exception as exc:
+                        if system_logger:
+                            system_logger.warning("[MODEL][CONTEXT-ADAPTIVE-SHADOW][WARN] %s", str(exc)[:180])
                     if system_logger:
                         system_logger.info(
                             "[MODEL-SCORE] symbol=%s close_id=%s p_used=%.6f long_thr=%.4f side=%s gate_reason=%s atr_rank=%s",
