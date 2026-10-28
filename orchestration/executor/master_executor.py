@@ -241,6 +241,15 @@ class MasterExecutor:
 
         self.drop_if_whale_contra = _env_bool("MASTER_DROP_WHALE_CONTRA", True)
 
+        # Research-only LONG whale band policy telemetry. This must never alter
+        # score, sizing, routing or the canonical whale veto.
+        self.long_whale_band_shadow_enable = _env_bool("LONG_WHALE_BAND_SHADOW_ENABLE", True)
+        self.long_whale_band_shadow_stream = _env_str(
+            "LONG_WHALE_BAND_SHADOW_STREAM",
+            "telemetry:long1:whale_band_policy:v1",
+        )
+        self.long_whale_band_shadow_maxlen = _env_int("LONG_WHALE_BAND_SHADOW_MAXLEN", 10000)
+
         self.whale_use_final_decision = _env_bool("MASTER_WHALE_USE_FINAL_DECISION", True)
         self.whale_hard_block_actions = set(
             _as_list(_env_str("MASTER_WHALE_HARD_BLOCK_ACTIONS", "block_open,hard_block"))
@@ -665,6 +674,67 @@ class MasterExecutor:
         out.sort(key=lambda x: float(x.get("_score_total_final", 0.0)), reverse=True)
         return out
 
+    def _emit_long_whale_band_shadow(
+        self,
+        symbol: str,
+        interval: str,
+        side: str,
+        raw_evt: Dict[str, Any],
+        score: float,
+    ) -> None:
+        if not self.long_whale_band_shadow_enable or str(side).lower() != "long":
+            return
+        try:
+            whale_score = float(self._get_whale_confidence(raw_evt))
+            whale_dir = str(self._get_whale_direction(raw_evt) or "none").strip().lower()
+            contra = bool(self._is_whale_contra(side, raw_evt))
+
+            if not contra:
+                band = "aligned_or_neutral"
+                shadow_decision = "NORMAL"
+            elif whale_score < 0.45:
+                band = "contra_lt_045"
+                shadow_decision = "NORMAL_CONFIRM"
+            elif whale_score < 0.55:
+                band = "contra_045_055"
+                shadow_decision = "RISK_REJECT_CANDIDATE"
+            elif whale_score < 0.65:
+                band = "contra_055_065"
+                shadow_decision = "PENDING_STRONG_CONFIRM"
+            else:
+                band = "contra_ge_065"
+                shadow_decision = "HIGH_CONTRA_OBSERVE"
+
+            current_contra_drop = bool(
+                self.drop_if_whale_contra
+                and contra
+                and whale_score >= float(self.whale_boost_thr)
+            )
+            payload = {
+                "ts_utc": _now_utc_iso(),
+                "symbol": str(symbol),
+                "interval": str(interval),
+                "side": str(side),
+                "model_score": f"{float(score):.12g}",
+                "whale_score": f"{whale_score:.12g}",
+                "whale_dir": whale_dir,
+                "whale_contra": "1" if contra else "0",
+                "band": band,
+                "shadow_decision": shadow_decision,
+                "current_contra_threshold": f"{float(self.whale_boost_thr):.12g}",
+                "current_contra_drop": "1" if current_contra_drop else "0",
+                "policy_effect": "TELEMETRY_ONLY",
+                "routing_changed": "0",
+            }
+            self.r.xadd(
+                self.long_whale_band_shadow_stream,
+                payload,
+                maxlen=max(100, int(self.long_whale_band_shadow_maxlen)),
+                approximate=True,
+            )
+        except Exception as exc:
+            print(f"[MasterExecutor][WHALE-SHADOW][WARN] {type(exc).__name__}: {exc}")
+
     def _reject_by_whale_policy(
         self,
         symbol: str,
@@ -676,6 +746,10 @@ class MasterExecutor:
         action = self._get_whale_action(raw_evt)
         whale_score = self._get_whale_confidence(raw_evt)
         whale_contra = self._is_whale_contra(side, raw_evt)
+
+        # Always record the alternative band policy before the canonical veto,
+        # including candidates that the current 0.45 contra rule will drop.
+        self._emit_long_whale_band_shadow(symbol, interval, side, raw_evt, score)
 
         # ----------------------------------------------------
         # CANONICAL WHALE OPEN POLICY
