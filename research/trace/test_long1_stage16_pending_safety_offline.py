@@ -26,7 +26,7 @@ async def fake_order(**kwargs):
  events.append("FAKE_ORDER_SINK")
  return {"status":"dry_run"}
 def obj():
- x=E(); x.logger=None;x.long_pending_by_symbol={};x.max_open_positions=1
+ x=E(); x.logger=None;x.long_pending_by_symbol={};x.max_open_positions=1;x.dry_run=True
  x._get_effective_position=lambda s:{}
  x._count_open_positions_for_side=lambda s:0
  x._long_contra_context_gate=lambda **k:True

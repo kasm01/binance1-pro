@@ -31,21 +31,28 @@ E=ctx["SafeTestClass"]
 class BrokenPositions:
  def values(self):raise OSError("position store unavailable")
 
-# Actual count method silently returns empty rather than an unknown value.
+# Current production: LIVE count uses strict signed GET. Simulate read failure.
+def unavailable_broker():
+ raise OSError("signed Binance GET failed")
+ctx["_futures_v3_position_risk"]=unavailable_broker
 e=E()
+e.dry_run=False
 e.positions=BrokenPositions()
 e._count_open_positions=lambda:0
 e._get_effective_position=lambda _:None
 e.max_open_positions=1
 e.logger=None
-silent_count=e._count_open_positions_for_side("long")
-assert silent_count==0
-# Actual ExecutionRisk accepts opening into 'empty' under that uncertainty.
+try:
+ e._count_open_positions_for_side("long")
+except OSError:
+ pass
+else:
+ raise AssertionError("unknown broker state must not return zero")
 allow=e._evaluate_long_execution_risk_gate(symbol="NEARUSDT",side="long",price=4,interval="3m",extra={})
-assert allow is True
+assert allow is False
 
-# Exchange-position API exception may also become None in the actual effective
-# accessor, then same risk gate authorizes. Do not simulate real exchange call.
+# Position lookup still yields None when GET is unavailable; the strict
+# independent count above blocks a LIVE open before that ambiguity matters.
 p=E()
 p._get_position=lambda _:None
 p._get_exchange_position=lambda _:None
@@ -90,7 +97,7 @@ assert strict_snapshot_count(lambda:[])==0
 
 print(json.dumps({
  "live_executor_ast_methods":len(nodes),
- "broken_local_positions_count_returned":silent_count,
+ "unknown_broker_count_raises":True,
  "risk_allowed_with_unknown_positions":allow,
  "central_dry_profile_production_ready":ok,
  "central_empty_snapshot_decision":empty.state,
@@ -102,5 +109,5 @@ print(json.dumps({
   "orchestration.risk.central_risk_master" in src),
  "actual_exchange_calls":0,
  "redis_writes":0,
- "production_changed":False,
+ "production_source_was_recently_patched":True,
 },sort_keys=True))

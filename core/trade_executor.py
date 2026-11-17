@@ -962,6 +962,11 @@ class TradeExecutor:
         return int(len(seen))
 
     def _count_open_positions_for_side(self, side: Optional[str] = None) -> int:
+        # LIVE: local cache / Redis exceptions must NEVER be interpreted as
+        # a verified empty Binance account. Read the complete v3 account view.
+        if not self.dry_run:
+            from core.strict_position_count_v1 import count_side
+            return count_side(_futures_v3_position_risk(), side)
         try:
             target = str(side or "").strip().lower()
             if target not in ("long", "short"):
@@ -1006,11 +1011,9 @@ class TradeExecutor:
                     count += 1
 
             return int(count)
-        except Exception:
-            try:
-                return int(self._count_open_positions())
-            except Exception:
-                return 0
+        except Exception as exc:
+            # Even in DRY mode, uncertainty is not an affirmative zero.
+            raise RuntimeError("open_position_count_unavailable") from exc
 
     def _has_open_position_on_symbol(self, symbol: str) -> bool:
         sym_u = str(symbol).upper().strip()
@@ -5812,6 +5815,15 @@ class TradeExecutor:
                 "reduceOnly": bool(reduce_only),
             }
 
+        # Defense in depth: direct entry into the exchange OPEN helper must
+        # never bypass Central Risk authority or rely on caller metadata.
+        from core.joint_risk_live_guard_v1 import check_new_open
+        shared_gate = check_new_open(
+            strategy_id="LONG1",symbol=sym,side=side,dry_run=False,
+        )
+        if not shared_gate.allow:
+            raise RuntimeError(shared_gate.reason)
+
         client = getattr(self, "client", None)
         if client is None:
             raise RuntimeError("client is None (cannot place order)")
@@ -7820,6 +7832,15 @@ class TradeExecutor:
                 local_latched=getattr(self, "_long1_native_stop_latched", False),
             ):
                 return {"status": "skip", "reason": "long1_native_stop_safety_latch", "symbol": sym_u}
+
+        # Both native-stop and central risk protect new OPEN, not closes.
+        from core.joint_risk_live_guard_v1 import check_new_open
+        joint_gate = check_new_open(
+            strategy_id="LONG1", symbol=sym_u, side=side0,
+            dry_run=self.dry_run,
+        )
+        if not joint_gate.allow:
+            return {"status":"skip","reason":joint_gate.reason,"symbol":sym_u}
 
         _open_key = f"{sym_u}_{side0}"
         _lock_taken = False
@@ -10210,6 +10231,22 @@ class TradeExecutor:
     ):
         sym_u = str(symbol or "").upper().strip()
         side_norm = str(side or "").strip().lower()
+        # Exchange count must be checked BEFORE any same-side scale-in path.
+        # A failed GET is a hard OPEN veto, including scale-in.
+        live_count = None
+        if not self.dry_run:
+            try:
+                live_count = self._count_open_positions_for_side(side_norm)
+            except Exception as exc:
+                try:
+                    if self.logger:
+                        self.logger.warning(
+                            "[EXEC][OPEN-BLOCK] authoritative position count UNKNOWN | symbol=%s err=%s",
+                            sym_u, type(exc).__name__,
+                        )
+                except Exception:
+                    pass
+                return False
         cur = self._get_effective_position(sym_u)
         cur_side = str(cur.get("side")).lower().strip() if isinstance(cur, dict) else None
         if cur_side in ("long", "short"):
@@ -10286,13 +10323,22 @@ class TradeExecutor:
 
             return False
         try:
-            open_count = int(self._count_open_positions_for_side(side_norm))
+            open_count = int(live_count if live_count is not None else
+                             self._count_open_positions_for_side(side_norm))
             if open_count >= int(self.max_open_positions):
                 if self.logger:
                     self.logger.info("[EXEC][OPEN-BLOCK] max_open_positions reached | symbol=%s side=%s side_open_count=%s limit=%s", sym_u, side_norm, open_count, int(self.max_open_positions))
                 return False
-        except Exception:
-            pass
+        except Exception as exc:
+            try:
+                if self.logger:
+                    self.logger.warning(
+                        "[EXEC][OPEN-BLOCK] risk cap unavailable | symbol=%s err=%s",
+                        sym_u, type(exc).__name__,
+                    )
+            except Exception:
+                pass
+            return False
         return True
 
 

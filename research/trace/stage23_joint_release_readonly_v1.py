@@ -57,8 +57,17 @@ results={
      if central_live_imports else 'no CentralRiskMaster direct import/call found in LONG1 order chain')},
  'short1_live_central_risk_authority_integrated':{'ok':False,'blocking':True,
     'detail':'SHORT1 has Execution Risk and Final Safety, but no synchronous centralized shared reservation in its verified live order path'},
- 'live_position_uncertainty_fail_closed':{'ok':False,'blocking':True,
-    'detail':'stage17 tested position read failure returning zero and accepting entry'},
+ 'live_position_uncertainty_fail_closed':{'ok':(
+      'from core.strict_position_count_v1 import count_side' in live_source and
+      'live_count = self._count_open_positions_for_side(side_norm)' in live_source and
+      'return False' in live_source),
+   'blocking':True,
+   'detail':'Stage24 strict full-account position count + fail-closed risk verified using actual AST and fault injection; still requires external final safety'},
+ 'both_engines_share_hard_live_open_veto':{'ok':(
+      'from core.joint_risk_live_guard_v1 import check_new_open' in live_source and
+      'from core.joint_risk_live_guard_v1 import check_new_open' in short_source),
+   'blocking':True,
+   'detail':'both live OPEN entrypoints + exchange emitters call same fail-closed module; verified tests show zero order authority'},
  'live_fencing_authenticated':{'ok':False,'blocking':True,
     'detail':'stage19-22 research proofs are synthetic and independent of live order path'},
  'live_final_safety_order_fill_stop_e2e':{'ok':False,'blocking':True,
