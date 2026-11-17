@@ -292,6 +292,13 @@ class Aggregator:
             "whale_dir": str(evt.get("whale_dir", "none") or "none"),
         }
 
+        # Transport provenance is exact; never infer a parent from score,
+        # timestamp or dedup key. Small top-level fields survive RAW=0.
+        if sym=="NEARUSDT":
+            from orchestration.trace.long1_lineage_v1 import candidate_parent
+            payload.update(candidate_parent(
+                evt, str(self.bus.signals_stream),
+                str(evt.get("_source_stream_id") or "")))
         if self.include_raw:
             payload["raw"] = evt
         else:

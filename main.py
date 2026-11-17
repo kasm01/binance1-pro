@@ -1708,6 +1708,8 @@ class HeavyEngine:
         whale_dir: str,
         whale_score: float,
         signal_source: str,
+        model_evaluation_id: Optional[str] = None,
+        model_close_id: Optional[int] = None,
         shadow: bool = False,
     ) -> Optional[Dict[str, Any]]:
         """
@@ -1777,7 +1779,8 @@ class HeavyEngine:
         symbol0 = str(symbol).upper().strip()
         interval0 = str(interval or "").strip()
 
-        return {
+        from orchestration.trace.long1_lineage_v1 import decorate_model_signal
+        return decorate_model_signal({
             "ts_utc": datetime.now(
                 timezone.utc
             ).isoformat(),
@@ -1836,7 +1839,8 @@ class HeavyEngine:
                     else "1-p_used"
                 ),
             },
-        }
+        }, model_evaluation_id=model_evaluation_id,
+           model_close_id=model_close_id)
 
     def _publish_model_signal_production(
         self,
@@ -1851,6 +1855,8 @@ class HeavyEngine:
         whale_dir: str,
         whale_score: float,
         signal_source: str,
+        model_evaluation_id: Optional[str] = None,
+        model_close_id: Optional[int] = None,
     ) -> str:
         """
         Publish one canonical HeavyEngine SignalEvent to the
@@ -1870,6 +1876,8 @@ class HeavyEngine:
             whale_dir=whale_dir,
             whale_score=whale_score,
             signal_source=signal_source,
+            model_evaluation_id=model_evaluation_id,
+            model_close_id=model_close_id,
             shadow=False,
         )
 
@@ -1955,6 +1963,8 @@ class HeavyEngine:
         whale_dir: str,
         whale_score: float,
         signal_source: str,
+        model_evaluation_id: Optional[str] = None,
+        model_close_id: Optional[int] = None,
     ) -> str:
         """
         Publish real HeavyEngine model output to an isolated shadow stream.
@@ -1992,6 +2002,8 @@ class HeavyEngine:
             whale_dir=whale_dir,
             whale_score=whale_score,
             signal_source=signal_source,
+            model_evaluation_id=model_evaluation_id,
+            model_close_id=model_close_id,
             shadow=True,
         )
 
@@ -2071,6 +2083,12 @@ class HeavyEngine:
 
         interval = self.interval
         timer = _StepTimer()
+        # Model evaluation identity: one per run_once, regardless of
+        # shadow / production / direct routing. close_id is a wallclock
+        # bucket, NOT the exchange closed candle timestamp.
+        from orchestration.trace.long1_lineage_v1 import new_model_evaluation_id
+        model_evaluation_id = new_model_evaluation_id()
+        model_trace_close_id = int(time.time() // 180)
 
         active_model = self.hybrid_model
         if self.model_registry is not None:
@@ -2552,7 +2570,7 @@ class HeavyEngine:
             # Low-cost production observability: one score line per completed 3m candle.
             # No API/Redis call and no effect on MODEL -> ORDER routing.
             try:
-                close_id = int(time.time() // 180)
+                close_id = model_trace_close_id
                 if self._model_score_log_last_close.get(symbol) != close_id:
                     self._model_score_log_last_close[symbol] = close_id
                     try:
@@ -2585,10 +2603,11 @@ class HeavyEngine:
                             system_logger.warning("[MODEL][CONTEXT-ADAPTIVE-SHADOW][WARN] %s", str(exc)[:180])
                     if system_logger:
                         system_logger.info(
-                            "[MODEL-SCORE] symbol=%s close_id=%s p_used=%.6f long_thr=%.4f side=%s gate_reason=%s atr_rank=%s",
+                            "[MODEL-SCORE] symbol=%s close_id=%s p_used=%.6f long_thr=%.4f side=%s gate_reason=%s atr_rank=%s model_evaluation_id=%s close_id_kind=wallclock_bucket_180s",
                             symbol, close_id, float(p_used), float(long_thr), signal_side,
                             str(long_dynamic_gate.get("reason") or ""),
                             str(long_dynamic_gate.get("atr_rank")),
+                            model_evaluation_id,
                         )
             except Exception:
                 pass
@@ -2629,6 +2648,8 @@ class HeavyEngine:
                 extra.get("signal_source")
                 or "HYBRID"
             ),
+            model_evaluation_id=model_evaluation_id,
+            model_close_id=model_trace_close_id,
         )
 
         # =====================================================
@@ -2668,6 +2689,8 @@ class HeavyEngine:
                         extra.get("signal_source")
                         or "HYBRID"
                     ),
+                    model_evaluation_id=model_evaluation_id,
+                    model_close_id=model_trace_close_id,
                     shadow=False,
                 )
             )
@@ -2690,6 +2713,9 @@ class HeavyEngine:
                 extra["model_score_source"] = (
                     "heavy_engine_canonical"
                 )
+                extra["model_evaluation_id"] = model_evaluation_id
+                extra["model_close_id"] = model_trace_close_id
+                extra["model_close_id_kind"] = "wallclock_bucket_180s"
 
             await self.trade_executor.execute_decision(
                 signal=signal_side,
@@ -2724,6 +2750,8 @@ class HeavyEngine:
                         extra.get("signal_source")
                         or "HYBRID"
                     ),
+                    model_evaluation_id=model_evaluation_id,
+                    model_close_id=model_trace_close_id,
                 )
 
                 # Empty stream id = transport failed.
