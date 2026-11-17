@@ -49,6 +49,25 @@ LIVE_POSITION_OVERLAYS = (
     ("LONG1", "NEARUSDT", "long", "bot:positions:NEARUSDT"),
 )
 
+# Atomic *dry-only* compare-and-delete; NEVER repurpose for LIVE release.
+# A separate production reconciler must check exchange fills/open orders/stops.
+_DRY_OWNER_RELEASE_LUA = r"""
+local typ=redis.call('TYPE',KEYS[1])['ok']
+if typ~='hash' and typ~='none' then return 'reservation_source_invalid' end
+local raw=redis.call('HGET',KEYS[1],ARGV[1])
+if not raw then return 'reservation_missing' end
+local ok,obj=pcall(cjson.decode,raw)
+if not ok or type(obj)~='table' then return 'reservation_record_invalid' end
+if tostring(obj.request_id or '')~=ARGV[2] or
+   tostring(obj.strategy_id or '')~=ARGV[1] then
+ return 'reservation_owner_mismatch'
+end
+if redis.call('HDEL',KEYS[1],ARGV[1])~=1 then
+ return 'reservation_lost_during_release'
+end
+return 'reservation_released_by_owner'
+"""
+
 
 def _f(v: Any, default: float = 0.0) -> float:
     try:
@@ -174,12 +193,32 @@ def _handle(r: redis.Redis, req: Dict[str, Any]) -> Dict[str, Any]:
     if action == "PING":
         return {"request_id": request_id, "state": "READY", "reason": "pong", "profile": describe_profile()}
 
-    if action == "RELEASE":
-        if strategy_id:
-            r.hdel(RESERVATION_HASH, strategy_id)
-        return {"request_id": request_id, "state": "READY", "reason": "reservation_released", "strategy_id": strategy_id}
-
     mode = str(req.get("request_mode") or "DRY_RUN").upper().strip()
+    if action == "RELEASE":
+        # DRY shadow only. A missing/late owner must NEVER remove a newer
+        # reservation, especially one held by a different intent.
+        if mode != "DRY_RUN":
+            return {"request_id": request_id, "state": "REJECT",
+                    "reason": "live_release_not_authorized", "strategy_id": strategy_id}
+        if strategy_id not in {str(x).upper() for x in VALIDATED_STRATEGIES}:
+            return {"request_id": request_id, "state": "REJECT",
+                    "reason": "strategy_not_validated", "strategy_id": strategy_id}
+        owner = str(req.get("reservation_owner_request_id") or "").strip()
+        if not owner:
+            return {"request_id": request_id, "state": "REJECT",
+                    "reason": "reservation_owner_missing", "strategy_id": strategy_id}
+        try:
+            reason = r.eval(_DRY_OWNER_RELEASE_LUA, 1, RESERVATION_HASH,
+                            strategy_id, owner)
+        except Exception:
+            return {"request_id": request_id, "state": "REJECT",
+                    "reason": "reservation_release_source_unavailable",
+                    "strategy_id": strategy_id}
+        permitted = reason == "reservation_released_by_owner"
+        return {"request_id": request_id,
+                "state": "READY" if permitted else "REJECT",
+                "reason": str(reason), "strategy_id": strategy_id}
+
     if mode != "DRY_RUN":
         return {"request_id": request_id, "state": "REJECT", "reason": "live_not_authorized", "strategy_id": strategy_id}
     if strategy_id not in {str(x).upper() for x in VALIDATED_STRATEGIES}:
