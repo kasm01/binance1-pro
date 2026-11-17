@@ -1,0 +1,67 @@
+{
+  "schema": "joint_release_gate.stage23.v1",
+  "audited_at_utc": "2026-11-17T21:38:36.739325+00:00",
+  "state": "NO_GO",
+  "live_orders_authorized": false,
+  "effective_api_credentials_match": true,
+  "account_identity_same_or_different": "CONFIG_CREDENTIALS_MATCH_BROKER_ID_UNVERIFIED",
+  "blocking_count": 8,
+  "tests_prior_stages": "stage20_signed_GET_readonly;stage21_mock17;stage22_isolated_AOF",
+  "checks": {
+    "bots_stopped": {
+      "ok": true,
+      "blocking": false,
+      "detail": "required safe paused state for offline handoff"
+    },
+    "account_identity_broker_verified": {
+      "ok": false,
+      "blocking": true,
+      "detail": "same effective API credential pair found across bot configurations, but independently attested account ID and authoritative snapshot linkage are still missing"
+    },
+    "central_risk_live_authority_integrated": {
+      "ok": false,
+      "blocking": true,
+      "detail": "no CentralRiskMaster direct import/call found in LONG1 order chain"
+    },
+    "short1_live_central_risk_authority_integrated": {
+      "ok": false,
+      "blocking": true,
+      "detail": "SHORT1 has Execution Risk and Final Safety, but no synchronous centralized shared reservation in its verified live order path"
+    },
+    "live_position_uncertainty_fail_closed": {
+      "ok": false,
+      "blocking": true,
+      "detail": "stage17 tested position read failure returning zero and accepting entry"
+    },
+    "live_fencing_authenticated": {
+      "ok": false,
+      "blocking": true,
+      "detail": "stage19-22 research proofs are synthetic and independent of live order path"
+    },
+    "live_final_safety_order_fill_stop_e2e": {
+      "ok": false,
+      "blocking": true,
+      "detail": "only mock sink tested; actual fills/stop lifecycle not executed"
+    },
+    "central_production_profile_authorized": {
+      "ok": false,
+      "blocking": true,
+      "detail": "current central enforce-dry profile production_authorized=False"
+    },
+    "standby_native_stop_service_running": {
+      "ok": false,
+      "blocking": false,
+      "detail": "native stop intentionally stopped with all bots, must be ACTIVE before any live entry"
+    },
+    "long1_env_is_live_if_started": {
+      "ok": false,
+      "blocking": true,
+      "detail": "LONG1 has DRY_RUN=0, so shadow_start can launch live strategy"
+    },
+    "short1_env_paper_only": {
+      "ok": true,
+      "blocking": false,
+      "detail": "SHORT1 remains paper-only by declared env"
+    }
+  }
+}
