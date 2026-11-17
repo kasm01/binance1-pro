@@ -1,0 +1,166 @@
+{
+  "LONG_AVOID_outcomes_negative_net_roi_count": 1,
+  "LONG_AVOID_outcomes_positive_net_roi_count": 2,
+  "advisory_market_decisions_by_user_reference": {
+    "CONFLICT_NO_TRADE": {
+      "PENDING": 1
+    },
+    "LONG_AVOID": {
+      "PENDING": 49,
+      "VETO_ADVISORY": 18
+    },
+    "LONG_TARGET": {
+      "PENDING": 5,
+      "VETO_ADVISORY": 2
+    },
+    "UNLABELLED": {
+      "PENDING": 12,
+      "VETO_ADVISORY": 2
+    }
+  },
+  "daily": {
+    "2026-11-12": {
+      "LONG_AVOID": 18,
+      "LONG_TARGET": 2,
+      "UNLABELLED": 11
+    },
+    "2026-11-13": {
+      "CONFLICT_NO_TRADE": 1,
+      "LONG_AVOID": 22,
+      "LONG_TARGET": 1,
+      "UNLABELLED": 1
+    },
+    "2026-11-14": {
+      "LONG_AVOID": 27,
+      "LONG_TARGET": 4,
+      "UNLABELLED": 2
+    }
+  },
+  "exchange_orders": 0,
+  "four_fast_reversal_examples": [
+    {
+      "direct_order_fill_verified": false,
+      "legacy_entry_actions_heuristic": {},
+      "legacy_entry_attribution": "MODEL_ONLY",
+      "market_context_advisory": "PENDING",
+      "model_score": 0.497407,
+      "new_stage6_trace_available_for_legacy": false,
+      "timestamp_tr": "2026-11-12T01:36:16",
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "direct_order_fill_verified": false,
+      "legacy_entry_actions_heuristic": {},
+      "legacy_entry_attribution": "MODEL_ONLY",
+      "market_context_advisory": "VETO_ADVISORY",
+      "model_score": 0.499819,
+      "new_stage6_trace_available_for_legacy": false,
+      "timestamp_tr": "2026-11-14T17:06:14",
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "direct_order_fill_verified": false,
+      "legacy_entry_actions_heuristic": {
+        "pending": 2
+      },
+      "legacy_entry_attribution": "HEURISTIC_SCORE_TIME",
+      "market_context_advisory": "PENDING",
+      "model_score": 0.50004,
+      "new_stage6_trace_available_for_legacy": false,
+      "timestamp_tr": "2026-11-14T19:06:12",
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "direct_order_fill_verified": false,
+      "legacy_entry_actions_heuristic": {},
+      "legacy_entry_attribution": "MODEL_ONLY",
+      "market_context_advisory": "PENDING",
+      "model_score": 0.510074,
+      "new_stage6_trace_available_for_legacy": false,
+      "timestamp_tr": "2026-11-14T23:57:09",
+      "user_reference": "LONG_AVOID"
+    }
+  ],
+  "historical_model_long_count": 89,
+  "historical_position_outcome_reference_counts": {
+    "LONG_AVOID": 3,
+    "UNLABELLED": 4
+  },
+  "historical_position_outcome_telemetry_rows": 7,
+  "legacy_entries_linked_with_exact_trace_id": 0,
+  "legacy_funnel_only_heuristic_or_model_only": true,
+  "no_model_to_position_join_inferred": true,
+  "overall_reference_counts": {
+    "CONFLICT_NO_TRADE": 1,
+    "LONG_AVOID": 67,
+    "LONG_TARGET": 7,
+    "UNLABELLED": 14
+  },
+  "position_outcome_telemetry_rows": [
+    {
+      "exit_reason_telemetry": "fixed_roi_tp_lifecycle",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": 0.9311,
+      "position_open_tr": "2026-11-12T03:06:15.782000+03:00",
+      "reference_label": "UNLABELLED"
+    },
+    {
+      "exit_reason_telemetry": "fixed_roi_tp_lifecycle",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": 1.0954,
+      "position_open_tr": "2026-11-12T04:12:18.476000+03:00",
+      "reference_label": "UNLABELLED"
+    },
+    {
+      "exit_reason_telemetry": "fixed_roi_tp_lifecycle",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": 1.188,
+      "position_open_tr": "2026-11-12T17:13:21.975000+03:00",
+      "reference_label": "UNLABELLED"
+    },
+    {
+      "exit_reason_telemetry": "fixed_roi_tp_lifecycle",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": 1.0857,
+      "position_open_tr": "2026-11-12T17:45:27.931000+03:00",
+      "reference_label": "UNLABELLED"
+    },
+    {
+      "exit_reason_telemetry": "fixed_roi_tp_lifecycle",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": 1.0799,
+      "position_open_tr": "2026-11-12T20:05:18.767000+03:00",
+      "reference_label": "LONG_AVOID"
+    },
+    {
+      "exit_reason_telemetry": "dynamic_stop_confirmed",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": -9.792,
+      "position_open_tr": "2026-11-13T05:42:26.417000+03:00",
+      "reference_label": "LONG_AVOID"
+    },
+    {
+      "exit_reason_telemetry": "fixed_roi_tp_lifecycle",
+      "independent_exchange_fill_verified": false,
+      "net_roi_percent_telemetry": 1.3622,
+      "position_open_tr": "2026-11-14T06:34:30.969000+03:00",
+      "reference_label": "LONG_AVOID"
+    }
+  ],
+  "production_redis_writes": 0,
+  "retrospective_reference_not_causal_entry_or_fill_proof": true,
+  "schema": "long1_shared_window_trace_stage6_historical_20261112_14.v1",
+  "source_files": [
+    "BINANCE1_LONG_SHORT_WINDOWS_20261111_15_V1.json",
+    "LONG1_FUNNEL_TRACE_READONLY_V1_20261111_15.json",
+    "LONG1_FOUR_FAST_REVERSALS_20261112_14_20261115.md",
+    "LONG1_ACTUAL_OUTCOMES_REFERENCE_20261111_15.json"
+  ],
+  "strict_interval_labels_recomputed_and_equal": true,
+  "timezone": "Europe/Istanbul",
+  "user_labels_not_trading_policy": true,
+  "window_inclusive_dates": [
+    "2026-11-12",
+    "2026-11-14"
+  ]
+}
