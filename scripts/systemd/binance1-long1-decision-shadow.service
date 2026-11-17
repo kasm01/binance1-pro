@@ -1,0 +1,18 @@
+[Unit]
+Description=LONG1 read-only decision trace watcher (research only)
+After=network-online.target redis-server.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/binance1-pro
+ExecStart=%h/binance1-pro/venv/bin/python -u %h/binance1-pro/research/shadow/long1_decision_trace_watcher_v1.py --seconds 0
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=8
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

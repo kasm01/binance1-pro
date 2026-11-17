@@ -6621,7 +6621,9 @@ class TradeExecutor:
             except Exception:
                 pass
 
-            _risk_on_close(float(close_price), float(realized_pnl))
+            # Exchange has no position: reconcile local/bridge state ONLY.
+            # No Binance SELL fill occurred in this branch. Never fabricate
+            # a second realized PnL / loss or advance Risk Master counters.
             _cleanup_closed_state()
 
             return {
@@ -6630,12 +6632,13 @@ class TradeExecutor:
                 "qty": float(norm_qty),
                 "close_price": float(close_price),
                 "entry_price": float(entry_price),
-                "realized_pnl": float(realized_pnl),
+                "realized_pnl": 0.0,
                 "reason": str(reason),
                 "order": {},
                 "residual_qty": 0.0,
                 "residual_side": "",
                 "exchange_missing_cleanup": True,
+                "accounting_skipped": True,
             }
 
         client = getattr(self, "client", None)
@@ -7466,7 +7469,9 @@ class TradeExecutor:
                 os.getenv("STALL_MIN_PROFIT_PCT", "0.0010") or 0.0010
             )
             if (
-                stall_ttl_sec > 0
+                str(os.getenv("STALL_EXIT_ENABLE", "1") or "1").strip().lower()
+                in ("1", "true", "yes", "on")
+                and stall_ttl_sec > 0
                 and float(pnl_pct) >= max(0.0, stall_min_profit_pct)
                 and stalled_for >= stall_ttl_sec
             ):
@@ -7806,6 +7811,15 @@ class TradeExecutor:
         if side0 not in ("long", "short"):
             side0 = "long"
         interval0 = str(interval or "1m").strip() or "1m"
+
+        if not self.dry_run and sym_u == "NEARUSDT" and side0 == "long":
+            from core.long1_native_stop_fail_safe import entry_allowed
+            flag = str(os.getenv("LONG1_NATIVE_STOP_AUTO_ENABLE", "0")).lower() in ("1", "true", "yes", "on")
+            if not entry_allowed(
+                self.redis, native_enabled=flag,
+                local_latched=getattr(self, "_long1_native_stop_latched", False),
+            ):
+                return {"status": "skip", "reason": "long1_native_stop_safety_latch", "symbol": sym_u}
 
         _open_key = f"{sym_u}_{side0}"
         _lock_taken = False
@@ -8520,6 +8534,49 @@ class TradeExecutor:
                 pass
 
             self._set_position(sym_u, pos)
+
+            # Exchange-native STOP_MARKET is attached synchronously after
+            # a confirmed fill. Persistent reconciler handles retries, stale
+            # orders, user/manual closures, and boot recovery independently.
+            if (
+                not self.dry_run
+                and side0 == "long"
+                and sym_u == "NEARUSDT"
+                and str(os.getenv("LONG1_NATIVE_STOP_AUTO_ENABLE", "0") or "0").strip().lower()
+                in ("1", "true", "yes", "on")
+            ):
+                try:
+                    from scripts.long1_native_stop_reconciler import reconcile as _ensure_native_stop
+                    _guard_result = _ensure_native_stop(apply=True)
+                    _guard_state = str(_guard_result.get("state") or "")
+                    if _guard_state not in ("PROTECTED", "PROTECTED_CREATED_OR_REPLACED"):
+                        raise RuntimeError("native_stop_unverified:" + _guard_state)
+                    if self.logger:
+                        self.logger.info(
+                            "[EXEC][NATIVE-STOP][PROTECTED] symbol=%s algo_id=%s trigger=%s",
+                            sym_u, _guard_result.get("algoId"), _guard_result.get("stop"),
+                        )
+                except Exception as _stop_exc:
+                    if self.logger:
+                        self.logger.critical(
+                            "[EXEC][NATIVE-STOP][UNPROTECTED] symbol=%s reason=%s",
+                            sym_u, str(_stop_exc)[:240],
+                        )
+                    from core.long1_native_stop_fail_safe import emergency
+                    rescue = emergency(
+                        self, price=float(commit_price), interval=interval0,
+                    )
+                    if self.logger:
+                        self.logger.critical(
+                            "[EXEC][NATIVE-STOP][EMERGENCY] symbol=%s outcome=%s latch=true",
+                            sym_u, str(rescue)[:350],
+                        )
+                    return {
+                        "status": "native_stop_attach_failure",
+                        "symbol": sym_u,
+                        "protection_verified": False,
+                        "rescue": rescue,
+                    }
 
             try:
                 if getattr(self, "redis", None) is not None:
@@ -11147,6 +11204,88 @@ class TradeExecutor:
             return None
 
 
+
+    def _long_contra_context_gate(self, *, symbol, side, extra=None, signal_label=""):
+        """At most one order authority: false forbids this execution; new intent must revalidate."""
+        if str(os.getenv("LONG_CONTRA_GUARD_ENABLE", "0")).strip().lower() not in ("1", "true", "yes", "on"):
+            return True
+        if str(side or "").lower() != "long":
+            return True
+        import json as _json
+        from core.long_contra_guard import snapshot, five_minute_recovered
+        sym = str(symbol or "").upper()
+        now_ms = int(time.time() * 1000)
+        r = getattr(self, "redis", None)
+        current = getattr(self, "_long_contra_context_pending", None)
+        if not isinstance(current, dict):
+            current = {}
+            self._long_contra_context_pending = current
+        extra0 = extra if isinstance(extra, dict) else {}
+        iid = str(extra0.get("intent_id") or "").strip()
+        if not iid or r is None:
+            if self.logger:
+                self.logger.warning("[EXEC][CONTRA-GUARD] action=PENDING reason=missing_intent_or_redis symbol=%s",sym)
+            return False
+        try:
+            combined = _json.loads(r.get("shadow:market_context:combined:" + sym) or "{}")
+            structure = _json.loads(r.get("shadow:market_context:binance_structure:" + sym) or "{}")
+            ctx = snapshot(combined, structure, now_ms)
+        except Exception as exc:
+            if self.logger:
+                self.logger.warning("[EXEC][CONTRA-GUARD] action=PENDING reason=context_read_error symbol=%s err=%s",sym,type(exc).__name__)
+            return False
+        if not ctx.valid:
+            if self.logger:
+                self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=%s symbol=%s intent=%s",ctx.reason,sym,iid)
+            return False
+        pending = current.get(sym)
+        if isinstance(pending, dict) and (now_ms-int(pending.get("created_ms") or 0)>1800000):
+            current.pop(sym,None)
+            pending = None
+        if ctx.contra:
+            if not isinstance(pending,dict):
+                pending = dict(created_ms=now_ms, origin_candle_ms=ctx.candle_ms, origin_intent=iid)
+                current[sym] = pending
+            if self.logger:
+                self.logger.info(
+                    "[EXEC][CONTRA-GUARD] action=PENDING symbol=%s intent=%s original=%s "
+                    "reason=3m_short_flow15_60_negative m3=%.6f upfrac=%.3f flow15=%.5f flow60=%.5f",
+                    sym,iid,pending.get("origin_intent"),ctx.mean3,ctx.upfrac3,ctx.flow15,ctx.flow60)
+            return False
+        if not isinstance(pending,dict):
+            return True
+        # A stale original intent or 1m bounce NEVER authorizes a reentry.
+        if iid == pending.get("origin_intent") or ctx.candle_ms<=int(pending.get("origin_candle_ms") or 0):
+            if self.logger:
+                self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=await_new_3m symbol=%s intent=%s",sym,iid)
+            return False
+        if not ctx.recovery:
+            if self.logger:
+                self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=await_3m_flow15_recovery symbol=%s intent=%s",sym,iid)
+            return False
+        # Query once per new full 5m bar on genuine candidate revalidation,
+        # never inside the continuous collector loop.
+        try:
+            import requests as _requests
+            url="https://fapi.binance.com/fapi/v1/klines"
+            payload=_requests.get(url,params={"symbol":sym,"interval":"5m","limit":3},timeout=4).json()
+            valid_5m=five_minute_recovered(payload,origin_ms=int(pending["created_ms"]),now_ms=now_ms)
+        except Exception as exc:
+            valid_5m=False
+            if self.logger:
+                self.logger.warning("[EXEC][CONTRA-GUARD] reason=5m_fetch_fail symbol=%s err=%s",sym,type(exc).__name__)
+        if not valid_5m:
+            if self.logger:
+                self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=await_completed_5m_reversal symbol=%s intent=%s",sym,iid)
+            return False
+        # Reached only by fresh MODEL/SNIPER/ENTRY-CONFIRMATION READY caller.
+        current.pop(sym,None)
+        if self.logger:
+            self.logger.info(
+                "[EXEC][CONTRA-GUARD] action=READY symbol=%s intent=%s reason=fresh_model_sniper_confirm_and_3m5m_recovery",
+                sym,iid)
+        return True
+
     async def _execute_long_validated_candidate(
         self, *, symbol, side, price, signal_score,
         decision_interval, entry_interval,
@@ -11156,6 +11295,13 @@ class TradeExecutor:
         sym_u = str(symbol or "").upper().strip()
         side_norm = str(side or "").strip().lower()
         extra0 = extra if isinstance(extra, dict) else {}
+
+        # Final entry defense: applies equally to fresh READY and native
+        # pending_revalidated paths, BEFORE Execution Risk / Final Safety.
+        if not self._long_contra_context_gate(
+            symbol=sym_u, side=side_norm, extra=extra0, signal_label=signal_label,
+        ):
+            return False
 
         if not self._evaluate_long_execution_risk_gate(
             symbol=sym_u,
