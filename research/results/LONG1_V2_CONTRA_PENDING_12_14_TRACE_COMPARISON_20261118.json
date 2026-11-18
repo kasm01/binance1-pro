@@ -1,0 +1,219 @@
+{
+  "binance_order_calls": 0,
+  "by_day": {
+    "2026-11-12": {
+      "LONG_AVOID": 18,
+      "LONG_TARGET": 2,
+      "UNLABELLED": 11
+    },
+    "2026-11-13": {
+      "CONFLICT_NO_TRADE": 1,
+      "LONG_AVOID": 22,
+      "LONG_TARGET": 1,
+      "UNLABELLED": 1
+    },
+    "2026-11-14": {
+      "LONG_AVOID": 27,
+      "LONG_TARGET": 4,
+      "UNLABELLED": 2
+    }
+  },
+  "by_user_reference": {
+    "CONFLICT_NO_TRADE": {
+      "PENDING": 1,
+      "PENDING_first_hit_TP_FIRST": 1,
+      "events": 1,
+      "first_hit_TP_FIRST": 1
+    },
+    "LONG_AVOID": {
+      "PENDING": 49,
+      "PENDING_first_hit_NEITHER": 13,
+      "PENDING_first_hit_SL_FIRST": 4,
+      "PENDING_first_hit_TP_FIRST": 32,
+      "VETO_ADVISORY": 18,
+      "VETO_ADVISORY_first_hit_NEITHER": 8,
+      "VETO_ADVISORY_first_hit_TP_FIRST": 10,
+      "events": 67,
+      "first_hit_NEITHER": 21,
+      "first_hit_SL_FIRST": 4,
+      "first_hit_TP_FIRST": 42,
+      "missing_flow": 33
+    },
+    "LONG_TARGET": {
+      "PENDING": 5,
+      "PENDING_first_hit_TP_FIRST": 5,
+      "VETO_ADVISORY": 2,
+      "VETO_ADVISORY_first_hit_TP_FIRST": 2,
+      "events": 7,
+      "first_hit_TP_FIRST": 7,
+      "missing_flow": 3
+    },
+    "UNLABELLED": {
+      "PENDING": 12,
+      "PENDING_first_hit_NEITHER": 1,
+      "PENDING_first_hit_TP_FIRST": 11,
+      "VETO_ADVISORY": 2,
+      "VETO_ADVISORY_first_hit_TP_FIRST": 2,
+      "events": 14,
+      "first_hit_NEITHER": 1,
+      "first_hit_TP_FIRST": 13,
+      "missing_flow": 12
+    }
+  },
+  "contra_pending_logs_in_same_three_day_reference_counts": 0,
+  "first_hit_hypothetical_not_actual_trade": true,
+  "four_fast_reversal_examples": [
+    {
+      "exchange_fill_verified": false,
+      "flow_asof_available": false,
+      "future_60m_first_hit_counterfactual": "SL_FIRST",
+      "legacy_attribution": "MODEL_ONLY",
+      "legacy_entry_approximate_actions": {},
+      "market_decision_v2": "PENDING",
+      "market_reason_v2": "multi_tf_downtrend",
+      "market_regime_v2": "BEARISH",
+      "model_close_id": 9969092,
+      "pending_recheck_independent_model_recovery_found": false,
+      "stage8_exact_trace_historically_present": false,
+      "timestamp_tr": "2026-11-12T01:36:16+03:00",
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "exchange_fill_verified": false,
+      "flow_asof_available": true,
+      "future_60m_first_hit_counterfactual": "NEITHER",
+      "legacy_attribution": "MODEL_ONLY",
+      "legacy_entry_approximate_actions": {},
+      "market_decision_v2": "VETO_ADVISORY",
+      "market_reason_v2": "deep_5m_15m_decline",
+      "market_regime_v2": "BEARISH",
+      "model_close_id": 9970362,
+      "pending_recheck_independent_model_recovery_found": false,
+      "stage8_exact_trace_historically_present": false,
+      "timestamp_tr": "2026-11-14T17:06:14+03:00",
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "exchange_fill_verified": false,
+      "flow_asof_available": true,
+      "future_60m_first_hit_counterfactual": "NEITHER",
+      "legacy_attribution": "HEURISTIC_SCORE_TIME",
+      "legacy_entry_approximate_actions": {
+        "pending": 2
+      },
+      "market_decision_v2": "PENDING",
+      "market_reason_v2": "multi_tf_downtrend",
+      "market_regime_v2": "BEARISH",
+      "model_close_id": 9970402,
+      "pending_recheck_independent_model_recovery_found": false,
+      "stage8_exact_trace_historically_present": false,
+      "timestamp_tr": "2026-11-14T19:06:12+03:00",
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "exchange_fill_verified": false,
+      "flow_asof_available": true,
+      "future_60m_first_hit_counterfactual": "SL_FIRST",
+      "legacy_attribution": "MODEL_ONLY",
+      "legacy_entry_approximate_actions": {},
+      "market_decision_v2": "PENDING",
+      "market_reason_v2": "positive_flow_against_bearish_price",
+      "market_regime_v2": "MIXED",
+      "model_close_id": 9970499,
+      "pending_recheck_independent_model_recovery_found": false,
+      "stage8_exact_trace_historically_present": false,
+      "timestamp_tr": "2026-11-14T23:57:09+03:00",
+      "user_reference": "LONG_AVOID"
+    }
+  ],
+  "historical_user_reference_not_live_filter": true,
+  "join_type": "EXACT_ARCHIVED_MODEL_EVENT_TIME_AND_CLOSE_ID_ONLY",
+  "legacy_operational_stage_counts_by_user_reference": {
+    "CONFLICT_NO_TRADE": {
+      "contra_pending": 0,
+      "entry_block_decisions": 0,
+      "entry_open_decisions": 0,
+      "entry_pending_decisions": 0,
+      "live_model_long": 1,
+      "pending_cleared": 0
+    },
+    "LONG_AVOID": {
+      "contra_pending": 0,
+      "entry_block_decisions": 25,
+      "entry_open_decisions": 4,
+      "entry_pending_decisions": 28,
+      "live_model_long": 67,
+      "pending_cleared": 29
+    },
+    "LONG_TARGET": {
+      "contra_pending": 0,
+      "entry_block_decisions": 0,
+      "entry_open_decisions": 0,
+      "entry_pending_decisions": 4,
+      "live_model_long": 7,
+      "pending_cleared": 2
+    },
+    "UNLABELLED": {
+      "contra_pending": 0,
+      "entry_block_decisions": 3,
+      "entry_open_decisions": 4,
+      "entry_pending_decisions": 7,
+      "live_model_long": 14,
+      "pending_cleared": 8
+    }
+  },
+  "live_order_authorized": false,
+  "model_events": 89,
+  "net_fee_adjusted_pnl_not_measured": true,
+  "new_trace_id_legacy_verified_count": 0,
+  "pending_recheck_full_candle_independent_verification": false,
+  "pending_recheck_model_followup_proofs": 0,
+  "pending_recheck_one_minute_entry_confirmation_verified": false,
+  "production_redis_writes": 0,
+  "profit_lock_native_stop_funding_spread_real_fees_not_replayed": true,
+  "schema": "long1_20261112_14_v2_contra_pending_trace_research_v1",
+  "stage6_stage8_model_parent_id_available_in_legacy": false,
+  "v2_reason_by_user_reference": {
+    "CONFLICT_NO_TRADE": {
+      "multi_tf_downtrend": 1
+    },
+    "LONG_AVOID": {
+      "deep_5m_15m_decline": 18,
+      "insufficient_confluence": 8,
+      "missing_flow_to_confirm_recovery": 7,
+      "multi_tf_downtrend": 25,
+      "positive_flow_against_bearish_price": 9
+    },
+    "LONG_TARGET": {
+      "deep_5m_15m_decline": 2,
+      "insufficient_confluence": 1,
+      "missing_flow_to_confirm_recovery": 2,
+      "positive_flow_against_bearish_price": 2
+    },
+    "UNLABELLED": {
+      "deep_5m_15m_decline": 2,
+      "insufficient_confluence": 1,
+      "missing_flow_to_confirm_recovery": 6,
+      "multi_tf_downtrend": 5
+    }
+  },
+  "v2_shadow_only": true,
+  "v2_totals": {
+    "PENDING": 67,
+    "PENDING_first_hit_NEITHER": 14,
+    "PENDING_first_hit_SL_FIRST": 4,
+    "PENDING_first_hit_TP_FIRST": 49,
+    "VETO_ADVISORY": 22,
+    "VETO_ADVISORY_first_hit_NEITHER": 8,
+    "VETO_ADVISORY_first_hit_TP_FIRST": 14,
+    "events": 89,
+    "first_hit_NEITHER": 22,
+    "first_hit_SL_FIRST": 4,
+    "first_hit_TP_FIRST": 63,
+    "missing_flow": 48
+  },
+  "window_tr": [
+    "2026-11-12",
+    "2026-11-14"
+  ]
+}
