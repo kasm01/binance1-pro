@@ -1048,8 +1048,15 @@ class MasterExecutor:
             except Exception:
                 pass
 
+            # Stage7 exact, additive LONG1 candidate ancestry. This never
+            # changes gate, scoring, intent selection, risk or order authority.
+            from orchestration.trace.long1_candidate_intent_lineage_v1 import candidate_intent_parent
+            intent_parent = candidate_intent_parent(
+                candidate=raw_copy, candidate_stream=os.getenv(
+                    "CANDIDATES_STREAM", "candidates_stream"))
             items_out.append(
                 {
+                    **intent_parent,
                     "intent_id": it.intent_id,
                     "ts_utc": it.ts_utc,
                     "symbol": it.symbol,
