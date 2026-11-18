@@ -1,0 +1,985 @@
+{
+  "schema": "binance1_long_short_user_window_reference_v1",
+  "market_symbol_note": "Research labels for LONG1 NEARUSDT; SHORT1 may use INJUSDT or NEARUSDT, so opposite-direction transfer is a hypothesis, NOT market-specific ground truth.",
+  "timezone": "Europe/Istanbul",
+  "date_min": "2026-11-11",
+  "date_max": "2026-11-15",
+  "interpretation": "Half-open intervals [start,end), timezone UTC+3; spans midnight when end<=start; overlaps flagged CONFLICT_NO_TRADE. 14 Nov 23:00–15 Nov 00:15 is union of two user-reported negative windows (23:00 earlier,23:27 latest), not two duplicates.",
+  "provenance": "user messages in project: Nov 11/12, Nov 13/14, Nov 15 long wanted and avoidance windows; earliest 14 Nov 23:00 supersedes nested latest 23:27 in union.",
+  "research_only": true,
+  "production_order_authority": false,
+  "not_training_target_for_live_by_clock": true,
+  "short_policy": "LONG_WANTED -> SHORT_AVOID candidate label; LONG_AVOID -> SHORT_RESEARCH_CANDIDATE ONLY, requires independent SHORT1 evidence; conflicts -> NO_TRADE both; unlabelled -> UNLABELLED.",
+  "long_wanted_count": 44,
+  "long_avoid_count": 26,
+  "user_intervals": [
+    {
+      "start_tr": "2026-11-11T12:40:00+03:00",
+      "end_tr": "2026-11-11T15:00:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-11T15:36:00+03:00",
+      "end_tr": "2026-11-11T17:00:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-11T18:25:00+03:00",
+      "end_tr": "2026-11-11T18:35:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-11T19:06:00+03:00",
+      "end_tr": "2026-11-11T19:30:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-11T22:40:00+03:00",
+      "end_tr": "2026-11-11T23:00:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T02:20:00+03:00",
+      "end_tr": "2026-11-12T02:55:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T03:10:00+03:00",
+      "end_tr": "2026-11-12T03:45:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T04:51:00+03:00",
+      "end_tr": "2026-11-12T05:12:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T12:15:00+03:00",
+      "end_tr": "2026-11-12T13:25:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T17:22:00+03:00",
+      "end_tr": "2026-11-12T17:42:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T18:33:00+03:00",
+      "end_tr": "2026-11-12T19:10:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T21:20:00+03:00",
+      "end_tr": "2026-11-12T22:18:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T00:06:00+03:00",
+      "end_tr": "2026-11-13T00:33:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T01:18:00+03:00",
+      "end_tr": "2026-11-13T02:10:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T02:39:00+03:00",
+      "end_tr": "2026-11-13T03:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T03:42:00+03:00",
+      "end_tr": "2026-11-13T04:27:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T08:00:00+03:00",
+      "end_tr": "2026-11-13T10:20:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T11:24:00+03:00",
+      "end_tr": "2026-11-13T11:42:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T12:57:00+03:00",
+      "end_tr": "2026-11-13T13:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T13:33:00+03:00",
+      "end_tr": "2026-11-13T14:45:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T15:15:00+03:00",
+      "end_tr": "2026-11-13T15:36:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T16:03:00+03:00",
+      "end_tr": "2026-11-13T16:42:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T18:36:00+03:00",
+      "end_tr": "2026-11-13T18:51:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T19:15:00+03:00",
+      "end_tr": "2026-11-13T19:26:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T20:21:00+03:00",
+      "end_tr": "2026-11-13T20:45:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-13T21:18:00+03:00",
+      "end_tr": "2026-11-13T22:42:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T01:18:00+03:00",
+      "end_tr": "2026-11-14T01:36:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T02:15:00+03:00",
+      "end_tr": "2026-11-14T03:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T05:30:00+03:00",
+      "end_tr": "2026-11-14T05:50:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T07:36:00+03:00",
+      "end_tr": "2026-11-14T09:18:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T10:21:00+03:00",
+      "end_tr": "2026-11-14T10:33:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T11:36:00+03:00",
+      "end_tr": "2026-11-14T12:57:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T14:33:00+03:00",
+      "end_tr": "2026-11-14T15:48:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T16:06:00+03:00",
+      "end_tr": "2026-11-14T16:45:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-14T20:21:00+03:00",
+      "end_tr": "2026-11-14T20:38:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T00:18:00+03:00",
+      "end_tr": "2026-11-15T00:40:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T01:38:00+03:00",
+      "end_tr": "2026-11-15T01:43:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T02:12:00+03:00",
+      "end_tr": "2026-11-15T02:25:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T02:40:00+03:00",
+      "end_tr": "2026-11-15T03:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T05:02:00+03:00",
+      "end_tr": "2026-11-15T05:12:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T06:42:00+03:00",
+      "end_tr": "2026-11-15T06:48:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T07:10:00+03:00",
+      "end_tr": "2026-11-15T07:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T08:06:00+03:00",
+      "end_tr": "2026-11-15T08:22:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-15T09:15:00+03:00",
+      "end_tr": "2026-11-15T09:28:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "start_tr": "2026-11-12T00:15:00+03:00",
+      "end_tr": "2026-11-12T02:20:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-12T05:18:00+03:00",
+      "end_tr": "2026-11-12T07:33:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-12T07:54:00+03:00",
+      "end_tr": "2026-11-12T09:15:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-12T10:33:00+03:00",
+      "end_tr": "2026-11-12T12:18:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-12T13:27:00+03:00",
+      "end_tr": "2026-11-12T14:54:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-12T15:15:00+03:00",
+      "end_tr": "2026-11-12T16:12:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-12T19:10:00+03:00",
+      "end_tr": "2026-11-12T20:18:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T00:33:00+03:00",
+      "end_tr": "2026-11-13T01:18:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T03:06:00+03:00",
+      "end_tr": "2026-11-13T03:42:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T05:00:00+03:00",
+      "end_tr": "2026-11-13T08:00:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T11:50:00+03:00",
+      "end_tr": "2026-11-13T12:54:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T13:06:00+03:00",
+      "end_tr": "2026-11-13T13:33:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T16:42:00+03:00",
+      "end_tr": "2026-11-13T18:38:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-13T22:40:00+03:00",
+      "end_tr": "2026-11-14T01:16:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T03:06:00+03:00",
+      "end_tr": "2026-11-14T04:27:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T04:45:00+03:00",
+      "end_tr": "2026-11-14T05:27:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T05:51:00+03:00",
+      "end_tr": "2026-11-14T07:09:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T09:18:00+03:00",
+      "end_tr": "2026-11-14T10:20:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T16:48:00+03:00",
+      "end_tr": "2026-11-14T20:21:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T20:39:00+03:00",
+      "end_tr": "2026-11-14T22:24:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-14T23:00:00+03:00",
+      "end_tr": "2026-11-15T00:15:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-15T01:20:00+03:00",
+      "end_tr": "2026-11-15T02:10:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-15T03:40:00+03:00",
+      "end_tr": "2026-11-15T04:55:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-15T06:10:00+03:00",
+      "end_tr": "2026-11-15T08:00:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-15T09:26:00+03:00",
+      "end_tr": "2026-11-15T11:20:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "start_tr": "2026-11-15T15:30:00+03:00",
+      "end_tr": "2026-11-15T17:42:00+03:00",
+      "user_label": "LONG_AVOID"
+    }
+  ],
+  "derived_disjoint_segments": [
+    {
+      "start_tr": "2026-11-11T12:40:00+03:00",
+      "end_tr": "2026-11-11T15:00:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-11T15:36:00+03:00",
+      "end_tr": "2026-11-11T17:00:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-11T18:25:00+03:00",
+      "end_tr": "2026-11-11T18:35:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-11T19:06:00+03:00",
+      "end_tr": "2026-11-11T19:30:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-11T22:40:00+03:00",
+      "end_tr": "2026-11-11T23:00:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T00:15:00+03:00",
+      "end_tr": "2026-11-12T02:20:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T02:20:00+03:00",
+      "end_tr": "2026-11-12T02:55:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T03:10:00+03:00",
+      "end_tr": "2026-11-12T03:45:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T04:51:00+03:00",
+      "end_tr": "2026-11-12T05:12:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T05:18:00+03:00",
+      "end_tr": "2026-11-12T07:33:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T07:54:00+03:00",
+      "end_tr": "2026-11-12T09:15:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T10:33:00+03:00",
+      "end_tr": "2026-11-12T12:15:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T12:15:00+03:00",
+      "end_tr": "2026-11-12T12:18:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T12:18:00+03:00",
+      "end_tr": "2026-11-12T13:25:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T13:27:00+03:00",
+      "end_tr": "2026-11-12T14:54:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T15:15:00+03:00",
+      "end_tr": "2026-11-12T16:12:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T17:22:00+03:00",
+      "end_tr": "2026-11-12T17:42:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T18:33:00+03:00",
+      "end_tr": "2026-11-12T19:10:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T19:10:00+03:00",
+      "end_tr": "2026-11-12T20:18:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-12T21:20:00+03:00",
+      "end_tr": "2026-11-12T22:18:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T00:06:00+03:00",
+      "end_tr": "2026-11-13T00:33:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T00:33:00+03:00",
+      "end_tr": "2026-11-13T01:18:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T01:18:00+03:00",
+      "end_tr": "2026-11-13T02:10:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T02:39:00+03:00",
+      "end_tr": "2026-11-13T03:06:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T03:06:00+03:00",
+      "end_tr": "2026-11-13T03:42:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T03:42:00+03:00",
+      "end_tr": "2026-11-13T04:27:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T05:00:00+03:00",
+      "end_tr": "2026-11-13T08:00:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T08:00:00+03:00",
+      "end_tr": "2026-11-13T10:20:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T11:24:00+03:00",
+      "end_tr": "2026-11-13T11:42:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T11:50:00+03:00",
+      "end_tr": "2026-11-13T12:54:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T12:57:00+03:00",
+      "end_tr": "2026-11-13T13:06:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T13:06:00+03:00",
+      "end_tr": "2026-11-13T13:33:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T13:33:00+03:00",
+      "end_tr": "2026-11-13T14:45:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T15:15:00+03:00",
+      "end_tr": "2026-11-13T15:36:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T16:03:00+03:00",
+      "end_tr": "2026-11-13T16:42:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T16:42:00+03:00",
+      "end_tr": "2026-11-13T18:36:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T18:36:00+03:00",
+      "end_tr": "2026-11-13T18:38:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T18:38:00+03:00",
+      "end_tr": "2026-11-13T18:51:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T19:15:00+03:00",
+      "end_tr": "2026-11-13T19:26:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T20:21:00+03:00",
+      "end_tr": "2026-11-13T20:45:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T21:18:00+03:00",
+      "end_tr": "2026-11-13T22:40:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T22:40:00+03:00",
+      "end_tr": "2026-11-13T22:42:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-13T22:42:00+03:00",
+      "end_tr": "2026-11-14T01:16:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T01:18:00+03:00",
+      "end_tr": "2026-11-14T01:36:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T02:15:00+03:00",
+      "end_tr": "2026-11-14T03:06:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T03:06:00+03:00",
+      "end_tr": "2026-11-14T04:27:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T04:45:00+03:00",
+      "end_tr": "2026-11-14T05:27:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T05:30:00+03:00",
+      "end_tr": "2026-11-14T05:50:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T05:51:00+03:00",
+      "end_tr": "2026-11-14T07:09:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T07:36:00+03:00",
+      "end_tr": "2026-11-14T09:18:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T09:18:00+03:00",
+      "end_tr": "2026-11-14T10:20:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T10:21:00+03:00",
+      "end_tr": "2026-11-14T10:33:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T11:36:00+03:00",
+      "end_tr": "2026-11-14T12:57:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T14:33:00+03:00",
+      "end_tr": "2026-11-14T15:48:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T16:06:00+03:00",
+      "end_tr": "2026-11-14T16:45:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T16:48:00+03:00",
+      "end_tr": "2026-11-14T20:21:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T20:21:00+03:00",
+      "end_tr": "2026-11-14T20:38:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T20:39:00+03:00",
+      "end_tr": "2026-11-14T22:24:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-14T23:00:00+03:00",
+      "end_tr": "2026-11-15T00:15:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T00:18:00+03:00",
+      "end_tr": "2026-11-15T00:40:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T01:20:00+03:00",
+      "end_tr": "2026-11-15T01:38:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T01:38:00+03:00",
+      "end_tr": "2026-11-15T01:43:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T01:43:00+03:00",
+      "end_tr": "2026-11-15T02:10:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T02:12:00+03:00",
+      "end_tr": "2026-11-15T02:25:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T02:40:00+03:00",
+      "end_tr": "2026-11-15T03:15:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T03:40:00+03:00",
+      "end_tr": "2026-11-15T04:55:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T05:02:00+03:00",
+      "end_tr": "2026-11-15T05:12:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T06:10:00+03:00",
+      "end_tr": "2026-11-15T06:42:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T06:42:00+03:00",
+      "end_tr": "2026-11-15T06:48:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T06:48:00+03:00",
+      "end_tr": "2026-11-15T07:10:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T07:10:00+03:00",
+      "end_tr": "2026-11-15T07:15:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T07:15:00+03:00",
+      "end_tr": "2026-11-15T08:00:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T08:06:00+03:00",
+      "end_tr": "2026-11-15T08:22:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T09:15:00+03:00",
+      "end_tr": "2026-11-15T09:26:00+03:00",
+      "labels": [
+        "LONG_TARGET",
+        "SHORT_AVOID"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T09:26:00+03:00",
+      "end_tr": "2026-11-15T09:28:00+03:00",
+      "labels": [
+        "CONFLICT_NO_TRADE",
+        "CONFLICT_NO_TRADE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T09:28:00+03:00",
+      "end_tr": "2026-11-15T11:20:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    },
+    {
+      "start_tr": "2026-11-15T15:30:00+03:00",
+      "end_tr": "2026-11-15T17:42:00+03:00",
+      "labels": [
+        "LONG_AVOID",
+        "SHORT_RESEARCH_CANDIDATE"
+      ]
+    }
+  ]
+}

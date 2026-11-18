@@ -1,0 +1,11 @@
+index,open_tr,close_tr,reference_label,entry_qty_near,entry_price,exit_price,leverage,realized_price_pnl_usdt,funding_usdt,commission_usdt_indicative_hourly_bnb,net_usdt_indicative,gross_roi_pct,net_roi_pct_indicative,mfe_3x_roi_pct,mae_3x_roi_pct,arm_levels_touched,offline_r1_shadow_flag,shadow_outcome_present,exit_reason_shadow
+1,2026-11-11T15:17:18+03:00,2026-11-11T16:14:19+03:00,UNLABELLED,8.0,3.755,3.759,3.0,0.032,0.0,0.027063,0.004937,0.32,0.049,1.678,-3.276,0.6;0.95;1.2;1.65,False,True,stall_exit
+2,2026-11-12T03:06:12+03:00,2026-11-12T03:23:42+03:00,UNLABELLED,8.0,3.585,3.599,3.0,0.112,0.0,0.025911,0.086089,1.172,0.901,1.506,-1.423,0.6;0.95;1.2,False,True,fixed_roi_tp_lifecycle
+3,2026-11-12T04:12:15+03:00,2026-11-12T05:06:58+03:00,UNLABELLED,8.0,3.593,3.609,3.0,0.128,0.0,0.025955,0.102045,1.336,1.065,0.668,-1.419,0.6,False,True,fixed_roi_tp_lifecycle
+4,2026-11-12T17:13:18+03:00,2026-11-12T17:14:57+03:00,UNLABELLED,9.0,3.36,3.376,3.0,0.144,0.0,0.027209,0.116791,1.429,1.159,,,,False,True,fixed_roi_tp_lifecycle
+5,2026-11-12T17:45:24+03:00,2026-11-12T17:51:32+03:00,UNLABELLED,8.0,3.393,3.408,3.0,0.12,0.0,0.024471,0.095529,1.326,1.056,1.149,-0.531,0.6;0.95,False,True,fixed_roi_tp_lifecycle
+6,2026-11-12T20:05:14+03:00,2026-11-12T21:33:47+03:00,LONG_AVOID,8.0,3.408,3.423,3.0,0.12,0.0,0.024541,0.095459,1.32,1.05,1.32,-3.433,0.6;0.95;1.2,False,True,fixed_roi_tp_lifecycle
+7,2026-11-13T05:42:22+03:00,2026-11-13T06:52:14+03:00,LONG_AVOID,8.0,3.422,3.313,3.0,-0.872,0.0,0.024249,-0.896249,-9.556,-9.822,0.789,-11.485,0.6,True,True,dynamic_stop_confirmed
+8,2026-11-13T17:51:30+03:00,2026-11-13T22:28:41+03:00,LONG_AVOID,8.0,3.55,3.535,3.0,-0.12,-0.00280688,0.025535,-0.148342,-1.268,-1.567,1.183,-9.042,0.6;0.95,True,False,MISSING_SHADOW_OUTCOME_UNKNOWN_EXIT_REASON
+9,2026-11-14T06:34:24+03:00,2026-11-14T06:36:23+03:00,LONG_AVOID,8.0,3.369,3.387,3.0,0.144,0.0,0.024241,0.119759,1.603,1.333,0.534,-0.623,,False,True,fixed_roi_tp_lifecycle
+10,2026-11-15T01:14:17+03:00,2026-11-15T01:14:45+03:00,UNLABELLED,10.0,2.946,2.96,3.0,0.14,0.0,0.026631,0.113369,1.426,1.154,,,,False,True,fixed_roi_tp_lifecycle

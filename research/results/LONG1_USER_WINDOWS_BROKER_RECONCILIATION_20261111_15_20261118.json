@@ -1,0 +1,2401 @@
+{
+  "actual_broker_losses": 2,
+  "actual_broker_wins": 8,
+  "actual_exchange_orders_sent": 0,
+  "all_112_intent_decisions_anonymized": [
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "fff896415bad",
+      "intent_time_tr": "2026-11-11T14:57:06+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "cd70fe039f46",
+      "intent_time_tr": "2026-11-11T14:58:05+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_early",
+      "intent_marker_sha256_12": "c936b1cae817",
+      "intent_time_tr": "2026-11-11T14:59:00+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "bae72ed4fbdc",
+      "intent_time_tr": "2026-11-11T14:59:56+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "5d1f1bf18687",
+      "intent_time_tr": "2026-11-11T15:03:22+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "e6248f6686f8",
+      "intent_time_tr": "2026-11-11T15:04:17+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "54153f1bbd28",
+      "intent_time_tr": "2026-11-11T15:05:11+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "execution_risk_no_available_balance",
+      "intent_marker_sha256_12": "a118afbb81fe",
+      "intent_time_tr": "2026-11-11T15:09:22+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "a0204ccffbcb",
+      "intent_time_tr": "2026-11-11T15:10:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "execution_risk_no_available_balance",
+      "intent_marker_sha256_12": "74c2f31d73dc",
+      "intent_time_tr": "2026-11-11T15:11:03+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "83bb5e59cc6f",
+      "intent_time_tr": "2026-11-11T15:11:52+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "332add1bdb83",
+      "intent_time_tr": "2026-11-11T15:15:24+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "9058d00f6b1a",
+      "intent_time_tr": "2026-11-11T15:16:20+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "7d281912c21f",
+      "intent_time_tr": "2026-11-11T15:17:14+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "c0f04b4eeca7",
+      "intent_time_tr": "2026-11-11T17:37:15+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "4b29dc973191",
+      "intent_time_tr": "2026-11-11T17:38:10+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "319c7a24f2c6",
+      "intent_time_tr": "2026-11-12T01:42:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "e270bcfa8e52",
+      "intent_time_tr": "2026-11-12T01:43:04+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "a96e0f3f2a06",
+      "intent_time_tr": "2026-11-12T01:43:59+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "97dec2e92b8d",
+      "intent_time_tr": "2026-11-12T01:44:53+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "95b1607a4421",
+      "intent_time_tr": "2026-11-12T03:06:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "d097fc6518c1",
+      "intent_time_tr": "2026-11-12T04:12:11+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "cb6ed20deb7b",
+      "intent_time_tr": "2026-11-12T15:27:20+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "1ca768c7db38",
+      "intent_time_tr": "2026-11-12T15:28:15+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "cd7701847894",
+      "intent_time_tr": "2026-11-12T15:29:11+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "b14ef5d56f5e",
+      "intent_time_tr": "2026-11-12T16:06:21+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "cdda9291f14c",
+      "intent_time_tr": "2026-11-12T16:07:16+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "cc69c99e9507",
+      "intent_time_tr": "2026-11-12T16:08:10+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "da8a02aa90f7",
+      "intent_time_tr": "2026-11-12T16:09:05+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "c546b894b1e2",
+      "intent_time_tr": "2026-11-12T17:12:17+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "e46eaefc15db",
+      "intent_time_tr": "2026-11-12T17:13:13+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "3cd259f8142a",
+      "intent_time_tr": "2026-11-12T17:18:09+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "8e15e1cdab4d",
+      "intent_time_tr": "2026-11-12T17:19:04+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "543fdb344eb1",
+      "intent_time_tr": "2026-11-12T17:19:59+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "856027f86387",
+      "intent_time_tr": "2026-11-12T17:20:54+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "dde0455cd345",
+      "intent_time_tr": "2026-11-12T17:45:20+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "a37e8a4f136b",
+      "intent_time_tr": "2026-11-12T18:03:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "27ffcaccba94",
+      "intent_time_tr": "2026-11-12T18:04:05+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "2837147f7fa2",
+      "intent_time_tr": "2026-11-12T18:04:59+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "d95c198ad76b",
+      "intent_time_tr": "2026-11-12T18:05:55+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "6d97a7fb4b09",
+      "intent_time_tr": "2026-11-12T20:03:19+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "ec6881e3e44c",
+      "intent_time_tr": "2026-11-12T20:04:14+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "d6a53857d54a",
+      "intent_time_tr": "2026-11-12T20:05:10+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "960b3fe6cf78",
+      "intent_time_tr": "2026-11-13T05:42:18+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "cc55bcb5241a",
+      "intent_time_tr": "2026-11-13T06:53:21+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "c1ace21a97ce",
+      "intent_time_tr": "2026-11-13T07:15:15+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "da3912999c8e",
+      "intent_time_tr": "2026-11-13T07:16:10+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "33b78f1a7b35",
+      "intent_time_tr": "2026-11-13T07:17:05+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "909c3cce86b1",
+      "intent_time_tr": "2026-11-13T07:17:59+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "43ecaeb5fb47",
+      "intent_time_tr": "2026-11-13T07:24:19+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "2df145981543",
+      "intent_time_tr": "2026-11-13T07:25:14+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "b134074841b4",
+      "intent_time_tr": "2026-11-13T07:26:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "8993bd9fc52a",
+      "intent_time_tr": "2026-11-13T07:27:03+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "310be1789cad",
+      "intent_time_tr": "2026-11-13T07:27:58+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "1c88966d22d3",
+      "intent_time_tr": "2026-11-13T07:28:52+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "0b9c29e0a928",
+      "intent_time_tr": "2026-11-13T07:29:48+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "0367c2aa6e0a",
+      "intent_time_tr": "2026-11-13T07:39:18+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "e5e03792d6e0",
+      "intent_time_tr": "2026-11-13T07:40:18+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "39c6dd6f2f7f",
+      "intent_time_tr": "2026-11-13T07:41:12+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "a92285727b27",
+      "intent_time_tr": "2026-11-13T07:42:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_early",
+      "intent_marker_sha256_12": "f2d47b304f97",
+      "intent_time_tr": "2026-11-13T07:43:02+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "20bc86ffcc79",
+      "intent_time_tr": "2026-11-13T07:43:58+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "95ce6f534cc0",
+      "intent_time_tr": "2026-11-13T07:44:53+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "7994a7db2871",
+      "intent_time_tr": "2026-11-13T07:45:48+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "0cdde2a686fc",
+      "intent_time_tr": "2026-11-13T07:46:43+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "7f709daed5f3",
+      "intent_time_tr": "2026-11-13T07:47:39+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "688919a64a52",
+      "intent_time_tr": "2026-11-13T11:21:18+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "e1e1e7a9fa2d",
+      "intent_time_tr": "2026-11-13T11:22:14+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "ec5e08d51886",
+      "intent_time_tr": "2026-11-13T11:23:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "8f7929711f25",
+      "intent_time_tr": "2026-11-13T11:24:03+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "a058e8e11ef9",
+      "intent_time_tr": "2026-11-13T17:51:25+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "47e650af63dd",
+      "intent_time_tr": "2026-11-14T06:18:05+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "099a8fd400ee",
+      "intent_time_tr": "2026-11-14T06:19:04+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_early",
+      "intent_marker_sha256_12": "d101b9db0a06",
+      "intent_time_tr": "2026-11-14T06:20:00+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "749ff8b8a397",
+      "intent_time_tr": "2026-11-14T06:20:55+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "e0af3b2f0c6f",
+      "intent_time_tr": "2026-11-14T06:33:21+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "fc68068f228d",
+      "intent_time_tr": "2026-11-14T06:34:21+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "f1179c63d2b3",
+      "intent_time_tr": "2026-11-14T07:36:07+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "7fde0f06c0d4",
+      "intent_time_tr": "2026-11-14T07:37:02+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "186aaef8e105",
+      "intent_time_tr": "2026-11-14T07:37:57+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "152fda5f9ff8",
+      "intent_time_tr": "2026-11-14T07:38:52+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_TARGET"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "2e9378dc5a7d",
+      "intent_time_tr": "2026-11-14T17:21:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "26e35df053c9",
+      "intent_time_tr": "2026-11-14T19:07:19+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "8437e43c7bc5",
+      "intent_time_tr": "2026-11-14T19:08:15+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "90e694e8b00f",
+      "intent_time_tr": "2026-11-14T19:24:43+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "70f6cb77fa8b",
+      "intent_time_tr": "2026-11-14T19:25:39+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "16f9fefbc69f",
+      "intent_time_tr": "2026-11-14T19:26:34+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "2c832eb591bb",
+      "intent_time_tr": "2026-11-14T20:48:11+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "2b4e58b5ee59",
+      "intent_time_tr": "2026-11-14T20:50:07+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "5189325228df",
+      "intent_time_tr": "2026-11-14T21:06:23+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "9a096fdfb657",
+      "intent_time_tr": "2026-11-14T21:07:18+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "b22f5d9a19a9",
+      "intent_time_tr": "2026-11-14T21:08:13+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "3f537af6ed1b",
+      "intent_time_tr": "2026-11-14T21:48:17+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "2f49eebe1cd3",
+      "intent_time_tr": "2026-11-14T21:49:12+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_no_directional_span",
+      "intent_marker_sha256_12": "8a3d88801797",
+      "intent_time_tr": "2026-11-14T21:50:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_early",
+      "intent_marker_sha256_12": "54664ed770a6",
+      "intent_time_tr": "2026-11-14T21:51:02+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "b0935a147f83",
+      "intent_time_tr": "2026-11-14T23:51:31+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "f6f3466a5920",
+      "intent_time_tr": "2026-11-14T23:52:27+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "6470ef177b37",
+      "intent_time_tr": "2026-11-14T23:53:20+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "88edf7fb00d8",
+      "intent_time_tr": "2026-11-15T00:00:47+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "pending_recheck_wait_no_fresh_entry_decision",
+      "intent_marker_sha256_12": "7e89f62dff0c",
+      "intent_time_tr": "2026-11-15T00:01:43+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_passed",
+      "intent_marker_sha256_12": "c1cc499a4413",
+      "intent_time_tr": "2026-11-15T00:02:38+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "b345eb001cf1",
+      "intent_time_tr": "2026-11-15T00:12:26+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "01483a9b712e",
+      "intent_time_tr": "2026-11-15T00:13:21+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "5039401e8bc9",
+      "intent_time_tr": "2026-11-15T00:14:17+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "310d9ac2433d",
+      "intent_time_tr": "2026-11-15T01:12:18+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "a89df6603308",
+      "intent_time_tr": "2026-11-15T01:13:17+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": true,
+      "decision_class": "OPENED",
+      "evidence_reason": "EXACT_BINANCE_FILLED_OPEN",
+      "intent_marker_sha256_12": "ef5e70a91c1b",
+      "intent_time_tr": "2026-11-15T01:14:13+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "UNLABELLED"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "contra_trend_pending_after_entry_ready",
+      "intent_marker_sha256_12": "f1c9b1282107",
+      "intent_time_tr": "2026-11-15T04:36:09+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_strong_reversal",
+      "intent_marker_sha256_12": "1636fdd5b9c0",
+      "intent_time_tr": "2026-11-15T04:37:08+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "entry_confirmation_wait",
+      "intent_marker_sha256_12": "3672a60c3f1f",
+      "intent_time_tr": "2026-11-15T04:38:04+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    },
+    {
+      "actual_binance_fill_order_verified": false,
+      "decision_class": "NOT_OPENED",
+      "evidence_reason": "sniper_window_early",
+      "intent_marker_sha256_12": "0644dfddc624",
+      "intent_time_tr": "2026-11-15T04:39:00+03:00",
+      "source_model_to_intent_exact_trace_available": false,
+      "user_reference": "LONG_AVOID"
+    }
+  ],
+  "all_windows_conflict_reject_in_offline_test": true,
+  "arm_level_touch_does_not_prove_net_lock_profit": true,
+  "avoid_intervals": 26,
+  "avoidable_windows_with_real_open": 4,
+  "bnb_fee_conversion_source": "BNBUSDT perpetual 1h candle CLOSE (estimate, not original execution conversion)",
+  "candidate_shadow_r1_negative_mtf_flow_hypothesis": {
+    "flagged_losing_trades": 2,
+    "flagged_winning_trades": 0,
+    "flags_on_10_real_trades": 2,
+    "in_sample_only": true,
+    "no_future_out_of_sample_profit_improvement_claimed": true,
+    "not_a_validated_trading_filter": true,
+    "production_rule_unmodified": true
+  },
+  "commission_bnb_exact": 0.00039586,
+  "commission_usdt_hourly_estimate": 0.255806,
+  "conflict_coverage": [
+    {
+      "end_tr": "2026-11-12T12:18+03:00",
+      "intent_count": 0,
+      "model_long_count": 0,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-12T12:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T18:38+03:00",
+      "intent_count": 0,
+      "model_long_count": 1,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-13T18:36+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T22:42+03:00",
+      "intent_count": 0,
+      "model_long_count": 0,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-13T22:40+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T01:43+03:00",
+      "intent_count": 0,
+      "model_long_count": 0,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-15T01:38+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T06:48+03:00",
+      "intent_count": 0,
+      "model_long_count": 0,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-15T06:42+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T07:15+03:00",
+      "intent_count": 0,
+      "model_long_count": 0,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-15T07:10+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T09:28+03:00",
+      "intent_count": 0,
+      "model_long_count": 0,
+      "offline_window_policy": "REJECT",
+      "real_open_count": 0,
+      "start_tr": "2026-11-15T09:26+03:00"
+    }
+  ],
+  "conflict_segments": 7,
+  "daily_funnel": {
+    "2026-11-11": {
+      "intent_LONG_TARGET": 4,
+      "intent_UNLABELLED": 12,
+      "open_UNLABELLED": 1
+    },
+    "2026-11-12": {
+      "intent_LONG_AVOID": 14,
+      "intent_UNLABELLED": 13,
+      "open_LONG_AVOID": 1,
+      "open_UNLABELLED": 4
+    },
+    "2026-11-13": {
+      "intent_LONG_AVOID": 24,
+      "intent_LONG_TARGET": 1,
+      "intent_UNLABELLED": 3,
+      "open_LONG_AVOID": 2
+    },
+    "2026-11-14": {
+      "intent_LONG_AVOID": 24,
+      "intent_LONG_TARGET": 4,
+      "open_LONG_AVOID": 1
+    },
+    "2026-11-15": {
+      "intent_LONG_AVOID": 10,
+      "intent_UNLABELLED": 3,
+      "open_UNLABELLED": 1
+    }
+  },
+  "date_end_tr_inclusive": "2026-11-15",
+  "date_start_tr": "2026-11-11",
+  "exchange_api_signed_GET_only": true,
+  "exchange_filled_round_trips": 10,
+  "exchange_market_orders": 20,
+  "exchange_usertrade_fills": 27,
+  "indicative_total_after_funding_and_commissions_usdt": -0.310613,
+  "intent_funnel_by_reference": {
+    "LONG_AVOID": {
+      "not_opened": 68,
+      "opened": 4,
+      "received": 72
+    },
+    "LONG_TARGET": {
+      "not_opened": 9,
+      "received": 9
+    },
+    "UNLABELLED": {
+      "not_opened": 25,
+      "opened": 6,
+      "received": 31
+    }
+  },
+  "intratrade_model_cannot_resolve_high_low_order": true,
+  "intratrade_ohlc_research_only": true,
+  "intratrade_ohlc_source": "Binance Futures public 1m fully enclosed bars",
+  "live_clock_restriction_installed": false,
+  "model_long_reference_counts": {
+    "CONFLICT_NO_TRADE": 1,
+    "LONG_AVOID": 70,
+    "LONG_TARGET": 11,
+    "UNLABELLED": 21
+  },
+  "model_long_scores": 103,
+  "new_production_redis_writes": 0,
+  "not_opened_intents": 102,
+  "not_opened_reasons": {
+    "contra_trend_pending_after_entry_ready": 1,
+    "entry_confirmation_no_directional_span": 22,
+    "entry_confirmation_strong_reversal": 40,
+    "entry_confirmation_wait": 7,
+    "execution_risk_no_available_balance": 2,
+    "pending_recheck_wait_no_fresh_entry_decision": 9,
+    "sniper_window_early": 5,
+    "sniper_window_passed": 16
+  },
+  "not_opened_reasons_by_reference": {
+    "LONG_AVOID": {
+      "contra_trend_pending_after_entry_ready": 1,
+      "entry_confirmation_no_directional_span": 12,
+      "entry_confirmation_strong_reversal": 29,
+      "entry_confirmation_wait": 5,
+      "pending_recheck_wait_no_fresh_entry_decision": 6,
+      "sniper_window_early": 4,
+      "sniper_window_passed": 11
+    },
+    "LONG_TARGET": {
+      "entry_confirmation_no_directional_span": 4,
+      "entry_confirmation_strong_reversal": 1,
+      "pending_recheck_wait_no_fresh_entry_decision": 1,
+      "sniper_window_early": 1,
+      "sniper_window_passed": 2
+    },
+    "UNLABELLED": {
+      "entry_confirmation_no_directional_span": 6,
+      "entry_confirmation_strong_reversal": 10,
+      "entry_confirmation_wait": 2,
+      "execution_risk_no_available_balance": 2,
+      "pending_recheck_wait_no_fresh_entry_decision": 2,
+      "sniper_window_passed": 3
+    }
+  },
+  "old_model_to_trade_intent_exact_trace_verified": false,
+  "open_by_reference": {
+    "LONG_AVOID": 4,
+    "UNLABELLED": 6
+  },
+  "opened_positions": 10,
+  "realized_pnl_usdt_exact": -0.052,
+  "redis_signal_event_vs_model_bar_note": "874 SignalEvent Redis writes are repeated emissions, NOT 874 independent three-minute MODEL LONG score events (103); neither event count equals 112 distinct TradeIntent items.",
+  "reference_intervals": 70,
+  "schema": "long1_20261111_15_actual_broker_and_window_audit_v1",
+  "shadow_open_events_matched_exact_order_id": 10,
+  "shadow_outcome_missing": 1,
+  "shadow_outcomes_matched_exact_close_order_id": 9,
+  "stage_redis_stream_daily_counts": {
+    "candidates_stream_long1": {
+      "2026-11-11": {
+        "LONG_TARGET": 8,
+        "UNLABELLED": 22
+      },
+      "2026-11-12": {
+        "LONG_AVOID": 52,
+        "LONG_TARGET": 6,
+        "UNLABELLED": 32
+      },
+      "2026-11-13": {
+        "CONFLICT_NO_TRADE": 2,
+        "LONG_AVOID": 62,
+        "LONG_TARGET": 2,
+        "UNLABELLED": 3
+      },
+      "2026-11-14": {
+        "LONG_AVOID": 88,
+        "LONG_TARGET": 16,
+        "UNLABELLED": 5
+      },
+      "2026-11-15": {
+        "LONG_AVOID": 10,
+        "LONG_TARGET": 3,
+        "UNLABELLED": 6
+      }
+    },
+    "signals_stream_long1": {
+      "2026-11-11": {
+        "LONG_TARGET": 19,
+        "UNLABELLED": 62
+      },
+      "2026-11-12": {
+        "LONG_AVOID": 141,
+        "LONG_TARGET": 16,
+        "UNLABELLED": 85
+      },
+      "2026-11-13": {
+        "CONFLICT_NO_TRADE": 6,
+        "LONG_AVOID": 175,
+        "LONG_TARGET": 4,
+        "UNLABELLED": 9
+      },
+      "2026-11-14": {
+        "LONG_AVOID": 244,
+        "LONG_TARGET": 43,
+        "UNLABELLED": 14
+      },
+      "2026-11-15": {
+        "LONG_AVOID": 29,
+        "LONG_TARGET": 9,
+        "UNLABELLED": 18
+      }
+    },
+    "top5_stream_long1": {
+      "2026-11-11": {
+        "LONG_TARGET": 8,
+        "UNLABELLED": 21
+      },
+      "2026-11-12": {
+        "LONG_AVOID": 51,
+        "LONG_TARGET": 6,
+        "UNLABELLED": 32
+      },
+      "2026-11-13": {
+        "CONFLICT_NO_TRADE": 1,
+        "LONG_AVOID": 60,
+        "LONG_TARGET": 2,
+        "UNLABELLED": 3
+      },
+      "2026-11-14": {
+        "LONG_AVOID": 86,
+        "LONG_TARGET": 16,
+        "UNLABELLED": 5
+      },
+      "2026-11-15": {
+        "LONG_AVOID": 10,
+        "LONG_TARGET": 3,
+        "UNLABELLED": 6
+      }
+    },
+    "trade_intents_stream_long1": {
+      "2026-11-11": {
+        "LONG_TARGET": 4,
+        "UNLABELLED": 12
+      },
+      "2026-11-12": {
+        "LONG_AVOID": 14,
+        "UNLABELLED": 13
+      },
+      "2026-11-13": {
+        "LONG_AVOID": 24,
+        "LONG_TARGET": 1,
+        "UNLABELLED": 3
+      },
+      "2026-11-14": {
+        "LONG_AVOID": 24,
+        "LONG_TARGET": 4
+      },
+      "2026-11-15": {
+        "LONG_AVOID": 10,
+        "UNLABELLED": 3
+      }
+    }
+  },
+  "stage_redis_stream_event_counts": {
+    "candidates_stream_long1": {
+      "by_reference": {
+        "CONFLICT_NO_TRADE": 2,
+        "LONG_AVOID": 212,
+        "LONG_TARGET": 35,
+        "UNLABELLED": 68
+      },
+      "total": 317
+    },
+    "signals_stream_long1": {
+      "by_reference": {
+        "CONFLICT_NO_TRADE": 6,
+        "LONG_AVOID": 589,
+        "LONG_TARGET": 91,
+        "UNLABELLED": 188
+      },
+      "total": 874
+    },
+    "top5_stream_long1": {
+      "by_reference": {
+        "CONFLICT_NO_TRADE": 1,
+        "LONG_AVOID": 207,
+        "LONG_TARGET": 35,
+        "UNLABELLED": 67
+      },
+      "total": 310
+    },
+    "trade_intents_stream_long1": {
+      "by_reference": {
+        "LONG_AVOID": 72,
+        "LONG_TARGET": 9,
+        "UNLABELLED": 31
+      },
+      "total": 112
+    }
+  },
+  "total_funding_usdt_exact": -0.00280688,
+  "trade_intent_reference_counts": {
+    "LONG_AVOID": 72,
+    "LONG_TARGET": 9,
+    "UNLABELLED": 31
+  },
+  "trade_intents": 112,
+  "trades": [
+    {
+      "bnb_commission": 3.967e-05,
+      "close_tr": "2026-11-11T16:14:19+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.027063,
+      "entry_context_telemetry": {
+        "completed_flow15": 0.069045,
+        "completed_flow60": 0.239604,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0017647,
+        "m3_up_frac3": 0.333333,
+        "model_score": 0.495711,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.755,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.759,
+      "exit_reason_shadow": "stall_exit",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 0.32,
+      "index": 1,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6,
+          0.95,
+          1.2,
+          1.65
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 56,
+        "gross_3x_max_adverse_roi_pct": -3.276,
+        "gross_3x_max_favorable_roi_pct": 1.678
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 0.049,
+      "net_usdt_indicative": 0.004937,
+      "open_tr": "2026-11-11T15:17:18+03:00",
+      "realized_price_pnl_usdt": 0.032,
+      "reference_label": "UNLABELLED",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 3.799e-05,
+      "close_tr": "2026-11-12T03:23:42+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.025911,
+      "entry_context_telemetry": {
+        "completed_flow15": 0.211783,
+        "completed_flow60": -0.046874,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0019422,
+        "m3_up_frac3": 0.333333,
+        "model_score": 0.496181,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.585,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.599,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.172,
+      "index": 2,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6,
+          0.95,
+          1.2
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 16,
+        "gross_3x_max_adverse_roi_pct": -1.423,
+        "gross_3x_max_favorable_roi_pct": 1.506
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 0.901,
+      "net_usdt_indicative": 0.086089,
+      "open_tr": "2026-11-12T03:06:12+03:00",
+      "realized_price_pnl_usdt": 0.112,
+      "reference_label": "UNLABELLED",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 3.819e-05,
+      "close_tr": "2026-11-12T05:06:58+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.025955,
+      "entry_context_telemetry": {
+        "completed_flow15": 0.004001,
+        "completed_flow60": 0.19393,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0023989,
+        "m3_up_frac3": 0.0,
+        "model_score": 0.496897,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.593,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.609,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.336,
+      "index": 3,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 53,
+        "gross_3x_max_adverse_roi_pct": -1.419,
+        "gross_3x_max_favorable_roi_pct": 0.668
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 1.065,
+      "net_usdt_indicative": 0.102045,
+      "open_tr": "2026-11-12T04:12:15+03:00",
+      "realized_price_pnl_usdt": 0.128,
+      "reference_label": "UNLABELLED",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 4.165e-05,
+      "close_tr": "2026-11-12T17:14:57+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.027209,
+      "entry_context_telemetry": {
+        "completed_flow15": -0.042277,
+        "completed_flow60": -0.014048,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0012757,
+        "m3_up_frac3": 0.666667,
+        "model_score": 0.498205,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.36,
+      "entry_qty_near": 9.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.376,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.429,
+      "index": 4,
+      "intratrade_public_1m": {
+        "arm_levels_touched": [],
+        "data_status": "NO_FULL_BARS",
+        "fully_enclosed_bars": 0,
+        "gross_3x_max_adverse_roi_pct": null,
+        "gross_3x_max_favorable_roi_pct": null
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 1.159,
+      "net_usdt_indicative": 0.116791,
+      "open_tr": "2026-11-12T17:13:18+03:00",
+      "realized_price_pnl_usdt": 0.144,
+      "reference_label": "UNLABELLED",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 3.746e-05,
+      "close_tr": "2026-11-12T17:51:32+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.024471,
+      "entry_context_telemetry": {
+        "completed_flow15": 0.147998,
+        "completed_flow60": -0.01344,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0013609,
+        "m3_up_frac3": 0.666667,
+        "model_score": 0.499064,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.393,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.408,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.326,
+      "index": 5,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6,
+          0.95
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 5,
+        "gross_3x_max_adverse_roi_pct": -0.531,
+        "gross_3x_max_favorable_roi_pct": 1.149
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 1.056,
+      "net_usdt_indicative": 0.095529,
+      "open_tr": "2026-11-12T17:45:24+03:00",
+      "realized_price_pnl_usdt": 0.12,
+      "reference_label": "UNLABELLED",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 3.742e-05,
+      "close_tr": "2026-11-12T21:33:47+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.024541,
+      "entry_context_telemetry": {
+        "completed_flow15": 0.012955,
+        "completed_flow60": 0.021325,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0021469,
+        "m3_up_frac3": 0.0,
+        "model_score": 0.497003,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.408,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.423,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.32,
+      "index": 6,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6,
+          0.95,
+          1.2
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 87,
+        "gross_3x_max_adverse_roi_pct": -3.433,
+        "gross_3x_max_favorable_roi_pct": 1.32
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 1.05,
+      "net_usdt_indicative": 0.095459,
+      "open_tr": "2026-11-12T20:05:14+03:00",
+      "realized_price_pnl_usdt": 0.12,
+      "reference_label": "LONG_AVOID",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 3.788e-05,
+      "close_tr": "2026-11-13T06:52:14+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.024249,
+      "entry_context_telemetry": {
+        "completed_flow15": -0.016973,
+        "completed_flow60": -0.088943,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0013607,
+        "m3_up_frac3": 0.333333,
+        "model_score": 0.496626,
+        "shadow_contra_conjunction_risk_only": true
+      },
+      "entry_price": 3.422,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.313,
+      "exit_reason_shadow": "dynamic_stop_confirmed",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": -9.556,
+      "index": 7,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 69,
+        "gross_3x_max_adverse_roi_pct": -11.485,
+        "gross_3x_max_favorable_roi_pct": 0.789
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": -9.822,
+      "net_usdt_indicative": -0.896249,
+      "open_tr": "2026-11-13T05:42:22+03:00",
+      "realized_price_pnl_usdt": -0.872,
+      "reference_label": "LONG_AVOID",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 3.995e-05,
+      "close_tr": "2026-11-13T22:28:41+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.025535,
+      "entry_context_telemetry": {
+        "completed_flow15": -0.155596,
+        "completed_flow60": -0.114927,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0036445,
+        "m3_up_frac3": 0.0,
+        "model_score": 0.49805,
+        "shadow_contra_conjunction_risk_only": true
+      },
+      "entry_price": 3.55,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.535,
+      "exit_reason_shadow": "MISSING_SHADOW_OUTCOME_UNKNOWN_EXIT_REASON",
+      "funding_usdt": -0.00280688,
+      "gross_roi_pct": -1.268,
+      "index": 8,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [
+          0.6,
+          0.95
+        ],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 276,
+        "gross_3x_max_adverse_roi_pct": -9.042,
+        "gross_3x_max_favorable_roi_pct": 1.183
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": -1.567,
+      "net_usdt_indicative": -0.148342,
+      "open_tr": "2026-11-13T17:51:30+03:00",
+      "realized_price_pnl_usdt": -0.12,
+      "reference_label": "LONG_AVOID",
+      "shadow_outcome_present": false
+    },
+    {
+      "bnb_commission": 3.934e-05,
+      "close_tr": "2026-11-14T06:36:23+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.024241,
+      "entry_context_telemetry": {
+        "completed_flow15": -0.027492,
+        "completed_flow60": 0.008413,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0036268,
+        "m3_up_frac3": 0.333333,
+        "model_score": 0.501777,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 3.369,
+      "entry_qty_near": 8.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 3.387,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.603,
+      "index": 9,
+      "intratrade_public_1m": {
+        "arm_levels_not_proven_executable": true,
+        "arm_levels_touched": [],
+        "data_status": "FULL_MINUTE_OHLC_ONLY_NO_TICK_SEQUENCE",
+        "entry_and_exit_minute_excluded": true,
+        "fully_enclosed_bars": 1,
+        "gross_3x_max_adverse_roi_pct": -0.623,
+        "gross_3x_max_favorable_roi_pct": 0.534
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 1.333,
+      "net_usdt_indicative": 0.119759,
+      "open_tr": "2026-11-14T06:34:24+03:00",
+      "realized_price_pnl_usdt": 0.144,
+      "reference_label": "LONG_AVOID",
+      "shadow_outcome_present": true
+    },
+    {
+      "bnb_commission": 4.631e-05,
+      "close_tr": "2026-11-15T01:14:45+03:00",
+      "commission_usdt_indicative_hourly_bnb": 0.026631,
+      "entry_context_telemetry": {
+        "completed_flow15": -0.173315,
+        "completed_flow60": 0.022088,
+        "live_guard_decision_independently_attested": false,
+        "m3_return_mean3": -0.0037354,
+        "m3_up_frac3": 0.0,
+        "model_score": 0.505323,
+        "shadow_contra_conjunction_risk_only": false
+      },
+      "entry_price": 2.946,
+      "entry_qty_near": 10.0,
+      "exact_redis_open_order_and_intent_match": true,
+      "exchange_fill_verified": true,
+      "exit_price": 2.96,
+      "exit_reason_shadow": "fixed_roi_tp_lifecycle",
+      "funding_usdt": 0.0,
+      "gross_roi_pct": 1.426,
+      "index": 10,
+      "intratrade_public_1m": {
+        "arm_levels_touched": [],
+        "data_status": "NO_FULL_BARS",
+        "fully_enclosed_bars": 0,
+        "gross_3x_max_adverse_roi_pct": null,
+        "gross_3x_max_favorable_roi_pct": null
+      },
+      "leverage": 3.0,
+      "net_roi_pct_indicative": 1.154,
+      "net_usdt_indicative": 0.113369,
+      "open_tr": "2026-11-15T01:14:17+03:00",
+      "realized_price_pnl_usdt": 0.14,
+      "reference_label": "UNLABELLED",
+      "shadow_outcome_present": true
+    }
+  ],
+  "wanted_intervals": 44,
+  "wanted_windows_with_model_long": 10,
+  "wanted_windows_with_trade_intent": 3,
+  "wanted_windows_without_real_open": 44,
+  "window_coverage": [
+    {
+      "end_tr": "2026-11-11T15:00+03:00",
+      "index": 1,
+      "intent_count": 4,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-11T12:40+03:00"
+    },
+    {
+      "end_tr": "2026-11-11T17:00+03:00",
+      "index": 2,
+      "intent_count": 0,
+      "model_long_count": 2,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-11T15:36+03:00"
+    },
+    {
+      "end_tr": "2026-11-11T18:35+03:00",
+      "index": 3,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-11T18:25+03:00"
+    },
+    {
+      "end_tr": "2026-11-11T19:30+03:00",
+      "index": 4,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-11T19:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-11T23:00+03:00",
+      "index": 5,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-11T22:40+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T02:55+03:00",
+      "index": 6,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T02:20+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T03:45+03:00",
+      "index": 7,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T03:10+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T05:12+03:00",
+      "index": 8,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T04:51+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T13:25+03:00",
+      "index": 9,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T12:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T17:42+03:00",
+      "index": 10,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T17:22+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T19:10+03:00",
+      "index": 11,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T18:33+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T22:18+03:00",
+      "index": 12,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-12T21:20+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T00:33+03:00",
+      "index": 13,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T00:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T02:10+03:00",
+      "index": 14,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T01:18+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T03:06+03:00",
+      "index": 15,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T02:39+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T04:27+03:00",
+      "index": 16,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T03:42+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T10:20+03:00",
+      "index": 17,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T08:00+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T11:42+03:00",
+      "index": 18,
+      "intent_count": 1,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T11:24+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T13:06+03:00",
+      "index": 19,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T12:57+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T14:45+03:00",
+      "index": 20,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T13:33+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T15:36+03:00",
+      "index": 21,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T15:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T16:42+03:00",
+      "index": 22,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T16:03+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T18:51+03:00",
+      "index": 23,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T18:36+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T19:26+03:00",
+      "index": 24,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T19:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T20:45+03:00",
+      "index": 25,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T20:21+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T22:42+03:00",
+      "index": 26,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-13T21:18+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T01:36+03:00",
+      "index": 27,
+      "intent_count": 0,
+      "model_long_count": 2,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T01:18+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T03:06+03:00",
+      "index": 28,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T02:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T05:50+03:00",
+      "index": 29,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T05:30+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T09:18+03:00",
+      "index": 30,
+      "intent_count": 4,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T07:36+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T10:33+03:00",
+      "index": 31,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T10:21+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T12:57+03:00",
+      "index": 32,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T11:36+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T15:48+03:00",
+      "index": 33,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T14:33+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T16:45+03:00",
+      "index": 34,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T16:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T20:38+03:00",
+      "index": 35,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-14T20:21+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T00:40+03:00",
+      "index": 36,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T00:18+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T01:43+03:00",
+      "index": 37,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T01:38+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T02:25+03:00",
+      "index": 38,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T02:12+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T03:15+03:00",
+      "index": 39,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T02:40+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T05:12+03:00",
+      "index": 40,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T05:02+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T06:48+03:00",
+      "index": 41,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T06:42+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T07:15+03:00",
+      "index": 42,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T07:10+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T08:22+03:00",
+      "index": 43,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T08:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T09:28+03:00",
+      "index": 44,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_WANTED",
+      "start_tr": "2026-11-15T09:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T02:20+03:00",
+      "index": 45,
+      "intent_count": 4,
+      "model_long_count": 6,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T00:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T07:33+03:00",
+      "index": 46,
+      "intent_count": 0,
+      "model_long_count": 2,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T05:18+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T09:15+03:00",
+      "index": 47,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T07:54+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T12:18+03:00",
+      "index": 48,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T10:33+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T14:54+03:00",
+      "index": 49,
+      "intent_count": 0,
+      "model_long_count": 3,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T13:27+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T16:12+03:00",
+      "index": 50,
+      "intent_count": 7,
+      "model_long_count": 5,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T15:15+03:00"
+    },
+    {
+      "end_tr": "2026-11-12T20:18+03:00",
+      "index": 51,
+      "intent_count": 3,
+      "model_long_count": 1,
+      "real_open_count": 1,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-12T19:10+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T01:18+03:00",
+      "index": 52,
+      "intent_count": 0,
+      "model_long_count": 2,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T00:33+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T03:42+03:00",
+      "index": 53,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T03:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T08:00+03:00",
+      "index": 54,
+      "intent_count": 23,
+      "model_long_count": 13,
+      "real_open_count": 1,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T05:00+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T12:54+03:00",
+      "index": 55,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T11:50+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T13:33+03:00",
+      "index": 56,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T13:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-13T18:38+03:00",
+      "index": 57,
+      "intent_count": 1,
+      "model_long_count": 8,
+      "real_open_count": 1,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T16:42+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T01:16+03:00",
+      "index": 58,
+      "intent_count": 0,
+      "model_long_count": 4,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-13T22:40+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T04:27+03:00",
+      "index": 59,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T03:06+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T05:27+03:00",
+      "index": 60,
+      "intent_count": 0,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T04:45+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T07:09+03:00",
+      "index": 61,
+      "intent_count": 6,
+      "model_long_count": 1,
+      "real_open_count": 1,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T05:51+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T10:20+03:00",
+      "index": 62,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T09:18+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T20:21+03:00",
+      "index": 63,
+      "intent_count": 6,
+      "model_long_count": 13,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T16:48+03:00"
+    },
+    {
+      "end_tr": "2026-11-14T22:24+03:00",
+      "index": 64,
+      "intent_count": 9,
+      "model_long_count": 5,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T20:39+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T00:15+03:00",
+      "index": 65,
+      "intent_count": 9,
+      "model_long_count": 5,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-14T23:00+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T02:10+03:00",
+      "index": 66,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-15T01:20+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T04:55+03:00",
+      "index": 67,
+      "intent_count": 4,
+      "model_long_count": 1,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-15T03:40+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T08:00+03:00",
+      "index": 68,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-15T06:10+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T11:20+03:00",
+      "index": 69,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-15T09:26+03:00"
+    },
+    {
+      "end_tr": "2026-11-15T17:42+03:00",
+      "index": 70,
+      "intent_count": 0,
+      "model_long_count": 0,
+      "real_open_count": 0,
+      "requested": "LONG_AVOID",
+      "start_tr": "2026-11-15T15:30+03:00"
+    }
+  ]
+}
