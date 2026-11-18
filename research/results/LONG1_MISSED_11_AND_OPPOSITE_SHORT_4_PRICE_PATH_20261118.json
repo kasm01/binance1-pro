@@ -1,0 +1,2112 @@
+{
+  "asof_master_whale_policy_snapshot": {
+    "config_is_current_snapshot_not_proof_historically_same": true,
+    "master_drop_whale_contra": true,
+    "whale_contra_veto_threshold": 0.45
+  },
+  "entry_bar_excluded": true,
+  "missed_model_events": [
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "missing_flow_to_confirm_recovery",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": false,
+      "fwd_model_ref_close": 3.707,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-11 14:58:59",
+      "model_close_id_legacy": 9968879,
+      "nearby_intent_reason_histogram_not_attributed": {
+        "entry_confirmation_no_directional_span": 1,
+        "entry_confirmation_strong_reversal": 1,
+        "sniper_window_early": 1,
+        "sniper_window_passed": 1
+      },
+      "nearby_trade_intents_not_exact_trace": 4,
+      "rolling_threshold": 0.4951,
+      "score": 0.495426,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-11T14:57:05+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 1,
+        "legacy_top5_same_score_within_180s_count": 1,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": false,
+        "matched_top5_whale_contra_meeting_current_045_threshold": false,
+        "matched_top5_whale_contra_some": false
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "multi_tf_downtrend",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": false,
+      "fwd_model_ref_close": 3.732,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-11 16:08:59",
+      "model_close_id_legacy": 9968901,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.4958,
+      "score": 0.496988,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-11T16:03:07+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": true,
+        "legacy_top5_candidate_ids_count": 4,
+        "legacy_top5_same_score_within_180s_count": 4,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": true,
+        "matched_top5_whale_contra_meeting_current_045_threshold": false,
+        "matched_top5_whale_contra_some": false
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "missing_flow_to_confirm_recovery",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": false,
+      "fwd_model_ref_close": 3.74,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-11 16:13:59",
+      "model_close_id_legacy": 9968902,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.4958,
+      "score": 0.496988,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-11T16:06:01+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": true,
+        "legacy_top5_candidate_ids_count": 1,
+        "legacy_top5_same_score_within_180s_count": 1,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": true,
+        "matched_top5_whale_contra_meeting_current_045_threshold": false,
+        "matched_top5_whale_contra_some": false
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "missing_flow_to_confirm_recovery",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": false,
+      "fwd_model_ref_close": 3.539,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-12 02:31:59",
+      "model_close_id_legacy": 9969107,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.496,
+      "score": 0.501648,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-12T02:21:15+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 3,
+        "legacy_top5_same_score_within_180s_count": 3,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": true,
+        "matched_top5_whale_contra_meeting_current_045_threshold": true,
+        "matched_top5_whale_contra_some": true
+      }
+    },
+    {
+      "context_v2": "VETO_ADVISORY",
+      "context_v2_reason": "deep_5m_15m_decline",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": false,
+      "fwd_model_ref_close": 3.349,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-12 17:29:59",
+      "model_close_id_legacy": 9969408,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.4967,
+      "score": 0.499859,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-12T17:24:20+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 3,
+        "legacy_top5_same_score_within_180s_count": 3,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": true,
+        "matched_top5_whale_contra_meeting_current_045_threshold": true,
+        "matched_top5_whale_contra_some": true
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "missing_flow_to_confirm_recovery",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": false,
+      "fwd_model_ref_close": 3.491,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-13 11:29:59",
+      "model_close_id_legacy": 9969768,
+      "nearby_intent_reason_histogram_not_attributed": {
+        "entry_confirmation_no_directional_span": 1
+      },
+      "nearby_trade_intents_not_exact_trace": 1,
+      "rolling_threshold": 0.4979,
+      "score": 0.499147,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-13T11:24:02+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 1,
+        "legacy_top5_same_score_within_180s_count": 1,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": false,
+        "matched_top5_whale_contra_meeting_current_045_threshold": false,
+        "matched_top5_whale_contra_some": false
+      }
+    },
+    {
+      "context_v2": "VETO_ADVISORY",
+      "context_v2_reason": "deep_5m_15m_decline",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": true,
+      "fwd_model_ref_close": 3.426,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-14 01:28:59",
+      "model_close_id_legacy": 9970046,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.4981,
+      "score": 0.504704,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-14T01:18:08+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 0,
+        "legacy_top5_same_score_within_180s_count": 0,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": null,
+        "matched_top5_whale_contra_meeting_current_045_threshold": null,
+        "matched_top5_whale_contra_some": null
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "insufficient_confluence",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": true,
+      "fwd_model_ref_close": 3.429,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-14 01:31:59",
+      "model_close_id_legacy": 9970047,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.4981,
+      "score": 0.5045,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-14T01:21:01+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 1,
+        "legacy_top5_same_score_within_180s_count": 1,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": true,
+        "matched_top5_whale_contra_meeting_current_045_threshold": true,
+        "matched_top5_whale_contra_some": true
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "positive_flow_against_bearish_price",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": true,
+      "fwd_model_ref_close": 3.357,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-14 05:32:59",
+      "model_close_id_legacy": 9970130,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.4983,
+      "score": 0.505896,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-14T05:30:16+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 3,
+        "legacy_top5_same_score_within_180s_count": 3,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": true,
+        "matched_top5_whale_contra_meeting_current_045_threshold": true,
+        "matched_top5_whale_contra_some": true
+      }
+    },
+    {
+      "context_v2": "PENDING",
+      "context_v2_reason": "positive_flow_against_bearish_price",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": true,
+      "fwd_model_ref_close": 3.314,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-14 07:37:59",
+      "model_close_id_legacy": 9970172,
+      "nearby_intent_reason_histogram_not_attributed": {
+        "entry_confirmation_no_directional_span": 2,
+        "pending_recheck_wait_no_fresh_entry_decision": 1,
+        "sniper_window_passed": 1
+      },
+      "nearby_trade_intents_not_exact_trace": 4,
+      "rolling_threshold": 0.4981,
+      "score": 0.498104,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-14T07:36:06+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 1,
+        "legacy_top5_same_score_within_180s_count": 1,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": false,
+        "matched_top5_whale_contra_meeting_current_045_threshold": false,
+        "matched_top5_whale_contra_some": false
+      }
+    },
+    {
+      "context_v2": "VETO_ADVISORY",
+      "context_v2_reason": "deep_5m_15m_decline",
+      "exact_model_to_intent_trace_present": false,
+      "first_hit_not_actual_entry": true,
+      "flow_asof_available": true,
+      "fwd_model_ref_close": 2.914,
+      "hypothetical_60m_first_hit": "TP_FIRST",
+      "hypothetical_60m_first_sl_time_tr": null,
+      "hypothetical_60m_first_tp_time_tr": "2026-11-15 00:20:59",
+      "model_close_id_legacy": 9970506,
+      "nearby_intent_reason_histogram_not_attributed": {},
+      "nearby_trade_intents_not_exact_trace": 0,
+      "rolling_threshold": 0.5025,
+      "score": 0.511895,
+      "score_above_rolling": true,
+      "timestamp_tr": "2026-11-15T00:18:00+03:00",
+      "upstream_historical_diagnostic": {
+        "broker_verified_long_already_open_at_model_event": false,
+        "legacy_top5_candidate_ids_count": 0,
+        "legacy_top5_same_score_within_180s_count": 0,
+        "linkage_evidence": "SCORE_AND_TIME_HEURISTIC_NOT_EXACT_MODEL_CLOSE_ID",
+        "master_policy_cause_independently_attested": false,
+        "matched_top5_no_trade_intent_exact_source_ids": null,
+        "matched_top5_whale_contra_meeting_current_045_threshold": null,
+        "matched_top5_whale_contra_some": null
+      }
+    }
+  ],
+  "missed_upstream_summary": {
+    "all_nearby_top5_contra_veto_candidate": 4,
+    "broker_position_already_open": 2,
+    "nearby_top5_not_contra_veto": 5,
+    "no_exact_score_nearby_top5": 2
+  },
+  "missing_opportunity_model_events": 11,
+  "model_to_intent_legacy_parent_identity_missing": true,
+  "opposite_position_same_NEARUSDT_price_only": true,
+  "opposite_short1_INJUSDT_not_simulated": true,
+  "opposite_short_from_four_long_avoid_entries": [
+    {
+      "actual_long_realized_gross_roi_pct": 1.32,
+      "hypothetical_short_roi_at_long_close_pct": -1.32,
+      "opposite_bot_short1_symbol_not_nearusdt": true,
+      "original_long_close_tr": "2026-11-12T21:33:47+03:00",
+      "original_long_id_not_shared": true,
+      "original_long_open_tr": "2026-11-12T20:05:14+03:00",
+      "same_price_hypothetical_short_entry": 3.408,
+      "short_hypothesis_only": true,
+      "user_reference": "LONG_AVOID",
+      "windows": {
+        "120m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-12T20:06:00+03:00",
+            "0.95": "2026-11-12T20:07:00+03:00",
+            "1.2": "2026-11-12T20:07:00+03:00",
+            "1.65": "2026-11-12T20:11:00+03:00",
+            "2.0": "2026-11-12T20:12:00+03:00",
+            "2.5": "2026-11-12T20:15:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 5.458,
+          "max_reversal_after_best_time_tr": "2026-11-12T22:00:00+03:00",
+          "n_closed_bars": 119,
+          "short_mae_roi_pct": -2.025,
+          "short_mfe_low_price": 3.369,
+          "short_mfe_roi_pct": 3.433,
+          "short_mfe_time_tr": "2026-11-12T20:40:00+03:00",
+          "short_roi_final_full_bar_close_pct": 0.0,
+          "short_worst_high_price": 3.431,
+          "short_worst_time_tr": "2026-11-12T22:00:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.704,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.4,
+                "prior_peak_roi_pct": 0.88,
+                "time_tr": "2026-11-12T20:07:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.384,
+                "prior_peak_roi_pct": 2.641,
+                "time_tr": "2026-11-12T20:16:00+03:00"
+              }
+            }
+          ]
+        },
+        "240m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-12T20:06:00+03:00",
+            "0.95": "2026-11-12T20:07:00+03:00",
+            "1.2": "2026-11-12T20:07:00+03:00",
+            "1.65": "2026-11-12T20:11:00+03:00",
+            "2.0": "2026-11-12T20:12:00+03:00",
+            "2.5": "2026-11-12T20:15:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 7.658,
+          "max_reversal_after_best_time_tr": "2026-11-12T23:48:00+03:00",
+          "n_closed_bars": 239,
+          "short_mae_roi_pct": -4.225,
+          "short_mfe_low_price": 3.369,
+          "short_mfe_roi_pct": 3.433,
+          "short_mfe_time_tr": "2026-11-12T20:40:00+03:00",
+          "short_roi_final_full_bar_close_pct": -2.289,
+          "short_worst_high_price": 3.456,
+          "short_worst_time_tr": "2026-11-12T23:48:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.704,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.4,
+                "prior_peak_roi_pct": 0.88,
+                "time_tr": "2026-11-12T20:07:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.384,
+                "prior_peak_roi_pct": 2.641,
+                "time_tr": "2026-11-12T20:16:00+03:00"
+              }
+            }
+          ]
+        },
+        "60m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-12T20:06:00+03:00",
+            "0.95": "2026-11-12T20:07:00+03:00",
+            "1.2": "2026-11-12T20:07:00+03:00",
+            "1.65": "2026-11-12T20:11:00+03:00",
+            "2.0": "2026-11-12T20:12:00+03:00",
+            "2.5": "2026-11-12T20:15:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 4.137,
+          "max_reversal_after_best_time_tr": "2026-11-12T20:52:00+03:00",
+          "n_closed_bars": 59,
+          "short_mae_roi_pct": -0.704,
+          "short_mfe_low_price": 3.369,
+          "short_mfe_roi_pct": 3.433,
+          "short_mfe_time_tr": "2026-11-12T20:40:00+03:00",
+          "short_roi_final_full_bar_close_pct": 0.176,
+          "short_worst_high_price": 3.416,
+          "short_worst_time_tr": "2026-11-12T20:52:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.704,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.4,
+                "prior_peak_roi_pct": 0.88,
+                "time_tr": "2026-11-12T20:07:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.384,
+                "prior_peak_roi_pct": 2.641,
+                "time_tr": "2026-11-12T20:16:00+03:00"
+              }
+            }
+          ]
+        },
+        "original_long_hold": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-12T20:06:00+03:00",
+            "0.95": "2026-11-12T20:07:00+03:00",
+            "1.2": "2026-11-12T20:07:00+03:00",
+            "1.65": "2026-11-12T20:11:00+03:00",
+            "2.0": "2026-11-12T20:12:00+03:00",
+            "2.5": "2026-11-12T20:15:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 4.754,
+          "max_reversal_after_best_time_tr": "2026-11-12T21:32:00+03:00",
+          "n_closed_bars": 87,
+          "short_mae_roi_pct": -1.32,
+          "short_mfe_low_price": 3.369,
+          "short_mfe_roi_pct": 3.433,
+          "short_mfe_time_tr": "2026-11-12T20:40:00+03:00",
+          "short_roi_final_full_bar_close_pct": -1.056,
+          "short_worst_high_price": 3.423,
+          "short_worst_time_tr": "2026-11-12T21:32:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.704,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.4,
+                "prior_peak_roi_pct": 0.88,
+                "time_tr": "2026-11-12T20:07:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.88,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.398,
+                "prior_peak_roi_pct": 1.408,
+                "time_tr": "2026-11-12T20:09:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 2,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.937,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.386,
+                "prior_peak_roi_pct": 2.289,
+                "time_tr": "2026-11-12T20:13:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.384,
+                "prior_peak_roi_pct": 2.641,
+                "time_tr": "2026-11-12T20:16:00+03:00"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "actual_long_realized_gross_roi_pct": -9.556,
+      "hypothetical_short_roi_at_long_close_pct": 9.556,
+      "opposite_bot_short1_symbol_not_nearusdt": true,
+      "original_long_close_tr": "2026-11-13T06:52:14+03:00",
+      "original_long_id_not_shared": true,
+      "original_long_open_tr": "2026-11-13T05:42:22+03:00",
+      "same_price_hypothetical_short_entry": 3.422,
+      "short_hypothesis_only": true,
+      "user_reference": "LONG_AVOID",
+      "windows": {
+        "120m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T05:43:00+03:00",
+            "0.95": "2026-11-13T05:43:00+03:00",
+            "1.2": "2026-11-13T05:44:00+03:00",
+            "1.65": "2026-11-13T05:44:00+03:00",
+            "2.0": "2026-11-13T05:52:00+03:00",
+            "2.5": "2026-11-13T05:52:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": null,
+          "max_reversal_after_best_time_tr": null,
+          "n_closed_bars": 119,
+          "short_mae_roi_pct": -0.789,
+          "short_mfe_low_price": 3.272,
+          "short_mfe_roi_pct": 13.15,
+          "short_mfe_time_tr": "2026-11-13T07:41:00+03:00",
+          "short_roi_final_full_bar_close_pct": 12.887,
+          "short_worst_high_price": 3.431,
+          "short_worst_time_tr": "2026-11-13T05:48:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            }
+          ]
+        },
+        "240m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T05:43:00+03:00",
+            "0.95": "2026-11-13T05:43:00+03:00",
+            "1.2": "2026-11-13T05:44:00+03:00",
+            "1.65": "2026-11-13T05:44:00+03:00",
+            "2.0": "2026-11-13T05:52:00+03:00",
+            "2.5": "2026-11-13T05:52:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 17.621,
+          "max_reversal_after_best_time_tr": "2026-11-13T09:37:00+03:00",
+          "n_closed_bars": 239,
+          "short_mae_roi_pct": -3.419,
+          "short_mfe_low_price": 3.26,
+          "short_mfe_roi_pct": 14.202,
+          "short_mfe_time_tr": "2026-11-13T07:44:00+03:00",
+          "short_roi_final_full_bar_close_pct": -2.455,
+          "short_worst_high_price": 3.461,
+          "short_worst_time_tr": "2026-11-13T09:37:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            }
+          ]
+        },
+        "60m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T05:43:00+03:00",
+            "0.95": "2026-11-13T05:43:00+03:00",
+            "1.2": "2026-11-13T05:44:00+03:00",
+            "1.65": "2026-11-13T05:44:00+03:00",
+            "2.0": "2026-11-13T05:52:00+03:00",
+            "2.5": "2026-11-13T05:52:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 5.26,
+          "max_reversal_after_best_time_tr": "2026-11-13T06:29:00+03:00",
+          "n_closed_bars": 59,
+          "short_mae_roi_pct": -0.789,
+          "short_mfe_low_price": 3.328,
+          "short_mfe_roi_pct": 8.241,
+          "short_mfe_time_tr": "2026-11-13T06:23:00+03:00",
+          "short_roi_final_full_bar_close_pct": 5.435,
+          "short_worst_high_price": 3.431,
+          "short_worst_time_tr": "2026-11-13T05:48:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            }
+          ]
+        },
+        "original_long_hold": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T05:43:00+03:00",
+            "0.95": "2026-11-13T05:43:00+03:00",
+            "1.2": "2026-11-13T05:44:00+03:00",
+            "1.65": "2026-11-13T05:44:00+03:00",
+            "2.0": "2026-11-13T05:52:00+03:00",
+            "2.5": "2026-11-13T05:52:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": null,
+          "max_reversal_after_best_time_tr": null,
+          "n_closed_bars": 69,
+          "short_mae_roi_pct": -0.789,
+          "short_mfe_low_price": 3.291,
+          "short_mfe_roi_pct": 11.485,
+          "short_mfe_time_tr": "2026-11-13T06:51:00+03:00",
+          "short_roi_final_full_bar_close_pct": 9.205,
+          "short_worst_high_price": 3.431,
+          "short_worst_time_tr": "2026-11-13T05:48:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.789,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.413,
+                "prior_peak_roi_pct": 1.052,
+                "time_tr": "2026-11-13T05:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.351,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.418,
+                "prior_peak_roi_pct": 1.666,
+                "time_tr": "2026-11-13T05:45:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.052,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.41,
+                "prior_peak_roi_pct": 3.244,
+                "time_tr": "2026-11-13T05:53:00+03:00"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "actual_long_realized_gross_roi_pct": -1.268,
+      "hypothetical_short_roi_at_long_close_pct": 1.268,
+      "opposite_bot_short1_symbol_not_nearusdt": true,
+      "original_long_close_tr": "2026-11-13T22:28:41+03:00",
+      "original_long_id_not_shared": true,
+      "original_long_open_tr": "2026-11-13T17:51:30+03:00",
+      "same_price_hypothetical_short_entry": 3.55,
+      "short_hypothesis_only": true,
+      "user_reference": "LONG_AVOID",
+      "windows": {
+        "120m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T18:01:00+03:00",
+            "0.95": "2026-11-13T18:01:00+03:00",
+            "1.2": "2026-11-13T18:02:00+03:00",
+            "1.65": "2026-11-13T18:02:00+03:00",
+            "2.0": "2026-11-13T18:02:00+03:00",
+            "2.5": "2026-11-13T18:02:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 7.606,
+          "max_reversal_after_best_time_tr": "2026-11-13T19:27:00+03:00",
+          "n_closed_bars": 119,
+          "short_mae_roi_pct": -1.183,
+          "short_mfe_low_price": 3.443,
+          "short_mfe_roi_pct": 9.042,
+          "short_mfe_time_tr": "2026-11-13T18:36:00+03:00",
+          "short_roi_final_full_bar_close_pct": 4.225,
+          "short_worst_high_price": 3.564,
+          "short_worst_time_tr": "2026-11-13T17:54:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            }
+          ]
+        },
+        "240m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T18:01:00+03:00",
+            "0.95": "2026-11-13T18:01:00+03:00",
+            "1.2": "2026-11-13T18:02:00+03:00",
+            "1.65": "2026-11-13T18:02:00+03:00",
+            "2.0": "2026-11-13T18:02:00+03:00",
+            "2.5": "2026-11-13T18:02:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 8.958,
+          "max_reversal_after_best_time_tr": "2026-11-13T20:42:00+03:00",
+          "n_closed_bars": 239,
+          "short_mae_roi_pct": -1.183,
+          "short_mfe_low_price": 3.443,
+          "short_mfe_roi_pct": 9.042,
+          "short_mfe_time_tr": "2026-11-13T18:36:00+03:00",
+          "short_roi_final_full_bar_close_pct": 2.789,
+          "short_worst_high_price": 3.564,
+          "short_worst_time_tr": "2026-11-13T17:54:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            }
+          ]
+        },
+        "60m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T18:01:00+03:00",
+            "0.95": "2026-11-13T18:01:00+03:00",
+            "1.2": "2026-11-13T18:02:00+03:00",
+            "1.65": "2026-11-13T18:02:00+03:00",
+            "2.0": "2026-11-13T18:02:00+03:00",
+            "2.5": "2026-11-13T18:02:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 6.423,
+          "max_reversal_after_best_time_tr": "2026-11-13T18:50:00+03:00",
+          "n_closed_bars": 59,
+          "short_mae_roi_pct": -1.183,
+          "short_mfe_low_price": 3.443,
+          "short_mfe_roi_pct": 9.042,
+          "short_mfe_time_tr": "2026-11-13T18:36:00+03:00",
+          "short_roi_final_full_bar_close_pct": 2.958,
+          "short_worst_high_price": 3.564,
+          "short_worst_time_tr": "2026-11-13T17:54:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            }
+          ]
+        },
+        "original_long_hold": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-13T18:01:00+03:00",
+            "0.95": "2026-11-13T18:01:00+03:00",
+            "1.2": "2026-11-13T18:02:00+03:00",
+            "1.65": "2026-11-13T18:02:00+03:00",
+            "2.0": "2026-11-13T18:02:00+03:00",
+            "2.5": "2026-11-13T18:02:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 8.958,
+          "max_reversal_after_best_time_tr": "2026-11-13T20:42:00+03:00",
+          "n_closed_bars": 276,
+          "short_mae_roi_pct": -1.183,
+          "short_mfe_low_price": 3.443,
+          "short_mfe_roi_pct": 9.042,
+          "short_mfe_time_tr": "2026-11-13T18:36:00+03:00",
+          "short_roi_final_full_bar_close_pct": 1.014,
+          "short_worst_high_price": 3.564,
+          "short_worst_time_tr": "2026-11-13T17:54:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.845,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.54,
+                "prior_peak_roi_pct": 1.099,
+                "time_tr": "2026-11-13T18:02:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 2.113,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.525,
+                "prior_peak_roi_pct": 2.958,
+                "time_tr": "2026-11-13T18:03:00+03:00"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "actual_long_realized_gross_roi_pct": 1.603,
+      "hypothetical_short_roi_at_long_close_pct": -1.603,
+      "opposite_bot_short1_symbol_not_nearusdt": true,
+      "original_long_close_tr": "2026-11-14T06:36:23+03:00",
+      "original_long_id_not_shared": true,
+      "original_long_open_tr": "2026-11-14T06:34:24+03:00",
+      "same_price_hypothetical_short_entry": 3.369,
+      "short_hypothesis_only": true,
+      "user_reference": "LONG_AVOID",
+      "windows": {
+        "120m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-14T06:35:00+03:00",
+            "0.95": "2026-11-14T06:40:00+03:00",
+            "1.2": "2026-11-14T06:43:00+03:00",
+            "1.65": "2026-11-14T06:53:00+03:00",
+            "2.0": "2026-11-14T06:55:00+03:00",
+            "2.5": "2026-11-14T06:57:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 4.72,
+          "max_reversal_after_best_time_tr": "2026-11-14T08:19:00+03:00",
+          "n_closed_bars": 119,
+          "short_mae_roi_pct": -2.404,
+          "short_mfe_low_price": 3.31,
+          "short_mfe_roi_pct": 5.254,
+          "short_mfe_time_tr": "2026-11-14T07:36:00+03:00",
+          "short_roi_final_full_bar_close_pct": 1.069,
+          "short_worst_high_price": 3.396,
+          "short_worst_time_tr": "2026-11-14T06:36:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": -2.404,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.396,
+                "prior_peak_roi_pct": 0.623,
+                "time_tr": "2026-11-14T06:36:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.356,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.365,
+                "prior_peak_roi_pct": 0.98,
+                "time_tr": "2026-11-14T06:41:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.356,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.365,
+                "prior_peak_roi_pct": 1.336,
+                "time_tr": "2026-11-14T06:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.336,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.354,
+                "prior_peak_roi_pct": 1.692,
+                "time_tr": "2026-11-14T06:54:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.959,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.347,
+                "prior_peak_roi_pct": 2.315,
+                "time_tr": "2026-11-14T06:56:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.87,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.348,
+                "prior_peak_roi_pct": 2.582,
+                "time_tr": "2026-11-14T06:58:00+03:00"
+              }
+            }
+          ]
+        },
+        "240m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-14T06:35:00+03:00",
+            "0.95": "2026-11-14T06:40:00+03:00",
+            "1.2": "2026-11-14T06:43:00+03:00",
+            "1.65": "2026-11-14T06:53:00+03:00",
+            "2.0": "2026-11-14T06:55:00+03:00",
+            "2.5": "2026-11-14T06:57:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": 4.898,
+          "max_reversal_after_best_time_tr": "2026-11-14T10:32:00+03:00",
+          "n_closed_bars": 239,
+          "short_mae_roi_pct": -2.85,
+          "short_mfe_low_price": 3.307,
+          "short_mfe_roi_pct": 5.521,
+          "short_mfe_time_tr": "2026-11-14T10:20:00+03:00",
+          "short_roi_final_full_bar_close_pct": 0.98,
+          "short_worst_high_price": 3.401,
+          "short_worst_time_tr": "2026-11-14T09:18:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": -2.404,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.396,
+                "prior_peak_roi_pct": 0.623,
+                "time_tr": "2026-11-14T06:36:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.356,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.365,
+                "prior_peak_roi_pct": 0.98,
+                "time_tr": "2026-11-14T06:41:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.356,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.365,
+                "prior_peak_roi_pct": 1.336,
+                "time_tr": "2026-11-14T06:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.336,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.354,
+                "prior_peak_roi_pct": 1.692,
+                "time_tr": "2026-11-14T06:54:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.959,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.347,
+                "prior_peak_roi_pct": 2.315,
+                "time_tr": "2026-11-14T06:56:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.87,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.348,
+                "prior_peak_roi_pct": 2.582,
+                "time_tr": "2026-11-14T06:58:00+03:00"
+              }
+            }
+          ]
+        },
+        "60m": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-14T06:35:00+03:00",
+            "0.95": "2026-11-14T06:40:00+03:00",
+            "1.2": "2026-11-14T06:43:00+03:00",
+            "1.65": "2026-11-14T06:53:00+03:00",
+            "2.0": "2026-11-14T06:55:00+03:00",
+            "2.5": "2026-11-14T06:57:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": null,
+          "max_reversal_after_best_time_tr": null,
+          "n_closed_bars": 59,
+          "short_mae_roi_pct": -2.404,
+          "short_mfe_low_price": 3.311,
+          "short_mfe_roi_pct": 5.165,
+          "short_mfe_time_tr": "2026-11-14T07:33:00+03:00",
+          "short_roi_final_full_bar_close_pct": 4.987,
+          "short_worst_high_price": 3.396,
+          "short_worst_time_tr": "2026-11-14T06:36:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": -2.404,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.396,
+                "prior_peak_roi_pct": 0.623,
+                "time_tr": "2026-11-14T06:36:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.356,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.365,
+                "prior_peak_roi_pct": 0.98,
+                "time_tr": "2026-11-14T06:41:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 0.356,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.365,
+                "prior_peak_roi_pct": 1.336,
+                "time_tr": "2026-11-14T06:44:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.336,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.354,
+                "prior_peak_roi_pct": 1.692,
+                "time_tr": "2026-11-14T06:54:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.959,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.347,
+                "prior_peak_roi_pct": 2.315,
+                "time_tr": "2026-11-14T06:56:00+03:00"
+              }
+            },
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": {
+                "gross_roi_pct_price_proxy": 1.87,
+                "mechanism": "bar_high_conservative_proxy_not_live_fill",
+                "price_proxy": 3.348,
+                "prior_peak_roi_pct": 2.582,
+                "time_tr": "2026-11-14T06:58:00+03:00"
+              }
+            }
+          ]
+        },
+        "original_long_hold": {
+          "entry_and_exit_minute_excluded": true,
+          "first_arm_touch_time_tr": {
+            "0.6": "2026-11-14T06:35:00+03:00"
+          },
+          "intraminute_sequence_unknown": true,
+          "max_reversal_after_best_roi_points": null,
+          "max_reversal_after_best_time_tr": null,
+          "n_closed_bars": 1,
+          "short_mae_roi_pct": -0.534,
+          "short_mfe_low_price": 3.362,
+          "short_mfe_roi_pct": 0.623,
+          "short_mfe_time_tr": "2026-11-14T06:35:00+03:00",
+          "short_roi_final_full_bar_close_pct": -0.534,
+          "short_worst_high_price": 3.375,
+          "short_worst_time_tr": "2026-11-14T06:35:00+03:00",
+          "status": "COMPLETE_FULL_MINUTE_BARS_ONLY",
+          "trailing_proxy": [
+            {
+              "activated": true,
+              "ambiguous_same_bar_occurrences": 1,
+              "arm_roi_pct": 0.6,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.1,
+              "trigger_proxy": null
+            },
+            {
+              "activated": false,
+              "ambiguous_same_bar_occurrences": 0,
+              "arm_roi_pct": 0.95,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": null
+            },
+            {
+              "activated": false,
+              "ambiguous_same_bar_occurrences": 0,
+              "arm_roi_pct": 1.2,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.15,
+              "trigger_proxy": null
+            },
+            {
+              "activated": false,
+              "ambiguous_same_bar_occurrences": 0,
+              "arm_roi_pct": 1.65,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": null
+            },
+            {
+              "activated": false,
+              "ambiguous_same_bar_occurrences": 0,
+              "arm_roi_pct": 2.0,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": null
+            },
+            {
+              "activated": false,
+              "ambiguous_same_bar_occurrences": 0,
+              "arm_roi_pct": 2.5,
+              "execution_estimate_not_valid": true,
+              "giveback_roi_points": 0.2,
+              "trigger_proxy": null
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "opposite_short_scenarios": 4,
+  "orders_sent": 0,
+  "price_ohlc_full_minute_only": true,
+  "production_redis_writes": 0,
+  "public_price_api_calls": 3,
+  "retro_research_only": true,
+  "schema": "long1_user_window_11_missed_and_4_opposite_shorts_research_v1",
+  "short_liquidation_and_realistic_execution_not_simulated": true,
+  "short_live_exchange_does_not_exist": true,
+  "target_broker_opens": 0,
+  "target_trade_intents_total": 9,
+  "user_reference_source": "BINANCE1_LONG_SHORT_WINDOWS_20261111_15_V1.json",
+  "window_tr": [
+    "2026-11-11",
+    "2026-11-15"
+  ]
+}

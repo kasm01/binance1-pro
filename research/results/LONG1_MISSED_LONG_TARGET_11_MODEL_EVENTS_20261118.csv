@@ -1,0 +1,12 @@
+time_tr,model_score,rolling_threshold,rolling_gate_passed,old_60m_hypothetical_tp_first,old_hypothetical_first_tp_time_tr,market_context_v2,v2_reason,asof_flow_present,broker_verified_long_already_open,nearby_trade_intents_heuristic,nearby_top5_same_rounded_score_heuristic,all_nearby_top5_against_long_at_current_whale_threshold,exact_model_to_intent_trace
+2026-11-11T14:57:05+03:00,0.495426,0.4951,True,TP_FIRST,2026-11-11 14:58:59,PENDING,missing_flow_to_confirm_recovery,False,False,4,1,False,False
+2026-11-11T16:03:07+03:00,0.496988,0.4958,True,TP_FIRST,2026-11-11 16:08:59,PENDING,multi_tf_downtrend,False,True,0,4,False,False
+2026-11-11T16:06:01+03:00,0.496988,0.4958,True,TP_FIRST,2026-11-11 16:13:59,PENDING,missing_flow_to_confirm_recovery,False,True,0,1,False,False
+2026-11-12T02:21:15+03:00,0.501648,0.496,True,TP_FIRST,2026-11-12 02:31:59,PENDING,missing_flow_to_confirm_recovery,False,False,0,3,True,False
+2026-11-12T17:24:20+03:00,0.499859,0.4967,True,TP_FIRST,2026-11-12 17:29:59,VETO_ADVISORY,deep_5m_15m_decline,False,False,0,3,True,False
+2026-11-13T11:24:02+03:00,0.499147,0.4979,True,TP_FIRST,2026-11-13 11:29:59,PENDING,missing_flow_to_confirm_recovery,False,False,1,1,False,False
+2026-11-14T01:18:08+03:00,0.504704,0.4981,True,TP_FIRST,2026-11-14 01:28:59,VETO_ADVISORY,deep_5m_15m_decline,True,False,0,0,,False
+2026-11-14T01:21:01+03:00,0.5045,0.4981,True,TP_FIRST,2026-11-14 01:31:59,PENDING,insufficient_confluence,True,False,0,1,True,False
+2026-11-14T05:30:16+03:00,0.505896,0.4983,True,TP_FIRST,2026-11-14 05:32:59,PENDING,positive_flow_against_bearish_price,True,False,0,3,True,False
+2026-11-14T07:36:06+03:00,0.498104,0.4981,True,TP_FIRST,2026-11-14 07:37:59,PENDING,positive_flow_against_bearish_price,True,False,4,1,False,False
+2026-11-15T00:18:00+03:00,0.511895,0.5025,True,TP_FIRST,2026-11-15 00:20:59,VETO_ADVISORY,deep_5m_15m_decline,True,False,0,0,,False
