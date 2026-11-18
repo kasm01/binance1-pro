@@ -481,6 +481,12 @@ class IntentBridge:
         market_ctx = _extract_market_context(item)
         payload_item.update(market_ctx)
 
+        # Stage8: exact upstream identifiers remain top-level even when
+        # BRIDGE_PASS_RAW=0. Advisory metadata cannot grant order authority.
+        if sym == "NEARUSDT":
+            from orchestration.trace.long1_execution_lineage_v1 import from_trade_intent
+            payload_item.update(from_trade_intent(item))
+
         if self.pass_raw:
             payload_item["raw"] = _json_dumps_safe(_safe_dict(item), limit=self.raw_max_chars)
 

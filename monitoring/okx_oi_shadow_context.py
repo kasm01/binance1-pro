@@ -385,6 +385,7 @@ def mark_position_open_shadow(
     open_order_id: str = "",
     open_client_order_id: str = "",
     ttl_sec: int = 172800,
+    trace_lineage: Any = None,
 ) -> bool:
     if redis_client is None:
         return False
@@ -415,6 +416,24 @@ def mark_position_open_shadow(
             "open_client_order_id": str(open_client_order_id or ""),
             "shadow_only": True,
         })
+        # Stage8: advisory provenance only. Outcome shadow inherits these
+        # fields from the active position context. Do not expose raw signal
+        # payloads, exchange secrets, or manufacture missing parent IDs.
+        if sym == "NEARUSDT" and isinstance(trace_lineage, dict):
+            from orchestration.trace.long1_execution_lineage_v1 import compact
+            source = dict(trace_lineage, symbol=sym)
+            trace_fields = compact(source)
+            if trace_fields:
+                payload["trace_lineage"] = trace_fields
+            for key in ("pending_attempt_id","pending_origin_intent_id",
+                        "pending_recheck_intent_id","pending_recheck_count"):
+                value = source.get(key)
+                if isinstance(value,(int,str)) and value:
+                    payload[key] = value
+            origin = source.get("pending_origin_lineage")
+            if isinstance(origin,dict):
+                payload["pending_origin_lineage"] = compact(
+                    dict(origin,symbol=sym))
         active_key = f"shadow:telemetry:position_context:active:{sym}:{side_norm}"
         redis_client.set(active_key, json.dumps(payload, ensure_ascii=False), ex=int(ttl_sec))
         redis_client.xadd(

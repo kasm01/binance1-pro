@@ -8535,6 +8535,25 @@ class TradeExecutor:
                 }
             )
 
+            # Stage8 advisory position provenance from the actual opened
+            # intent, never from a guessed MODEL timestamp or trade score.
+            if sym_u == "NEARUSDT":
+                from orchestration.trace.long1_execution_lineage_v1 import compact
+                trace_fields = compact(dict(extra_safe, symbol=sym_u))
+                if trace_fields:
+                    pos["trace_lineage"] = trace_fields
+                for pending_key in (
+                    "pending_attempt_id", "pending_origin_intent_id",
+                    "pending_recheck_intent_id", "pending_recheck_count",
+                ):
+                    candidate_value = extra_safe.get(pending_key)
+                    if isinstance(candidate_value, (str, int)) and candidate_value:
+                        pos[pending_key] = candidate_value
+                origin_lineage = extra_safe.get("pending_origin_lineage")
+                if isinstance(origin_lineage, dict):
+                    pos["pending_origin_lineage"] = compact(
+                        dict(origin_lineage, symbol=sym_u))
+
             if is_scale_in:
                 pos["highest_price"] = float(commit_price)
                 pos["lowest_price"] = float(commit_price)
@@ -10477,6 +10496,11 @@ class TradeExecutor:
             "candle_id": int(self._get_long_candle_id(interval_norm, created_ts)),
             "extra": dict(extra) if isinstance(extra, dict) else {},
         }
+        # Keep first PENDING origin immutable; subsequent checks may arrive
+        # from new intent_id and must not impersonate the originating intent.
+        if sym_u == "NEARUSDT":
+            from orchestration.trace.long1_execution_lineage_v1 import new_pending_origin
+            item["extra"].update(new_pending_origin(item["extra"]))
         self.long_pending_by_symbol[sym_u] = item
         return item
 
@@ -11424,6 +11448,7 @@ class TradeExecutor:
                         leverage=float(order_result.get("target_leverage") or extra0.get("target_leverage") or 1.0),
                         open_order_id=str(order_result.get("open_order_id") or ""),
                         open_client_order_id=str(order_result.get("open_client_order_id") or ""),
+                        trace_lineage=extra0,
                     )
             except Exception:
                 pass
@@ -11624,7 +11649,11 @@ class TradeExecutor:
                     if isinstance(pending_extra, dict)
                     else {}
                 )
-                pending_extra.update(extra0)
+                if sym_u == "NEARUSDT":
+                    from orchestration.trace.long1_execution_lineage_v1 import preserve_pending_origin
+                    pending_extra = preserve_pending_origin(pending_extra, extra0)
+                else:
+                    pending_extra.update(extra0)
                 pending_extra["price"] = price
                 pending["extra"] = pending_extra
 
