@@ -10430,6 +10430,25 @@ class TradeExecutor:
         )
 
 
+    def _long1_trace_decision_shadow(self, *, stage, decision, extra=None):
+        """Off by default. Observability never changes an entry decision."""
+        if str(os.getenv("LONG1_ENTRY_DECISION_TRACE_SHADOW_ENABLE", "0")).lower() not in (
+            "1", "true", "yes", "on"
+        ):
+            return
+        try:
+            from orchestration.trace.long1_entry_decision_audit_v1 import emit
+            r = getattr(self, "redis", None)
+            cache = getattr(self, "_long1_entry_trace_dedup", None)
+            if cache is None:
+                cache = {}
+                self._long1_entry_trace_dedup = cache
+            emit(redis_client=r,symbol="NEARUSDT",stage=stage,
+                 decision=decision,extra=extra,cache=cache,
+                 ts_ms=int(time.time()*1000))
+        except Exception:
+            pass
+
     def _dispatch_long_candidate_decision(self, decision):
         """Candidate kararını standart LONG EntryDecision formatına çevirir."""
         normalized = self._normalize_long_entry_decision(decision)
@@ -10502,6 +10521,10 @@ class TradeExecutor:
             from orchestration.trace.long1_execution_lineage_v1 import new_pending_origin
             item["extra"].update(new_pending_origin(item["extra"]))
         self.long_pending_by_symbol[sym_u] = item
+        if sym_u == "NEARUSDT" and side_norm == "long":
+            observer = getattr(self, "_long1_trace_decision_shadow", None)
+            if callable(observer):
+                observer(stage="pending_store",decision=normalized,extra=item["extra"])
         return item
 
 
@@ -11700,6 +11723,13 @@ class TradeExecutor:
                     or "wait"
                 ).strip().lower()
 
+                if sym_u == "NEARUSDT" and pending_side == "long":
+                    self._long1_trace_decision_shadow(
+                        stage="pending_recheck",
+                        decision={"action":pending_status,
+                                  "reason":"pending_recheck_"+pending_status},
+                        extra=pending_extra)
+
                 try:
                     if self.logger:
                         self.logger.info(
@@ -11846,6 +11876,9 @@ class TradeExecutor:
             sniper_decision = self._dispatch_long_candidate_decision(
                 sniper_decision
             )
+            if sym_u == "NEARUSDT" and side_norm == "long":
+                self._long1_trace_decision_shadow(
+                    stage="sniper",decision=sniper_decision,extra=extra0)
             sniper_action = str(
                 sniper_decision.get("action") or "block"
             ).strip().lower()
@@ -11921,6 +11954,9 @@ class TradeExecutor:
         candidate_decision = self._dispatch_long_candidate_decision(
             candidate_decision
         )
+        if sym_u == "NEARUSDT" and side_norm == "long":
+            self._long1_trace_decision_shadow(
+                stage="entry_confirmation",decision=candidate_decision,extra=extra0)
         candidate_action = str(
             candidate_decision.get("action") or "block"
         ).strip().lower()
