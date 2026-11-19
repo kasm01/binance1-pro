@@ -163,3 +163,6 @@ replay_results/
 research/data/
 research/results/
 training_logs/
+
+# Public historical market ZIP cache, not source code
+research/local_market_data/
