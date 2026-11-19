@@ -1,0 +1,571 @@
+{
+  "book_with_existing_trades_is_overlap_sensitivity_only": true,
+  "fee_notional_roundtrip_assumption_pct": 0.08,
+  "historical_user_label_not_used_as_trade_permission": true,
+  "not_validated_profit_lock_or_native_stop": true,
+  "portfolio_roi_points_not_account_return": true,
+  "production_redis_writes": 0,
+  "profile_selection_prior_stop_test": true,
+  "profiles": {
+    "balanced_pending": {
+      "0.65": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -34.88,
+            "LONG_TARGET": 8.08,
+            "UNLABELLED": -1.69
+          },
+          "labels": {
+            "LONG_AVOID": 32,
+            "LONG_TARGET": 8,
+            "UNLABELLED": 11
+          },
+          "loss": 25,
+          "n": 51,
+          "outcomes": {
+            "SL_FIRST": 25,
+            "TP_FIRST": 26
+          },
+          "roi_pp_sum": -28.49,
+          "win": 26
+        },
+        "stop_price_pct": 0.65,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -28.14,
+            "LONG_TARGET": 7.07,
+            "UNLABELLED": -2.53
+          },
+          "labels": {
+            "LONG_AVOID": 26,
+            "LONG_TARGET": 7,
+            "UNLABELLED": 7
+          },
+          "loss": 20,
+          "n": 40,
+          "outcomes": {
+            "SL_FIRST": 20,
+            "TP_FIRST": 20
+          },
+          "roi_pp_sum": -23.6,
+          "win": 20
+        }
+      },
+      "1.0": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -37.063,
+            "LONG_TARGET": 7.07,
+            "UNLABELLED": -6.9
+          },
+          "labels": {
+            "LONG_AVOID": 32,
+            "LONG_TARGET": 7,
+            "UNLABELLED": 10
+          },
+          "loss": 21,
+          "n": 49,
+          "outcomes": {
+            "SL_FIRST": 19,
+            "TIMEOUT": 2,
+            "TP_FIRST": 28
+          },
+          "roi_pp_sum": -36.892,
+          "win": 28
+        },
+        "stop_price_pct": 1.0,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -26.122,
+            "LONG_TARGET": 6.06,
+            "UNLABELLED": -6.69
+          },
+          "labels": {
+            "LONG_AVOID": 26,
+            "LONG_TARGET": 6,
+            "UNLABELLED": 6
+          },
+          "loss": 16,
+          "n": 38,
+          "outcomes": {
+            "SL_FIRST": 14,
+            "TIMEOUT": 2,
+            "TP_FIRST": 22
+          },
+          "roi_pp_sum": -26.752,
+          "win": 22
+        }
+      },
+      "1.5": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -44.022,
+            "LONG_TARGET": 6.06,
+            "UNLABELLED": -3.66
+          },
+          "labels": {
+            "LONG_AVOID": 29,
+            "LONG_TARGET": 6,
+            "UNLABELLED": 9
+          },
+          "loss": 17,
+          "n": 44,
+          "outcomes": {
+            "SL_FIRST": 13,
+            "TIMEOUT": 4,
+            "TP_FIRST": 27
+          },
+          "roi_pp_sum": -41.622,
+          "win": 27
+        },
+        "stop_price_pct": 1.5,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -36.562,
+            "LONG_TARGET": 6.06,
+            "UNLABELLED": -5.44
+          },
+          "labels": {
+            "LONG_AVOID": 25,
+            "LONG_TARGET": 6,
+            "UNLABELLED": 6
+          },
+          "loss": 14,
+          "n": 37,
+          "outcomes": {
+            "SL_FIRST": 11,
+            "TIMEOUT": 3,
+            "TP_FIRST": 23
+          },
+          "roi_pp_sum": -35.942,
+          "win": 23
+        }
+      },
+      "2.99": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -42.403,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": 6.83
+          },
+          "labels": {
+            "LONG_AVOID": 24,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 8
+          },
+          "loss": 13,
+          "n": 36,
+          "outcomes": {
+            "SL_FIRST": 2,
+            "TIMEOUT": 11,
+            "TP_FIRST": 23
+          },
+          "roi_pp_sum": -31.533,
+          "win": 23
+        },
+        "stop_price_pct": 2.99,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -38.57,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": 5.05
+          },
+          "labels": {
+            "LONG_AVOID": 21,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 5
+          },
+          "loss": 11,
+          "n": 30,
+          "outcomes": {
+            "SL_FIRST": 2,
+            "TIMEOUT": 9,
+            "TP_FIRST": 19
+          },
+          "roi_pp_sum": -29.48,
+          "win": 19
+        }
+      }
+    },
+    "cautious_relaxation": {
+      "0.65": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -35.39,
+            "LONG_TARGET": 6.06,
+            "UNLABELLED": 0.16
+          },
+          "labels": {
+            "LONG_AVOID": 41,
+            "LONG_TARGET": 6,
+            "UNLABELLED": 16
+          },
+          "loss": 29,
+          "n": 63,
+          "outcomes": {
+            "SL_FIRST": 29,
+            "TP_FIRST": 34
+          },
+          "roi_pp_sum": -29.17,
+          "win": 34
+        },
+        "stop_price_pct": 0.65,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -32.86,
+            "LONG_TARGET": 5.05,
+            "UNLABELLED": -2.7
+          },
+          "labels": {
+            "LONG_AVOID": 34,
+            "LONG_TARGET": 5,
+            "UNLABELLED": 10
+          },
+          "loss": 25,
+          "n": 49,
+          "outcomes": {
+            "SL_FIRST": 25,
+            "TP_FIRST": 24
+          },
+          "roi_pp_sum": -30.51,
+          "win": 24
+        }
+      },
+      "1.0": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -37.482,
+            "LONG_TARGET": 5.05,
+            "UNLABELLED": 1.39
+          },
+          "labels": {
+            "LONG_AVOID": 40,
+            "LONG_TARGET": 5,
+            "UNLABELLED": 14
+          },
+          "loss": 22,
+          "n": 59,
+          "outcomes": {
+            "SL_FIRST": 20,
+            "TIMEOUT": 2,
+            "TP_FIRST": 37
+          },
+          "roi_pp_sum": -31.042,
+          "win": 37
+        },
+        "stop_price_pct": 1.0,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -31.802,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": -3.66
+          },
+          "labels": {
+            "LONG_AVOID": 33,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 9
+          },
+          "loss": 19,
+          "n": 46,
+          "outcomes": {
+            "SL_FIRST": 17,
+            "TIMEOUT": 2,
+            "TP_FIRST": 27
+          },
+          "roi_pp_sum": -31.422,
+          "win": 27
+        }
+      },
+      "1.5": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -55.523,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": -1.61
+          },
+          "labels": {
+            "LONG_AVOID": 36,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 13
+          },
+          "loss": 20,
+          "n": 53,
+          "outcomes": {
+            "SL_FIRST": 17,
+            "TIMEOUT": 3,
+            "TP_FIRST": 33
+          },
+          "roi_pp_sum": -53.093,
+          "win": 33
+        },
+        "stop_price_pct": 1.5,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -44.332,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": -5.65
+          },
+          "labels": {
+            "LONG_AVOID": 30,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 9
+          },
+          "loss": 17,
+          "n": 43,
+          "outcomes": {
+            "SL_FIRST": 14,
+            "TIMEOUT": 3,
+            "TP_FIRST": 26
+          },
+          "roi_pp_sum": -45.943,
+          "win": 26
+        }
+      },
+      "2.99": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -55.374,
+            "LONG_TARGET": 2.02,
+            "UNLABELLED": 8.88
+          },
+          "labels": {
+            "LONG_AVOID": 29,
+            "LONG_TARGET": 2,
+            "UNLABELLED": 12
+          },
+          "loss": 13,
+          "n": 43,
+          "outcomes": {
+            "SL_FIRST": 4,
+            "TIMEOUT": 9,
+            "TP_FIRST": 30
+          },
+          "roi_pp_sum": -44.475,
+          "win": 30
+        },
+        "stop_price_pct": 2.99,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -43.982,
+            "LONG_TARGET": 2.02,
+            "UNLABELLED": 4.84
+          },
+          "labels": {
+            "LONG_AVOID": 26,
+            "LONG_TARGET": 2,
+            "UNLABELLED": 8
+          },
+          "loss": 12,
+          "n": 36,
+          "outcomes": {
+            "SL_FIRST": 3,
+            "TIMEOUT": 9,
+            "TP_FIRST": 24
+          },
+          "roi_pp_sum": -37.123,
+          "win": 24
+        }
+      }
+    },
+    "strict_recovery": {
+      "0.65": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -27.63,
+            "LONG_TARGET": 2.86,
+            "UNLABELLED": -0.34
+          },
+          "labels": {
+            "LONG_AVOID": 17,
+            "LONG_TARGET": 6,
+            "UNLABELLED": 6
+          },
+          "loss": 17,
+          "n": 29,
+          "outcomes": {
+            "SL_FIRST": 17,
+            "TP_FIRST": 12
+          },
+          "roi_pp_sum": -25.11,
+          "win": 12
+        },
+        "stop_price_pct": 0.65,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -14.49,
+            "LONG_TARGET": 1.85,
+            "UNLABELLED": 1.85
+          },
+          "labels": {
+            "LONG_AVOID": 11,
+            "LONG_TARGET": 5,
+            "UNLABELLED": 5
+          },
+          "loss": 10,
+          "n": 21,
+          "outcomes": {
+            "SL_FIRST": 10,
+            "TP_FIRST": 11
+          },
+          "roi_pp_sum": -10.79,
+          "win": 11
+        }
+      },
+      "1.0": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -29.097,
+            "LONG_TARGET": 5.05,
+            "UNLABELLED": -3.45
+          },
+          "labels": {
+            "LONG_AVOID": 17,
+            "LONG_TARGET": 5,
+            "UNLABELLED": 5
+          },
+          "loss": 13,
+          "n": 27,
+          "outcomes": {
+            "SL_FIRST": 12,
+            "TIMEOUT": 1,
+            "TP_FIRST": 14
+          },
+          "roi_pp_sum": -27.497,
+          "win": 14
+        },
+        "stop_price_pct": 1.0,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -9.657,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": -0.21
+          },
+          "labels": {
+            "LONG_AVOID": 11,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 4
+          },
+          "loss": 6,
+          "n": 19,
+          "outcomes": {
+            "SL_FIRST": 5,
+            "TIMEOUT": 1,
+            "TP_FIRST": 13
+          },
+          "roi_pp_sum": -5.827,
+          "win": 13
+        }
+      },
+      "1.5": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -33.607,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": -1.95
+          },
+          "labels": {
+            "LONG_AVOID": 16,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 5
+          },
+          "loss": 11,
+          "n": 25,
+          "outcomes": {
+            "SL_FIRST": 9,
+            "TIMEOUT": 2,
+            "TP_FIRST": 14
+          },
+          "roi_pp_sum": -31.517,
+          "win": 14
+        },
+        "stop_price_pct": 1.5,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -15.657,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": -1.71
+          },
+          "labels": {
+            "LONG_AVOID": 11,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 4
+          },
+          "loss": 6,
+          "n": 19,
+          "outcomes": {
+            "SL_FIRST": 5,
+            "TIMEOUT": 1,
+            "TP_FIRST": 13
+          },
+          "roi_pp_sum": -13.327,
+          "win": 13
+        }
+      },
+      "2.99": {
+        "no_native_stop_fill_proof": true,
+        "simulation_only_book": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -29.794,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": 3.8
+          },
+          "labels": {
+            "LONG_AVOID": 11,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 5
+          },
+          "loss": 8,
+          "n": 20,
+          "outcomes": {
+            "SL_FIRST": 1,
+            "TIMEOUT": 7,
+            "TP_FIRST": 12
+          },
+          "roi_pp_sum": -21.954,
+          "win": 12
+        },
+        "stop_price_pct": 2.99,
+        "with_historic_broker_occupancy_veto": {
+          "by_label_roi_pp": {
+            "LONG_AVOID": -13.956,
+            "LONG_TARGET": 4.04,
+            "UNLABELLED": 4.04
+          },
+          "labels": {
+            "LONG_AVOID": 9,
+            "LONG_TARGET": 4,
+            "UNLABELLED": 4
+          },
+          "loss": 5,
+          "n": 17,
+          "outcomes": {
+            "TIMEOUT": 5,
+            "TP_FIRST": 12
+          },
+          "roi_pp_sum": -5.876,
+          "win": 12
+        }
+      }
+    }
+  },
+  "public_closed_bar_input": true,
+  "real_executed_orders": 0,
+  "schema": "long1_103_asof_entry_fixed_tp_stop_sensitivity_v1",
+  "stop_price_pct_values": [
+    0.65,
+    1.0,
+    1.5,
+    2.99
+  ]
+}

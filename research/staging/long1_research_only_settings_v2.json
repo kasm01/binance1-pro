@@ -1,0 +1,56 @@
+{
+  "schema": "long1_asof_103_market_archive_research_v2",
+  "status": "NO_GO_SHADOW_ONLY",
+  "symbol": "NEARUSDT",
+  "strategy": "LONG1",
+  "candidate": "strict_recovery",
+  "reason": "Three tested profiles remained net-negative. Prefer least-open/strictest as next baseline, NOT approved profitability optimization.",
+  "input_timing": {
+    "model_close_time_must_precede_candle_close": true,
+    "market_context_uses_only_fully_closed_1m": true,
+    "entry_price_assumed_next_1m_open": true,
+    "model_to_signal_parent_identity_verified": false,
+    "live_partial_entry_confirmation_reconstructed": false
+  },
+  "entry_revalidation": {
+    "max_completed_1m_rechecks": 5,
+    "bull_body_to_range_min": 0.22,
+    "upper_retrace_to_range_max": 0.35,
+    "one_minute_taker_signed_flow_min": 0.03,
+    "flow_3m_improvement_over_origin_min": 0.08,
+    "price_3m_return_improvement_percentage_points_min": 0.10,
+    "require_3m_return_positive": true,
+    "require_3m_taker_flow_positive": true,
+    "full_actual_sniper_and_entry_confirmation": "NOT_REPRODUCED",
+    "full_actual_whale_and_market_context_gate": "NOT_REPRODUCED",
+    "pending_revalidate_true_model_identity": "REQUIRED_BEFORE_LIVE"
+  },
+  "risk_and_exit_replay": {
+    "simulated_max_positions": 1,
+    "simulated_tp_gross_3x_roi_percent": 1.25,
+    "simulated_stop_price_pct": 2.99,
+    "simulated_max_hold_minutes": 60,
+    "roundtrip_taker_notional_fee_pct_assumed": 0.08,
+    "same_candle_tp_and_sl": "STOP_FIRST",
+    "live_native_stop_and_dynamic_profit_lock_simulated": false,
+    "fee_slippage_funding_and_liquidation_validated": false
+  },
+  "safety": {
+    "conflict": "NO_TRADE",
+    "any_real_position_already_open": "NO_NEW_ORDER",
+    "one_position_only": true,
+    "actual_joint_risk_live_guard": "UNCONDITIONALLY_VETO",
+    "native_stop_guard": "UNCHANGED",
+    "order_authority": false,
+    "production_env_edited": false,
+    "production_risk_gates_edited": false,
+    "go_live_approved": false,
+    "do_not_use_historical_user_labels_as_live_open_whitelist": true
+  },
+  "next_validation": [
+    "replay exactly against independent future dates",
+    "capture full partial-minute Entry Confirmation, sniper and whale as-of states",
+    "integrate true pending new-intent revalidation and central shared risk",
+    "compare fee and profit-lock with broker-like intrabar execution"
+  ]
+}
