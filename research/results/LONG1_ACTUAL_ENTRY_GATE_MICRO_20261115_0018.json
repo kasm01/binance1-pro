@@ -1,0 +1,430 @@
+{
+  "actual_entry_confirmation_method_used": true,
+  "actual_sniper_method_replayed": false,
+  "asof_time_bound_not_exact_model_trace": true,
+  "candidate_additional_ready_from_retrace_060_time_tr": "2026-11-15T00:19:13.820+03:00",
+  "first_redis_data_date_tr": "2026-11-14T14:25+03:00",
+  "full_trade_ready_proven": false,
+  "future_barrier_counterfactual_on_micro_ready": {
+    "fee_roundtrip_notional_pct_assumed": 0.08,
+    "independent_intent_after_00_18_not_verified": true,
+    "method": "no-entry-minute fully-completed next 60 1m candles",
+    "price_stop_pct": 2.99,
+    "real_native_stop_or_market_slippage_not_included": true,
+    "scenarios": [
+      {
+        "barrier_touch_time_tr": "2026-11-15T00:20:00+03:00",
+        "future_60m_barrier_status": "TP_FIRST",
+        "gross_roi_pct": 1.25,
+        "hypothetical_stop_price": 2.830752,
+        "hypothetical_tp_price": 2.930158,
+        "micro_price_execution_not_proven": true,
+        "micro_ready_timestamp_tr": "2026-11-15T00:19:03.492+03:00",
+        "net_roi_after_illustrative_0p08pct_notional_fees": 1.01,
+        "observed_micro_price": 2.918,
+        "order_eligibility_not_established": true
+      },
+      {
+        "barrier_touch_time_tr": "2026-11-15T00:20:00+03:00",
+        "future_60m_barrier_status": "TP_FIRST",
+        "gross_roi_pct": 1.25,
+        "hypothetical_stop_price": 2.830752,
+        "hypothetical_tp_price": 2.930158,
+        "micro_price_execution_not_proven": true,
+        "micro_ready_timestamp_tr": "2026-11-15T00:19:13.820+03:00",
+        "net_roi_after_illustrative_0p08pct_notional_fees": 1.01,
+        "observed_micro_price": 2.918,
+        "order_eligibility_not_established": true
+      }
+    ],
+    "tp_gross_roi_pct": 1.25
+  },
+  "live_order_authority": false,
+  "missing_3m_5m_context_prevents_real_entry_authority": true,
+  "model_event_tr": "2026-11-15T00:18:00+03:00",
+  "model_rolling_gate_passed": true,
+  "model_score": 0.511895,
+  "model_to_micro_uuid_exact_join": false,
+  "parameter_change_proved_profitable": false,
+  "pending_window_actual_classifier": {
+    "fresh_3m5m_revalidation_not_proven": true,
+    "fresh_independent_model_intent_required_for_any_open": true,
+    "new_ready_candle_is_not_automatic_order": true,
+    "old_pending_state_at_new_candle": "expired",
+    "origin_confirmation_pending_time_tr": "2026-11-15T00:18:13.007+03:00",
+    "origin_new_candle_time_tr": "2026-11-15T00:19:03.492+03:00",
+    "window_state_by_micro_time": {
+      "2026-11-15T00:18:02.961+03:00": {
+        "age_candles": 0,
+        "state": "wait_same_candle"
+      },
+      "2026-11-15T00:18:13.007+03:00": {
+        "age_candles": 0,
+        "state": "ready"
+      },
+      "2026-11-15T00:18:23.037+03:00": {
+        "age_candles": 0,
+        "state": "ready"
+      },
+      "2026-11-15T00:18:33.055+03:00": {
+        "age_candles": 0,
+        "state": "ready"
+      },
+      "2026-11-15T00:18:43.120+03:00": {
+        "age_candles": 0,
+        "state": "expired"
+      },
+      "2026-11-15T00:18:53.326+03:00": {
+        "age_candles": 0,
+        "state": "expired"
+      },
+      "2026-11-15T00:19:03.492+03:00": {
+        "age_candles": 1,
+        "state": "expired"
+      },
+      "2026-11-15T00:19:13.820+03:00": {
+        "age_candles": 1,
+        "state": "expired"
+      },
+      "2026-11-15T00:19:23.960+03:00": {
+        "age_candles": 1,
+        "state": "expired"
+      },
+      "2026-11-15T00:19:34.202+03:00": {
+        "age_candles": 1,
+        "state": "expired"
+      },
+      "2026-11-15T00:19:44.314+03:00": {
+        "age_candles": 1,
+        "state": "expired"
+      },
+      "2026-11-15T00:19:54.398+03:00": {
+        "age_candles": 1,
+        "state": "expired"
+      }
+    }
+  },
+  "production_env_changed": false,
+  "production_redis_writes": 0,
+  "profiles": {
+    "candidate_shadow": {
+      "action_counts": {
+        "block": 1,
+        "open": 2,
+        "pending": 9
+      },
+      "current_sniper_and_entry_open_snapshots": 2,
+      "evaluations": [
+        {
+          "body_ratio": 0.888889,
+          "direction_support": false,
+          "entry_action": "pending",
+          "progress": 0.0493,
+          "quality": 0.522222,
+          "reason": "entry_confirmation_no_directional_span",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": false,
+          "time_tr": "2026-11-15T00:18:02.961+03:00"
+        },
+        {
+          "body_ratio": 0.944444,
+          "direction_support": false,
+          "entry_action": "pending",
+          "progress": 0.2168,
+          "quality": 0.511111,
+          "reason": "entry_confirmation_no_directional_span",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:13.007+03:00"
+        },
+        {
+          "body_ratio": 0.393939,
+          "direction_support": false,
+          "entry_action": "pending",
+          "progress": 0.384,
+          "quality": 0.621212,
+          "reason": "entry_confirmation_no_directional_span",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:23.037+03:00"
+        },
+        {
+          "body_ratio": 0.054054,
+          "direction_support": false,
+          "entry_action": "block",
+          "progress": 0.5509,
+          "quality": 0.257658,
+          "reason": "entry_confirmation_strong_reversal",
+          "retrace_ratio": 1.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:33.055+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.7187,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:43.120+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.8888,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": false,
+          "time_tr": "2026-11-15T00:18:53.326+03:00"
+        },
+        {
+          "body_ratio": 0.8,
+          "direction_support": true,
+          "entry_action": "open",
+          "progress": 0.0582,
+          "quality": 1.0,
+          "reason": "entry_confirmation_ready",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:03.492+03:00"
+        },
+        {
+          "body_ratio": 0.333333,
+          "direction_support": true,
+          "entry_action": "open",
+          "progress": 0.2303,
+          "quality": 0.808333,
+          "reason": "entry_confirmation_ready",
+          "retrace_ratio": 0.5,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:13.820+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.3993,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:23.960+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.57,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:34.202+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.7386,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:44.314+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.9066,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": false,
+          "time_tr": "2026-11-15T00:19:54.398+03:00"
+        }
+      ],
+      "shadow_sniper_and_entry_open_snapshots": 2,
+      "total_source_snapshots": 12
+    },
+    "production": {
+      "action_counts": {
+        "block": 1,
+        "open": 1,
+        "pending": 10
+      },
+      "current_sniper_and_entry_open_snapshots": 1,
+      "evaluations": [
+        {
+          "body_ratio": 0.888889,
+          "direction_support": false,
+          "entry_action": "pending",
+          "progress": 0.0493,
+          "quality": 0.522222,
+          "reason": "entry_confirmation_no_directional_span",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": false,
+          "time_tr": "2026-11-15T00:18:02.961+03:00"
+        },
+        {
+          "body_ratio": 0.944444,
+          "direction_support": false,
+          "entry_action": "pending",
+          "progress": 0.2168,
+          "quality": 0.511111,
+          "reason": "entry_confirmation_no_directional_span",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:13.007+03:00"
+        },
+        {
+          "body_ratio": 0.393939,
+          "direction_support": false,
+          "entry_action": "pending",
+          "progress": 0.384,
+          "quality": 0.621212,
+          "reason": "entry_confirmation_no_directional_span",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:23.037+03:00"
+        },
+        {
+          "body_ratio": 0.054054,
+          "direction_support": false,
+          "entry_action": "block",
+          "progress": 0.5509,
+          "quality": 0.257658,
+          "reason": "entry_confirmation_strong_reversal",
+          "retrace_ratio": 1.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:33.055+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.7187,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:18:43.120+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.8888,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": false,
+          "time_tr": "2026-11-15T00:18:53.326+03:00"
+        },
+        {
+          "body_ratio": 0.8,
+          "direction_support": true,
+          "entry_action": "open",
+          "progress": 0.0582,
+          "quality": 1.0,
+          "reason": "entry_confirmation_ready",
+          "retrace_ratio": 0.0,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:03.492+03:00"
+        },
+        {
+          "body_ratio": 0.333333,
+          "direction_support": true,
+          "entry_action": "pending",
+          "progress": 0.2303,
+          "quality": 0.808333,
+          "reason": "entry_confirmation_wait",
+          "retrace_ratio": 0.5,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:13.820+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.3993,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:23.960+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.57,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": true,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:34.202+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.7386,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": true,
+          "time_tr": "2026-11-15T00:19:44.314+03:00"
+        },
+        {
+          "body_ratio": null,
+          "direction_support": null,
+          "entry_action": "pending",
+          "progress": 0.9066,
+          "quality": null,
+          "reason": "entry_confirmation_limited_data",
+          "retrace_ratio": null,
+          "sniper_window_current_005_060": false,
+          "sniper_window_shadow_005_075": false,
+          "time_tr": "2026-11-15T00:19:54.398+03:00"
+        }
+      ],
+      "shadow_sniper_and_entry_open_snapshots": 1,
+      "total_source_snapshots": 12
+    }
+  },
+  "real_model_intent_has_to_revalidate": true,
+  "reference_user_label_not_a_runtime_input": true,
+  "sampling_sparse_approx_every_10sec": true,
+  "schema": "long1_actual_entry_confirmation_historical_micro_asof_v1",
+  "sniper_window_boundary_from_config_only": true,
+  "source_micro_snapshot_count": 12,
+  "source_redis": "shadow:telemetry:microstructure"
+}
