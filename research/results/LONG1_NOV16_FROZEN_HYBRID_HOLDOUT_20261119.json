@@ -1,0 +1,82 @@
+{
+  "baseline_fixed_net_roi_pp_sum": 4.04,
+  "baseline_fixed_open": 4,
+  "candidate_gate_unchanged": true,
+  "fee_roundtrip_roi_points_estimate": 0.24,
+  "frozen_before_holdout": true,
+  "historical_user_label_input": false,
+  "original_24_model_signals_count": 24,
+  "prod_redis_writes": 0,
+  "profiles": {
+    "hybrid_cap125": {
+      "net_roi_pp_sum": 4.04,
+      "opened": 4,
+      "outcomes": {
+        "TP_FIRST": 4
+      },
+      "positions": [
+        {
+          "exit_local_index": 240,
+          "exit_reason": "TP_FIRST",
+          "net_roi_pp": 1.01,
+          "source_model_time": "2026-11-16T03:48:12.139000+00:00"
+        },
+        {
+          "exit_local_index": 565,
+          "exit_reason": "TP_FIRST",
+          "net_roi_pp": 1.01,
+          "source_model_time": "2026-11-16T09:03:13.606000+00:00"
+        },
+        {
+          "exit_local_index": 763,
+          "exit_reason": "TP_FIRST",
+          "net_roi_pp": 1.01,
+          "source_model_time": "2026-11-16T12:36:11.632000+00:00"
+        },
+        {
+          "exit_local_index": 872,
+          "exit_reason": "TP_FIRST",
+          "net_roi_pp": 1.01,
+          "source_model_time": "2026-11-16T14:24:18.446000+00:00"
+        }
+      ]
+    },
+    "runner_uncapped": {
+      "net_roi_pp_sum": 3.3039,
+      "opened": 4,
+      "outcomes": {
+        "TRAIL_NEXT_OPEN": 4
+      },
+      "positions": [
+        {
+          "exit_local_index": 242,
+          "exit_reason": "TRAIL_NEXT_OPEN",
+          "net_roi_pp": -0.7092,
+          "source_model_time": "2026-11-16T03:48:12.139000+00:00"
+        },
+        {
+          "exit_local_index": 568,
+          "exit_reason": "TRAIL_NEXT_OPEN",
+          "net_roi_pp": 1.18,
+          "source_model_time": "2026-11-16T09:03:13.606000+00:00"
+        },
+        {
+          "exit_local_index": 766,
+          "exit_reason": "TRAIL_NEXT_OPEN",
+          "net_roi_pp": 0.3329,
+          "source_model_time": "2026-11-16T12:36:11.632000+00:00"
+        },
+        {
+          "exit_local_index": 875,
+          "exit_reason": "TRAIL_NEXT_OPEN",
+          "net_roi_pp": 2.5002,
+          "source_model_time": "2026-11-16T14:24:18.446000+00:00"
+        }
+      ]
+    }
+  },
+  "real_exchange_orders": 0,
+  "real_slippage_liquidation_funding_and_native_stop_not_reproduced": true,
+  "schema": "long1_nov16_frozen_entry_hybrid_holdout_v1",
+  "trailing_uses_close_then_next_open": true
+}

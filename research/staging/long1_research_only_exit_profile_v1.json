@@ -1,0 +1,33 @@
+{
+  "schema": "long1_stage10_six_tier_hybrid_shadow_exit_v1",
+  "status": "RESEARCH_ONLY_NOT_APPROVED",
+  "base_entry_settings": "research/staging/long1_research_only_settings_v2.json",
+  "symbol": "NEARUSDT",
+  "bot": "LONG1",
+  "exit_candidate": "six_tier_hybrid_cap_125",
+  "exit_tiers_gross_3x_roi_and_giveback_pp": [
+    [0.60, 0.10],
+    [0.95, 0.15],
+    [1.20, 0.15],
+    [1.65, 0.20],
+    [2.00, 0.20],
+    [2.50, 0.20]
+  ],
+  "take_profit_cap_gross_roi_pct": 1.25,
+  "research_max_hold_minutes": 60,
+  "research_price_stop_pct": 2.99,
+  "research_fee_roundtrip_notional_pct": 0.08,
+  "trailing_activation_basis": "fully_closed_one_minute_candle",
+  "trailing_assumed_fill": "NEXT_ONE_MINUTE_OPEN",
+  "same_candle_stop_tp_order": "STOP_FIRST",
+  "no_native_stop_or_exchange_fill_proof": true,
+  "no_funding_spread_slippage_or_liquidation_model": true,
+  "research_development_all_three_profiles_negative": true,
+  "one_day_frozen_holdout_has_only_four_hypothetical_opens": true,
+  "profitable_reproducible_live_strategy_proven": false,
+  "go_live": false,
+  "production_env_changed": false,
+  "production_exit_changed": false,
+  "central_risk_master_live_open_veto": "PRESERVED",
+  "conflict_and_position_lock": "PRESERVED"
+}

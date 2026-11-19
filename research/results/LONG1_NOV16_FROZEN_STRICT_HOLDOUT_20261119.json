@@ -1,0 +1,481 @@
+{
+  "broker_order_execution_not_reproduced": true,
+  "date_utc": "2026-11-16",
+  "exit_counts": {
+    "TP_FIRST": 4
+  },
+  "frozen_settings_source": "research/staging/long1_research_only_settings_v2.json",
+  "heldout_one_day_only": true,
+  "holdout_price_bars": 1440,
+  "long_signals": 24,
+  "model_evaluations": 419,
+  "net_roi_pp_not_account_growth": true,
+  "net_roi_pp_sum": 4.04,
+  "no_orders": true,
+  "param_changed_after_holdout": false,
+  "production_redis_writes": 0,
+  "production_whale_sniper_entry_not_reproduced": true,
+  "records": [
+    {
+      "decision": "SHADOW_READY",
+      "entry_idx": 1672,
+      "entry_time_utc": "2026-11-16T03:52:00+00:00",
+      "exit_idx": 1680,
+      "exit_status": "TP_FIRST",
+      "legacy_close_id": "9971116",
+      "model_gate_passed": true,
+      "net_roi_pp": 1.01,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 1,
+        "flow1": 1,
+        "flow3_negative": 2,
+        "price3_negative": 2,
+        "price_recovery": 1,
+        "retrace": 1
+      },
+      "rolling_threshold": 0.4977,
+      "score": 0.498363,
+      "simulated_open": true,
+      "time_utc": "2026-11-16T03:48:12.139000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971185",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 2,
+        "flow1": 2,
+        "flow3_negative": 3,
+        "price3_negative": 3,
+        "retrace": 3
+      },
+      "rolling_threshold": 0.4972,
+      "score": 0.497594,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T07:15:18.728000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971186",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 2,
+        "flow1": 2,
+        "flow3_negative": 1,
+        "flow_recovery": 1,
+        "price3_negative": 3,
+        "price_recovery": 5,
+        "retrace": 3
+      },
+      "rolling_threshold": 0.4972,
+      "score": 0.497594,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T07:18:03.793000+00:00"
+    },
+    {
+      "decision": "SHADOW_READY",
+      "entry_idx": 1985,
+      "entry_time_utc": "2026-11-16T09:05:00+00:00",
+      "exit_idx": 2005,
+      "exit_status": "TP_FIRST",
+      "legacy_close_id": "9971221",
+      "model_gate_passed": true,
+      "net_roi_pp": 1.01,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "price3_negative": 1
+      },
+      "rolling_threshold": 0.4972,
+      "score": 0.497707,
+      "simulated_open": true,
+      "time_utc": "2026-11-16T09:03:13.606000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971283",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 5,
+        "flow1": 3,
+        "flow3_negative": 5,
+        "flow_recovery": 2,
+        "price3_negative": 5,
+        "price_recovery": 5,
+        "retrace": 5
+      },
+      "rolling_threshold": 0.497,
+      "score": 0.497197,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T12:09:12.104000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971284",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 2,
+        "flow3_negative": 3,
+        "flow_recovery": 3,
+        "price3_negative": 4,
+        "price_recovery": 2,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4971,
+      "score": 0.498312,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T12:12:16.229000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971285",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 2,
+        "flow3_negative": 2,
+        "flow_recovery": 2,
+        "price3_negative": 4,
+        "price_recovery": 2,
+        "retrace": 5
+      },
+      "rolling_threshold": 0.4971,
+      "score": 0.498312,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T12:15:00.198000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971286",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 3,
+        "flow3_negative": 3,
+        "flow_recovery": 4,
+        "price3_negative": 4,
+        "price_recovery": 2,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4972,
+      "score": 0.498456,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T12:18:10.362000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971290",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 2,
+        "flow3_negative": 4,
+        "flow_recovery": 3,
+        "price3_negative": 4,
+        "price_recovery": 3,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4973,
+      "score": 0.499749,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T12:30:06.289000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971291",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 2,
+        "flow3_negative": 3,
+        "price3_negative": 4,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4976,
+      "score": 0.499903,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T12:33:22.437000+00:00"
+    },
+    {
+      "decision": "SHADOW_READY",
+      "entry_idx": 2200,
+      "entry_time_utc": "2026-11-16T12:40:00+00:00",
+      "exit_idx": 2203,
+      "exit_status": "TP_FIRST",
+      "legacy_close_id": "9971292",
+      "model_gate_passed": true,
+      "net_roi_pp": 1.01,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 2,
+        "flow1": 1,
+        "flow3_negative": 2,
+        "flow_recovery": 2,
+        "price3_negative": 2,
+        "price_recovery": 3,
+        "retrace": 2
+      },
+      "rolling_threshold": 0.4976,
+      "score": 0.498601,
+      "simulated_open": true,
+      "time_utc": "2026-11-16T12:36:11.632000+00:00"
+    },
+    {
+      "decision": "SHADOW_READY",
+      "entry_idx": 2308,
+      "entry_time_utc": "2026-11-16T14:28:00+00:00",
+      "exit_idx": 2312,
+      "exit_status": "TP_FIRST",
+      "legacy_close_id": "9971328",
+      "model_gate_passed": true,
+      "net_roi_pp": 1.01,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "flow1": 2,
+        "flow3_negative": 3,
+        "price3_negative": 1,
+        "retrace": 2
+      },
+      "rolling_threshold": 0.4976,
+      "score": 0.497719,
+      "simulated_open": true,
+      "time_utc": "2026-11-16T14:24:18.446000+00:00"
+    },
+    {
+      "decision": "SHADOW_READY",
+      "entry_idx": 2308,
+      "entry_time_utc": "2026-11-16T14:28:00+00:00",
+      "exit_idx": 2312,
+      "exit_status": "TP_FIRST",
+      "legacy_close_id": "9971329",
+      "model_gate_passed": true,
+      "net_roi_pp": 1.01,
+      "portfolio_reason": "ONE_POSITION_BUSY",
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {},
+      "rolling_threshold": 0.4976,
+      "score": 0.497719,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T14:27:03.787000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971334",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 4,
+        "flow3_negative": 4,
+        "price3_negative": 3,
+        "retrace": 3
+      },
+      "rolling_threshold": 0.4976,
+      "score": 0.498493,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T14:42:08.856000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971340",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 4,
+        "flow3_negative": 5,
+        "flow_recovery": 5,
+        "price3_negative": 5,
+        "price_recovery": 3,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4976,
+      "score": 0.498321,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:00:19.738000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971341",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 5,
+        "flow3_negative": 5,
+        "flow_recovery": 5,
+        "price3_negative": 5,
+        "retrace": 3
+      },
+      "rolling_threshold": 0.4976,
+      "score": 0.498321,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:03:04.877000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971342",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 5,
+        "flow1": 4,
+        "flow3_negative": 5,
+        "flow_recovery": 4,
+        "price3_negative": 5,
+        "price_recovery": 5,
+        "retrace": 3
+      },
+      "rolling_threshold": 0.4977,
+      "score": 0.500836,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:06:10.895000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971343",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 3,
+        "flow3_negative": 2,
+        "price3_negative": 5,
+        "price_recovery": 1,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4977,
+      "score": 0.503449,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:09:05.614000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971344",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 3,
+        "flow3_negative": 2,
+        "flow_recovery": 5,
+        "price3_negative": 5,
+        "price_recovery": 1,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4977,
+      "score": 0.500745,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:12:21.258000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971345",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 2,
+        "flow3_negative": 3,
+        "flow_recovery": 4,
+        "price3_negative": 4,
+        "price_recovery": 4,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4977,
+      "score": 0.499034,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:15:10.440000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971346",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 2,
+        "flow3_negative": 1,
+        "flow_recovery": 1,
+        "price3_negative": 4,
+        "price_recovery": 2,
+        "retrace": 2
+      },
+      "rolling_threshold": 0.4977,
+      "score": 0.499034,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:18:00.482000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971347",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 2,
+        "flow3_negative": 1,
+        "flow_recovery": 2,
+        "price3_negative": 3,
+        "price_recovery": 2,
+        "retrace": 3
+      },
+      "rolling_threshold": 0.4981,
+      "score": 0.499704,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:21:16.739000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971348",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 3,
+        "flow1": 3,
+        "flow3_negative": 2,
+        "flow_recovery": 5,
+        "price3_negative": 3,
+        "price_recovery": 4,
+        "retrace": 2
+      },
+      "rolling_threshold": 0.4981,
+      "score": 0.499704,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T15:24:02.382000+00:00"
+    },
+    {
+      "decision": "PENDING_EXPIRED",
+      "legacy_close_id": "9971362",
+      "model_gate_passed": true,
+      "production_open_intent_proven": false,
+      "rejected_recheck_features": {
+        "body": 4,
+        "flow1": 5,
+        "flow3_negative": 5,
+        "flow_recovery": 2,
+        "price3_negative": 2,
+        "price_recovery": 1,
+        "retrace": 4
+      },
+      "rolling_threshold": 0.4983,
+      "score": 0.501539,
+      "simulated_open": false,
+      "time_utc": "2026-11-16T16:06:12.673000+00:00"
+    }
+  ],
+  "schema": "long1_nov16_frozen_strict_after_development_holdout_v1",
+  "signal_candle_identity": "wallclock legacy bucket, not closed exchange candle",
+  "signal_research_time_source": "UTC production MODEL-SCORE log",
+  "signals_ready": 5,
+  "single_position_opens": 4,
+  "training_development_date_range": "2026-11-11_to_2026-11-15"
+}
