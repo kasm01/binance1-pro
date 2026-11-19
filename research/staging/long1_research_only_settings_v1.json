@@ -1,0 +1,50 @@
+{
+  "candidate_shadow_not_released": {
+    "ENTRY_CONFIRM_MAX_RETRACE_RATIO": 0.6,
+    "ENTRY_CONFIRM_MIN_QUALITY": 0.48,
+    "ENTRY_CONFIRM_REJECT_RETRACE_RATIO": 0.75,
+    "MASTER_DROP_WHALE_CONTRA": 1,
+    "MASTER_WHALE_BOOST_THR": 0.55,
+    "SNIPER_ENTRY_MAX_CANDLE_PROGRESS": 0.75
+  },
+  "hard_no_trade_when_common_user_reference_conflicts": true,
+  "live_authority": false,
+  "parameter_changes_not_validated_by_replay": [
+    "MASTER_WHALE_BOOST_THR",
+    "SNIPER_ENTRY_MAX_CANDLE_PROGRESS",
+    "ENTRY_CONFIRM_MIN_QUALITY",
+    "ENTRY_CONFIRM_MAX_RETRACE_RATIO"
+  ],
+  "production_env_modified": false,
+  "reference_current_settings": {
+    "ENTRY_CONFIRM_MAX_RETRACE_RATIO": 0.5,
+    "ENTRY_CONFIRM_MIN_BODY_RATIO": 0.15,
+    "ENTRY_CONFIRM_MIN_QUALITY": 0.52,
+    "ENTRY_CONFIRM_REJECT_RETRACE_RATIO": 0.75,
+    "LONG_CONTEXT_ADAPTIVE_GATE_ENABLE": 1,
+    "LONG_CONTRA_GUARD_ENABLE": 1,
+    "LONG_DYNAMIC_STOP_ENABLE": 1,
+    "LONG_ROLLING_MODEL_GATE_ENABLE": 1,
+    "LONG_ROLLING_MODEL_GATE_MIN": 0.491,
+    "LONG_ROLLING_MODEL_GATE_QUANTILE": 0.965,
+    "LONG_SCALE_IN_ENABLE": 0,
+    "MASTER_DROP_WHALE_CONTRA": 1,
+    "MASTER_MAX_POS": 1,
+    "MASTER_WHALE_BOOST_THR": 0.45,
+    "SNIPER_ENTRY_MAX_CANDLE_PROGRESS": 0.6,
+    "SNIPER_ENTRY_MIN_CANDLE_PROGRESS": 0.05
+  },
+  "schema": "LONG1_RESEARCH_ONLY_CANDIDATES_NOT_LIVE_ENV",
+  "selection_from_historical_user_labels_is_evaluation_only": true,
+  "unchanged_safety": [
+    "LONG_ROLLING_MODEL_GATE_ENABLE",
+    "LONG_ROLLING_MODEL_GATE_MIN",
+    "LONG_CONTRA_GUARD_ENABLE",
+    "LONG_DYNAMIC_STOP_ENABLE",
+    "MASTER_MAX_POS",
+    "LONG_SCALE_IN_ENABLE",
+    "shared_joint_risk_live_guard",
+    "native_exchange_stop",
+    "fresh_broker_position_snapshot"
+  ]
+}
