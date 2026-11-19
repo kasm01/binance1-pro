@@ -11314,10 +11314,28 @@ class TradeExecutor:
             current = {}
             self._long_contra_context_pending = current
         extra0 = extra if isinstance(extra, dict) else {}
+        def trace_contra(action, reason, ctx=None, five_ok=False, fresh=False):
+            # Advisory only: existing gate boolean returns are unchanged.
+            if sym == "NEARUSDT":
+                try:
+                    obs = getattr(self, "_long1_trace_decision_shadow", None)
+                    if callable(obs):
+                        obs(stage="contra_trend",
+                            decision={"action":action,"reason":reason,
+                                "details":{
+                                    "context_valid_asof":bool(ctx and ctx.valid),
+                                    "context_3m_close_time_ms":ctx.candle_ms if ctx and ctx.valid else 0,
+                                    "five_minute_recovered":bool(five_ok),
+                                    "fresh_intent_verified":bool(fresh),
+                                }},
+                            extra=extra0)
+                except Exception:
+                    pass
         iid = str(extra0.get("intent_id") or "").strip()
         if not iid or r is None:
             if self.logger:
                 self.logger.warning("[EXEC][CONTRA-GUARD] action=PENDING reason=missing_intent_or_redis symbol=%s",sym)
+            trace_contra("pending","missing_intent_or_redis")
             return False
         try:
             combined = _json.loads(r.get("shadow:market_context:combined:" + sym) or "{}")
@@ -11326,10 +11344,12 @@ class TradeExecutor:
         except Exception as exc:
             if self.logger:
                 self.logger.warning("[EXEC][CONTRA-GUARD] action=PENDING reason=context_read_error symbol=%s err=%s",sym,type(exc).__name__)
+            trace_contra("pending","context_read_error")
             return False
         if not ctx.valid:
             if self.logger:
                 self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=%s symbol=%s intent=%s",ctx.reason,sym,iid)
+            trace_contra("pending",ctx.reason,ctx)
             return False
         pending = current.get(sym)
         if isinstance(pending, dict) and (now_ms-int(pending.get("created_ms") or 0)>1800000):
@@ -11344,17 +11364,21 @@ class TradeExecutor:
                     "[EXEC][CONTRA-GUARD] action=PENDING symbol=%s intent=%s original=%s "
                     "reason=3m_short_flow15_60_negative m3=%.6f upfrac=%.3f flow15=%.5f flow60=%.5f",
                     sym,iid,pending.get("origin_intent"),ctx.mean3,ctx.upfrac3,ctx.flow15,ctx.flow60)
+            trace_contra("pending","contra_3m_flow15_60_negative",ctx)
             return False
         if not isinstance(pending,dict):
+            trace_contra("ready","no_prior_contra_pending",ctx)
             return True
         # A stale original intent or 1m bounce NEVER authorizes a reentry.
         if iid == pending.get("origin_intent") or ctx.candle_ms<=int(pending.get("origin_candle_ms") or 0):
             if self.logger:
                 self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=await_new_3m symbol=%s intent=%s",sym,iid)
+            trace_contra("pending","await_new_3m_or_fresh_intent",ctx)
             return False
         if not ctx.recovery:
             if self.logger:
                 self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=await_3m_flow15_recovery symbol=%s intent=%s",sym,iid)
+            trace_contra("pending","await_3m_flow15_recovery",ctx)
             return False
         # Query once per new full 5m bar on genuine candidate revalidation,
         # never inside the continuous collector loop.
@@ -11370,8 +11394,11 @@ class TradeExecutor:
         if not valid_5m:
             if self.logger:
                 self.logger.info("[EXEC][CONTRA-GUARD] action=PENDING reason=await_completed_5m_reversal symbol=%s intent=%s",sym,iid)
+            trace_contra("pending","await_completed_5m_reversal",ctx)
             return False
         # Reached only by fresh MODEL/SNIPER/ENTRY-CONFIRMATION READY caller.
+        trace_contra("ready","fresh_model_sniper_confirm_and_3m5m_recovery",
+                     ctx,five_ok=True,fresh=True)
         current.pop(sym,None)
         if self.logger:
             self.logger.info(

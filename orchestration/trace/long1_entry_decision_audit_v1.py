@@ -12,7 +12,7 @@ from datetime import datetime,timezone
 from orchestration.trace.long1_execution_lineage_v1 import compact
 
 STREAM='telemetry:long1:entry_decision_trace:v1'
-STAGES=frozenset(('sniper','entry_confirmation','pending_store','pending_recheck'))
+STAGES=frozenset(('sniper','entry_confirmation','pending_store','pending_recheck','contra_trend'))
 STATUSES=frozenset(('open','block','pending','ready','wait','blocked','cleared','expired','invalid'))
 def enabled():
     return str(os.getenv('LONG1_ENTRY_DECISION_TRACE_SHADOW_ENABLE','0')).lower() in ('1','true','yes','on')
@@ -53,7 +53,15 @@ def prepare(*,symbol,stage,decision,extra=None,pending=None,ts_ms=None):
         'pending_kind':str(details.get('pending_kind') or '')[:32],
         'entry_candle_interval':str(details.get('entry_candle_interval') or '')[:16],
         'entry_context_source':str(details.get('entry_context_source') or '')[:64],
-        'market_context_3m_5m_recovery_verified':False,
+        'context_3m_close_time_ms':int(details.get('context_3m_close_time_ms') or 0),
+        'context_valid_asof':details.get('context_valid_asof') is True,
+        'five_minute_recovered':details.get('five_minute_recovered') is True,
+        'fresh_intent_verified':details.get('fresh_intent_verified') is True,
+        'market_context_3m_5m_recovery_verified':(
+            stage=='contra_trend' and action=='ready'
+            and details.get('context_valid_asof') is True
+            and details.get('five_minute_recovered') is True
+            and details.get('fresh_intent_verified') is True),
         'decision_candle_identity_verified':False,
         'advisory_only':True,'order_authority':False,
     }

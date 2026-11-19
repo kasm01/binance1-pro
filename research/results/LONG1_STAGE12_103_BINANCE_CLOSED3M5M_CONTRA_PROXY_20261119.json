@@ -1,0 +1,2184 @@
+{
+  "30m_max_revalidation": true,
+  "cohorts": {
+    "CONFLICT_NO_TRADE": {
+      "contra_not_recovered_in30m": 0,
+      "contra_recovered_within30m": 0,
+      "model_events": 1,
+      "origin_contra_proxy": 0,
+      "origin_noncontra_proxy": 1
+    },
+    "LONG_AVOID": {
+      "contra_not_recovered_in30m": 28,
+      "contra_recovered_within30m": 29,
+      "model_events": 70,
+      "origin_contra_proxy": 57,
+      "origin_noncontra_proxy": 13
+    },
+    "LONG_TARGET": {
+      "contra_not_recovered_in30m": 0,
+      "contra_recovered_within30m": 10,
+      "model_events": 11,
+      "origin_contra_proxy": 10,
+      "origin_noncontra_proxy": 1
+    },
+    "UNLABELLED": {
+      "contra_not_recovered_in30m": 1,
+      "contra_recovered_within30m": 9,
+      "model_events": 21,
+      "origin_contra_proxy": 10,
+      "origin_noncontra_proxy": 11
+    }
+  },
+  "complete_candle_only_no_lookahead": true,
+  "events": [
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-11T14:57:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.3761,
+      "origin_flow60": 0.29706,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": 0.004111,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794398220000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794398219999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-11T15:09:21+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.18742,
+      "origin_flow60": 0.25589,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.002375,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794398940000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794398939999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-11T15:15:23+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.06905,
+      "origin_flow60": 0.2396,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001676,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794399300000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794399299999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-11T15:18:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.06434,
+      "origin_flow60": 0.23716,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.000885,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794399480000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794399479999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-11T15:27:11+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.03251,
+      "origin_flow60": 0.22482,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.000703,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794400020000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794400019999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-11T15:33:15+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.01876,
+      "origin_flow60": 0.22009,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.002843,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794400380000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794400379999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-11T16:03:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.12014,
+      "origin_flow60": -0.01552,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002225,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 12,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794402900000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794402899999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 9
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-11T16:06:01+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.05431,
+      "origin_flow60": -0.00325,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.000349,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 9,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794402900000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794402899999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 6
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-11T17:36:10+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.14346,
+      "origin_flow60": 0.01838,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.000798,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794407760000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794407759999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T01:36:16+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.27483,
+      "origin_flow60": -0.10372,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003362,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 29,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794438300000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794438179999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T01:42:08+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.25798,
+      "origin_flow60": -0.07804,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003013,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 23,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794438300000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794438179999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 18
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T01:45:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.23021,
+      "origin_flow60": -0.09803,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002844,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794438300000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794438179999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 15
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T01:51:14+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.17201,
+      "origin_flow60": -0.11464,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002762,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 14,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794438300000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794438179999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 9
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T02:09:19+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.0272,
+      "origin_flow60": -0.11092,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001566,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794438540000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794438539999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T02:15:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.24412,
+      "origin_flow60": -0.19797,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005568,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 18,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794439980000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794439979999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 14
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-12T02:21:15+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.25986,
+      "origin_flow60": -0.1808,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00465,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 12,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794439980000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794439979999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 8
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T03:06:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.2124,
+      "origin_flow60": -0.0467,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001942,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794441960000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794441959999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T04:12:11+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.00283,
+      "origin_flow60": 0.19365,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.002399,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794445920000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794445919999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T05:39:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.01698,
+      "origin_flow60": -0.01476,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001479,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794451140000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794451139999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T05:42:21+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.05615,
+      "origin_flow60": -0.04194,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003709,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 18,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794452400000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794452399999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 15
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T09:57:12+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.39484,
+      "origin_flow60": -0.18164,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.0019,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 15,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794467520000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794467519999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 12
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T11:27:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.32068,
+      "origin_flow60": -0.1605,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002104,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 25,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794473520000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794473459999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 22
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T14:33:20+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.32613,
+      "origin_flow60": -0.21187,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002301,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T14:39:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.37055,
+      "origin_flow60": -0.2711,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002403,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 27
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T14:42:02+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.32655,
+      "origin_flow60": -0.24887,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.000868,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 28,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794485400000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794485339999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T14:54:15+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.16651,
+      "origin_flow60": -0.26286,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002322,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 16,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794485400000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794485339999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 12
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T15:27:19+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.19869,
+      "origin_flow60": -0.05268,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.002222,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794486420000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794486419999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T16:00:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.40117,
+      "origin_flow60": -0.04743,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00253,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T16:03:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.38922,
+      "origin_flow60": -0.07539,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002725,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 27
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T16:06:20+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.40435,
+      "origin_flow60": -0.09159,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00205,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 29,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794490500000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794490379999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T16:09:04+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.34087,
+      "origin_flow60": -0.13849,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.001863,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 26,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794490500000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794490379999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 21
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T16:12:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.31577,
+      "origin_flow60": -0.19421,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003635,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 23,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794490500000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794490379999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 18
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T16:15:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.19231,
+      "origin_flow60": -0.22112,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.001365,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794490500000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794490379999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 15
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T17:12:17+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.04228,
+      "origin_flow60": -0.01405,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001276,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794492720000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794492719999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T17:18:08+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.10346,
+      "origin_flow60": -0.03686,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003246,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 17,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794494100000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794493979999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 14
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-12T17:24:20+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.17073,
+      "origin_flow60": -0.07669,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003662,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 11,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794494100000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794493979999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 8
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T17:45:20+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.148,
+      "origin_flow60": -0.01344,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001361,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794494700000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794494699999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T17:48:00+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.11585,
+      "origin_flow60": -0.01328,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.000177,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794494880000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794494879999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-12T18:03:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.17108,
+      "origin_flow60": -0.03334,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.001762,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-12T20:03:18+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.01831,
+      "origin_flow60": 0.01745,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.002245,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794502980000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794502979999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T00:54:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.36332,
+      "origin_flow60": -0.14495,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002039,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T00:57:01+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.36486,
+      "origin_flow60": -0.14909,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002527,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T05:45:14+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.07595,
+      "origin_flow60": -0.10972,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002823,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T05:48:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.09003,
+      "origin_flow60": -0.14598,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.000673,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T06:15:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.18601,
+      "origin_flow60": -0.19101,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.001373,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T06:24:15+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.17305,
+      "origin_flow60": -0.15724,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003157,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T06:27:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.13488,
+      "origin_flow60": -0.14739,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00157,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T06:51:20+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.21846,
+      "origin_flow60": -0.14463,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.001787,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 16,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794542820000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794542759999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 13
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T06:54:16+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.21051,
+      "origin_flow60": -0.14873,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005076,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 13,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794542820000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794542759999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 10
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T07:15:14+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.05426,
+      "origin_flow60": -0.09617,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.003496,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794543300000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794543299999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T07:24:19+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.00391,
+      "origin_flow60": -0.07302,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001297,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794543840000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794543839999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T07:27:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.11916,
+      "origin_flow60": -0.09413,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002605,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T07:30:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.06742,
+      "origin_flow60": -0.09428,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002402,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T07:42:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.12892,
+      "origin_flow60": -0.11136,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003737,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 23,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794546300000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794546179999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 18
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T07:45:09+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.22582,
+      "origin_flow60": -0.12916,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.004048,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794546300000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794546179999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 15
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-13T11:21:17+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.20264,
+      "origin_flow60": -0.08239,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003502,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 21,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794559320000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794559319999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 18
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-13T11:24:02+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.27024,
+      "origin_flow60": -0.08298,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003606,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 18,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794559320000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794559319999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 15
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T16:54:16+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.21149,
+      "origin_flow60": -0.02639,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003694,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 27,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794579660000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794579659999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T17:51:25+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.15479,
+      "origin_flow60": -0.11472,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003832,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 4,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T17:54:02+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.01771,
+      "origin_flow60": -0.05497,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.000367,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 4,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T18:03:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.12138,
+      "origin_flow60": -0.0644,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003469,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 4,
+        "await_positive_ret3_and_nonnegative_flow15": 24
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T18:21:02+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.0895,
+      "origin_flow60": -0.07507,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002272,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 26,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794584820000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794584699999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 23
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T18:24:12+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.20124,
+      "origin_flow60": -0.10429,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003799,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 23,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794584820000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794584699999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 20
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-13T18:27:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.18442,
+      "origin_flow60": -0.12815,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005234,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794584820000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794584699999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 17
+      }
+    },
+    {
+      "label": "CONFLICT_NO_TRADE",
+      "model_event_tr": "2026-11-13T18:36:13+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.09947,
+      "origin_flow60": -0.08496,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.000762,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794584160000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794584159999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T01:06:10+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.06022,
+      "origin_flow60": -0.05583,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003057,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 26,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794609120000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794608999999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 23
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T01:09:04+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.08353,
+      "origin_flow60": -0.0686,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.002196,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794607740000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794607739999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T01:12:19+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.15963,
+      "origin_flow60": -0.08249,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003542,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794609120000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794608999999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 17
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T01:15:09+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.35844,
+      "origin_flow60": -0.18462,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003184,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 17,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794609120000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794608999999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 14
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-14T01:18:08+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.3886,
+      "origin_flow60": -0.24031,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005806,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 14,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794609120000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794608999999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 11
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-14T01:21:01+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.31458,
+      "origin_flow60": -0.21126,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002793,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 11,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794609120000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794608999999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 8
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T05:24:11+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.32765,
+      "origin_flow60": -0.21708,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002646,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794624240000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794624119999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 17
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-14T05:27:00+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.28967,
+      "origin_flow60": -0.20913,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.000774,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 17,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794624240000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794624119999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 14
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-14T05:30:16+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.22792,
+      "origin_flow60": -0.17799,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002542,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 14,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794624240000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794624119999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 11
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T06:18:04+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.06932,
+      "origin_flow60": -0.09252,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002545,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 7,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794626700000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794626639999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 4
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-14T07:36:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.00641,
+      "origin_flow60": -0.04359,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003495,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 5,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794631260000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794631139999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 1
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-14T10:45:19+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.25402,
+      "origin_flow60": -0.11842,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.004787,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 25,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794643800000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794643739999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 21
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T17:03:16+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.27563,
+      "origin_flow60": -0.11772,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003715,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T17:06:14+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.22926,
+      "origin_flow60": -0.10358,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003527,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T17:21:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.08667,
+      "origin_flow60": -0.11253,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002649,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T17:24:14+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.16079,
+      "origin_flow60": -0.12973,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00276,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T17:27:07+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.2282,
+      "origin_flow60": -0.17762,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.004715,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T18:33:05+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.28363,
+      "origin_flow60": -0.14358,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003013,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 13,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794671160000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794671099999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 10
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T18:36:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.25348,
+      "origin_flow60": -0.13058,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.0004,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794670560000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794670559999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T19:06:12+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.08731,
+      "origin_flow60": -0.11755,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.002909,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T19:09:09+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.25844,
+      "origin_flow60": -0.13608,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.006045,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T19:12:03+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.33024,
+      "origin_flow60": -0.17122,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.008182,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T19:15:18+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.30035,
+      "origin_flow60": -0.16928,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.006317,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 29,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794674640000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794674519999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 26
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T19:24:00+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.16877,
+      "origin_flow60": -0.12819,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.001066,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 20,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794674640000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794674519999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 17
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T19:45:12+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.10264,
+      "origin_flow60": -0.12692,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": 0.000347,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794674700000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794674699999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T20:48:11+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": 0.09218,
+      "origin_flow60": 0.00425,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.004499,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794678480000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794678479999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T20:54:22+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.1882,
+      "origin_flow60": -0.02176,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005184,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 7,
+        "await_positive_ret3_and_nonnegative_flow15": 21
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T21:06:22+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.01813,
+      "origin_flow60": -0.00956,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001166,
+      "origin_proxy_m3_upfrac": 0.6666666666666666,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794679560000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794679559999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T21:48:17+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.09566,
+      "origin_flow60": 0.02199,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.003846,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794682080000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794682079999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T21:51:01+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.08761,
+      "origin_flow60": 0.06357,
+      "origin_proxy_contra": false,
+      "origin_proxy_m3_mean": -0.001822,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 0,
+        "full_5m_recovered": false,
+        "last_full_1m_close_ms": 1794682260000,
+        "proxy_3m_recovery": false,
+        "recovery_closed_at_ms": 1794682259999
+      },
+      "wait_reasons": {}
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T23:18:08+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.38358,
+      "origin_flow60": -0.19225,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005432,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T23:54:16+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.15777,
+      "origin_flow60": -0.18807,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005334,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-14T23:57:09+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.16278,
+      "origin_flow60": -0.17707,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00522,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": false,
+      "research_recovery": null,
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 28
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-15T00:00:25+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.13051,
+      "origin_flow60": -0.16216,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003675,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 28,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794691680000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794691619999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 25
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-15T00:03:06+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.15273,
+      "origin_flow60": -0.17032,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.000337,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 25,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794691680000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794691619999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 22
+      }
+    },
+    {
+      "label": "UNLABELLED",
+      "model_event_tr": "2026-11-15T00:15:11+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.20897,
+      "origin_flow60": -0.1724,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.00658,
+      "origin_proxy_m3_upfrac": 0.0,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 13,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794691680000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794691619999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 10
+      }
+    },
+    {
+      "label": "LONG_TARGET",
+      "model_event_tr": "2026-11-15T00:18:00+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.14149,
+      "origin_flow60": -0.13798,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.005672,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 10,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794691680000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794691619999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_positive_ret3_and_nonnegative_flow15": 7
+      }
+    },
+    {
+      "label": "LONG_AVOID",
+      "model_event_tr": "2026-11-15T04:36:08+03:00",
+      "new_independent_intent_id_verified": false,
+      "origin_flow15": -0.34371,
+      "origin_flow60": -0.18798,
+      "origin_proxy_contra": true,
+      "origin_proxy_m3_mean": -0.003908,
+      "origin_proxy_m3_upfrac": 0.3333333333333333,
+      "real_order_open_authorized": false,
+      "research_full_closed_recovery_found": true,
+      "research_recovery": {
+        "elapsed_minutes": 24,
+        "full_5m_recovered": true,
+        "last_full_1m_close_ms": 1794708000000,
+        "proxy_3m_recovery": true,
+        "recovery_closed_at_ms": 1794707999999
+      },
+      "wait_reasons": {
+        "await_new_closed_3m": 2,
+        "await_new_full_5m_positive_close": 1,
+        "await_positive_ret3_and_nonnegative_flow15": 20
+      }
+    }
+  ],
+  "m3_structure_return_proxy_not_equal_original_live_structure": true,
+  "new_intent_identity_not_available": true,
+  "partial_1m_sniper_entry_confirmation_not_reproduced": true,
+  "production_redis_writes": 0,
+  "real_orders_authorized": 0,
+  "reconstructed_binance_taker_flow_not_equal_original_live_source": true,
+  "revalidation_lookahead_window_is_outcome_not_entry_at_origin": true,
+  "schema": "long1_research_103_closed3m5m_contra_revalidation_v1"
+}
