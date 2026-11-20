@@ -1,0 +1,2678 @@
+{
+  "development_time": "2026-11-11_to_2026-11-15",
+  "entry_candidates": 32,
+  "entry_exit_date_same_data_not_independent_holdout": true,
+  "fee_roundtrip_roi_pp_assumed": 0.24,
+  "fixed_tp_touch_fill_optimistic": true,
+  "historical_labels_not_entry_features": true,
+  "leverage": 3,
+  "live_orders": 0,
+  "not_live_native_stop": true,
+  "price_stop_pct": 2.99,
+  "production_redis_writes": 0,
+  "profiles": {
+    "fixed_0p40": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 17,
+        "gross_roi_nominal_usdt_total_margin200": -7.323,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2374,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2868,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3756,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4578,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5184,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5674,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5926,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.16
+          }
+        ],
+        "negative_net_roi_count": 2,
+        "outcome": {
+          "TIMEOUT": 2,
+          "TP_FIRST": 15
+        },
+        "positive_net_roi_count": 15,
+        "total_net_roi_pp": -3.66148,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -4.51148,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -5.36148
+      },
+      "parameters": {
+        "tiers": [],
+        "tp": 0.4
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 19,
+        "gross_roi_nominal_usdt_total_margin200": -6.683,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2179,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2374,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2868,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3756,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4578,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5184,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5674,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5926,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.16
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.16
+          }
+        ],
+        "negative_net_roi_count": 2,
+        "outcome": {
+          "TIMEOUT": 2,
+          "TP_FIRST": 17
+        },
+        "positive_net_roi_count": 17,
+        "total_net_roi_pp": -3.34148,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -4.29148,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -5.24148
+      }
+    },
+    "fixed_0p60": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 17,
+        "gross_roi_nominal_usdt_total_margin200": -5.6543,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2869,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3756,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4581,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5927,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.36
+          }
+        ],
+        "negative_net_roi_count": 3,
+        "outcome": {
+          "TIMEOUT": 3,
+          "TP_FIRST": 14
+        },
+        "positive_net_roi_count": 14,
+        "total_net_roi_pp": -2.82715,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -3.67715,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -4.52715
+      },
+      "parameters": {
+        "tiers": [],
+        "tp": 0.6
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 19,
+        "gross_roi_nominal_usdt_total_margin200": -4.2143,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2180,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2869,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3756,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4581,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5927,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.36
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.36
+          }
+        ],
+        "negative_net_roi_count": 3,
+        "outcome": {
+          "TIMEOUT": 3,
+          "TP_FIRST": 16
+        },
+        "positive_net_roi_count": 16,
+        "total_net_roi_pp": -2.10715,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -3.05715,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -4.00715
+      }
+    },
+    "fixed_0p80": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 17,
+        "gross_roi_nominal_usdt_total_margin200": -0.0543,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2869,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4581,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.56
+          }
+        ],
+        "negative_net_roi_count": 3,
+        "outcome": {
+          "TIMEOUT": 3,
+          "TP_FIRST": 14
+        },
+        "positive_net_roi_count": 14,
+        "total_net_roi_pp": -0.02715,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -0.87715,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -1.72715
+      },
+      "parameters": {
+        "tiers": [],
+        "tp": 0.8
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 19,
+        "gross_roi_nominal_usdt_total_margin200": 0.5857,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2238,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": -0.24
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2869,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4581,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.56
+          }
+        ],
+        "negative_net_roi_count": 4,
+        "outcome": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 15
+        },
+        "positive_net_roi_count": 15,
+        "total_net_roi_pp": 0.29285,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -0.65715,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -1.60715
+      }
+    },
+    "fixed_1p00": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 10,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 16,
+        "gross_roi_nominal_usdt_total_margin200": -2.4869,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4849,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6078,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.76
+          }
+        ],
+        "negative_net_roi_count": 4,
+        "outcome": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 12
+        },
+        "positive_net_roi_count": 12,
+        "total_net_roi_pp": -1.24347,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -2.04347,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -2.84347
+      },
+      "parameters": {
+        "tiers": [],
+        "tp": 1.0
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 18,
+        "gross_roi_nominal_usdt_total_margin200": -1.4469,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2238,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": -0.24
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4849,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6078,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.76
+          }
+        ],
+        "negative_net_roi_count": 5,
+        "outcome": {
+          "TIMEOUT": 5,
+          "TP_FIRST": 13
+        },
+        "positive_net_roi_count": 13,
+        "total_net_roi_pp": -0.72347,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -1.62347,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -2.52347
+      }
+    },
+    "fixed_1p25": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 10,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 16,
+        "gross_roi_nominal_usdt_total_margin200": 3.5131,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3612,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3759,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4850,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6078,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 1.01
+          }
+        ],
+        "negative_net_roi_count": 4,
+        "outcome": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 12
+        },
+        "positive_net_roi_count": 12,
+        "total_net_roi_pp": 1.75653,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": 0.95653,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": 0.15653
+      },
+      "parameters": {
+        "tiers": [],
+        "tp": 1.25
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 18,
+        "gross_roi_nominal_usdt_total_margin200": 5.0531,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2238,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": -0.24
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3612,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3759,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4850,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6078,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 1.01
+          }
+        ],
+        "negative_net_roi_count": 5,
+        "outcome": {
+          "TIMEOUT": 5,
+          "TP_FIRST": 13
+        },
+        "positive_net_roi_count": 13,
+        "total_net_roi_pp": 2.52653,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": 1.62653,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": 0.72653
+      }
+    },
+    "micro_0p40_arm_0p10_gb_tp_0p80": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 17,
+        "gross_roi_nominal_usdt_total_margin200": -0.7712,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2869,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.20157
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4581,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.56
+          }
+        ],
+        "negative_net_roi_count": 3,
+        "outcome": {
+          "TIMEOUT": 3,
+          "TP_FIRST": 13,
+          "TRAIL_NEXT_OPEN": 1
+        },
+        "positive_net_roi_count": 14,
+        "total_net_roi_pp": -0.38558,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -1.23558,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -2.08558
+      },
+      "parameters": {
+        "tiers": [
+          [
+            0.4,
+            0.1
+          ],
+          [
+            0.6,
+            0.12
+          ]
+        ],
+        "tp": 0.8
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 19,
+        "gross_roi_nominal_usdt_total_margin200": -0.1312,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2238,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": -0.24
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2869,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3442,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.20157
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4581,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4630,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:42:07+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4848,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6045,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.56
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7323,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.56
+          }
+        ],
+        "negative_net_roi_count": 4,
+        "outcome": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 14,
+          "TRAIL_NEXT_OPEN": 1
+        },
+        "positive_net_roi_count": 15,
+        "total_net_roi_pp": -0.06558,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -1.01558,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -1.96558
+      }
+    },
+    "micro_0p50_arm_0p12_gb_tp_1p00": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 10,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 16,
+        "gross_roi_nominal_usdt_total_margin200": -5.066,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.20157
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4849,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.0289
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.76
+          }
+        ],
+        "negative_net_roi_count": 4,
+        "outcome": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 10,
+          "TRAIL_NEXT_OPEN": 2
+        },
+        "positive_net_roi_count": 12,
+        "total_net_roi_pp": -2.533,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -3.333,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -4.133
+      },
+      "parameters": {
+        "tiers": [
+          [
+            0.5,
+            0.12
+          ],
+          [
+            0.75,
+            0.15
+          ]
+        ],
+        "tp": 1.0
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 18,
+        "gross_roi_nominal_usdt_total_margin200": -4.026,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2238,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": -0.24
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3611,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.20157
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4849,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.0289
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 0.76
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 0.76
+          }
+        ],
+        "negative_net_roi_count": 5,
+        "outcome": {
+          "TIMEOUT": 5,
+          "TP_FIRST": 11,
+          "TRAIL_NEXT_OPEN": 2
+        },
+        "positive_net_roi_count": 13,
+        "total_net_roi_pp": -2.013,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -2.913,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -3.813
+      }
+    },
+    "six_tier_legacy_tp_1p25": {
+      "existing_broker_occupancy_veto_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 10,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "count": 16,
+        "gross_roi_nominal_usdt_total_margin200": -0.066,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3612,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.20157
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4850,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.0289
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 1.01
+          }
+        ],
+        "negative_net_roi_count": 4,
+        "outcome": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 10,
+          "TRAIL_NEXT_OPEN": 2
+        },
+        "positive_net_roi_count": 12,
+        "total_net_roi_pp": -0.033,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -0.833,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -1.633
+      },
+      "parameters": {
+        "tiers": [
+          [
+            0.6,
+            0.1
+          ],
+          [
+            0.95,
+            0.15
+          ],
+          [
+            1.2,
+            0.15
+          ],
+          [
+            1.65,
+            0.2
+          ],
+          [
+            2.0,
+            0.2
+          ],
+          [
+            2.5,
+            0.2
+          ]
+        ],
+        "tp": 1.25
+      },
+      "synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "count": 18,
+        "gross_roi_nominal_usdt_total_margin200": 1.474,
+        "individual_trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2159,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-11T14:57:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2238,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T15:15:23+03:00",
+            "net_roi_pp": -0.24
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2375,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-11T17:36:10+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2870,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T02:15:06+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T05:39:06+03:00",
+            "net_roi_pp": -2.75678
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "exit_reason": "TIMEOUT",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T09:57:12+03:00",
+            "net_roi_pp": -3.3047
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3444,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T11:27:05+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3612,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-12T14:42:02+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-12T17:18:08+03:00",
+            "net_roi_pp": 0.20157
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4635,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T07:15:14+03:00",
+            "net_roi_pp": -2.49632
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4850,
+            "exit_reason": "TP_FIRST",
+            "label": "UNLABELLED",
+            "model_time_tr": "2026-11-13T11:21:17+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5191,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T16:54:16+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5270,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-13T18:21:02+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "exit_reason": "TIMEOUT",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T01:06:10+03:00",
+            "net_roi_pp": -1.80567
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5928,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T05:24:11+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "exit_reason": "TRAIL_NEXT_OPEN",
+            "label": "LONG_TARGET",
+            "model_time_tr": "2026-11-14T07:36:06+03:00",
+            "net_roi_pp": 0.0289
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6770,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-14T19:45:12+03:00",
+            "net_roi_pp": 1.01
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7324,
+            "exit_reason": "TP_FIRST",
+            "label": "LONG_AVOID",
+            "model_time_tr": "2026-11-15T04:36:08+03:00",
+            "net_roi_pp": 1.01
+          }
+        ],
+        "negative_net_roi_count": 5,
+        "outcome": {
+          "TIMEOUT": 5,
+          "TP_FIRST": 11,
+          "TRAIL_NEXT_OPEN": 2
+        },
+        "positive_net_roi_count": 13,
+        "total_net_roi_pp": 0.737,
+        "total_net_roi_pp_extra_cost_0p05_per_trade": -0.163,
+        "total_net_roi_pp_extra_cost_0p10_per_trade": -1.063
+      }
+    }
+  },
+  "schema": "long1_micro_tp_fixed_candidate_asof_103_v1",
+  "single_position_only": true,
+  "spreads_slippage_funding_ignored": true,
+  "stage13_model_intent_not_verified": true,
+  "stop_first_if_both_seen": true,
+  "trailing_only_confirmed_1m_close_next_open": true
+}
