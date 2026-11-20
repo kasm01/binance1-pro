@@ -1,0 +1,189 @@
+{
+  "all_profiles_fixed_upfront_no_holdout_selection": true,
+  "avoid_5m_aggtrade_tp035_optimistic_fill": true,
+  "fee_3x_roi_pp": 0.24,
+  "filters_not_specific_to_user_time_labels": true,
+  "no_rebooking_after_filtering": true,
+  "no_unseen_nov16_aggtrade_assumed": true,
+  "not_full_market_context_sniper_model_intent": true,
+  "nov16_holdout_count": 61,
+  "only_completed_1m_features_asof": true,
+  "original_candidate_chronology_unchanged": true,
+  "original_source_avoid_count": 84,
+  "production_writes": 0,
+  "profiles": {
+    "MEDIUM": {
+      "avoid_fixed_tp035_filtered_existing_book": {
+        "losses": 37,
+        "n": 65,
+        "net_roi_pp_sum": -51.47599,
+        "wins": 28
+      },
+      "avoid_rejected": 19,
+      "avoid_rejected_original_5m_losses": 17,
+      "avoid_rejected_original_5m_wins": 2,
+      "avoid_rejected_tp035_losses": 11,
+      "avoid_rejected_tp035_wins": 8,
+      "holdout_nov16_original_5m_filtered_existing_book": {
+        "losses": 25,
+        "n": 47,
+        "net_roi_pp_sum": -4.649556,
+        "wins": 22
+      },
+      "holdout_rejected": 14,
+      "holdout_rejected_original_5m_losses": 11,
+      "holdout_rejected_original_5m_wins": 3,
+      "settings": {
+        "body": 0.28,
+        "flow1": 0.07,
+        "flow3": 0.06,
+        "flow3delta": 0.1,
+        "r5": 0.06,
+        "retrace": 0.3
+      },
+      "three_selected_bad_example_hours": [
+        "2026-11-14T19:27:00+03:00"
+      ],
+      "three_selected_bad_examples_excluded": 1,
+      "wanted_original_5m_filtered_existing_book": {
+        "losses": 35,
+        "n": 74,
+        "net_roi_pp_sum": 19.207293,
+        "wins": 39
+      },
+      "wanted_rejected": 28,
+      "wanted_rejected_original_5m_losses": 7,
+      "wanted_rejected_original_5m_wins": 21
+    },
+    "MILD": {
+      "avoid_fixed_tp035_filtered_existing_book": {
+        "losses": 43,
+        "n": 74,
+        "net_roi_pp_sum": -60.2994,
+        "wins": 31
+      },
+      "avoid_rejected": 10,
+      "avoid_rejected_original_5m_losses": 9,
+      "avoid_rejected_original_5m_wins": 1,
+      "avoid_rejected_tp035_losses": 5,
+      "avoid_rejected_tp035_wins": 5,
+      "holdout_nov16_original_5m_filtered_existing_book": {
+        "losses": 31,
+        "n": 53,
+        "net_roi_pp_sum": -9.290726,
+        "wins": 22
+      },
+      "holdout_rejected": 8,
+      "holdout_rejected_original_5m_losses": 5,
+      "holdout_rejected_original_5m_wins": 3,
+      "settings": {
+        "body": 0.25,
+        "flow1": 0.05,
+        "flow3": 0.03,
+        "flow3delta": 0.09,
+        "r5": 0.03,
+        "retrace": 0.32
+      },
+      "three_selected_bad_example_hours": [],
+      "three_selected_bad_examples_excluded": 0,
+      "wanted_original_5m_filtered_existing_book": {
+        "losses": 38,
+        "n": 87,
+        "net_roi_pp_sum": 21.362157,
+        "wins": 49
+      },
+      "wanted_rejected": 15,
+      "wanted_rejected_original_5m_losses": 4,
+      "wanted_rejected_original_5m_wins": 11
+    },
+    "STRICT_UNCHANGED": {
+      "avoid_fixed_tp035_filtered_existing_book": {
+        "losses": 48,
+        "n": 84,
+        "net_roi_pp_sum": -64.729023,
+        "wins": 36
+      },
+      "avoid_rejected": 0,
+      "avoid_rejected_original_5m_losses": 0,
+      "avoid_rejected_original_5m_wins": 0,
+      "avoid_rejected_tp035_losses": 0,
+      "avoid_rejected_tp035_wins": 0,
+      "holdout_nov16_original_5m_filtered_existing_book": {
+        "losses": 36,
+        "n": 61,
+        "net_roi_pp_sum": -6.04174,
+        "wins": 25
+      },
+      "holdout_rejected": 0,
+      "holdout_rejected_original_5m_losses": 0,
+      "holdout_rejected_original_5m_wins": 0,
+      "settings": {
+        "body": 0.22,
+        "flow1": 0.03,
+        "flow3": 0.0,
+        "flow3delta": 0.08,
+        "r5": 0.0,
+        "retrace": 0.35
+      },
+      "three_selected_bad_example_hours": [],
+      "three_selected_bad_examples_excluded": 0,
+      "wanted_original_5m_filtered_existing_book": {
+        "losses": 42,
+        "n": 102,
+        "net_roi_pp_sum": 23.404699,
+        "wins": 60
+      },
+      "wanted_rejected": 0,
+      "wanted_rejected_original_5m_losses": 0,
+      "wanted_rejected_original_5m_wins": 0
+    },
+    "STRONG": {
+      "avoid_fixed_tp035_filtered_existing_book": {
+        "losses": 28,
+        "n": 49,
+        "net_roi_pp_sum": -36.802459,
+        "wins": 21
+      },
+      "avoid_rejected": 35,
+      "avoid_rejected_original_5m_losses": 33,
+      "avoid_rejected_original_5m_wins": 2,
+      "avoid_rejected_tp035_losses": 20,
+      "avoid_rejected_tp035_wins": 15,
+      "holdout_nov16_original_5m_filtered_existing_book": {
+        "losses": 21,
+        "n": 39,
+        "net_roi_pp_sum": -4.536555,
+        "wins": 18
+      },
+      "holdout_rejected": 22,
+      "holdout_rejected_original_5m_losses": 15,
+      "holdout_rejected_original_5m_wins": 7,
+      "settings": {
+        "body": 0.33,
+        "flow1": 0.1,
+        "flow3": 0.12,
+        "flow3delta": 0.12,
+        "r5": 0.1,
+        "retrace": 0.25
+      },
+      "three_selected_bad_example_hours": [
+        "2026-11-14T18:28:00+03:00",
+        "2026-11-14T19:27:00+03:00"
+      ],
+      "three_selected_bad_examples_excluded": 2,
+      "wanted_original_5m_filtered_existing_book": {
+        "losses": 24,
+        "n": 52,
+        "net_roi_pp_sum": 20.355753,
+        "wins": 28
+      },
+      "wanted_rejected": 50,
+      "wanted_rejected_original_5m_losses": 18,
+      "wanted_rejected_original_5m_wins": 32
+    }
+  },
+  "real_orders": 0,
+  "schema": "long1_original_strict_84_102_61_three_tighten_gates_shadow_v1",
+  "wanted_count": 102,
+  "wanted_holdout_use_5m_close_comparison_NOT_same_tp_simulation": true
+}
