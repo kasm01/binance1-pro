@@ -1,0 +1,118 @@
+{
+  "account_balance_usdt": 2000,
+  "fee_roi_points": 0.24,
+  "gross_tp_roi_pct": 1.25,
+  "historical_user_labels_not_live_order_rules": true,
+  "leverage": 3,
+  "model_score_by_label": {
+    "LONG_AVOID": {
+      "already_passed_actual_rolling_model_gate": 69,
+      "median_margin_above_actual_gate": 0.001453,
+      "median_model_score": 0.4997,
+      "models": 70
+    },
+    "LONG_TARGET": {
+      "already_passed_actual_rolling_model_gate": 11,
+      "median_margin_above_actual_gate": 0.003159,
+      "median_model_score": 0.499859,
+      "models": 11
+    },
+    "UNLABELLED": {
+      "already_passed_actual_rolling_model_gate": 21,
+      "median_margin_above_actual_gate": 0.001347,
+      "median_model_score": 0.498205,
+      "models": 21
+    }
+  },
+  "position_fraction_is_ASSUMED_INITIAL_MARGIN_fraction_of_balance": true,
+  "real_orders": 0,
+  "real_orders_authorized": false,
+  "roundtrip_taker_notional_fee_pct_assumed": 0.08,
+  "scenarios": [
+    {
+      "initial_margin_fraction_of_account": 0.05,
+      "loss_if_stop_pct_of_account": 0.4605,
+      "margin_usdt": 100.0,
+      "no_slippage_funding_liquidation_model": true,
+      "notional_usdt": 300.0,
+      "research_historical_hypothetical_total_net_usdt_if_constant_margin_not_compounded": {
+        "fixed": {
+          "broker_position_occupancy_sensitivity": 1.7565,
+          "synthetic_single_position": 2.5265
+        },
+        "hybrid": {
+          "broker_position_occupancy_sensitivity": -0.033,
+          "synthetic_single_position": 0.737
+        }
+      },
+      "roundtrip_fee_usdt": 0.24,
+      "stop_loss_net_usdt": -9.21,
+      "take_profit_net_usdt": 1.01
+    },
+    {
+      "initial_margin_fraction_of_account": 0.1,
+      "loss_if_stop_pct_of_account": 0.921,
+      "margin_usdt": 200.0,
+      "no_slippage_funding_liquidation_model": true,
+      "notional_usdt": 600.0,
+      "research_historical_hypothetical_total_net_usdt_if_constant_margin_not_compounded": {
+        "fixed": {
+          "broker_position_occupancy_sensitivity": 3.513,
+          "synthetic_single_position": 5.053
+        },
+        "hybrid": {
+          "broker_position_occupancy_sensitivity": -0.066,
+          "synthetic_single_position": 1.474
+        }
+      },
+      "roundtrip_fee_usdt": 0.48,
+      "stop_loss_net_usdt": -18.42,
+      "take_profit_net_usdt": 2.02
+    },
+    {
+      "initial_margin_fraction_of_account": 0.2,
+      "loss_if_stop_pct_of_account": 1.842,
+      "margin_usdt": 400.0,
+      "no_slippage_funding_liquidation_model": true,
+      "notional_usdt": 1200.0,
+      "research_historical_hypothetical_total_net_usdt_if_constant_margin_not_compounded": {
+        "fixed": {
+          "broker_position_occupancy_sensitivity": 7.026,
+          "synthetic_single_position": 10.106
+        },
+        "hybrid": {
+          "broker_position_occupancy_sensitivity": -0.132,
+          "synthetic_single_position": 2.948
+        }
+      },
+      "roundtrip_fee_usdt": 0.96,
+      "stop_loss_net_usdt": -36.84,
+      "take_profit_net_usdt": 4.04
+    },
+    {
+      "initial_margin_fraction_of_account": 0.48,
+      "loss_if_stop_pct_of_account": 4.4208,
+      "margin_usdt": 960.0,
+      "no_slippage_funding_liquidation_model": true,
+      "notional_usdt": 2880.0,
+      "research_historical_hypothetical_total_net_usdt_if_constant_margin_not_compounded": {
+        "fixed": {
+          "broker_position_occupancy_sensitivity": 16.8624,
+          "synthetic_single_position": 24.2544
+        },
+        "hybrid": {
+          "broker_position_occupancy_sensitivity": -0.3168,
+          "synthetic_single_position": 7.0752
+        }
+      },
+      "roundtrip_fee_usdt": 2.304,
+      "stop_loss_net_usdt": -88.416,
+      "take_profit_net_usdt": 9.696
+    }
+  ],
+  "schema": "long1_2000_usdt_risk_and_model_gate_research_v1",
+  "source_no_model_wanted_windows": 34,
+  "stop_gross_roi_points": -8.97,
+  "stop_net_roi_points": -9.21,
+  "stop_price_pct": 2.99
+}
