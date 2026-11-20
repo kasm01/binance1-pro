@@ -1,0 +1,37 @@
+{
+  "counts": {
+    "NOT_PROVEN": 285
+  },
+  "cross_link_method": "exact_explicit_transport_id_only",
+  "enabled_explicitly_by_cli": true,
+  "historical_model_intent_join_not_proven_without_parents": true,
+  "live_order_authorized": false,
+  "max_rows_per_stream": 3000,
+  "missing_reason_counts": {
+    "candidate_source_stream_id_present_in_retention": 285
+  },
+  "no_guess_by_timestamp_score_or_price": true,
+  "potential_retention_truncation": false,
+  "read_streams": [
+    "signals_stream_long1",
+    "candidates_stream_long1",
+    "trade_intents_stream_long1"
+  ],
+  "real_orders_sent": 0,
+  "records_read": {
+    "candidates_stream_long1": 894,
+    "signals_stream_long1": 2473,
+    "trade_intents_stream_long1": 285
+  },
+  "redis_writes": 0,
+  "sample_only_no_personal_payload": [],
+  "schema": "long1_stage17_readonly_source_chain_audit_v1",
+  "scope": "retained_LONG1_streams_only",
+  "source_stream_lengths": {
+    "candidates_stream_long1": 894,
+    "signals_stream_long1": 2473,
+    "trade_intents_stream_long1": 285
+  },
+  "stage15_compliance_not_proven": true,
+  "trade_intents_long_observed": 285
+}
