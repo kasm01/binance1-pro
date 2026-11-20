@@ -1,0 +1,5001 @@
+{
+  "account_balance_usdt": 2000,
+  "allocation_eight_bot_each_usdt": 250,
+  "allocation_four_bot_each_usdt": 500,
+  "fee_roundtrip_roi_pp_proportional_per_slice": 0.24,
+  "leverage": 3,
+  "max_hold_1m_candles": 60,
+  "model_signals": 103,
+  "multiple_partial_order_fee_min_notional_and_tick_step_not_modeled": true,
+  "net_early_first_floor_0p22_minus_0p10_minus_fee": -0.12,
+  "net_early_second_floor_0p35_minus_0p10_minus_fee": 0.01,
+  "no_hard_0p80_tp_so_higher_stages_possible": true,
+  "not_four_eight_bot_portfolio_replay": true,
+  "old_model_and_intent_lineage_unverified": true,
+  "period": "2026-11-11_to_2026-11-15_TRT",
+  "production_redis_writes": 0,
+  "real_exchange_orders_sent": 0,
+  "remaining_tiers_are_research_assumptions": true,
+  "research_ready": 32,
+  "results": {
+    "old_0p22_0p40_runner_no_scaleout": {
+      "allocation": {
+        "4": {
+          "account_allocation_pct": 25.0,
+          "long1_broker_veto_sensitivity_pnl_usdt": 40.25764,
+          "long1_research_summed_pnl_usdt": 33.23221,
+          "per_bot_margin_cap_usdt": 500.0,
+          "per_bot_notional_3x_usdt": 1500.0,
+          "single_full_margin_price_stop_with_fee_usdt": -46.05
+        },
+        "8": {
+          "account_allocation_pct": 12.5,
+          "long1_broker_veto_sensitivity_pnl_usdt": 20.12882,
+          "long1_research_summed_pnl_usdt": 16.61611,
+          "per_bot_margin_cap_usdt": 250.0,
+          "per_bot_notional_3x_usdt": 750.0,
+          "single_full_margin_price_stop_with_fee_usdt": -23.025
+        }
+      },
+      "config": {
+        "partial": false,
+        "tiers": [
+          [
+            0.22,
+            0.1
+          ],
+          [
+            0.4,
+            0.1
+          ],
+          [
+            0.6,
+            0.12
+          ],
+          [
+            0.8,
+            0.15
+          ],
+          [
+            1.1,
+            0.18
+          ],
+          [
+            1.5,
+            0.2
+          ]
+        ]
+      },
+      "existing_real_broker_occupancy_veto": {
+        "exits": {
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 14
+        },
+        "losing": 5,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 6.351528,
+        "opened": 17,
+        "profitable": 12,
+        "reference_labels": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 2,
+          "2": 1,
+          "3": 2,
+          "5": 1,
+          "6": 8
+        },
+        "total_net_roi_pp": 8.051528,
+        "total_slice_fills": 0,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2161,
+            "fills": [
+              {
+                "at_bar": 2161,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.04,
+                "price": 3.766,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.04
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2377,
+            "fills": [
+              {
+                "at_bar": 2377,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.560213,
+                "price": 3.759,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.560213
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2873,
+            "fills": [
+              {
+                "at_bar": 2873,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.777937,
+                "price": 3.592,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.777937
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3452,
+            "fills": [
+              {
+                "at_bar": 3452,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.314852,
+                "price": 3.491,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.314852
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3614,
+            "fills": [
+              {
+                "at_bar": 3614,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.238689,
+                "price": 3.466,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.238689
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.201566
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.413285
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.034307
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.610822
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.826428
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5931,
+            "fills": [
+              {
+                "at_bar": 5931,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.525745,
+                "price": 3.418,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.525745
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.028898
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6772,
+            "fills": [
+              {
+                "at_bar": 6772,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.436983,
+                "price": 3.109,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.436983
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7331,
+            "fills": [
+              {
+                "at_bar": 7331,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 9.388378,
+                "price": 3.055,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 9.388378
+          }
+        ]
+      },
+      "single_coin_single_position": {
+        "exits": {
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 16
+        },
+        "losing": 7,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 4.746442,
+        "opened": 19,
+        "profitable": 12,
+        "reference_labels": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 3,
+          "2": 1,
+          "3": 2,
+          "5": 2,
+          "6": 8
+        },
+        "total_net_roi_pp": 6.646442,
+        "total_slice_fills": 0,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2161,
+            "fills": [
+              {
+                "at_bar": 2161,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.04,
+                "price": 3.766,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.04
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2182,
+            "fills": [
+              {
+                "at_bar": 2182,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.47898,
+                "price": 3.763,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T15:15:23+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.47898
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2377,
+            "fills": [
+              {
+                "at_bar": 2377,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.560213,
+                "price": 3.759,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.560213
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2873,
+            "fills": [
+              {
+                "at_bar": 2873,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.777937,
+                "price": 3.592,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.777937
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3452,
+            "fills": [
+              {
+                "at_bar": 3452,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.314852,
+                "price": 3.491,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.314852
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3614,
+            "fills": [
+              {
+                "at_bar": 3614,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.238689,
+                "price": 3.466,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.238689
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.201566
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.413285
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.034307
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.610822
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.826428
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5273,
+            "fills": [
+              {
+                "at_bar": 5273,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.926106,
+                "price": 3.49,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T18:21:02+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 5,
+            "total_net_roi_pp": -0.926106
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5931,
+            "fills": [
+              {
+                "at_bar": 5931,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.525745,
+                "price": 3.418,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.525745
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.028898
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6772,
+            "fills": [
+              {
+                "at_bar": 6772,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.436983,
+                "price": 3.109,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.436983
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7331,
+            "fills": [
+              {
+                "at_bar": 7331,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 9.388378,
+                "price": 3.055,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 9.388378
+          }
+        ]
+      }
+    },
+    "old_0p22_0p40_six_step_partial": {
+      "allocation": {
+        "4": {
+          "account_allocation_pct": 25.0,
+          "long1_broker_veto_sensitivity_pnl_usdt": 19.34853,
+          "long1_research_summed_pnl_usdt": 21.52129,
+          "per_bot_margin_cap_usdt": 500.0,
+          "per_bot_notional_3x_usdt": 1500.0,
+          "single_full_margin_price_stop_with_fee_usdt": -46.05
+        },
+        "8": {
+          "account_allocation_pct": 12.5,
+          "long1_broker_veto_sensitivity_pnl_usdt": 9.67427,
+          "long1_research_summed_pnl_usdt": 10.76065,
+          "per_bot_margin_cap_usdt": 250.0,
+          "per_bot_notional_3x_usdt": 750.0,
+          "single_full_margin_price_stop_with_fee_usdt": -23.025
+        }
+      },
+      "config": {
+        "partial": true,
+        "tiers": [
+          [
+            0.22,
+            0.1
+          ],
+          [
+            0.4,
+            0.1
+          ],
+          [
+            0.6,
+            0.12
+          ],
+          [
+            0.8,
+            0.15
+          ],
+          [
+            1.1,
+            0.18
+          ],
+          [
+            1.5,
+            0.2
+          ]
+        ]
+      },
+      "existing_real_broker_occupancy_veto": {
+        "exits": {
+          "ALL_SLICES_NEXT_OPEN": 8,
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 6
+        },
+        "losing": 5,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 2.169707,
+        "opened": 17,
+        "profitable": 12,
+        "reference_labels": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 2,
+          "2": 1,
+          "3": 2,
+          "5": 1,
+          "6": 8
+        },
+        "total_net_roi_pp": 3.869707,
+        "total_slice_fills": 63,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2160,
+            "fills": [
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.88,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.88
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2376,
+            "fills": [
+              {
+                "at_bar": 2375,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.080085,
+                "price": 3.753,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.744796,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.744796
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2871,
+            "fills": [
+              {
+                "at_bar": 2869,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.180404,
+                "price": 3.573,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2870,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.264484,
+                "price": 3.574,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.075864,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.075863
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3446,
+            "fills": [
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3446,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.487613,
+                "price": 3.493,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 0.865673,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.865672
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3613,
+            "fills": [
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.151707,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.151708
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 0.6,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 3,
+            "realized_by_partial_roi_pp": 0.186602,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.307542
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4581,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.030758,
+                "price": 3.327,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.003076,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.268881
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4630,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4631,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.308613,
+                "price": 3.287,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 0.75,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 2,
+            "realized_by_partial_roi_pp": 0.049723,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.075453
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4848,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.100329,
+                "price": 3.53,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4850,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.695905,
+                "price": 3.537,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4851,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.866069,
+                "price": 3.539,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 5,
+            "realized_by_partial_roi_pp": 0.48015,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.602314
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5185,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.011326,
+                "price": 3.584,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.001133,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.742653
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5930,
+            "fills": [
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5928,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466298,
+                "price": 3.406,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5929,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.819447,
+                "price": 3.41,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.234397,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.234397
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 0.6,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 3,
+            "realized_by_partial_roi_pp": 0.154971,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.17231
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6771,
+            "fills": [
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.307389,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.307389
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7325,
+            "fills": [
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.330946,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.330946
+          }
+        ]
+      },
+      "single_coin_single_position": {
+        "exits": {
+          "ALL_SLICES_NEXT_OPEN": 8,
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 8
+        },
+        "losing": 6,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 2.404259,
+        "opened": 19,
+        "profitable": 13,
+        "reference_labels": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 3,
+          "2": 1,
+          "3": 2,
+          "5": 2,
+          "6": 8
+        },
+        "total_net_roi_pp": 4.304259,
+        "total_slice_fills": 69,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2160,
+            "fills": [
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.88,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.88
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2182,
+            "fills": [
+              {
+                "at_bar": 2180,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.07864,
+                "price": 3.77,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2182,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -0.47898,
+                "price": 3.763,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T15:15:23+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.007864,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.423218
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2376,
+            "fills": [
+              {
+                "at_bar": 2375,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.080085,
+                "price": 3.753,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.744796,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.744796
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2871,
+            "fills": [
+              {
+                "at_bar": 2869,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.180404,
+                "price": 3.573,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2870,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.264484,
+                "price": 3.574,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.075864,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.075863
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3446,
+            "fills": [
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3446,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.487613,
+                "price": 3.493,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 0.865673,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.865672
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3613,
+            "fills": [
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.151707,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.151708
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 0.6,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 3,
+            "realized_by_partial_roi_pp": 0.186602,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.307542
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4581,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.030758,
+                "price": 3.327,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.003076,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.268881
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4630,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4631,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.308613,
+                "price": 3.287,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 0.75,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 2,
+            "realized_by_partial_roi_pp": 0.049723,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.075453
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4848,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.100329,
+                "price": 3.53,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4850,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.695905,
+                "price": 3.537,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4851,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.866069,
+                "price": 3.539,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 5,
+            "realized_by_partial_roi_pp": 0.48015,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.602314
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5185,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.011326,
+                "price": 3.584,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.001133,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.742653
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5273,
+            "fills": [
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5273,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": -0.926106,
+                "price": 3.49,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T18:21:02+03:00",
+            "number_of_partial_fills": 5,
+            "realized_by_partial_roi_pp": 1.042991,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.85777
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5930,
+            "fills": [
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5928,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466298,
+                "price": 3.406,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5929,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.819447,
+                "price": 3.41,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.234397,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.234397
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 0.6,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 3,
+            "realized_by_partial_roi_pp": 0.154971,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 3,
+            "total_net_roi_pp": 0.17231
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6771,
+            "fills": [
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.307389,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.307389
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7325,
+            "fills": [
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.330946,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.330946
+          }
+        ]
+      }
+    },
+    "requested_0p22_0p35_runner_no_scaleout": {
+      "allocation": {
+        "4": {
+          "account_allocation_pct": 25.0,
+          "long1_broker_veto_sensitivity_pnl_usdt": 40.25764,
+          "long1_research_summed_pnl_usdt": 33.23221,
+          "per_bot_margin_cap_usdt": 500.0,
+          "per_bot_notional_3x_usdt": 1500.0,
+          "single_full_margin_price_stop_with_fee_usdt": -46.05
+        },
+        "8": {
+          "account_allocation_pct": 12.5,
+          "long1_broker_veto_sensitivity_pnl_usdt": 20.12882,
+          "long1_research_summed_pnl_usdt": 16.61611,
+          "per_bot_margin_cap_usdt": 250.0,
+          "per_bot_notional_3x_usdt": 750.0,
+          "single_full_margin_price_stop_with_fee_usdt": -23.025
+        }
+      },
+      "config": {
+        "partial": false,
+        "tiers": [
+          [
+            0.22,
+            0.1
+          ],
+          [
+            0.35,
+            0.1
+          ],
+          [
+            0.5,
+            0.12
+          ],
+          [
+            0.7,
+            0.14
+          ],
+          [
+            1.0,
+            0.18
+          ],
+          [
+            1.4,
+            0.2
+          ]
+        ]
+      },
+      "existing_real_broker_occupancy_veto": {
+        "exits": {
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 14
+        },
+        "losing": 5,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 6.351528,
+        "opened": 17,
+        "profitable": 12,
+        "reference_labels": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 2,
+          "2": 1,
+          "4": 2,
+          "5": 1,
+          "6": 8
+        },
+        "total_net_roi_pp": 8.051528,
+        "total_slice_fills": 0,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2161,
+            "fills": [
+              {
+                "at_bar": 2161,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.04,
+                "price": 3.766,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.04
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2377,
+            "fills": [
+              {
+                "at_bar": 2377,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.560213,
+                "price": 3.759,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.560213
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2873,
+            "fills": [
+              {
+                "at_bar": 2873,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.777937,
+                "price": 3.592,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.777937
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3452,
+            "fills": [
+              {
+                "at_bar": 3452,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.314852,
+                "price": 3.491,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.314852
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3614,
+            "fills": [
+              {
+                "at_bar": 3614,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.238689,
+                "price": 3.466,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.238689
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.201566
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.413285
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.034307
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.610822
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.826428
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5931,
+            "fills": [
+              {
+                "at_bar": 5931,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.525745,
+                "price": 3.418,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.525745
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.028898
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6772,
+            "fills": [
+              {
+                "at_bar": 6772,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.436983,
+                "price": 3.109,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.436983
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7331,
+            "fills": [
+              {
+                "at_bar": 7331,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 9.388378,
+                "price": 3.055,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 9.388378
+          }
+        ]
+      },
+      "single_coin_single_position": {
+        "exits": {
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 16
+        },
+        "losing": 7,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 4.746442,
+        "opened": 19,
+        "profitable": 12,
+        "reference_labels": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 2,
+          "2": 2,
+          "4": 2,
+          "5": 1,
+          "6": 9
+        },
+        "total_net_roi_pp": 6.646442,
+        "total_slice_fills": 0,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2161,
+            "fills": [
+              {
+                "at_bar": 2161,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.04,
+                "price": 3.766,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.04
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2182,
+            "fills": [
+              {
+                "at_bar": 2182,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.47898,
+                "price": 3.763,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T15:15:23+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 2,
+            "total_net_roi_pp": -0.47898
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2377,
+            "fills": [
+              {
+                "at_bar": 2377,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.560213,
+                "price": 3.759,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.560213
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2873,
+            "fills": [
+              {
+                "at_bar": 2873,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.777937,
+                "price": 3.592,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.777937
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3452,
+            "fills": [
+              {
+                "at_bar": 3452,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.314852,
+                "price": 3.491,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.314852
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3614,
+            "fills": [
+              {
+                "at_bar": 3614,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.238689,
+                "price": 3.466,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.238689
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.201566
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.413285
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.034307
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.610822
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.826428
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5273,
+            "fills": [
+              {
+                "at_bar": 5273,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -0.926106,
+                "price": 3.49,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T18:21:02+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": -0.926106
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5931,
+            "fills": [
+              {
+                "at_bar": 5931,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 1.525745,
+                "price": 3.418,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.525745
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.028898
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6772,
+            "fills": [
+              {
+                "at_bar": 6772,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 0.436983,
+                "price": 3.109,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.436983
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7331,
+            "fills": [
+              {
+                "at_bar": 7331,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": 9.388378,
+                "price": 3.055,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 9.388378
+          }
+        ]
+      }
+    },
+    "requested_0p22_0p35_six_step_partial": {
+      "allocation": {
+        "4": {
+          "account_allocation_pct": 25.0,
+          "long1_broker_veto_sensitivity_pnl_usdt": 17.56471,
+          "long1_research_summed_pnl_usdt": 22.44528,
+          "per_bot_margin_cap_usdt": 500.0,
+          "per_bot_notional_3x_usdt": 1500.0,
+          "single_full_margin_price_stop_with_fee_usdt": -46.05
+        },
+        "8": {
+          "account_allocation_pct": 12.5,
+          "long1_broker_veto_sensitivity_pnl_usdt": 8.78236,
+          "long1_research_summed_pnl_usdt": 11.22264,
+          "per_bot_margin_cap_usdt": 250.0,
+          "per_bot_notional_3x_usdt": 750.0,
+          "single_full_margin_price_stop_with_fee_usdt": -23.025
+        }
+      },
+      "config": {
+        "partial": true,
+        "tiers": [
+          [
+            0.22,
+            0.1
+          ],
+          [
+            0.35,
+            0.1
+          ],
+          [
+            0.5,
+            0.12
+          ],
+          [
+            0.7,
+            0.14
+          ],
+          [
+            1.0,
+            0.18
+          ],
+          [
+            1.4,
+            0.2
+          ]
+        ]
+      },
+      "existing_real_broker_occupancy_veto": {
+        "exits": {
+          "ALL_SLICES_NEXT_OPEN": 8,
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 6
+        },
+        "losing": 5,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 1.812943,
+        "opened": 17,
+        "profitable": 12,
+        "reference_labels": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 2,
+          "2": 1,
+          "4": 2,
+          "5": 1,
+          "6": 8
+        },
+        "total_net_roi_pp": 3.512943,
+        "total_slice_fills": 65,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2160,
+            "fills": [
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.88,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.88
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2376,
+            "fills": [
+              {
+                "at_bar": 2375,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.080085,
+                "price": 3.753,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.744796,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.744796
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2871,
+            "fills": [
+              {
+                "at_bar": 2869,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.180404,
+                "price": 3.573,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2870,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.264484,
+                "price": 3.574,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2870,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.264484,
+                "price": 3.574,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 0.911906,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.911906
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3446,
+            "fills": [
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3446,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.487613,
+                "price": 3.493,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 0.865673,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.865672
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3613,
+            "fills": [
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.151707,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.151708
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 0.4,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 4,
+            "realized_by_partial_roi_pp": 0.279904,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.36053
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4581,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.030758,
+                "price": 3.327,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.003076,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.268881
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4630,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4631,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.308613,
+                "price": 3.287,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 0.75,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 2,
+            "realized_by_partial_roi_pp": 0.049723,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.075453
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4848,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.100329,
+                "price": 3.53,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4851,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.866069,
+                "price": 3.539,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 5,
+            "realized_by_partial_roi_pp": 0.446117,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.568281
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5185,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.011326,
+                "price": 3.584,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.001133,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.742653
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5930,
+            "fills": [
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5928,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466298,
+                "price": 3.406,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5928,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.466298,
+                "price": 3.406,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.163767,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.163767
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 0.4,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 4,
+            "realized_by_partial_roi_pp": 0.232457,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.244016
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6771,
+            "fills": [
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.307389,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.307389
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7325,
+            "fills": [
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.118108,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.118108
+          }
+        ]
+      },
+      "single_coin_single_position": {
+        "exits": {
+          "ALL_SLICES_NEXT_OPEN": 9,
+          "TIMEOUT": 3,
+          "TRAIL_NEXT_OPEN": 7
+        },
+        "losing": 6,
+        "net_roi_pp_after_extra_cost_0p1_per_open": 2.589056,
+        "opened": 19,
+        "profitable": 13,
+        "reference_labels": {
+          "LONG_AVOID": 12,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "stages_reached": {
+          "0": 3,
+          "1": 2,
+          "2": 2,
+          "4": 2,
+          "5": 1,
+          "6": 9
+        },
+        "total_net_roi_pp": 4.489056,
+        "total_slice_fills": 73,
+        "trades": [
+          {
+            "entry_idx": 2159,
+            "exit_idx": 2160,
+            "fills": [
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2160,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.88,
+                "price": 3.789,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T14:57:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.88,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.88
+          },
+          {
+            "entry_idx": 2179,
+            "exit_idx": 2182,
+            "fills": [
+              {
+                "at_bar": 2180,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.07864,
+                "price": 3.77,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2181,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.158301,
+                "price": 3.771,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2182,
+                "closed_original_fraction": 0.75,
+                "net_roi_pp_on_closed_slice": -0.47898,
+                "price": 3.763,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T15:15:23+03:00",
+            "number_of_partial_fills": 2,
+            "realized_by_partial_roi_pp": 0.031609,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 2,
+            "total_net_roi_pp": -0.327626
+          },
+          {
+            "entry_idx": 2321,
+            "exit_idx": 2376,
+            "fills": [
+              {
+                "at_bar": 2375,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.080085,
+                "price": 3.753,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2376,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 3.040875,
+                "price": 3.79,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-11T17:36:10+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 2.744796,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 6,
+            "total_net_roi_pp": 2.744796
+          },
+          {
+            "entry_idx": 2854,
+            "exit_idx": 2871,
+            "fills": [
+              {
+                "at_bar": 2869,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.180404,
+                "price": 3.573,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2870,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.264484,
+                "price": 3.574,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2870,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.264484,
+                "price": 3.574,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 2871,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.357534,
+                "price": 3.587,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T02:15:06+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 0.911906,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.911906
+          },
+          {
+            "entry_idx": 3044,
+            "exit_idx": 3103,
+            "fills": [
+              {
+                "at_bar": 3103,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -2.756779,
+                "price": 3.546,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T05:39:06+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -2.756779
+          },
+          {
+            "entry_idx": 3315,
+            "exit_idx": 3374,
+            "fills": [
+              {
+                "at_bar": 3374,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -3.304699,
+                "price": 3.488,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-12T09:57:12+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 0,
+            "total_net_roi_pp": -3.304699
+          },
+          {
+            "entry_idx": 3413,
+            "exit_idx": 3446,
+            "fills": [
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3443,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.364665,
+                "price": 3.48,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3445,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.05571,
+                "price": 3.488,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3446,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.487613,
+                "price": 3.493,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T11:27:05+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 0.865673,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 0.865672
+          },
+          {
+            "entry_idx": 3611,
+            "exit_idx": 3613,
+            "fills": [
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3612,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.629817,
+                "price": 3.459,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3613,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.934543,
+                "price": 3.474,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T14:42:02+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.151707,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.151708
+          },
+          {
+            "entry_idx": 3756,
+            "exit_idx": 3758,
+            "fills": [
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3757,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.466506,
+                "price": 3.405,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 3758,
+                "closed_original_fraction": 0.4,
+                "net_roi_pp_on_closed_slice": 0.201566,
+                "price": 3.402,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-12T17:18:08+03:00",
+            "number_of_partial_fills": 4,
+            "realized_by_partial_roi_pp": 0.279904,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.36053
+          },
+          {
+            "entry_idx": 4576,
+            "exit_idx": 4583,
+            "fills": [
+              {
+                "at_bar": 4581,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.030758,
+                "price": 3.327,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4583,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -1.413285,
+                "price": 3.311,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:15:14+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.003076,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -1.268881
+          },
+          {
+            "entry_idx": 4629,
+            "exit_idx": 4632,
+            "fills": [
+              {
+                "at_bar": 4630,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4631,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.308613,
+                "price": 3.287,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4632,
+                "closed_original_fraction": 0.75,
+                "net_roi_pp_on_closed_slice": 0.034307,
+                "price": 3.284,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T07:42:07+03:00",
+            "number_of_partial_fills": 2,
+            "realized_by_partial_roi_pp": 0.049723,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 2,
+            "total_net_roi_pp": 0.075453
+          },
+          {
+            "entry_idx": 4847,
+            "exit_idx": 4854,
+            "fills": [
+              {
+                "at_bar": 4848,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.100329,
+                "price": 3.53,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4849,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.52574,
+                "price": 3.535,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4851,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.866069,
+                "price": 3.539,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 4854,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.610822,
+                "price": 3.536,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T11:21:17+03:00",
+            "number_of_partial_fills": 5,
+            "realized_by_partial_roi_pp": 0.446117,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "UNLABELLED",
+            "stages_reached": 5,
+            "total_net_roi_pp": 0.568281
+          },
+          {
+            "entry_idx": 5182,
+            "exit_idx": 5186,
+            "fills": [
+              {
+                "at_bar": 5185,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.011326,
+                "price": 3.584,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5186,
+                "closed_original_fraction": 0.9,
+                "net_roi_pp_on_closed_slice": -0.826428,
+                "price": 3.574,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T16:54:16+03:00",
+            "number_of_partial_fills": 1,
+            "realized_by_partial_roi_pp": 0.001133,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 1,
+            "total_net_roi_pp": -0.742653
+          },
+          {
+            "entry_idx": 5270,
+            "exit_idx": 5271,
+            "fills": [
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5271,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.303739,
+                "price": 3.516,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-13T18:21:02+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.303739,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.303739
+          },
+          {
+            "entry_idx": 5674,
+            "exit_idx": 5733,
+            "fills": [
+              {
+                "at_bar": 5733,
+                "closed_original_fraction": 1.0,
+                "net_roi_pp_on_closed_slice": -1.805671,
+                "price": 3.431,
+                "reason": "TIMEOUT"
+              }
+            ],
+            "model_tr": "2026-11-14T01:06:10+03:00",
+            "number_of_partial_fills": 0,
+            "realized_by_partial_roi_pp": 0,
+            "reason": "TIMEOUT",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 0,
+            "total_net_roi_pp": -1.805671
+          },
+          {
+            "entry_idx": 5926,
+            "exit_idx": 5930,
+            "fills": [
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5927,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.289723,
+                "price": 3.404,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5928,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.466298,
+                "price": 3.406,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5928,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.466298,
+                "price": 3.406,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 5930,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 2.32033,
+                "price": 3.427,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T05:24:11+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.163767,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.163767
+          },
+          {
+            "entry_idx": 6042,
+            "exit_idx": 6047,
+            "fills": [
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6046,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 0.387428,
+                "price": 3.354,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6047,
+                "closed_original_fraction": 0.4,
+                "net_roi_pp_on_closed_slice": 0.028898,
+                "price": 3.35,
+                "reason": "TRAIL_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T07:36:06+03:00",
+            "number_of_partial_fills": 4,
+            "realized_by_partial_roi_pp": 0.232457,
+            "reason": "TRAIL_NEXT_OPEN",
+            "reference_label": "LONG_TARGET",
+            "stages_reached": 4,
+            "total_net_roi_pp": 0.244016
+          },
+          {
+            "entry_idx": 6770,
+            "exit_idx": 6771,
+            "fills": [
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 6771,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.307389,
+                "price": 3.118,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-14T19:45:12+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.307389,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.307389
+          },
+          {
+            "entry_idx": 7323,
+            "exit_idx": 7325,
+            "fills": [
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.1,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_1_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_2_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7324,
+                "closed_original_fraction": 0.15,
+                "net_roi_pp_on_closed_slice": 0.266757,
+                "price": 2.965,
+                "reason": "TIER_3_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_4_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_5_NEXT_OPEN"
+              },
+              {
+                "at_bar": 7325,
+                "closed_original_fraction": 0.2,
+                "net_roi_pp_on_closed_slice": 1.685676,
+                "price": 2.979,
+                "reason": "TIER_6_NEXT_OPEN"
+              }
+            ],
+            "model_tr": "2026-11-15T04:36:08+03:00",
+            "number_of_partial_fills": 6,
+            "realized_by_partial_roi_pp": 1.118108,
+            "reason": "ALL_SLICES_NEXT_OPEN",
+            "reference_label": "LONG_AVOID",
+            "stages_reached": 6,
+            "total_net_roi_pp": 1.118108
+          }
+        ]
+      }
+    }
+  },
+  "same_bar_stop_first": true,
+  "schema": "long1_stage21_two_early_arms_six_step_partial_replay_v1",
+  "six_partial_sale_fractions_of_original": [
+    0.1,
+    0.15,
+    0.15,
+    0.2,
+    0.2,
+    0.2
+  ],
+  "spread_slippage_funding_missing": true,
+  "stop_price_pct": 2.99,
+  "symbol": "NEARUSDT",
+  "tier_scaleout_trigger_after_1m_close_fill_next_open": true,
+  "user_first_two_tiers": [
+    [
+      0.22,
+      0.1
+    ],
+    [
+      0.35,
+      0.1
+    ]
+  ]
+}
