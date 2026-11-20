@@ -1,0 +1,47 @@
+{
+  "baseline_stream_ids": {
+    "candidates_stream_long1": "1794845651905-0",
+    "signals_stream_long1": "1794845694935-0",
+    "trade_intents_stream_long1": "1794842643079-0"
+  },
+  "counts": {},
+  "cross_link_method": "exact_explicit_transport_id_only",
+  "cursor_after_intent_id": "1794842643079-0",
+  "cursor_before_intent_id": "1794842643079-0",
+  "enabled_explicitly_by_cli": true,
+  "forward_only_new_intents": true,
+  "historical_model_intent_join_not_proven_without_parents": true,
+  "live_order_authorized": false,
+  "max_records_exceeded": false,
+  "max_rows_per_stream": 3000,
+  "missing_reason_counts": {},
+  "new_intent_batch_records": 0,
+  "no_guess_by_timestamp_score_or_price": true,
+  "no_historical_intent_recount": true,
+  "no_start_of_services": true,
+  "potential_retention_truncation": false,
+  "production_redis_writes": 0,
+  "read_streams": [
+    "signals_stream_long1",
+    "candidates_stream_long1",
+    "trade_intents_stream_long1"
+  ],
+  "real_orders_sent": 0,
+  "records_read": {
+    "candidates_stream_long1": 0,
+    "signals_stream_long1": 0,
+    "trade_intents_stream_long1": 0
+  },
+  "redis_writes": 0,
+  "sample_only_no_personal_payload": [],
+  "schema": "long1_stage18_forward_only_readonly_audit.v1",
+  "scope": "retained_LONG1_streams_only",
+  "source_stream_lengths": {
+    "candidates_stream_long1": 894,
+    "signals_stream_long1": 2473,
+    "trade_intents_stream_long1": 285
+  },
+  "stage15_compliance_not_proven": true,
+  "trade_intents_long_observed": 0,
+  "upstream_parent_retention_limit": 3000
+}
