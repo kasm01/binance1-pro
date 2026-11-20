@@ -1,0 +1,2485 @@
+{
+  "asof_closed_1m_entry_after_3m5m_proxy": true,
+  "by_label": {
+    "LONG_AVOID": {
+      "fixed_book_opens_from_window_sums": 11,
+      "fixed_net_roi_pp_window_sums": 1.0212,
+      "hybrid_book_opens_from_window_sums": 11,
+      "hybrid_net_roi_pp_window_sums": 1.0212,
+      "model_events_count_with_overlap_double_count_possible": 71,
+      "research_ready_window_sums": 18,
+      "windows": 26,
+      "with_any_model_long": 16,
+      "without_model_long": 10
+    },
+    "LONG_WANTED": {
+      "fixed_book_opens_from_window_sums": 2,
+      "fixed_net_roi_pp_window_sums": 2.02,
+      "hybrid_book_opens_from_window_sums": 2,
+      "hybrid_net_roi_pp_window_sums": 1.0389,
+      "model_events_count_with_overlap_double_count_possible": 12,
+      "research_ready_window_sums": 7,
+      "windows": 44,
+      "with_any_model_long": 10,
+      "without_model_long": 34
+    }
+  },
+  "conflict_no_trade_maintained": true,
+  "entry_time_may_differ_from_origin_window": true,
+  "fee_assumption_roundtrip_notional": 0.0008,
+  "fixed_gross_tp_roi_pp": 1.25,
+  "funding_slippage_extra_not_included": true,
+  "historical_new_model_intent_lineage_unproven": true,
+  "leverage": 3,
+  "live_order_authority": false,
+  "market": "Binance Futures NEARUSDT",
+  "max_hold_minutes": 60,
+  "model_events_total": 103,
+  "pinpoints": [
+    {
+      "absence_of_model_event_does_not_prove_no_market_opportunity": true,
+      "observed_model_long_in_same_minute": 1,
+      "reference_windows": [
+        [
+          "LONG_AVOID",
+          "2026-11-12T00:15:00+03:00",
+          "2026-11-12T02:20:00+03:00"
+        ]
+      ],
+      "same_minute_model_events": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T01:36:16+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "time_tr": "2026-11-12T01:36:00+03:00"
+    },
+    {
+      "absence_of_model_event_does_not_prove_no_market_opportunity": true,
+      "observed_model_long_in_same_minute": 1,
+      "reference_windows": [
+        [
+          "LONG_AVOID",
+          "2026-11-14T16:48:00+03:00",
+          "2026-11-14T20:21:00+03:00"
+        ]
+      ],
+      "same_minute_model_events": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T17:06:14+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "time_tr": "2026-11-14T17:06:00+03:00"
+    },
+    {
+      "absence_of_model_event_does_not_prove_no_market_opportunity": true,
+      "observed_model_long_in_same_minute": 1,
+      "reference_windows": [
+        [
+          "LONG_AVOID",
+          "2026-11-14T16:48:00+03:00",
+          "2026-11-14T20:21:00+03:00"
+        ]
+      ],
+      "same_minute_model_events": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T19:06:12+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "time_tr": "2026-11-14T19:06:00+03:00"
+    },
+    {
+      "absence_of_model_event_does_not_prove_no_market_opportunity": true,
+      "observed_model_long_in_same_minute": 1,
+      "reference_windows": [
+        [
+          "LONG_AVOID",
+          "2026-11-14T23:00:00+03:00",
+          "2026-11-15T00:15:00+03:00"
+        ]
+      ],
+      "same_minute_model_events": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T23:57:09+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "time_tr": "2026-11-14T23:57:00+03:00"
+    }
+  ],
+  "price_stop_pct": 2.99,
+  "real_binance_orders": 0,
+  "real_redis_writes": 0,
+  "schema": "long1_70_user_window_stage13_14_simulation_report_v1",
+  "source_ref": "research/shared_reference/BINANCE1_LONG_SHORT_WINDOWS_20261111_15_V1.json",
+  "stage13_30m_recovery_is_future_research_not_real_pending_authority": true,
+  "stage13_full_book": {
+    "fixed": {
+      "pure_synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "exits": {
+          "TIMEOUT": 5,
+          "TP_FIRST": 13
+        },
+        "net_roi_points_by_cohort": {
+          "LONG_AVOID": 1.0212,
+          "LONG_TARGET": 2.02,
+          "UNLABELLED": -0.5147
+        },
+        "net_roi_points_total": 2.5265,
+        "opens": 18
+      },
+      "real_broker_occupancy_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 10,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "exits": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 12
+        },
+        "net_roi_points_by_cohort": {
+          "LONG_AVOID": 0.0112,
+          "LONG_TARGET": 2.02,
+          "UNLABELLED": -0.2747
+        },
+        "net_roi_points_total": 1.7565,
+        "opens": 16
+      }
+    },
+    "hybrid": {
+      "pure_synthetic_single_position": {
+        "cohorts": {
+          "LONG_AVOID": 11,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 5
+        },
+        "exits": {
+          "TIMEOUT": 5,
+          "TP_FIRST": 11,
+          "TRAIL_NEXT_OPEN": 2
+        },
+        "net_roi_points_by_cohort": {
+          "LONG_AVOID": 1.0212,
+          "LONG_TARGET": 1.0389,
+          "UNLABELLED": -1.3231
+        },
+        "net_roi_points_total": 0.737,
+        "opens": 18
+      },
+      "real_broker_occupancy_sensitivity": {
+        "cohorts": {
+          "LONG_AVOID": 10,
+          "LONG_TARGET": 2,
+          "UNLABELLED": 4
+        },
+        "exits": {
+          "TIMEOUT": 4,
+          "TP_FIRST": 10,
+          "TRAIL_NEXT_OPEN": 2
+        },
+        "net_roi_points_by_cohort": {
+          "LONG_AVOID": 0.0112,
+          "LONG_TARGET": 1.0389,
+          "UNLABELLED": -1.0831
+        },
+        "net_roi_points_total": -0.033,
+        "opens": 16
+      }
+    }
+  },
+  "stage13_source": "research/results/LONG1_STAGE13_103_JOINED_RECOVERY_ENTRY_EXIT_20261119.json",
+  "stage13_unique_model_decisions": {
+    "CONFLICT_ORIGIN": 1,
+    "CONTRA_WAIT_30M": 29,
+    "ENTRY_PENDING_EXPIRED": 40,
+    "MODEL_GATE": 1,
+    "RESEARCH_READY_NO_REAL_INTENT": 32
+  },
+  "timezone": "Europe/Istanbul",
+  "user_interval_count": 70,
+  "user_window_labels_not_used_for_entry_gate": true,
+  "windows": [
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-11T15:00:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": true,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-11T14:59:00+03:00",
+          "model_time_tr": "2026-11-11T14:57:05+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 1.917
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 1,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-11T12:40:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-11T17:00:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-11T16:03:07+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_TARGET"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-11T16:06:01+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_TARGET"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 2
+      },
+      "model_long_in_origin_window": 2,
+      "number": 2,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-11T15:36:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-11T18:35:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 3,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-11T18:25:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-11T19:30:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 4,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-11T19:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-11T23:00:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 5,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-11T22:40:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T02:55:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-12T02:34:00+03:00",
+          "model_time_tr": "2026-11-12T02:21:15+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 12.75
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 2,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 6,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-12T02:20:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T03:45:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 7,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T03:10:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T05:12:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 8,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T04:51:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T13:25:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 9,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T12:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T17:42:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TRAIL_NEXT_OPEN",
+          "hybrid_net_roi_pp": 0.20157,
+          "hypothetical_entry_tr": "2026-11-12T17:36:00+03:00",
+          "model_time_tr": "2026-11-12T17:24:20+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 11.667
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 2,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 10,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-12T17:22:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T19:10:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 11,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T18:33:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T22:18:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 12,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T21:20:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T00:33:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 13,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T00:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T02:10:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 14,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T01:18:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T03:06:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 15,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T02:39:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T04:27:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 16,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T03:42:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T10:20:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 2,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 17,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T08:00:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T11:42:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T11:47:00+03:00",
+          "model_time_tr": "2026-11-13T11:24:02+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 22.967
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 18,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-13T11:24:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T13:06:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 19,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T12:57:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T14:45:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 20,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T13:33:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T15:36:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 21,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T15:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T16:42:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 22,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T16:03:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 1,
+      "end_tr": "2026-11-13T18:51:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T18:36:13+03:00",
+          "stage13_decision": "CONFLICT_ORIGIN",
+          "stage13_model_label": "CONFLICT_NO_TRADE"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 3,
+      "model_decision_counts": {
+        "CONFLICT_ORIGIN": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 23,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T18:36:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T19:26:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 24,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T19:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T20:45:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 25,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T20:21:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T22:42:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 26,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T21:18:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T01:36:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -1.80567,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -1.80567,
+          "hypothetical_entry_tr": "2026-11-14T01:34:00+03:00",
+          "model_time_tr": "2026-11-14T01:18:08+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 15.867
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T01:21:01+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_TARGET"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 4,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 1,
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 2,
+      "number": 27,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-14T01:18:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T03:06:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 28,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T02:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T05:50:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-14T05:46:00+03:00",
+          "model_time_tr": "2026-11-14T05:30:16+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 15.733
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 2,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 29,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-14T05:30:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T09:18:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TRAIL_NEXT_OPEN",
+          "hybrid_net_roi_pp": 0.0289,
+          "hypothetical_entry_tr": "2026-11-14T07:42:00+03:00",
+          "model_time_tr": "2026-11-14T07:36:06+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_TARGET",
+          "start_to_entry_min": 5.9
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 0.0289,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 30,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-14T07:36:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T10:33:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 31,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T10:21:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T12:57:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 32,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T11:36:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T15:48:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 33,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T14:33:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T16:45:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 34,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T16:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T20:38:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 35,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T20:21:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T00:40:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-15T00:18:00+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_TARGET"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 36,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T00:18:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T01:43:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 37,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T01:38:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T02:25:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 38,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T02:12:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T03:15:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 39,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T02:40:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T05:12:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 40,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T05:02:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T06:48:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 41,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T06:42:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T07:15:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 42,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T07:10:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T08:22:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 43,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T08:06:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T09:28:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 44,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T09:15:00+03:00",
+      "user_label": "LONG_WANTED"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T02:20:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T01:36:16+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T01:42:08+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T01:45:05+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T01:51:14+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T02:09:19+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-12T02:34:00+03:00",
+          "model_time_tr": "2026-11-12T02:15:06+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 18.9
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 5,
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 6,
+      "number": 45,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-12T00:15:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T07:33:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -2.75678,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": true,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -2.75678,
+          "hypothetical_entry_tr": "2026-11-12T05:44:00+03:00",
+          "model_time_tr": "2026-11-12T05:39:06+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 4.9
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -1.41581,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -1.41581,
+          "hypothetical_entry_tr": "2026-11-12T06:02:00+03:00",
+          "model_time_tr": "2026-11-12T05:42:21+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 19.65
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": -2.75678,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": -2.75678,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 2,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 2
+      },
+      "model_long_in_origin_window": 2,
+      "number": 46,
+      "research_ready_origin_window": 2,
+      "start_tr": "2026-11-12T05:18:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T09:15:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 47,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T07:54:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T12:18:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-12T11:53:00+03:00",
+          "model_time_tr": "2026-11-12T11:27:05+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 25.917
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 48,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-12T10:33:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T14:54:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T14:33:20+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T14:39:03+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-12T15:11:00+03:00",
+          "model_time_tr": "2026-11-12T14:42:02+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 28.967
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 2,
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 3,
+      "number": 49,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-12T13:27:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T16:12:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T15:27:19+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T16:00:06+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T16:03:05+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T16:06:20+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T16:09:04+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 2,
+        "ENTRY_PENDING_EXPIRED": 3
+      },
+      "model_long_in_origin_window": 5,
+      "number": 50,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T15:15:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-12T20:18:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-12T20:03:18+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 51,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-12T19:10:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T01:18:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T00:54:07+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T00:57:01+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 2
+      },
+      "model_long_in_origin_window": 2,
+      "number": 52,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T00:33:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T03:42:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 53,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T03:06:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T08:00:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T05:45:14+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T05:48:03+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T06:15:06+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T06:24:15+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T06:27:03+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T06:51:20+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T06:54:16+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -2.49632,
+          "fresh_intent_observed_in_recovery_window": true,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -2.49632,
+          "hypothetical_entry_tr": "2026-11-13T07:16:00+03:00",
+          "model_time_tr": "2026-11-13T07:15:14+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 0.767
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T07:24:19+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T07:27:03+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T07:30:03+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T08:09:00+03:00",
+          "model_time_tr": "2026-11-13T07:42:07+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 26.883
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T08:09:00+03:00",
+          "model_time_tr": "2026-11-13T07:45:09+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 23.85
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": -2.49632,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": -2.49632,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 7,
+        "ENTRY_PENDING_EXPIRED": 3,
+        "RESEARCH_READY_NO_REAL_INTENT": 3
+      },
+      "model_long_in_origin_window": 13,
+      "number": 54,
+      "research_ready_origin_window": 3,
+      "start_tr": "2026-11-13T05:00:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T12:54:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 55,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T11:50:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-13T13:33:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 56,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-13T13:06:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 1,
+      "end_tr": "2026-11-13T18:38:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T17:22:00+03:00",
+          "model_time_tr": "2026-11-13T16:54:16+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 27.733
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T17:51:25+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T17:54:02+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T18:03:05+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T18:50:00+03:00",
+          "model_time_tr": "2026-11-13T18:21:02+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 28.967
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T18:50:00+03:00",
+          "model_time_tr": "2026-11-13T18:24:12+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 25.8
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-13T18:50:00+03:00",
+          "model_time_tr": "2026-11-13T18:27:05+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 22.917
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-13T18:36:13+03:00",
+          "stage13_decision": "CONFLICT_ORIGIN",
+          "stage13_model_label": "CONFLICT_NO_TRADE"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 2.02,
+      "fixed_single_position_opens_from_origin_window": 2,
+      "hybrid_net_roi_pp_sum": 2.02,
+      "hybrid_single_position_opens_from_origin_window": 2,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {
+        "CONFLICT_ORIGIN": 1,
+        "CONTRA_WAIT_30M": 3,
+        "RESEARCH_READY_NO_REAL_INTENT": 4
+      },
+      "model_long_in_origin_window": 8,
+      "number": 57,
+      "research_ready_origin_window": 4,
+      "start_tr": "2026-11-13T16:42:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T01:16:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -1.80567,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -1.80567,
+          "hypothetical_entry_tr": "2026-11-14T01:34:00+03:00",
+          "model_time_tr": "2026-11-14T01:06:10+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 27.833
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T01:09:04+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -1.80567,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -1.80567,
+          "hypothetical_entry_tr": "2026-11-14T01:34:00+03:00",
+          "model_time_tr": "2026-11-14T01:12:19+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 21.683
+        },
+        {
+          "broker_occupancy_fixed_selected": false,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": false,
+          "fixed_exit_reason": "TIMEOUT",
+          "fixed_net_roi_pp": -1.80567,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": false,
+          "hybrid_exit_reason": "TIMEOUT",
+          "hybrid_net_roi_pp": -1.80567,
+          "hypothetical_entry_tr": "2026-11-14T01:34:00+03:00",
+          "model_time_tr": "2026-11-14T01:15:09+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 18.85
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": -1.80567,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": -1.80567,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 1,
+        "RESEARCH_READY_NO_REAL_INTENT": 3
+      },
+      "model_long_in_origin_window": 4,
+      "number": 58,
+      "research_ready_origin_window": 3,
+      "start_tr": "2026-11-13T22:40:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T04:27:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 59,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T03:06:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T05:27:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-14T05:46:00+03:00",
+          "model_time_tr": "2026-11-14T05:24:11+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 21.817
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 60,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-14T04:45:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T07:09:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T06:18:04+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "ENTRY_PENDING_EXPIRED": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 61,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T05:51:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T10:20:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 62,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T09:18:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T20:21:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T17:03:16+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T17:06:14+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T17:21:07+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T17:24:14+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T17:27:07+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T18:33:05+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T18:36:03+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T19:06:12+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T19:09:09+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T19:12:03+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T19:15:18+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T19:24:00+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-14T19:50:00+03:00",
+          "model_time_tr": "2026-11-14T19:45:12+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 4.8
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 1,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 8,
+        "ENTRY_PENDING_EXPIRED": 4,
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 13,
+      "number": 63,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-14T16:48:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-14T22:24:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T20:48:11+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T20:54:22+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T21:06:22+03:00",
+          "stage13_decision": "MODEL_GATE",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T21:48:17+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": false,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T21:51:01+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 1,
+        "ENTRY_PENDING_EXPIRED": 3,
+        "MODEL_GATE": 1
+      },
+      "model_long_in_origin_window": 5,
+      "number": 64,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T20:39:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T00:15:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T23:18:08+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T23:54:16+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-14T23:57:09+03:00",
+          "stage13_decision": "CONTRA_WAIT_30M",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-15T00:00:25+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        },
+        {
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "model_time_tr": "2026-11-15T00:03:06+03:00",
+          "stage13_decision": "ENTRY_PENDING_EXPIRED",
+          "stage13_model_label": "LONG_AVOID"
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "CONTRA_WAIT_30M": 3,
+        "ENTRY_PENDING_EXPIRED": 2
+      },
+      "model_long_in_origin_window": 5,
+      "number": 65,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-14T23:00:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T02:10:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 66,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T01:20:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T04:55:00+03:00",
+      "entries_from_window_origins": [
+        {
+          "broker_occupancy_fixed_selected": true,
+          "contra_origin": true,
+          "exact_source_reentry_authorized": false,
+          "fixed_book_selected": true,
+          "fixed_exit_reason": "TP_FIRST",
+          "fixed_net_roi_pp": 1.01,
+          "fresh_intent_observed_in_recovery_window": false,
+          "fresh_model_observed_in_recovery_window": false,
+          "hybrid_book_selected": true,
+          "hybrid_exit_reason": "TP_FIRST",
+          "hybrid_net_roi_pp": 1.01,
+          "hypothetical_entry_tr": "2026-11-15T05:03:00+03:00",
+          "model_time_tr": "2026-11-15T04:36:08+03:00",
+          "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT",
+          "stage13_model_label": "LONG_AVOID",
+          "start_to_entry_min": 26.867
+        }
+      ],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 1.01,
+      "fixed_single_position_opens_from_origin_window": 1,
+      "hybrid_net_roi_pp_sum": 1.01,
+      "hybrid_single_position_opens_from_origin_window": 1,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {
+        "RESEARCH_READY_NO_REAL_INTENT": 1
+      },
+      "model_long_in_origin_window": 1,
+      "number": 67,
+      "research_ready_origin_window": 1,
+      "start_tr": "2026-11-15T03:40:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T08:00:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 68,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T06:10:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T11:20:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 69,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T09:26:00+03:00",
+      "user_label": "LONG_AVOID"
+    },
+    {
+      "conflict_origin_rejected": 0,
+      "end_tr": "2026-11-15T17:42:00+03:00",
+      "entries_from_window_origins": [],
+      "exact_reentry_proven": 0,
+      "fixed_net_roi_pp_sum": 0,
+      "fixed_single_position_opens_from_origin_window": 0,
+      "hybrid_net_roi_pp_sum": 0,
+      "hybrid_single_position_opens_from_origin_window": 0,
+      "hypothetical_entry_inside_window_from_any_origin": 0,
+      "model_decision_counts": {},
+      "model_long_in_origin_window": 0,
+      "number": 70,
+      "research_ready_origin_window": 0,
+      "start_tr": "2026-11-15T15:30:00+03:00",
+      "user_label": "LONG_AVOID"
+    }
+  ]
+}

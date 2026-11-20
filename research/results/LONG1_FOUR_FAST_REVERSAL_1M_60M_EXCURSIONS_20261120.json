@@ -1,0 +1,232 @@
+{
+  "actual_order_authority": false,
+  "entry_assumption": "NEXT_1M_OPEN_AFTER_MODEL_EVENT_TIME",
+  "events": [
+    {
+      "actual_order_or_fill": false,
+      "decision": "ENTRY_PENDING_EXPIRED",
+      "future_horizon_minutes": {
+        "1": {
+          "max_gross_long_roi_pp": 0.0825,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.1575,
+          "min_gross_long_roi_pp": -0.7424,
+          "range_high_price": 3.638,
+          "range_low_price": 3.628
+        },
+        "15": {
+          "max_gross_long_roi_pp": 0.165,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.075,
+          "min_gross_long_roi_pp": -3.7119,
+          "range_high_price": 3.639,
+          "range_low_price": 3.592
+        },
+        "3": {
+          "max_gross_long_roi_pp": 0.0825,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.1575,
+          "min_gross_long_roi_pp": -0.7424,
+          "range_high_price": 3.638,
+          "range_low_price": 3.628
+        },
+        "30": {
+          "max_gross_long_roi_pp": 0.165,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.075,
+          "min_gross_long_roi_pp": -3.9593,
+          "range_high_price": 3.639,
+          "range_low_price": 3.589
+        },
+        "5": {
+          "max_gross_long_roi_pp": 0.165,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.075,
+          "min_gross_long_roi_pp": -1.2373,
+          "range_high_price": 3.639,
+          "range_low_price": 3.622
+        },
+        "60": {
+          "max_gross_long_roi_pp": 0.165,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.075,
+          "min_gross_long_roi_pp": -9.0734,
+          "range_high_price": 3.639,
+          "range_low_price": 3.527
+        }
+      },
+      "hypothetical_next_1m_open_time_tr": "2026-11-12T01:37:00+03:00",
+      "hypothetical_open_price": 3.637,
+      "model_time_tr": "2026-11-12T01:36:16+03:00",
+      "real_model_intent_entry_attested": false,
+      "reference_label": "LONG_AVOID",
+      "this_is_ex_post_excursion_not_achievable_roi": true
+    },
+    {
+      "actual_order_or_fill": false,
+      "decision": "CONTRA_WAIT_30M",
+      "future_horizon_minutes": {
+        "1": {
+          "max_gross_long_roi_pp": 0.4561,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.2161,
+          "min_gross_long_roi_pp": -0.5473,
+          "range_high_price": 3.294,
+          "range_low_price": 3.283
+        },
+        "15": {
+          "max_gross_long_roi_pp": 0.4561,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.2161,
+          "min_gross_long_roi_pp": -4.1046,
+          "range_high_price": 3.294,
+          "range_low_price": 3.244
+        },
+        "3": {
+          "max_gross_long_roi_pp": 0.4561,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.2161,
+          "min_gross_long_roi_pp": -1.0033,
+          "range_high_price": 3.294,
+          "range_low_price": 3.278
+        },
+        "30": {
+          "max_gross_long_roi_pp": 0.4561,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.2161,
+          "min_gross_long_roi_pp": -8.3916,
+          "range_high_price": 3.294,
+          "range_low_price": 3.197
+        },
+        "5": {
+          "max_gross_long_roi_pp": 0.4561,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.2161,
+          "min_gross_long_roi_pp": -1.3682,
+          "range_high_price": 3.294,
+          "range_low_price": 3.274
+        },
+        "60": {
+          "max_gross_long_roi_pp": 0.4561,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.2161,
+          "min_gross_long_roi_pp": -8.3916,
+          "range_high_price": 3.294,
+          "range_low_price": 3.197
+        }
+      },
+      "hypothetical_next_1m_open_time_tr": "2026-11-14T17:07:00+03:00",
+      "hypothetical_open_price": 3.289,
+      "model_time_tr": "2026-11-14T17:06:14+03:00",
+      "real_model_intent_entry_attested": false,
+      "reference_label": "LONG_AVOID",
+      "this_is_ex_post_excursion_not_achievable_roi": true
+    },
+    {
+      "actual_order_or_fill": false,
+      "decision": "CONTRA_WAIT_30M",
+      "future_horizon_minutes": {
+        "1": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -0.8512,
+          "range_high_price": 3.172,
+          "range_low_price": 3.163
+        },
+        "15": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -6.4313,
+          "range_high_price": 3.172,
+          "range_low_price": 3.104
+        },
+        "3": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -2.1753,
+          "range_high_price": 3.172,
+          "range_low_price": 3.149
+        },
+        "30": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -8.6066,
+          "range_high_price": 3.172,
+          "range_low_price": 3.081
+        },
+        "5": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -4.4451,
+          "range_high_price": 3.172,
+          "range_low_price": 3.125
+        },
+        "60": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -8.8903,
+          "range_high_price": 3.172,
+          "range_low_price": 3.078
+        }
+      },
+      "hypothetical_next_1m_open_time_tr": "2026-11-14T19:07:00+03:00",
+      "hypothetical_open_price": 3.172,
+      "model_time_tr": "2026-11-14T19:06:12+03:00",
+      "real_model_intent_entry_attested": false,
+      "reference_label": "LONG_AVOID",
+      "this_is_ex_post_excursion_not_achievable_roi": true
+    },
+    {
+      "actual_order_or_fill": false,
+      "decision": "CONTRA_WAIT_30M",
+      "future_horizon_minutes": {
+        "1": {
+          "max_gross_long_roi_pp": 0.0,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": -0.24,
+          "min_gross_long_roi_pp": -2.7209,
+          "range_high_price": 2.977,
+          "range_low_price": 2.95
+        },
+        "15": {
+          "max_gross_long_roi_pp": 0.6046,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.3646,
+          "min_gross_long_roi_pp": -5.8448,
+          "range_high_price": 2.983,
+          "range_low_price": 2.919
+        },
+        "3": {
+          "max_gross_long_roi_pp": 0.6046,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.3646,
+          "min_gross_long_roi_pp": -2.7209,
+          "range_high_price": 2.983,
+          "range_low_price": 2.95
+        },
+        "30": {
+          "max_gross_long_roi_pp": 0.6046,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.3646,
+          "min_gross_long_roi_pp": -11.2865,
+          "range_high_price": 2.983,
+          "range_low_price": 2.865
+        },
+        "5": {
+          "max_gross_long_roi_pp": 0.6046,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.3646,
+          "min_gross_long_roi_pp": -2.9224,
+          "range_high_price": 2.983,
+          "range_low_price": 2.948
+        },
+        "60": {
+          "max_gross_long_roi_pp": 1.0077,
+          "max_net_long_roi_pp_if_perfect_exit_minus_fee": 0.7677,
+          "min_gross_long_roi_pp": -11.2865,
+          "range_high_price": 2.987,
+          "range_low_price": 2.865
+        }
+      },
+      "hypothetical_next_1m_open_time_tr": "2026-11-14T23:58:00+03:00",
+      "hypothetical_open_price": 2.977,
+      "model_time_tr": "2026-11-14T23:57:09+03:00",
+      "real_model_intent_entry_attested": false,
+      "reference_label": "LONG_AVOID",
+      "this_is_ex_post_excursion_not_achievable_roi": true
+    }
+  ],
+  "expost_future_range_not_entry_approval": true,
+  "fee_roundtrip_roi_pp_assumed": 0.24,
+  "intrabar_high_low_order_unknown": true,
+  "leverage": 3,
+  "no_lookahead_trading_entry": true,
+  "production_redis_writes": 0,
+  "real_orders": 0,
+  "schema": "long1_four_reversal_model_clock_expost_excursion_v1",
+  "symbol": "NEARUSDT",
+  "total_events": 4
+}
