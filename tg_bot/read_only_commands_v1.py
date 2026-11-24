@@ -59,7 +59,10 @@ def answer(command, snap=None):
  if command in ('signals','signal'):
   data=x.get('last_signals',[])
   if not data:return 'Yeni sinyal yok.'
-  return '\n'.join(f"{v.get('strategy','?')} {v.get('symbol','?')} {v.get('status',v.get('state','?'))}"
+  return '\n'.join(
+   f"{v.get('strategy','?')} {v.get('symbol','?')} "
+   f"{v.get('status',v.get('state','?'))} / "
+   f"{v.get('research_context_state','CONTEXT_NOT_CHECKED')}"
    for v in data[-10:] if isinstance(v,dict))
  return HELP
 async def handle(update,context):

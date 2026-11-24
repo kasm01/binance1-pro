@@ -8,10 +8,10 @@ from scanner.shared_market_snapshot_v1 import parse_closed_klines
 from scanner.extreme_momentum_v1 import MS,inspect
 
 class ClosedBarBus:
- def __init__(self, symbols, capacity=80):
+ def __init__(self, symbols, capacity=180):
   if not isinstance(symbols,list) or len(symbols)>40 or len(symbols)!=len(set(symbols)):
    raise ValueError('invalid unique universe')
-  if not 65<=capacity<=250:raise ValueError('invalid capacity')
+  if not 125<=capacity<=250:raise ValueError('invalid capacity')
   self.data={s:deque(maxlen=capacity) for s in symbols}
   self.rejections={}
  def bootstrap(self,symbol,klines,*,asof_ms):

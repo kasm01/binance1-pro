@@ -36,7 +36,7 @@ def bootstrap(session,bus,chosen,clock_offset_ms):
  for symbol in chosen:
   try:
    k=fetch_public(session,'/fapi/v1/klines',
-    {'symbol':symbol,'interval':'1m','limit':80})
+    {'symbol':symbol,'interval':'1m','limit':180})
    # Re-evaluate observation clock AFTER the HTTP response:
    # fetching 40 symbols can cross one or more minute boundaries.
    # Offset is calibrated to public Binance server clock.
@@ -64,6 +64,15 @@ def watch_rows(bus,allocations,asof_ms):
    'observed_at_ms':asof_ms})
  return result
 def make_status(bus,allocations,now,universe,*,confirmed_telegram_sends=0):
+ from scanner.context_entry_shadow_v1 import assess
+ watches=watch_rows(bus,allocations,now)[-10:]
+ for item in watches:
+  result=assess(item['symbol'],item['direction'],
+    list(bus.data[item['symbol']]),observed_at_ms=now)
+  item['research_context_state']=result['state']
+  item['research_context_reason']=result['reason']
+  item['research_entry_confirmed']=False
+  item['research_ready']=False
  return {'schema':'manual_signal_center_status.v1',
   'manual_only':True,'order_authorized':False,
   'telegram_sent':confirmed_telegram_sends>0,
@@ -73,7 +82,9 @@ def make_status(bus,allocations,now,universe,*,confirmed_telegram_sends=0):
   'bot_allocations':allocations,
   'excluded_first15':universe['excluded_top_volume_15'],
   'market_cache':bus.stats(),
-  'last_signals':watch_rows(bus,allocations,now)[-10:]}
+  'context_gate_mode':'SHADOW_ONLY_NO_READY',
+  'context_gate_horizons':'rolling_3_5_15_60m_from_closed_1m',
+  'last_signals':watches}
 def atomic_status(payload,path=STATUS):
  path.parent.mkdir(parents=True,exist_ok=True)
  os.chmod(path.parent,0o700)
@@ -111,9 +122,11 @@ async def live(*,limit,max_seconds):
   refresh_deadline=time.monotonic()+1800
   last_healthy_packet=time.monotonic()
   last_status_write=time.monotonic()
+  context_counts={}
   total=0;accepted=0;watch=0;reconnects=0
   # Telegram transport remains inert unless BOTH explicit signal-center
   # flags are on. No READY or trading order can emerge from this runner.
+  from scanner.context_entry_shadow_v1 import assess
   from tg_bot.signal_center_v1 import SignalDispatcher
   from tg_bot.transport_v1 import send as telegram_send
   dispatcher=SignalDispatcher(sender=telegram_send,bot_allocations=alloc,
@@ -162,6 +175,9 @@ async def live(*,limit,max_seconds):
             'EXTREME_CAUTION_WATCH'):
         continue
        watch+=1
+       research=assess(symbol,x['direction'],list(bus.data[symbol]),
+         observed_at_ms=ts)
+       context_counts[research['state']]=context_counts.get(research['state'],0)+1
        bot=next((bot for bot in ('LONG1','SHORT1')
                  if bot.startswith(x.get('direction') or '?') and
                  symbol in alloc.get(bot,())),None)
@@ -180,6 +196,8 @@ async def live(*,limit,max_seconds):
        print(json.dumps({'event':'WATCH_PREVIEW','symbol':symbol,
          'direction':x.get('direction'),'status':x['status'],
          'ret15_pct':x.get('ret15_pct'),
+         'context_shadow_state':research['state'],
+         'context_shadow_reason':research['reason'],
          'telegram_delivery':delivery,'orders':0}),flush=True)
       elif result in ('GAP_BLOCKED','FUTURE_OR_STALE_CLOSE','BAD_CANDLE'):
        atomic_status(make_status(bus,alloc,ts,u,
@@ -207,6 +225,7 @@ async def live(*,limit,max_seconds):
   print(json.dumps({'event':'STOPPED','symbols':len(symbols),
    'messages_received':total,'closed_bars_accepted':accepted,
    'watch_events':watch,'reconnects':reconnects,
+   'context_shadow_counts':context_counts,
    'telegram_sent':confirmed_deliveries,
    'telegram_delivery_failures':delivery_failures,
    'orders':0}),flush=True)
