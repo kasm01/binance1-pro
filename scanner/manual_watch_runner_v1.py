@@ -64,7 +64,8 @@ def watch_rows(bus,allocations,asof_ms):
    'observed_at_ms':asof_ms})
  return result
 def make_status(bus,allocations,now,universe,*,
-                confirmed_telegram_sends=0,latest_cost_checks=None,outcome_ledger=None):
+                confirmed_telegram_sends=0,latest_cost_checks=None,
+                outcome_ledger=None,early_outcome_ledger=None):
  from scanner.context_entry_shadow_v1 import assess
  watches=watch_rows(bus,allocations,now)[-10:]
  for item in watches:
@@ -92,6 +93,8 @@ def make_status(bus,allocations,now,universe,*,
   'market_cache':bus.stats(),
   'context_gate_mode':'SHADOW_ONLY_NO_READY',
   'cost_gate_mode':'SHADOW_ONLY_INDICATIVE_COST_NO_READY',
+  'early_outcome_telemetry':early_outcome_ledger.summary() if early_outcome_ledger
+   else {'early_outcome_tracking':'OFF_IN_ONCE_PUBLIC_MODE','real_trades':0},
   'outcome_telemetry':outcome_ledger.summary() if outcome_ledger else
    {'outcome_tracking':'OFF_IN_ONCE_PUBLIC_MODE','real_trades':0},
   'context_gate_horizons':'rolling_3_5_15_60m_from_closed_1m',
@@ -129,8 +132,9 @@ async def live(*,limit,max_seconds):
   bootstrap(session,bus,symbols,clock_offset_ms)
   from scanner.watch_outcomes_v1 import OutcomeLedger
   outcome_ledger=OutcomeLedger(ROOT/'run/signal_center/watch_outcomes.json')
+  early_outcome_ledger=OutcomeLedger(ROOT/'run/signal_center/early_watch_outcomes.json')
   atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
-    outcome_ledger=outcome_ledger))
+    outcome_ledger=outcome_ledger,early_outcome_ledger=early_outcome_ledger))
   stream=WS+'/'.join(s.lower()+'@kline_1m' for s in symbols)
   backoff=1
   refresh_deadline=time.monotonic()+1800
@@ -185,6 +189,7 @@ async def live(*,limit,max_seconds):
       result=bus.update_ws(symbol,event,observed_at_ms=ts)
       if result=='GAP_BLOCKED':
        outcome_ledger.invalidate_symbol(symbol,'market_feed_gap')
+       early_outcome_ledger.invalidate_symbol(symbol,'market_feed_gap')
        # REST rebootstrap through isolated thread (bounded).
        await asyncio.to_thread(bootstrap,session,bus,[symbol],clock_offset_ms)
       if result=='CLOSED_ACCEPTED':
@@ -192,9 +197,15 @@ async def live(*,limit,max_seconds):
        last_close_ms=bus.data[symbol][-1]['t']+60000
        outcome_ledger.advance(symbol,list(bus.data[symbol]),
                               last_close_ms=last_close_ms)
+       early_outcome_ledger.advance(symbol,list(bus.data[symbol]),
+                              last_close_ms=last_close_ms)
        x=bus.analyze(symbol,asof_ms=ts)
        early=inspect_early(symbol,list(bus.data[symbol]),observed_at_ms=ts)
        if early['state']=='EARLY_CANDIDATE_SHADOW':
+        early_outcome_result=early_outcome_ledger.observe_early(
+          symbol,early['direction'],early,
+          reference_close_ms=last_close_ms,
+          reference_price=bus.data[symbol][-1]['c'])
         early_counters[early['direction']]=early_counters.get(early['direction'],0)+1
         early_key=(symbol,early['direction'])
         if ts-early_last_seen.get(early_key,0)>=30*60000:
@@ -204,12 +215,14 @@ async def live(*,limit,max_seconds):
            'ret3_pct':early['ret3_pct'],
            'ret15_pct':early['ret15_pct'],
            'reason':early['reason'],
+           'outcome_tracking':early_outcome_result,
            'telegram_sent':False,'orders':0}),flush=True)
        if time.monotonic()-last_status_write>=45:
         atomic_status(make_status(bus,alloc,ts,u,
           confirmed_telegram_sends=confirmed_deliveries,
           latest_cost_checks=latest_cost_checks,
-          outcome_ledger=outcome_ledger))
+          outcome_ledger=outcome_ledger,
+          early_outcome_ledger=early_outcome_ledger))
         last_status_write=time.monotonic()
        if x.get('status') not in ('STRONG_WATCH','EXTREME_WATCH','WATCH',
             'EXTREME_CAUTION_WATCH'):
@@ -247,7 +260,8 @@ async def live(*,limit,max_seconds):
          atomic_status(make_status(bus,alloc,ts,u,
            confirmed_telegram_sends=confirmed_deliveries,
            latest_cost_checks=latest_cost_checks,
-          outcome_ledger=outcome_ledger))
+          outcome_ledger=outcome_ledger,
+          early_outcome_ledger=early_outcome_ledger))
         elif delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED','PERSISTENCE_UNAVAILABLE'):
          delivery_failures+=1
        print(json.dumps({'event':'WATCH_PREVIEW','symbol':symbol,
@@ -265,7 +279,8 @@ async def live(*,limit,max_seconds):
        atomic_status(make_status(bus,alloc,ts,u,
          confirmed_telegram_sends=confirmed_deliveries,
          latest_cost_checks=latest_cost_checks,
-         outcome_ledger=outcome_ledger))
+         outcome_ledger=outcome_ledger,
+         early_outcome_ledger=early_outcome_ledger))
    except (OSError,ConnectionClosed,asyncio.TimeoutError,ValueError) as e:
     reconnects+=1
     if max_seconds and time.monotonic()-started>=max_seconds:break
@@ -275,6 +290,7 @@ async def live(*,limit,max_seconds):
      now,u,symbols,alloc=await asyncio.to_thread(make_universe,session,limit)
      bus=ClosedBarBus(symbols)
      outcome_ledger.invalidate_missing(symbols,'removed_from_dynamic_universe')
+     early_outcome_ledger.invalidate_missing(symbols,'removed_from_dynamic_universe')
      clock_offset_ms=now-int(time.time()*1000)
      await asyncio.to_thread(bootstrap,session,bus,symbols,clock_offset_ms)
      stream=WS+'/'.join(s.lower()+'@kline_1m' for s in symbols)
@@ -284,7 +300,8 @@ async def live(*,limit,max_seconds):
      last_healthy_packet=time.monotonic()
      atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
        confirmed_telegram_sends=confirmed_deliveries,
-       outcome_ledger=outcome_ledger))
+       outcome_ledger=outcome_ledger,
+       early_outcome_ledger=early_outcome_ledger))
     except Exception:
      for symbol in bus.data:bus.rejections[symbol]='RECONNECT_SOURCE_UNVERIFIED'
     await asyncio.sleep(min(backoff,8))
@@ -296,6 +313,7 @@ async def live(*,limit,max_seconds):
    'early_shadow_counts':early_counters,
    'cost_shadow_counts':cost_counts,
    'outcome_telemetry':outcome_ledger.summary(),
+   'early_outcome_telemetry':early_outcome_ledger.summary(),
    'telegram_sent':confirmed_deliveries,
    'telegram_delivery_failures':delivery_failures,
    'orders':0}),flush=True)

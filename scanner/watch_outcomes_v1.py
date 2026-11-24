@@ -87,8 +87,10 @@ class OutcomeLedger:
    return False
  def observe(self,symbol,direction,scanner,context,*,reference_close_ms,reference_price):
   if not self.healthy:return 'LEDGER_UNAVAILABLE'
-  if len(self.events)>=MAX_EVENTS:return 'CAPACITY_REACHED'
-  if sum(not e.get('final') for e in self.events)>=MAX_PENDING:return 'PENDING_CAP_REACHED'
+  if len(self.events)>=MAX_EVENTS:
+   return 'CAPACITY_REACHED'
+  if sum(not e.get('final') for e in self.events)>=MAX_PENDING:
+   return 'PENDING_CAP_REACHED'
   if direction not in ('LONG','SHORT') or scanner.get('status') not in ('STRONG_WATCH','EXTREME_WATCH'):
    return 'NOT_STRONG_WATCH'
   if (scanner.get('direction')!=direction or scanner.get('last_completed_1m_close_ms')!=reference_close_ms
@@ -110,6 +112,39 @@ class OutcomeLedger:
    'manual_only':True,'trade_executed':False})
   if not self._persist():return 'LEDGER_WRITE_FAILED'
   return 'OBSERVED'
+ def observe_early(self,symbol,direction,early,*,reference_close_ms,reference_price):
+  """Separate SHADOW-only 3m early discovery, no Telegram and no orders."""
+  if not self.healthy:return 'LEDGER_UNAVAILABLE'
+  if len(self.events)>=MAX_EVENTS:
+   return 'CAPACITY_REACHED'
+  if sum(not e.get('final') for e in self.events)>=MAX_PENDING:
+   return 'PENDING_CAP_REACHED'
+  if not isinstance(early,dict) or early.get('state')!='EARLY_CANDIDATE_SHADOW':
+   return 'NOT_EARLY_CANDIDATE'
+  if (not isinstance(symbol,str) or not symbol.endswith('USDT') or
+      direction not in ('LONG','SHORT') or early.get('direction')!=direction or
+      early.get('symbol')!=symbol or
+      early.get('last_completed_1m_close_ms')!=reference_close_ms or
+      early.get('ready') is not False or
+      early.get('telegram_ready') is not False or
+      early.get('order_authorized') is not False or
+      type(reference_close_ms) is not int or reference_close_ms%MS):
+   return 'SOURCE_UNVERIFIED'
+  price=number(reference_price)
+  if price is None or price<=0:return 'SOURCE_UNVERIFIED'
+  if any(e['symbol']==symbol and e['direction']==direction and
+         0<=reference_close_ms-e['reference_close_ms']<self.episode_cooldown_ms
+         for e in self.events):
+   return 'EPISODE_DEDUPED'
+  self.events.append({'symbol':symbol,'direction':direction,
+   'reference_close_ms':reference_close_ms,'reference_price':price,
+   'watch_status':'EARLY_CANDIDATE_SHADOW',
+   'context_state':'EARLY_UNCONFIRMED','context_reason':early.get('reason'),
+   'outcomes':{},'final':False,'invalid_reason':None,'manual_only':True,
+   'trade_executed':False,'telegram_sent':False,'early_shadow_only':True})
+  if not self._persist():return 'LEDGER_WRITE_FAILED'
+  return 'OBSERVED'
+
  def advance(self,symbol,bars,*,last_close_ms):
   """Only exact future closed bars, never bootstrap prefix classified as future
   without actual continuity. A gap invalidates pending episodes."""
