@@ -49,7 +49,7 @@ def format_risk_status(rm: RiskManager) -> str:
         price = tr.get("price") or tr.get("entry_price") or tr.get("exit_price")
         interval = tr.get("interval", "—")
         reason = tr.get("reason") or tr.get("meta", {}).get("reason")
-        return f"{ts}\n  {symbol} {interval} | {side} | qty={qty:.4f} @ {price:.2f if price else 0} | reason={reason}"
+        return f"{ts}\n  {symbol} {interval} | {side} | qty={float(qty or 0):.4f} @ {float(price or 0):.2f} | reason={reason}"
 
     lines = []
     lines.append("*Risk Durumu*")

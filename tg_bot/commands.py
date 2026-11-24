@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional, List
 from collections import deque
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler
-from telegram.parsemode import ParseMode
+from telegram.constants import ParseMode
 
 from core.logger import system_logger
 from core.risk_manager import RiskManager
@@ -425,16 +425,12 @@ def cmd_risk(update: Update, context: CallbackContext) -> None:
 
 
 def register_handlers(dispatcher) -> None:
-    dispatcher.add_handler(CommandHandler("start", start_command))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(CommandHandler("ping", ping_command))
-    dispatcher.add_handler(CommandHandler("whoami", whoami_command))
+    """Fail closed: legacy synchronous handlers are not PTB22-compatible.
 
-    dispatcher.add_handler(CommandHandler("status", status_command))
-    dispatcher.add_handler(CommandHandler("trades", trades_command))
-    dispatcher.add_handler(CommandHandler("positions", positions_command))
-    dispatcher.add_handler(CommandHandler("signal", signal_command))
-    dispatcher.add_handler(CommandHandler("risk", cmd_risk))
-
-    system_logger.info("[TG] Handlers registered: start/help/ping/whoami/status/trades/positions/signal/risk")
-
+    Use tg_bot.read_only_commands_v1.make_application explicitly.
+    Neither legacy nor new commands can place exchange orders.
+    """
+    raise RuntimeError(
+        "Legacy Telegram commands disabled: use read_only_commands_v1 "
+        "(PTB22 async + explicit authorized chat and user checks)"
+    )

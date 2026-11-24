@@ -34,7 +34,7 @@ def fmt_status(payload: Dict[str, Any]) -> str:
         parts.append(f"⏱ *MTF:* `{','.join(itvs)}`")
     if isinstance(aucs, dict) and aucs:
         # kısa göster
-        short = ", ".join([f"{k}:{aucs[k]:.3f}" if isinstance(aucs[k], (int,float)) else f\"{k}:{aucs[k]}\" for k in list(aucs.keys())[:6]])
+        short = ", ".join([f"{k}:{aucs[k]:.3f}" if isinstance(aucs[k], (int,float)) else f"{k}:{aucs[k]}" for k in list(aucs.keys())[:6]])
         parts.append(f"📈 *AUC:* `{short}`")
     why = payload.get("why")
     if why:

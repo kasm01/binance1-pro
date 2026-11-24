@@ -25,7 +25,7 @@ def require_auth(fn: Callable[[Update, CallbackContext], Any]):
     def wrapper(update: Update, context: CallbackContext):
         allowed = _allowed_chat_ids()
         chat_id = update.effective_chat.id if update.effective_chat else None
-        if allowed and (chat_id is None or int(chat_id) not in allowed):
+        if not allowed or chat_id is None or int(chat_id) not in allowed:
             # Sessiz reddetmek yerine kısa cevap
             if update.message:
                 update.message.reply_text("⛔ Bu bot için yetkin yok.")

@@ -82,7 +82,7 @@ class AlertSystem:
             text = f"[{level}] {message}"
             if extra:
                 text += f"\n\nDetails: {extra}"
-            self.notifier.send_message(text)
+            self.notifier._safe_telegram_send(text)
         except Exception as e:
             system_logger.error(f"[AlertSystem] Telegram alert gönderilemedi: {e}")
 
