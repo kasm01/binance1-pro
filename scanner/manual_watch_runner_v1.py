@@ -145,6 +145,8 @@ async def live(*,limit,max_seconds):
   last_status_write=time.monotonic()
   context_counts={}
   early_counters={}
+  preparation_counters={}
+  preparation_last_seen={}
   flow_shadow_counters={}
   early_last_seen={}
   cost_counts={}
@@ -155,6 +157,7 @@ async def live(*,limit,max_seconds):
   # flags are on. No READY or trading order can emerge from this runner.
   from scanner.context_entry_shadow_v1 import assess
   from scanner.early_motion_shadow_v1 import inspect_early
+  from scanner.scalp_preparation_shadow_v1 import inspect_preparation
   from scanner.taker_flow_quality_shadow_v1 import assess_flow
   from scanner.cost_quote_public_v1 import check_candidate
   from tg_bot.signal_center_v1 import SignalDispatcher
@@ -213,6 +216,19 @@ async def live(*,limit,max_seconds):
        early_outcome_ledger.revalidate_early(
          symbol,list(bus.data[symbol]),last_close_ms=last_close_ms)
        x=bus.analyze(symbol,asof_ms=ts)
+       preparation=inspect_preparation(symbol,list(bus.data[symbol]),
+                                      observed_at_ms=ts)
+       if preparation['state']=='PREPARATION_SHADOW':
+        key=(symbol,preparation['direction'],preparation['mode'])
+        preparation_counters[preparation['mode']]=preparation_counters.get(preparation['mode'],0)+1
+        if ts-preparation_last_seen.get(key,0)>=30*60000:
+         preparation_last_seen[key]=ts
+         print(json.dumps({'event':'SCALP_PREPARATION_SHADOW',
+           'symbol':symbol,'direction':preparation['direction'],
+           'mode':preparation['mode'],
+           'return45_pct':preparation['return45_pct'],
+           'taker_imbalance5':preparation['taker_imbalance5'],
+           'telegram_sent':False,'orders':0}),flush=True)
        early=inspect_early(symbol,list(bus.data[symbol]),observed_at_ms=ts)
        if early['state']=='EARLY_CANDIDATE_SHADOW':
         flow_shadow=assess_flow(list(bus.data[symbol]),early['direction'],
@@ -352,6 +368,7 @@ async def live(*,limit,max_seconds):
    'watch_events':watch,'reconnects':reconnects,
    'context_shadow_counts':context_counts,
    'early_shadow_counts':early_counters,
+   'scalp_preparation_shadow_counts':preparation_counters,
    'early_flow_shadow_counts':flow_shadow_counters,
    'cost_shadow_counts':cost_counts,
    'outcome_telemetry':outcome_ledger.summary(),
