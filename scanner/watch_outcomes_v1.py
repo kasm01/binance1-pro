@@ -219,7 +219,17 @@ class OutcomeLedger:
   return not changed or self._persist()
  def summary(self):
   recent=self.events[-MAX_EVENTS:]
-  return {'outcome_events_recorded':len(recent),
+  checkpoint_states={}
+  for checkpoint in ('1','3','5'):
+   values={}
+   for e in recent:
+    result=e.get('revalidation_checkpoints',{}).get(checkpoint)
+    if not isinstance(result,dict):continue
+    state=result.get('state','UNKNOWN')
+    values[state]=values.get(state,0)+1
+   checkpoint_states[checkpoint]=values
+  return {'revalidation_state_counts_by_minute':checkpoint_states,
+   'outcome_events_recorded':len(recent),
    'outcome_events_complete':sum(bool(e.get('final')) and not e.get('invalid_reason') for e in recent),
    'outcome_events_pending':sum(not e.get('final') for e in recent),
    'outcome_events_invalid':sum(bool(e.get('invalid_reason')) for e in recent),

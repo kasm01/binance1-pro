@@ -54,4 +54,7 @@ class Test(unittest.TestCase):
    assert set(checks)=={'1','3','5'}
    assert all(x['ready'] is False and x['order_authorized'] is False for x in checks.values())
    assert restore.events[0]['trade_executed'] is False
+   assert sum(restore.summary()['revalidation_state_counts_by_minute']['1'].values())==1
+   assert sum(restore.summary()['revalidation_state_counts_by_minute']['3'].values())==1
+   assert sum(restore.summary()['revalidation_state_counts_by_minute']['5'].values())==1
 if __name__=='__main__':unittest.main()
