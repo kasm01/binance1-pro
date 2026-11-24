@@ -63,7 +63,8 @@ def watch_rows(bus,allocations,asof_ms):
    'reason':x.get('reason'),'ret15_pct':x.get('ret15_pct'),
    'observed_at_ms':asof_ms})
  return result
-def make_status(bus,allocations,now,universe,*,confirmed_telegram_sends=0):
+def make_status(bus,allocations,now,universe,*,
+                confirmed_telegram_sends=0,latest_cost_checks=None):
  from scanner.context_entry_shadow_v1 import assess
  watches=watch_rows(bus,allocations,now)[-10:]
  for item in watches:
@@ -73,6 +74,13 @@ def make_status(bus,allocations,now,universe,*,confirmed_telegram_sends=0):
   item['research_context_reason']=result['reason']
   item['research_entry_confirmed']=False
   item['research_ready']=False
+  check=(latest_cost_checks or {}).get(item['symbol'])
+  if (isinstance(check,dict) and type(check.get('asof_ms')) is int and
+      0<=now-check['asof_ms']<=120000):
+   item['research_cost_state']=check.get('state')
+   item['research_cost_reason']=check.get('reason')
+   item['research_spread_bps']=check.get('spread_bps')
+   item['research_roundtrip_cost_bps']=check.get('assumed_roundtrip_bps')
  return {'schema':'manual_signal_center_status.v1',
   'manual_only':True,'order_authorized':False,
   'telegram_sent':confirmed_telegram_sends>0,
@@ -83,6 +91,7 @@ def make_status(bus,allocations,now,universe,*,confirmed_telegram_sends=0):
   'excluded_first15':universe['excluded_top_volume_15'],
   'market_cache':bus.stats(),
   'context_gate_mode':'SHADOW_ONLY_NO_READY',
+  'cost_gate_mode':'SHADOW_ONLY_INDICATIVE_COST_NO_READY',
   'context_gate_horizons':'rolling_3_5_15_60m_from_closed_1m',
   'last_signals':watches}
 def atomic_status(payload,path=STATUS):
@@ -123,14 +132,19 @@ async def live(*,limit,max_seconds):
   last_healthy_packet=time.monotonic()
   last_status_write=time.monotonic()
   context_counts={}
+  cost_counts={}
+  latest_cost_checks={}
+  last_public_book_request=0.0
   total=0;accepted=0;watch=0;reconnects=0
   # Telegram transport remains inert unless BOTH explicit signal-center
   # flags are on. No READY or trading order can emerge from this runner.
   from scanner.context_entry_shadow_v1 import assess
+  from scanner.cost_quote_public_v1 import check_candidate
   from tg_bot.signal_center_v1 import SignalDispatcher
   from tg_bot.transport_v1 import send as telegram_send
   dispatcher=SignalDispatcher(sender=telegram_send,bot_allocations=alloc,
-                              cooldown_s=7200)
+                              cooldown_s=7200,
+                              persistent_state_path=ROOT/'run/signal_center/telegram_cooldown.json')
   from tg_bot.pilot_watch_alert_v1 import dispatch_candidate
   confirmed_deliveries=0
   delivery_failures=0
@@ -169,7 +183,8 @@ async def live(*,limit,max_seconds):
        x=bus.analyze(symbol,asof_ms=ts)
        if time.monotonic()-last_status_write>=45:
         atomic_status(make_status(bus,alloc,ts,u,
-          confirmed_telegram_sends=confirmed_deliveries))
+          confirmed_telegram_sends=confirmed_deliveries,
+          latest_cost_checks=latest_cost_checks))
         last_status_write=time.monotonic()
        if x.get('status') not in ('STRONG_WATCH','EXTREME_WATCH','WATCH',
             'EXTREME_CAUTION_WATCH'):
@@ -178,6 +193,16 @@ async def live(*,limit,max_seconds):
        research=assess(symbol,x['direction'],list(bus.data[symbol]),
          observed_at_ms=ts)
        context_counts[research['state']]=context_counts.get(research['state'],0)+1
+       cost_result={'state':'NOT_QUERIED','reason':'context_gate_not_eligible'}
+       # Only the highest quality candidate requests a single public quote.
+       # Rate bound: <=1 request per 15 seconds for the whole 40-coin pool.
+       # This additional research never changes Telegram WATCH policy.
+       if research['state']=='COST_PENDING' and time.monotonic()-last_public_book_request>=15:
+        last_public_book_request=time.monotonic()
+        cost_result=await asyncio.to_thread(check_candidate,research)
+        if cost_result.get('state') not in ('NOT_QUERIED',):
+         cost_counts[cost_result['state']]=cost_counts.get(cost_result['state'],0)+1
+         latest_cost_checks[symbol]=cost_result
        bot=next((bot for bot in ('LONG1','SHORT1')
                  if bot.startswith(x.get('direction') or '?') and
                  symbol in alloc.get(bot,())),None)
@@ -187,21 +212,27 @@ async def live(*,limit,max_seconds):
         delivery=await asyncio.to_thread(dispatch_candidate,dispatcher,
           symbol,bot,x,bus.data[symbol][-1]['c'],
           observed_at_ms=ts,allocations=alloc)
-        if delivery=='SENT':
+        if delivery in ('SENT','SENT_PERSIST_FAILED'):
          confirmed_deliveries+=1
          atomic_status(make_status(bus,alloc,ts,u,
-           confirmed_telegram_sends=confirmed_deliveries))
-        elif delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED'):
+           confirmed_telegram_sends=confirmed_deliveries,
+           latest_cost_checks=latest_cost_checks))
+        elif delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED','PERSISTENCE_UNAVAILABLE'):
          delivery_failures+=1
        print(json.dumps({'event':'WATCH_PREVIEW','symbol':symbol,
          'direction':x.get('direction'),'status':x['status'],
          'ret15_pct':x.get('ret15_pct'),
          'context_shadow_state':research['state'],
          'context_shadow_reason':research['reason'],
+         'cost_shadow_state':cost_result.get('state'),
+         'cost_shadow_reason':cost_result.get('reason'),
+         'cost_spread_bps':cost_result.get('spread_bps'),
+         'cost_roundtrip_est_bps':cost_result.get('assumed_roundtrip_bps'),
          'telegram_delivery':delivery,'orders':0}),flush=True)
       elif result in ('GAP_BLOCKED','FUTURE_OR_STALE_CLOSE','BAD_CANDLE'):
        atomic_status(make_status(bus,alloc,ts,u,
-         confirmed_telegram_sends=confirmed_deliveries))
+         confirmed_telegram_sends=confirmed_deliveries,
+         latest_cost_checks=latest_cost_checks))
    except (OSError,ConnectionClosed,asyncio.TimeoutError,ValueError) as e:
     reconnects+=1
     if max_seconds and time.monotonic()-started>=max_seconds:break
@@ -214,6 +245,7 @@ async def live(*,limit,max_seconds):
      await asyncio.to_thread(bootstrap,session,bus,symbols,clock_offset_ms)
      stream=WS+'/'.join(s.lower()+'@kline_1m' for s in symbols)
      dispatcher.bot_allocations=alloc
+     latest_cost_checks.clear()
      refresh_deadline=time.monotonic()+1800
      last_healthy_packet=time.monotonic()
      atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
@@ -226,6 +258,7 @@ async def live(*,limit,max_seconds):
    'messages_received':total,'closed_bars_accepted':accepted,
    'watch_events':watch,'reconnects':reconnects,
    'context_shadow_counts':context_counts,
+   'cost_shadow_counts':cost_counts,
    'telegram_sent':confirmed_deliveries,
    'telegram_delivery_failures':delivery_failures,
    'orders':0}),flush=True)

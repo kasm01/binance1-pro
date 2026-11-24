@@ -4,7 +4,8 @@ Default mode PREVIEW ONLY. Callers provide prevalidated signal decisions.
 Even READY is advisory, never an exchange order, never proof of model edge.
 """
 from __future__ import annotations
-import math,os,re,time
+import json,math,os,re,time
+from pathlib import Path
 from collections.abc import Mapping
 from threading import Lock
 SYMBOL=re.compile(r'^[A-Z0-9]{2,20}USDT$')
@@ -50,11 +51,52 @@ def format_message(sig:Mapping)->str:
   "MANUEL İNCELEME · OTOMATİK EMİR YOK\n"
   "Bu bir işlem gerçekleşmesi veya kesin getiri bildirimi değildir.")
 class SignalDispatcher:
- def __init__(self, sender=None, *,cooldown_s=900,bot_allocations=None):
+ def __init__(self, sender=None, *,cooldown_s=900,bot_allocations=None,
+              persistent_state_path=None):
   if cooldown_s<0:raise ValueError('negative cooldown')
   self.sender=sender;self.cooldown_s=cooldown_s
   self.bot_allocations=bot_allocations or {}
-  self.seen={};self.lock=Lock()
+  self.lock=Lock()
+  self.persistent_state_path=(Path(persistent_state_path)
+                              if persistent_state_path else None)
+  self.persistence_healthy=True
+  self.seen={}
+  if self.persistent_state_path and self.persistent_state_path.exists():
+   try:
+    if self.persistent_state_path.stat().st_size>100000:
+     raise ValueError('state file too large')
+    saved=json.loads(self.persistent_state_path.read_text())
+    if saved.get('schema')!='manual_alert_cooldown_v1' or not isinstance(saved.get('seen'),list):
+     raise ValueError('invalid state schema')
+    for item in saved['seen']:
+     if (not isinstance(item,dict) or
+         not STRATEGY.fullmatch(item.get('strategy','')) or
+         not SYMBOL.fullmatch(item.get('symbol','')) or
+         item.get('state') not in STATES or
+         type(item.get('at_ms')) is not int or item['at_ms']<=0):
+      raise ValueError('invalid persisted cooldown')
+     self.seen[(item['strategy'],item['symbol'])]=(item['state'],item['at_ms'])
+   except (OSError,ValueError,TypeError,AttributeError):
+    # Bad persistence must not silently allow repeat spam after a reboot.
+    self.persistence_healthy=False
+ def _persist_seen(self,now_ms):
+  path=self.persistent_state_path
+  if path is None:return True
+  try:
+   path.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
+   os.chmod(path.parent,0o700)
+   filtered=[{'strategy':strategy,'symbol':symbol,'state':state,'at_ms':stamp}
+             for (strategy,symbol),(state,stamp) in sorted(self.seen.items())
+             if 0<=now_ms-stamp<self.cooldown_s*1000]
+   # Even if many symbols were ever seen, keep bounded state.
+   content=json.dumps({'schema':'manual_alert_cooldown_v1','seen':filtered[-160:]})
+   temp=path.with_suffix('.tmp')
+   with temp.open('w') as f:f.write(content)
+   os.chmod(temp,0o600)
+   os.replace(temp,path)
+   return True
+  except OSError:
+   return False
  def dispatch(self,signal,*,now_ms=None):
   x=normalize(signal)
   now=int(time.time()*1000) if now_ms is None else now_ms
@@ -71,6 +113,8 @@ class SignalDispatcher:
   if not self.sender:return 'NO_SENDER'
   key=(x['strategy'],x['symbol'])
   with self.lock:
+   if not self.persistence_healthy:
+    return 'PERSISTENCE_UNAVAILABLE'
    previous=self.seen.get(key)
    if previous and previous[0]==x['state'] and now-previous[1]<self.cooldown_s*1000:
     return 'DEDUPED'
@@ -81,4 +125,7 @@ class SignalDispatcher:
     return 'SEND_FAILED'
    if sent is not True:return 'SEND_NOT_CONFIRMED'
    self.seen[key]=(x['state'],now)
+   if not self._persist_seen(now):
+    self.persistence_healthy=False
+    return 'SENT_PERSIST_FAILED'
    return 'SENT'
