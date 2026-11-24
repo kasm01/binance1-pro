@@ -65,7 +65,8 @@ def watch_rows(bus,allocations,asof_ms):
  return result
 def make_status(bus,allocations,now,universe,*,
                 confirmed_telegram_sends=0,latest_cost_checks=None,
-                outcome_ledger=None,early_outcome_ledger=None):
+                outcome_ledger=None,early_outcome_ledger=None,
+                confirmed_early_telegram_sends=0):
  from scanner.context_entry_shadow_v1 import assess
  watches=watch_rows(bus,allocations,now)[-10:]
  for item in watches:
@@ -86,6 +87,8 @@ def make_status(bus,allocations,now,universe,*,
   'manual_only':True,'order_authorized':False,
   'telegram_sent':confirmed_telegram_sends>0,
   'confirmed_telegram_sends_since_start':confirmed_telegram_sends,
+  'early_telegram_mode':'OPT_IN_MANUAL_EARLY_WATCH_NO_READY',
+  'confirmed_early_telegram_sends_since_start':confirmed_early_telegram_sends,
   'updated_at_ms':now,
   'selected_symbols':list(bus.data),
   'bot_allocations':allocations,
@@ -156,12 +159,18 @@ async def live(*,limit,max_seconds):
   from scanner.cost_quote_public_v1 import check_candidate
   from tg_bot.signal_center_v1 import SignalDispatcher
   from tg_bot.transport_v1 import send as telegram_send
+  from tg_bot.early_watch_pilot_v1 import EarlyWatchDispatcher
+  early_dispatcher=EarlyWatchDispatcher(
+     ROOT/'run/signal_center/early_telegram_cooldown.json',
+     sender=telegram_send)
   dispatcher=SignalDispatcher(sender=telegram_send,bot_allocations=alloc,
                               cooldown_s=7200,
                               persistent_state_path=ROOT/'run/signal_center/telegram_cooldown.json')
   from tg_bot.pilot_watch_alert_v1 import dispatch_candidate
   confirmed_deliveries=0
+  confirmed_early_deliveries=0
   delivery_failures=0
+  early_delivery_failures=0
   print(json.dumps({'event':'STARTED','symbols':len(symbols),
     'source':'ONE_MULTIPLEXED_WS','orders':0,'telegram':0}),flush=True)
   while max_seconds==0 or time.monotonic()-started<max_seconds:
@@ -211,6 +220,23 @@ async def live(*,limit,max_seconds):
           symbol,early['direction'],early,
           reference_close_ms=last_close_ms,
           reference_price=bus.data[symbol][-1]['c'],flow=flow_shadow)
+        early_delivery=await asyncio.to_thread(
+          early_dispatcher.send_early,symbol,early['direction'],early,
+          flow_shadow,alloc,bus.data[symbol][-1]['c'],now_ms=ts)
+        if early_delivery in ('SENT','SENT_PERSIST_FAILED'):
+         confirmed_early_deliveries+=1
+         atomic_status(make_status(bus,alloc,ts,u,
+           confirmed_telegram_sends=confirmed_deliveries,
+           latest_cost_checks=latest_cost_checks,
+           outcome_ledger=outcome_ledger,
+           early_outcome_ledger=early_outcome_ledger,
+           confirmed_early_telegram_sends=confirmed_early_deliveries))
+         print(json.dumps({'event':'EARLY_WATCH_TELEGRAM',
+            'symbol':symbol,'direction':early['direction'],
+            'delivery':early_delivery,'orders':0}),flush=True)
+        elif early_delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED',
+                                'PERSISTENCE_UNAVAILABLE'):
+         early_delivery_failures+=1
         early_counters[early['direction']]=early_counters.get(early['direction'],0)+1
         early_key=(symbol,early['direction'])
         if ts-early_last_seen.get(early_key,0)>=30*60000:
@@ -224,13 +250,15 @@ async def live(*,limit,max_seconds):
            'taker_flow_shadow_state':flow_shadow['state'],
            'taker_flow_shadow_reason':flow_shadow['reason'],
            'taker_flow_directional_3m':flow_shadow.get('directional_taker_imbalance_3m'),
-           'telegram_sent':False,'orders':0}),flush=True)
+           'early_telegram_delivery':early_delivery,
+           'orders':0}),flush=True)
        if time.monotonic()-last_status_write>=45:
         atomic_status(make_status(bus,alloc,ts,u,
           confirmed_telegram_sends=confirmed_deliveries,
           latest_cost_checks=latest_cost_checks,
           outcome_ledger=outcome_ledger,
-          early_outcome_ledger=early_outcome_ledger))
+          early_outcome_ledger=early_outcome_ledger,
+          confirmed_early_telegram_sends=confirmed_early_deliveries))
         last_status_write=time.monotonic()
        if x.get('status') not in ('STRONG_WATCH','EXTREME_WATCH','WATCH',
             'EXTREME_CAUTION_WATCH'):
@@ -269,7 +297,8 @@ async def live(*,limit,max_seconds):
            confirmed_telegram_sends=confirmed_deliveries,
            latest_cost_checks=latest_cost_checks,
           outcome_ledger=outcome_ledger,
-          early_outcome_ledger=early_outcome_ledger))
+          early_outcome_ledger=early_outcome_ledger,
+          confirmed_early_telegram_sends=confirmed_early_deliveries))
         elif delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED','PERSISTENCE_UNAVAILABLE'):
          delivery_failures+=1
        print(json.dumps({'event':'WATCH_PREVIEW','symbol':symbol,
@@ -288,7 +317,8 @@ async def live(*,limit,max_seconds):
          confirmed_telegram_sends=confirmed_deliveries,
          latest_cost_checks=latest_cost_checks,
          outcome_ledger=outcome_ledger,
-         early_outcome_ledger=early_outcome_ledger))
+         early_outcome_ledger=early_outcome_ledger,
+         confirmed_early_telegram_sends=confirmed_early_deliveries))
    except (OSError,ConnectionClosed,asyncio.TimeoutError,ValueError) as e:
     reconnects+=1
     if max_seconds and time.monotonic()-started>=max_seconds:break
@@ -309,7 +339,8 @@ async def live(*,limit,max_seconds):
      atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
        confirmed_telegram_sends=confirmed_deliveries,
        outcome_ledger=outcome_ledger,
-       early_outcome_ledger=early_outcome_ledger))
+       early_outcome_ledger=early_outcome_ledger,
+       confirmed_early_telegram_sends=confirmed_early_deliveries))
     except Exception:
      for symbol in bus.data:bus.rejections[symbol]='RECONNECT_SOURCE_UNVERIFIED'
     await asyncio.sleep(min(backoff,8))
@@ -324,7 +355,9 @@ async def live(*,limit,max_seconds):
    'outcome_telemetry':outcome_ledger.summary(),
    'early_outcome_telemetry':early_outcome_ledger.summary(),
    'telegram_sent':confirmed_deliveries,
+   'early_telegram_sent':confirmed_early_deliveries,
    'telegram_delivery_failures':delivery_failures,
+   'early_telegram_delivery_failures':early_delivery_failures,
    'orders':0}),flush=True)
 def main():
  p=argparse.ArgumentParser()
