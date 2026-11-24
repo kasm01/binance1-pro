@@ -63,10 +63,12 @@ def watch_rows(bus,allocations,asof_ms):
    'reason':x.get('reason'),'ret15_pct':x.get('ret15_pct'),
    'observed_at_ms':asof_ms})
  return result
-def make_status(bus,allocations,now,universe):
+def make_status(bus,allocations,now,universe,*,confirmed_telegram_sends=0):
  return {'schema':'manual_signal_center_status.v1',
   'manual_only':True,'order_authorized':False,
-  'telegram_sent':False,'updated_at_ms':now,
+  'telegram_sent':confirmed_telegram_sends>0,
+  'confirmed_telegram_sends_since_start':confirmed_telegram_sends,
+  'updated_at_ms':now,
   'selected_symbols':list(bus.data),
   'bot_allocations':allocations,
   'excluded_first15':universe['excluded_top_volume_15'],
@@ -114,7 +116,11 @@ async def live(*,limit,max_seconds):
   # flags are on. No READY or trading order can emerge from this runner.
   from tg_bot.signal_center_v1 import SignalDispatcher
   from tg_bot.transport_v1 import send as telegram_send
-  dispatcher=SignalDispatcher(sender=telegram_send,bot_allocations=alloc)
+  dispatcher=SignalDispatcher(sender=telegram_send,bot_allocations=alloc,
+                              cooldown_s=7200)
+  from tg_bot.pilot_watch_alert_v1 import dispatch_candidate
+  confirmed_deliveries=0
+  delivery_failures=0
   print(json.dumps({'event':'STARTED','symbols':len(symbols),
     'source':'ONE_MULTIPLEXED_WS','orders':0,'telegram':0}),flush=True)
   while max_seconds==0 or time.monotonic()-started<max_seconds:
@@ -149,29 +155,35 @@ async def live(*,limit,max_seconds):
        accepted+=1
        x=bus.analyze(symbol,asof_ms=ts)
        if time.monotonic()-last_status_write>=45:
-        atomic_status(make_status(bus,alloc,ts,u))
+        atomic_status(make_status(bus,alloc,ts,u,
+          confirmed_telegram_sends=confirmed_deliveries))
         last_status_write=time.monotonic()
        if x.get('status') not in ('STRONG_WATCH','EXTREME_WATCH','WATCH',
             'EXTREME_CAUTION_WATCH'):
         continue
        watch+=1
-       bot=next((bot for bot,syms in alloc.items()
-                 if bot.startswith(x.get('direction') or '?') and symbol in syms),None)
-       delivery='NO_MATCHING_STRATEGY'
-       if bot and x.get('status') in ('STRONG_WATCH','EXTREME_WATCH',
-                                     'EXTREME_CAUTION_WATCH'):
-        delivery=dispatcher.dispatch({
-         'symbol':symbol,'strategy':bot,'state':'WATCH',
-         'observed_at_ms':ts,
-         'price':bus.data[symbol][-1]['c'],
-         'reason':x['reason']+' / '+x['status']
-        },now_ms=ts)
+       bot=next((bot for bot in ('LONG1','SHORT1')
+                 if bot.startswith(x.get('direction') or '?') and
+                 symbol in alloc.get(bot,())),None)
+       delivery='NOT_LONG1_SHORT1_PILOT'
+       if bot:
+        # WATCH only, never READY; only strong momentum candidates.
+        delivery=await asyncio.to_thread(dispatch_candidate,dispatcher,
+          symbol,bot,x,bus.data[symbol][-1]['c'],
+          observed_at_ms=ts,allocations=alloc)
+        if delivery=='SENT':
+         confirmed_deliveries+=1
+         atomic_status(make_status(bus,alloc,ts,u,
+           confirmed_telegram_sends=confirmed_deliveries))
+        elif delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED'):
+         delivery_failures+=1
        print(json.dumps({'event':'WATCH_PREVIEW','symbol':symbol,
          'direction':x.get('direction'),'status':x['status'],
          'ret15_pct':x.get('ret15_pct'),
          'telegram_delivery':delivery,'orders':0}),flush=True)
       elif result in ('GAP_BLOCKED','FUTURE_OR_STALE_CLOSE','BAD_CANDLE'):
-       atomic_status(make_status(bus,alloc,ts,u))
+       atomic_status(make_status(bus,alloc,ts,u,
+         confirmed_telegram_sends=confirmed_deliveries))
    except (OSError,ConnectionClosed,asyncio.TimeoutError,ValueError) as e:
     reconnects+=1
     if max_seconds and time.monotonic()-started>=max_seconds:break
@@ -186,7 +198,8 @@ async def live(*,limit,max_seconds):
      dispatcher.bot_allocations=alloc
      refresh_deadline=time.monotonic()+1800
      last_healthy_packet=time.monotonic()
-     atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u))
+     atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
+       confirmed_telegram_sends=confirmed_deliveries))
     except Exception:
      for symbol in bus.data:bus.rejections[symbol]='RECONNECT_SOURCE_UNVERIFIED'
     await asyncio.sleep(min(backoff,8))
@@ -194,7 +207,9 @@ async def live(*,limit,max_seconds):
   print(json.dumps({'event':'STOPPED','symbols':len(symbols),
    'messages_received':total,'closed_bars_accepted':accepted,
    'watch_events':watch,'reconnects':reconnects,
-   'telegram_sent':0,'orders':0}),flush=True)
+   'telegram_sent':confirmed_deliveries,
+   'telegram_delivery_failures':delivery_failures,
+   'orders':0}),flush=True)
 def main():
  p=argparse.ArgumentParser()
  mode=p.add_mutually_exclusive_group(required=True)

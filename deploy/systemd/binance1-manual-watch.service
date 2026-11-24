@@ -7,6 +7,7 @@ Wants=network-online.target
 Type=simple
 WorkingDirectory=/home/kasm920/binance1-pro
 ExecStart=/home/kasm920/binance1-pro/venv/bin/python -u /home/kasm920/binance1-pro/scanner/manual_watch_runner_v1.py --live --limit 40 --max-seconds 0
+EnvironmentFile=-/home/kasm920/.config/binance1-manual-signal/telegram.env
 Environment=PYTHONPATH=/home/kasm920/binance1-pro
 Environment=TELEGRAM_SIGNAL_CENTER_ENABLED=0
 Environment=TELEGRAM_SIGNAL_CENTER_SEND_ENABLED=0
