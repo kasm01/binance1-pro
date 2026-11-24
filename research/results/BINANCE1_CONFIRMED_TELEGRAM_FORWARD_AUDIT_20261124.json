@@ -1,0 +1,412 @@
+{
+  "automatic_orders": 0,
+  "confirmed_sent": 9,
+  "events": [
+    {
+      "context": "ENTRY_PENDING",
+      "cost_state": null,
+      "direction": "SHORT",
+      "entry_reason": "late_extension_over_3atr",
+      "first_adverse_0.3_min": 1,
+      "first_adverse_0.5_min": 15,
+      "first_adverse_1.0_min": null,
+      "forward": {
+        "1": {
+          "mae_pct": -0.3344,
+          "mfe_pct": 0.0239,
+          "terminal_pct": -0.0119
+        },
+        "15": {
+          "mae_pct": -0.5733,
+          "mfe_pct": 0.4777,
+          "terminal_pct": -0.3464
+        },
+        "3": {
+          "mae_pct": -0.3344,
+          "mfe_pct": 0.4777,
+          "terminal_pct": 0.1314
+        },
+        "30": {
+          "mae_pct": -0.7763,
+          "mfe_pct": 0.7285,
+          "terminal_pct": -0.3464
+        },
+        "5": {
+          "mae_pct": -0.3344,
+          "mfe_pct": 0.4777,
+          "terminal_pct": 0.1672
+        },
+        "60": {
+          "mae_pct": -0.7763,
+          "mfe_pct": 4.2876,
+          "terminal_pct": 1.8392
+        }
+      },
+      "kind": "STRONG",
+      "prior15_directional_pct": 2.0358,
+      "reference_close_ms": 1795540800000,
+      "reference_price": 0.08373,
+      "sent_at_ms": 1795540800615,
+      "signal_time_tr": "20:20:00",
+      "symbol": "ELSAUSDT"
+    },
+    {
+      "context": "ENTRY_PENDING",
+      "cost_state": "NOT_QUERIED",
+      "direction": "SHORT",
+      "entry_reason": "last_closed_1m_not_directionally_confirmed",
+      "first_adverse_0.3_min": 6,
+      "first_adverse_0.5_min": 14,
+      "first_adverse_1.0_min": null,
+      "forward": {
+        "1": {
+          "mae_pct": -0.2985,
+          "mfe_pct": 0.1552,
+          "terminal_pct": -0.0
+        },
+        "15": {
+          "mae_pct": -0.5613,
+          "mfe_pct": 0.4896,
+          "terminal_pct": -0.2627
+        },
+        "3": {
+          "mae_pct": -0.2985,
+          "mfe_pct": 0.4896,
+          "terminal_pct": 0.2269
+        },
+        "30": {
+          "mae_pct": -0.7643,
+          "mfe_pct": 0.7404,
+          "terminal_pct": 0.0239
+        },
+        "5": {
+          "mae_pct": -0.2985,
+          "mfe_pct": 0.4896,
+          "terminal_pct": -0.215
+        },
+        "60": {
+          "mae_pct": -0.7643,
+          "mfe_pct": 4.299,
+          "terminal_pct": 1.8629
+        }
+      },
+      "kind": "STRONG",
+      "prior15_directional_pct": 2.2186,
+      "reference_close_ms": 1795540860000,
+      "reference_price": 0.08374,
+      "sent_at_ms": 1795540860809,
+      "signal_time_tr": "20:21:00",
+      "symbol": "ELSAUSDT"
+    },
+    {
+      "context": "ENTRY_PENDING",
+      "cost_state": "NOT_QUERIED",
+      "direction": "SHORT",
+      "entry_reason": "late_extension_over_3atr",
+      "first_adverse_0.3_min": 1,
+      "first_adverse_0.5_min": 2,
+      "first_adverse_1.0_min": 6,
+      "forward": {
+        "1": {
+          "mae_pct": -0.3583,
+          "mfe_pct": -0.0138,
+          "terminal_pct": -0.2894
+        },
+        "15": {
+          "mae_pct": -1.4744,
+          "mfe_pct": -0.0138,
+          "terminal_pct": -0.813
+        },
+        "3": {
+          "mae_pct": -0.7717,
+          "mfe_pct": -0.0138,
+          "terminal_pct": -0.5374
+        },
+        "30": {
+          "mae_pct": -1.7776,
+          "mfe_pct": -0.0138,
+          "terminal_pct": -1.061
+        },
+        "5": {
+          "mae_pct": -0.9646,
+          "mfe_pct": -0.0138,
+          "terminal_pct": -0.7579
+        },
+        "60": {
+          "mae_pct": -1.7776,
+          "mfe_pct": -0.0138,
+          "terminal_pct": -0.1102
+        }
+      },
+      "kind": "STRONG",
+      "prior15_directional_pct": 1.7066,
+      "reference_close_ms": 1795541040000,
+      "reference_price": 0.07257,
+      "sent_at_ms": 1795541043228,
+      "signal_time_tr": "20:24:03",
+      "symbol": "SYRUPUSDT"
+    },
+    {
+      "context": "COST_PENDING",
+      "cost_state": "COST_REJECT",
+      "direction": "LONG",
+      "entry_reason": "spread_fees_slippage_not_verified",
+      "first_adverse_0.3_min": 17,
+      "first_adverse_0.5_min": 17,
+      "first_adverse_1.0_min": 51,
+      "flow_state": null,
+      "forward": {
+        "1": {
+          "mae_pct": -0.1433,
+          "mfe_pct": 0.0764,
+          "terminal_pct": -0.0191
+        },
+        "15": {
+          "mae_pct": -0.2962,
+          "mfe_pct": 0.7739,
+          "terminal_pct": 0.5733
+        },
+        "3": {
+          "mae_pct": -0.2962,
+          "mfe_pct": 0.2389,
+          "terminal_pct": 0.0096
+        },
+        "30": {
+          "mae_pct": -0.9555,
+          "mfe_pct": 0.7739,
+          "terminal_pct": 0.3917
+        },
+        "5": {
+          "mae_pct": -0.2962,
+          "mfe_pct": 0.3631,
+          "terminal_pct": 0.086
+        },
+        "60": null
+      },
+      "kind": "STRONG",
+      "ledger_context": "COST_PENDING",
+      "ledger_invalid_reason": null,
+      "prior15_directional_pct": 1.3067,
+      "reference_close_ms": 1795541640000,
+      "reference_price": 1.0466,
+      "sent_at_ms": 1795541640513,
+      "signal_time_tr": "20:34:00",
+      "symbol": "ZROUSDT"
+    },
+    {
+      "context": "ENTRY_PENDING",
+      "cost_state": "NOT_QUERIED",
+      "direction": "SHORT",
+      "entry_reason": "late_extension_over_3atr",
+      "first_adverse_0.3_min": 2,
+      "first_adverse_0.5_min": 2,
+      "first_adverse_1.0_min": 20,
+      "flow_state": null,
+      "forward": {
+        "1": {
+          "mae_pct": -0.1918,
+          "mfe_pct": 0.4916,
+          "terminal_pct": 0.0719
+        },
+        "15": {
+          "mae_pct": -0.6595,
+          "mfe_pct": 2.7818,
+          "terminal_pct": 1.8945
+        },
+        "3": {
+          "mae_pct": -0.6595,
+          "mfe_pct": 0.4916,
+          "terminal_pct": -0.3837
+        },
+        "30": {
+          "mae_pct": -3.0695,
+          "mfe_pct": 2.7818,
+          "terminal_pct": -2.2542
+        },
+        "5": {
+          "mae_pct": -0.6595,
+          "mfe_pct": 1.307,
+          "terminal_pct": -0.2278
+        },
+        "60": null
+      },
+      "kind": "STRONG",
+      "ledger_context": "ENTRY_PENDING",
+      "ledger_invalid_reason": "market_feed_gap",
+      "prior15_directional_pct": 4.16,
+      "reference_close_ms": 1795541820000,
+      "reference_price": 0.0834,
+      "sent_at_ms": 1795541820314,
+      "signal_time_tr": "20:37:00",
+      "symbol": "AIOTUSDT"
+    },
+    {
+      "context": null,
+      "cost_state": null,
+      "direction": "LONG",
+      "entry_reason": null,
+      "first_adverse_0.3_min": 15,
+      "first_adverse_0.5_min": 15,
+      "first_adverse_1.0_min": null,
+      "flow_state": "FLOW_SUPPORTIVE",
+      "forward": {
+        "1": {
+          "mae_pct": -0.1582,
+          "mfe_pct": 0.1582,
+          "terminal_pct": 0.0758
+        },
+        "15": {
+          "mae_pct": -0.725,
+          "mfe_pct": 0.8766,
+          "terminal_pct": -0.4185
+        },
+        "3": {
+          "mae_pct": -0.1582,
+          "mfe_pct": 0.8107,
+          "terminal_pct": 0.2834
+        },
+        "30": null,
+        "5": {
+          "mae_pct": -0.1582,
+          "mfe_pct": 0.8107,
+          "terminal_pct": 0.2439
+        },
+        "60": null
+      },
+      "kind": "EARLY",
+      "ledger_context": "EARLY_UNCONFIRMED",
+      "ledger_invalid_reason": null,
+      "prior15_directional_pct": 1.1702,
+      "reference_close_ms": 1795543860000,
+      "reference_price": 3.0345,
+      "sent_at_ms": 1795543860249,
+      "signal_time_tr": "21:11:00",
+      "symbol": "PIEVERSEUSDT"
+    },
+    {
+      "context": null,
+      "cost_state": null,
+      "direction": "LONG",
+      "entry_reason": null,
+      "first_adverse_0.3_min": 4,
+      "first_adverse_0.5_min": 6,
+      "first_adverse_1.0_min": null,
+      "flow_state": "FLOW_MIXED",
+      "forward": {
+        "1": {
+          "mae_pct": -0.1053,
+          "mfe_pct": 0.6491,
+          "terminal_pct": 0.0702
+        },
+        "15": {
+          "mae_pct": -0.8947,
+          "mfe_pct": 0.6491,
+          "terminal_pct": -0.4386
+        },
+        "3": {
+          "mae_pct": -0.2456,
+          "mfe_pct": 0.6491,
+          "terminal_pct": -0.0351
+        },
+        "30": null,
+        "5": {
+          "mae_pct": -0.4561,
+          "mfe_pct": 0.6491,
+          "terminal_pct": -0.386
+        },
+        "60": null
+      },
+      "kind": "EARLY",
+      "ledger_context": "EARLY_UNCONFIRMED",
+      "ledger_invalid_reason": null,
+      "prior15_directional_pct": 1.2433,
+      "reference_close_ms": 1795544100000,
+      "reference_price": 0.0057,
+      "sent_at_ms": 1795544101708,
+      "signal_time_tr": "21:15:01",
+      "symbol": "SAHARAUSDT"
+    },
+    {
+      "context": null,
+      "cost_state": null,
+      "direction": "SHORT",
+      "entry_reason": null,
+      "first_adverse_0.3_min": null,
+      "first_adverse_0.5_min": null,
+      "first_adverse_1.0_min": null,
+      "flow_state": "FLOW_SUPPORTIVE",
+      "forward": {
+        "1": {
+          "mae_pct": -0.2035,
+          "mfe_pct": 1.119,
+          "terminal_pct": 0.8138
+        },
+        "15": null,
+        "3": {
+          "mae_pct": -0.2035,
+          "mfe_pct": 2.238,
+          "terminal_pct": 1.7294
+        },
+        "30": null,
+        "5": {
+          "mae_pct": -0.2035,
+          "mfe_pct": 2.8484,
+          "terminal_pct": 1.4242
+        },
+        "60": null
+      },
+      "kind": "EARLY",
+      "ledger_context": "EARLY_UNCONFIRMED",
+      "ledger_invalid_reason": null,
+      "prior15_directional_pct": 1.7,
+      "reference_close_ms": 1795544340000,
+      "reference_price": 0.00983,
+      "sent_at_ms": 1795544340483,
+      "signal_time_tr": "21:19:00",
+      "symbol": "MONUSDT"
+    },
+    {
+      "context": null,
+      "cost_state": null,
+      "direction": "LONG",
+      "entry_reason": null,
+      "first_adverse_0.3_min": 1,
+      "first_adverse_0.5_min": 1,
+      "first_adverse_1.0_min": null,
+      "flow_state": "FLOW_MIXED",
+      "forward": {
+        "1": {
+          "mae_pct": -0.5921,
+          "mfe_pct": 2.8419,
+          "terminal_pct": 1.1841
+        },
+        "15": null,
+        "3": {
+          "mae_pct": -0.5921,
+          "mfe_pct": 2.8419,
+          "terminal_pct": 1.6578
+        },
+        "30": null,
+        "5": {
+          "mae_pct": -0.5921,
+          "mfe_pct": 2.8419,
+          "terminal_pct": 1.1249
+        },
+        "60": null
+      },
+      "kind": "EARLY",
+      "ledger_context": "EARLY_UNCONFIRMED",
+      "ledger_invalid_reason": null,
+      "prior15_directional_pct": 2.1161,
+      "reference_close_ms": 1795544580000,
+      "reference_price": 0.03378,
+      "sent_at_ms": 1795544580249,
+      "signal_time_tr": "21:23:00",
+      "symbol": "GUAUSDT"
+    }
+  ],
+  "exchange_asof_utc": "2026-11-24T18:30:59.853000+00:00",
+  "limitations": "OHLC high/low MFE MAE not fills, future partial horizons null; no fees/slippage/leverage",
+  "public_market_requests": 9,
+  "schema": "telegram_verified_manual_watch_followthrough_v1"
+}
