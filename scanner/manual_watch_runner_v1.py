@@ -137,6 +137,8 @@ async def live(*,limit,max_seconds):
   last_healthy_packet=time.monotonic()
   last_status_write=time.monotonic()
   context_counts={}
+  early_counters={}
+  early_last_seen={}
   cost_counts={}
   latest_cost_checks={}
   last_public_book_request=0.0
@@ -144,6 +146,7 @@ async def live(*,limit,max_seconds):
   # Telegram transport remains inert unless BOTH explicit signal-center
   # flags are on. No READY or trading order can emerge from this runner.
   from scanner.context_entry_shadow_v1 import assess
+  from scanner.early_motion_shadow_v1 import inspect_early
   from scanner.cost_quote_public_v1 import check_candidate
   from tg_bot.signal_center_v1 import SignalDispatcher
   from tg_bot.transport_v1 import send as telegram_send
@@ -190,6 +193,18 @@ async def live(*,limit,max_seconds):
        outcome_ledger.advance(symbol,list(bus.data[symbol]),
                               last_close_ms=last_close_ms)
        x=bus.analyze(symbol,asof_ms=ts)
+       early=inspect_early(symbol,list(bus.data[symbol]),observed_at_ms=ts)
+       if early['state']=='EARLY_CANDIDATE_SHADOW':
+        early_counters[early['direction']]=early_counters.get(early['direction'],0)+1
+        early_key=(symbol,early['direction'])
+        if ts-early_last_seen.get(early_key,0)>=30*60000:
+         early_last_seen[early_key]=ts
+         print(json.dumps({'event':'EARLY_SHADOW_PREVIEW',
+           'symbol':symbol,'direction':early['direction'],
+           'ret3_pct':early['ret3_pct'],
+           'ret15_pct':early['ret15_pct'],
+           'reason':early['reason'],
+           'telegram_sent':False,'orders':0}),flush=True)
        if time.monotonic()-last_status_write>=45:
         atomic_status(make_status(bus,alloc,ts,u,
           confirmed_telegram_sends=confirmed_deliveries,
@@ -225,7 +240,8 @@ async def live(*,limit,max_seconds):
         # WATCH only, never READY; only strong momentum candidates.
         delivery=await asyncio.to_thread(dispatch_candidate,dispatcher,
           symbol,bot,x,bus.data[symbol][-1]['c'],
-          observed_at_ms=ts,allocations=alloc)
+          observed_at_ms=ts,allocations=alloc,
+          context=research,cost=cost_result)
         if delivery in ('SENT','SENT_PERSIST_FAILED'):
          confirmed_deliveries+=1
          atomic_status(make_status(bus,alloc,ts,u,
@@ -277,6 +293,7 @@ async def live(*,limit,max_seconds):
    'messages_received':total,'closed_bars_accepted':accepted,
    'watch_events':watch,'reconnects':reconnects,
    'context_shadow_counts':context_counts,
+   'early_shadow_counts':early_counters,
    'cost_shadow_counts':cost_counts,
    'outcome_telemetry':outcome_ledger.summary(),
    'telegram_sent':confirmed_deliveries,
