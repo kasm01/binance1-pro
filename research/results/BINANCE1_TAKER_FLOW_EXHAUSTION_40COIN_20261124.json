@@ -1,0 +1,313 @@
+{
+  "all_early": {
+    "mae15_mean_pct": -0.9827,
+    "mfe15_mean_pct": 0.7607,
+    "n": 173,
+    "reversal_count": 109,
+    "terminal15_mean_pct": -0.2249
+  },
+  "coins_failed": [],
+  "coins_success": 40,
+  "flow_groups": {
+    "FLOW_EXHAUSTION_CAUTION": {
+      "mae15_mean_pct": -0.8416,
+      "mfe15_mean_pct": 0.4776,
+      "n": 9,
+      "reversal_count": 9,
+      "terminal15_mean_pct": -0.5152
+    },
+    "FLOW_MIXED": {
+      "mae15_mean_pct": -1.0417,
+      "mfe15_mean_pct": 0.9208,
+      "n": 45,
+      "reversal_count": 27,
+      "terminal15_mean_pct": -0.1936
+    },
+    "FLOW_OPPOSING": {
+      "mae15_mean_pct": -0.7015,
+      "mfe15_mean_pct": 0.3878,
+      "n": 6,
+      "reversal_count": 5,
+      "terminal15_mean_pct": -0.2422
+    },
+    "FLOW_SUPPORTIVE": {
+      "mae15_mean_pct": -0.9853,
+      "mfe15_mean_pct": 0.7394,
+      "n": 113,
+      "reversal_count": 68,
+      "terminal15_mean_pct": -0.2134
+    }
+  },
+  "no_proof_of_profitability": true,
+  "no_ready": true,
+  "per_symbol": [
+    {
+      "candidate_count": 3,
+      "flow_supportive": 2,
+      "symbol": "GUAUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 1,
+      "symbol": "DOSUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 2,
+      "symbol": "PHAROSUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 3,
+      "symbol": "ELSAUSDT"
+    },
+    {
+      "candidate_count": 3,
+      "flow_supportive": 1,
+      "symbol": "PIEVERSEUSDT"
+    },
+    {
+      "candidate_count": 1,
+      "flow_supportive": 1,
+      "symbol": "ARIAUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 4,
+      "symbol": "ATUSDT"
+    },
+    {
+      "candidate_count": 3,
+      "flow_supportive": 0,
+      "symbol": "AKEUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 5,
+      "symbol": "ZROUSDT"
+    },
+    {
+      "candidate_count": 1,
+      "flow_supportive": 1,
+      "symbol": "MONUSDT"
+    },
+    {
+      "candidate_count": 7,
+      "flow_supportive": 5,
+      "symbol": "SYRUPUSDT"
+    },
+    {
+      "candidate_count": 5,
+      "flow_supportive": 3,
+      "symbol": "PROMUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "ADAUSDT"
+    },
+    {
+      "candidate_count": 0,
+      "flow_supportive": 0,
+      "symbol": "AIOTUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 4,
+      "symbol": "SUIUSDT"
+    },
+    {
+      "candidate_count": 5,
+      "flow_supportive": 3,
+      "symbol": "UNIUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "LINKUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 3,
+      "symbol": "WLDUSDT"
+    },
+    {
+      "candidate_count": 3,
+      "flow_supportive": 3,
+      "symbol": "CYSUSDT"
+    },
+    {
+      "candidate_count": 5,
+      "flow_supportive": 3,
+      "symbol": "AVAXUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 5,
+      "symbol": "ONUSDT"
+    },
+    {
+      "candidate_count": 3,
+      "flow_supportive": 3,
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "candidate_count": 7,
+      "flow_supportive": 6,
+      "symbol": "ACEUSDT"
+    },
+    {
+      "candidate_count": 5,
+      "flow_supportive": 4,
+      "symbol": "TAOUSDT"
+    },
+    {
+      "candidate_count": 1,
+      "flow_supportive": 1,
+      "symbol": "PAXGUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "INJUSDT"
+    },
+    {
+      "candidate_count": 8,
+      "flow_supportive": 5,
+      "symbol": "PUMPUSDT"
+    },
+    {
+      "candidate_count": 5,
+      "flow_supportive": 2,
+      "symbol": "FILUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "LTCUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "TRUMPUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 4,
+      "symbol": "SAHARAUSDT"
+    },
+    {
+      "candidate_count": 5,
+      "flow_supportive": 3,
+      "symbol": "ARBUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 4,
+      "symbol": "VVVUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "INXUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "BCHUSDT"
+    },
+    {
+      "candidate_count": 3,
+      "flow_supportive": 2,
+      "symbol": "XMRUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 3,
+      "symbol": "BULLAUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 2,
+      "symbol": "WLFIUSDT"
+    },
+    {
+      "candidate_count": 4,
+      "flow_supportive": 1,
+      "symbol": "LITUSDT"
+    },
+    {
+      "candidate_count": 6,
+      "flow_supportive": 3,
+      "symbol": "QNTUSDT"
+    }
+  ],
+  "public_requests": 41,
+  "real_trades": 0,
+  "sample": "most recent approximately 12.5 hours, selected 40 symbols",
+  "schema": "manual_early_taker_flow_research.v1",
+  "sources": "Binance public 1m closed kline index10 taker buy quote",
+  "telegram_sent": false,
+  "time_halves": {
+    "first": {
+      "FLOW_EXHAUSTION_CAUTION": {
+        "mae15_mean_pct": -0.5922,
+        "mfe15_mean_pct": 0.8412,
+        "n": 2,
+        "reversal_count": 2,
+        "terminal15_mean_pct": -0.2917
+      },
+      "FLOW_MIXED": {
+        "mae15_mean_pct": -1.7521,
+        "mfe15_mean_pct": 0.9095,
+        "n": 14,
+        "reversal_count": 9,
+        "terminal15_mean_pct": -0.6578
+      },
+      "FLOW_OPPOSING": {
+        "mae15_mean_pct": -0.6979,
+        "mfe15_mean_pct": 0.4926,
+        "n": 1,
+        "reversal_count": 1,
+        "terminal15_mean_pct": -0.6158
+      },
+      "FLOW_SUPPORTIVE": {
+        "mae15_mean_pct": -0.8369,
+        "mfe15_mean_pct": 0.8478,
+        "n": 32,
+        "reversal_count": 18,
+        "terminal15_mean_pct": -0.1864
+      }
+    },
+    "second": {
+      "FLOW_EXHAUSTION_CAUTION": {
+        "mae15_mean_pct": -0.9128,
+        "mfe15_mean_pct": 0.3737,
+        "n": 7,
+        "reversal_count": 7,
+        "terminal15_mean_pct": -0.5791
+      },
+      "FLOW_MIXED": {
+        "mae15_mean_pct": -0.7209,
+        "mfe15_mean_pct": 0.9259,
+        "n": 31,
+        "reversal_count": 18,
+        "terminal15_mean_pct": 0.0161
+      },
+      "FLOW_OPPOSING": {
+        "mae15_mean_pct": -0.7023,
+        "mfe15_mean_pct": 0.3668,
+        "n": 5,
+        "reversal_count": 4,
+        "terminal15_mean_pct": -0.1675
+      },
+      "FLOW_SUPPORTIVE": {
+        "mae15_mean_pct": -1.0439,
+        "mfe15_mean_pct": 0.6965,
+        "n": 81,
+        "reversal_count": 50,
+        "terminal15_mean_pct": -0.2241
+      }
+    }
+  }
+}

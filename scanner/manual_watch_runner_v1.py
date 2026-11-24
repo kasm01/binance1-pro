@@ -142,6 +142,7 @@ async def live(*,limit,max_seconds):
   last_status_write=time.monotonic()
   context_counts={}
   early_counters={}
+  flow_shadow_counters={}
   early_last_seen={}
   cost_counts={}
   latest_cost_checks={}
@@ -151,6 +152,7 @@ async def live(*,limit,max_seconds):
   # flags are on. No READY or trading order can emerge from this runner.
   from scanner.context_entry_shadow_v1 import assess
   from scanner.early_motion_shadow_v1 import inspect_early
+  from scanner.taker_flow_quality_shadow_v1 import assess_flow
   from scanner.cost_quote_public_v1 import check_candidate
   from tg_bot.signal_center_v1 import SignalDispatcher
   from tg_bot.transport_v1 import send as telegram_send
@@ -202,10 +204,13 @@ async def live(*,limit,max_seconds):
        x=bus.analyze(symbol,asof_ms=ts)
        early=inspect_early(symbol,list(bus.data[symbol]),observed_at_ms=ts)
        if early['state']=='EARLY_CANDIDATE_SHADOW':
+        flow_shadow=assess_flow(list(bus.data[symbol]),early['direction'],
+                                observed_at_ms=ts)
+        flow_shadow_counters[flow_shadow['state']]=flow_shadow_counters.get(flow_shadow['state'],0)+1
         early_outcome_result=early_outcome_ledger.observe_early(
           symbol,early['direction'],early,
           reference_close_ms=last_close_ms,
-          reference_price=bus.data[symbol][-1]['c'])
+          reference_price=bus.data[symbol][-1]['c'],flow=flow_shadow)
         early_counters[early['direction']]=early_counters.get(early['direction'],0)+1
         early_key=(symbol,early['direction'])
         if ts-early_last_seen.get(early_key,0)>=30*60000:
@@ -216,6 +221,9 @@ async def live(*,limit,max_seconds):
            'ret15_pct':early['ret15_pct'],
            'reason':early['reason'],
            'outcome_tracking':early_outcome_result,
+           'taker_flow_shadow_state':flow_shadow['state'],
+           'taker_flow_shadow_reason':flow_shadow['reason'],
+           'taker_flow_directional_3m':flow_shadow.get('directional_taker_imbalance_3m'),
            'telegram_sent':False,'orders':0}),flush=True)
        if time.monotonic()-last_status_write>=45:
         atomic_status(make_status(bus,alloc,ts,u,
@@ -311,6 +319,7 @@ async def live(*,limit,max_seconds):
    'watch_events':watch,'reconnects':reconnects,
    'context_shadow_counts':context_counts,
    'early_shadow_counts':early_counters,
+   'early_flow_shadow_counts':flow_shadow_counters,
    'cost_shadow_counts':cost_counts,
    'outcome_telemetry':outcome_ledger.summary(),
    'early_outcome_telemetry':early_outcome_ledger.summary(),

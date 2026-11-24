@@ -112,7 +112,8 @@ class OutcomeLedger:
    'manual_only':True,'trade_executed':False})
   if not self._persist():return 'LEDGER_WRITE_FAILED'
   return 'OBSERVED'
- def observe_early(self,symbol,direction,early,*,reference_close_ms,reference_price):
+ def observe_early(self,symbol,direction,early,*,
+                   reference_close_ms,reference_price,flow=None):
   """Separate SHADOW-only 3m early discovery, no Telegram and no orders."""
   if not self.healthy:return 'LEDGER_UNAVAILABLE'
   if len(self.events)>=MAX_EVENTS:
@@ -132,6 +133,9 @@ class OutcomeLedger:
    return 'SOURCE_UNVERIFIED'
   price=number(reference_price)
   if price is None or price<=0:return 'SOURCE_UNVERIFIED'
+  if flow is not None and (not isinstance(flow,dict) or
+       flow.get('ready') is not False or flow.get('order_authorized') is not False):
+   return 'FLOW_UNVERIFIED'
   if any(e['symbol']==symbol and e['direction']==direction and
          0<=reference_close_ms-e['reference_close_ms']<self.episode_cooldown_ms
          for e in self.events):
@@ -141,7 +145,11 @@ class OutcomeLedger:
    'watch_status':'EARLY_CANDIDATE_SHADOW',
    'context_state':'EARLY_UNCONFIRMED','context_reason':early.get('reason'),
    'outcomes':{},'final':False,'invalid_reason':None,'manual_only':True,
-   'trade_executed':False,'telegram_sent':False,'early_shadow_only':True})
+   'trade_executed':False,'telegram_sent':False,'early_shadow_only':True,
+   'flow_shadow_state':flow.get('state','FLOW_NOT_CHECKED') if flow else 'FLOW_NOT_CHECKED',
+   'flow_shadow_reason':flow.get('reason','not_checked') if flow else 'not_checked',
+   'directional_taker_imbalance_3m':
+      flow.get('directional_taker_imbalance_3m') if flow else None})
   if not self._persist():return 'LEDGER_WRITE_FAILED'
   return 'OBSERVED'
 

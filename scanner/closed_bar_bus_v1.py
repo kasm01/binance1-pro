@@ -42,7 +42,9 @@ class ClosedBarBus:
    if type(observed_at_ms) is not int or not (t+MS<=observed_at_ms<=t+MS+120000):
     return 'FUTURE_OR_STALE_CLOSE'
    raw=[[t,k['o'],k['h'],k['l'],k['c'],k.get('v','0'),
-     end,k['q']]]
+     end,k['q'],k.get('n',0),k.get('V','0'),k['Q']]
+     if 'Q' in k else
+     [t,k['o'],k['h'],k['l'],k['c'],k.get('v','0'),end,k['q']]]
    parsed=parse_closed_klines(raw,asof_ms=observed_at_ms)
    if len(parsed)!=1:return 'BAD_CANDLE'
    bar=parsed[0]

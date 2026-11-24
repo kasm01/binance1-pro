@@ -30,7 +30,16 @@ def parse_closed_klines(raw,*,asof_ms):
    raise ValueError('invalid price or volume')
   if l>min(o,c) or h<max(o,c,l):raise ValueError('invalid OHLC')
   if result and t!=result[-1]['t']+MS:raise ValueError('missing source bar')
-  result.append({'t':t,'o':o,'h':h,'l':l,'c':c,'quote_volume':q})
+  bar={'t':t,'o':o,'h':h,'l':l,'c':c,'quote_volume':q}
+  # Binance USD-M REST kline index 10 = taker BUY quote volume.
+  # Older fixtures intentionally omit this field: remain compatible,
+  # but NEVER fabricate flow from total volume or candle direction.
+  if len(entry)>10:
+   taker_buy=number(entry[10])
+   if taker_buy is None or taker_buy<0 or taker_buy>q*(1+1e-7)+1e-7:
+    raise ValueError('invalid taker buy quote volume')
+   bar['taker_buy_quote_volume']=taker_buy
+  result.append(bar)
  return result
 
 def evaluate(*,selected_symbols,bot_allocations,klines_by_symbol,

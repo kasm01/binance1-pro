@@ -15,11 +15,15 @@ class Test(unittest.TestCase):
    f=Path(p)/'early.json'
    x=OutcomeLedger(f)
    assert x.observe_early('AAAUSDT','LONG',early(),
-     reference_close_ms=START,reference_price=100)=='OBSERVED'
+     reference_close_ms=START,reference_price=100,
+     flow={'state':'FLOW_SUPPORTIVE','reason':'supportive',
+       'directional_taker_imbalance_3m':0.32,
+       'ready':False,'order_authorized':False})=='OBSERVED'
    assert x.observe_early('AAAUSDT','LONG',early(),
      reference_close_ms=START,reference_price=100)=='EPISODE_DEDUPED'
    y=OutcomeLedger(f)
    assert y.healthy and len(y.events)==1
+   assert y.events[0]['flow_shadow_state']=='FLOW_SUPPORTIVE'
    assert y.events[0]['telegram_sent'] is False
    assert y.events[0]['trade_executed'] is False
    assert y.advance('AAAUSDT',[candle(i) for i in range(5)],
