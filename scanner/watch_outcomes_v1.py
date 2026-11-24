@@ -179,6 +179,27 @@ class OutcomeLedger:
     e['final']=True
   if changed and not self._persist():return -1
   return changed
+ def revalidate_early(self,symbol,bars,*,last_close_ms):
+  # Separate checkpoint history; do not replace or modify existing
+  # outcome MFE/MAE logic, and never send Telegram/READY.
+  from scanner.early_revalidation_shadow_v1 import CHECKPOINTS,revalidate
+  if not self.healthy or not isinstance(bars,list):return 0
+  changed=0
+  for e in self.events:
+   if (e['symbol']!=symbol or e.get('watch_status')!='EARLY_CANDIDATE_SHADOW'
+       or e.get('invalid_reason')):continue
+   checks=e.setdefault('revalidation_checkpoints',{})
+   for point in CHECKPOINTS:
+    key=str(point)
+    if key in checks or last_close_ms<e['reference_close_ms']+point*MS:continue
+    result=revalidate(e,bars,checkpoint=point)
+    # Do not write invented checkpoint results if history is absent;
+    # explicitly record invalid provenance so absence can be audited.
+    checks[key]=result
+    changed+=1
+  if changed and not self._persist():return -1
+  return changed
+
  def invalidate_symbol(self,symbol,reason):
   if not self.healthy:return False
   changes=0

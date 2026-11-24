@@ -210,6 +210,8 @@ async def live(*,limit,max_seconds):
                               last_close_ms=last_close_ms)
        early_outcome_ledger.advance(symbol,list(bus.data[symbol]),
                               last_close_ms=last_close_ms)
+       early_outcome_ledger.revalidate_early(
+         symbol,list(bus.data[symbol]),last_close_ms=last_close_ms)
        x=bus.analyze(symbol,asof_ms=ts)
        early=inspect_early(symbol,list(bus.data[symbol]),observed_at_ms=ts)
        if early['state']=='EARLY_CANDIDATE_SHADOW':
