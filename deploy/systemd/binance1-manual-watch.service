@@ -1,0 +1,22 @@
+[Unit]
+Description=Binance1 manual-only shared 40 coin public market WATCH
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/kasm920/binance1-pro
+ExecStart=/home/kasm920/binance1-pro/venv/bin/python -u /home/kasm920/binance1-pro/scanner/manual_watch_runner_v1.py --live --limit 40 --max-seconds 0
+Environment=PYTHONPATH=/home/kasm920/binance1-pro
+Environment=TELEGRAM_SIGNAL_CENTER_ENABLED=0
+Environment=TELEGRAM_SIGNAL_CENTER_SEND_ENABLED=0
+Environment=TELEGRAM_READONLY_COMMANDS_ENABLED=0
+Environment=PYTHONDONTWRITEBYTECODE=1
+Restart=on-failure
+RestartSec=15
+TimeoutStopSec=15
+NoNewPrivileges=true
+UMask=0077
+
+[Install]
+WantedBy=default.target
