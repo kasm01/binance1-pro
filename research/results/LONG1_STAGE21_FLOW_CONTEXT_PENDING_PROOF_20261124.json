@@ -1,0 +1,3186 @@
+{
+  "additional_services": 0,
+  "archive_flow_diagnostics": {
+    "15M_60M_CONTEXT_NEGATIVE": 20,
+    "PRICE_REVERSAL_NOT_SUPPORTED": 12
+  },
+  "archive_proxy_not_real_trade_entry": true,
+  "archive_time_asof_closed_only": true,
+  "binance_api_calls": 0,
+  "details": [
+    {
+      "archive_close3": {
+        "c": 3.715,
+        "close_ms": 1794398219999,
+        "h": 3.754,
+        "independently_live_exchange_verified": false,
+        "l": 3.713,
+        "minutes": 3,
+        "o": 3.738,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794398040000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.738,
+        "close_ms": 1794398099999,
+        "h": 3.764,
+        "independently_live_exchange_verified": false,
+        "l": 3.67,
+        "minutes": 5,
+        "o": 3.67,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794397800000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794398339999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.39274829,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794397440000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794398339999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.33818802,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794398160000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794398339999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.24387954,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794398040000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794398339999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.32080442,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794394740000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "candle_not_fresh_asof",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-11T14:57:05+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794398340000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-11T15:09:21+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.752,
+        "close_ms": 1794399479999,
+        "h": 3.762,
+        "independently_live_exchange_verified": false,
+        "l": 3.738,
+        "minutes": 3,
+        "o": 3.758,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794399300000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.759,
+        "close_ms": 1794399299999,
+        "h": 3.775,
+        "independently_live_exchange_verified": false,
+        "l": 3.755,
+        "minutes": 5,
+        "o": 3.768,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794399000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.03735546,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794398640000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.18768318,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794399360000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08781232,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794399240000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.23759934,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794395940000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "candle_not_fresh_asof",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-11T15:15:23+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794399540000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.752,
+        "close_ms": 1794399479999,
+        "h": 3.762,
+        "independently_live_exchange_verified": false,
+        "l": 3.738,
+        "minutes": 3,
+        "o": 3.758,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794399300000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.759,
+        "close_ms": 1794399299999,
+        "h": 3.775,
+        "independently_live_exchange_verified": false,
+        "l": 3.755,
+        "minutes": 5,
+        "o": 3.768,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794399000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.03735546,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794398640000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.18768318,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794399360000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08781232,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794399240000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794399539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.23759934,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794395940000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "candle_not_fresh_asof",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-11T15:18:06+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794399540000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-11T15:27:11+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-11T15:33:15+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-11T16:03:07+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-11T16:06:01+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.753,
+        "close_ms": 1794407939999,
+        "h": 3.758,
+        "independently_live_exchange_verified": false,
+        "l": 3.728,
+        "minutes": 3,
+        "o": 3.738,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794407760000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.746,
+        "close_ms": 1794407999999,
+        "h": 3.758,
+        "independently_live_exchange_verified": false,
+        "l": 3.728,
+        "minutes": 5,
+        "o": 3.734,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794407700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794408059999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.11297026,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794407160000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794408059999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.16232401,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794407880000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794408059999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.02351883,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794407760000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794408059999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.02070288,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794404460000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-11T17:36:10+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794408060000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T01:36:16+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T01:42:08+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T01:45:05+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T01:51:14+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T02:09:19+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.558,
+        "close_ms": 1794439979999,
+        "h": 3.568,
+        "independently_live_exchange_verified": false,
+        "l": 3.542,
+        "minutes": 3,
+        "o": 3.546,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794439800000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.546,
+        "close_ms": 1794439799999,
+        "h": 3.549,
+        "independently_live_exchange_verified": false,
+        "l": 3.528,
+        "minutes": 5,
+        "o": 3.539,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794439500000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.07631354,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794439140000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.33429265,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794439860000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.28910865,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794439740000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.12859645,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794436440000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T02:15:06+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794440040000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.558,
+        "close_ms": 1794439979999,
+        "h": 3.568,
+        "independently_live_exchange_verified": false,
+        "l": 3.542,
+        "minutes": 3,
+        "o": 3.546,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794439800000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.546,
+        "close_ms": 1794439799999,
+        "h": 3.549,
+        "independently_live_exchange_verified": false,
+        "l": 3.528,
+        "minutes": 5,
+        "o": 3.539,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794439500000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.07631354,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794439140000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.33429265,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794439860000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.28910865,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794439740000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794440039999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.12859645,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794436440000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T02:21:15+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794440040000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T03:06:07+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T04:12:11+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.568,
+        "close_ms": 1794451319999,
+        "h": 3.581,
+        "independently_live_exchange_verified": false,
+        "l": 3.565,
+        "minutes": 3,
+        "o": 3.58,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794451140000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.569,
+        "close_ms": 1794451199999,
+        "h": 3.604,
+        "independently_live_exchange_verified": false,
+        "l": 3.567,
+        "minutes": 5,
+        "o": 3.604,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794450900000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794451439999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.01193309,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794450540000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794451439999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.3776691,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794451260000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794451439999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.11098235,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794451140000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794451439999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02586142,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794447840000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T05:39:06+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794451440000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.568,
+        "close_ms": 1794452399999,
+        "h": 3.568,
+        "independently_live_exchange_verified": false,
+        "l": 3.559,
+        "minutes": 3,
+        "o": 3.564,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794452220000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.568,
+        "close_ms": 1794452399999,
+        "h": 3.568,
+        "independently_live_exchange_verified": false,
+        "l": 3.559,
+        "minutes": 5,
+        "o": 3.564,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794452100000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794452519999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08824297,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794451620000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794452519999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.27667316,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794452340000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794452519999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.16337466,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794452220000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794452519999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02175362,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794448920000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T05:42:21+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794452520000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.523,
+        "close_ms": 1794467699999,
+        "h": 3.524,
+        "independently_live_exchange_verified": false,
+        "l": 3.516,
+        "minutes": 3,
+        "o": 3.517,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794467520000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.523,
+        "close_ms": 1794467699999,
+        "h": 3.524,
+        "independently_live_exchange_verified": false,
+        "l": 3.514,
+        "minutes": 5,
+        "o": 3.519,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794467400000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794467699999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.24599074,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794466800000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794467699999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.6075721,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794467520000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794467699999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.36385872,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794467400000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794467699999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.11498975,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794464100000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T09:57:12+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794467700000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.469,
+        "close_ms": 1794473459999,
+        "h": 3.472,
+        "independently_live_exchange_verified": false,
+        "l": 3.466,
+        "minutes": 3,
+        "o": 3.467,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794473280000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.47,
+        "close_ms": 1794473399999,
+        "h": 3.472,
+        "independently_live_exchange_verified": false,
+        "l": 3.458,
+        "minutes": 5,
+        "o": 3.467,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794473100000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794473579999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.09853059,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794472680000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794473579999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.26235526,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794473400000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794473579999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.26016779,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794473280000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794473579999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.12810842,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794469980000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T11:27:05+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794473580000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T14:33:20+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T14:39:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "archive_close3": {
+        "c": 3.445,
+        "close_ms": 1794485339999,
+        "h": 3.447,
+        "independently_live_exchange_verified": false,
+        "l": 3.432,
+        "minutes": 3,
+        "o": 3.434,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794485160000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.443,
+        "close_ms": 1794485399999,
+        "h": 3.448,
+        "independently_live_exchange_verified": false,
+        "l": 3.432,
+        "minutes": 5,
+        "o": 3.433,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794485100000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.28092245,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794484560000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.3407444,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794485280000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.45773019,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794485160000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.13894998,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794481860000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T14:42:02+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794485460000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.445,
+        "close_ms": 1794485339999,
+        "h": 3.447,
+        "independently_live_exchange_verified": false,
+        "l": 3.432,
+        "minutes": 3,
+        "o": 3.434,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794485160000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.443,
+        "close_ms": 1794485399999,
+        "h": 3.448,
+        "independently_live_exchange_verified": false,
+        "l": 3.432,
+        "minutes": 5,
+        "o": 3.433,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794485100000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.28092245,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794484560000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.3407444,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794485280000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.45773019,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794485160000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794485459999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.13894998,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794481860000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T14:54:15+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794485460000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T15:27:19+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T16:00:06+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T16:03:05+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T16:06:20+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T16:09:04+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T16:12:05+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T16:15:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T17:12:17+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.398,
+        "close_ms": 1794494159999,
+        "h": 3.406,
+        "independently_live_exchange_verified": false,
+        "l": 3.367,
+        "minutes": 3,
+        "o": 3.372,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794493980000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.385,
+        "close_ms": 1794494099999,
+        "h": 3.388,
+        "independently_live_exchange_verified": false,
+        "l": 3.359,
+        "minutes": 5,
+        "o": 3.364,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794493800000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08031189,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794493260000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.50554286,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794493980000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.4242194,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794493860000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02637854,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794490560000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T17:18:08+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794494160000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.398,
+        "close_ms": 1794494159999,
+        "h": 3.406,
+        "independently_live_exchange_verified": false,
+        "l": 3.367,
+        "minutes": 3,
+        "o": 3.372,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794493980000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.385,
+        "close_ms": 1794494099999,
+        "h": 3.388,
+        "independently_live_exchange_verified": false,
+        "l": 3.359,
+        "minutes": 5,
+        "o": 3.364,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794493800000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08031189,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794493260000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.50554286,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794493980000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.4242194,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794493860000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794494159999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02637854,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794490560000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-12T17:24:20+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794494160000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T17:45:20+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T17:48:00+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T18:03:07+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-12T20:03:18+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T00:54:07+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T00:57:01+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T05:45:14+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T05:48:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T06:15:06+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T06:24:15+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T06:27:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T06:51:20+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T06:54:16+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.313,
+        "close_ms": 1794543299999,
+        "h": 3.334,
+        "independently_live_exchange_verified": false,
+        "l": 3.311,
+        "minutes": 3,
+        "o": 3.333,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794543120000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.313,
+        "close_ms": 1794543299999,
+        "h": 3.338,
+        "independently_live_exchange_verified": false,
+        "l": 3.311,
+        "minutes": 5,
+        "o": 3.33,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794543000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794543359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08816167,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794542460000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794543359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.01736435,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794543180000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794543359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.06783432,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794543060000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794543359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.09158439,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794539760000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "candle_not_fresh_asof",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T07:15:14+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794543360000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T07:24:19+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T07:27:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T07:30:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "archive_close3": {
+        "c": 3.28,
+        "close_ms": 1794546539999,
+        "h": 3.285,
+        "independently_live_exchange_verified": false,
+        "l": 3.271,
+        "minutes": 3,
+        "o": 3.278,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794546360000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.281,
+        "close_ms": 1794546299999,
+        "h": 3.284,
+        "independently_live_exchange_verified": false,
+        "l": 3.263,
+        "minutes": 5,
+        "o": 3.27,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794546000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08035262,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794545640000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08012027,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794546360000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10014558,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794546240000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.0777727,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794542940000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T07:42:07+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794546540000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.28,
+        "close_ms": 1794546539999,
+        "h": 3.285,
+        "independently_live_exchange_verified": false,
+        "l": 3.271,
+        "minutes": 3,
+        "o": 3.278,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794546360000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.281,
+        "close_ms": 1794546299999,
+        "h": 3.284,
+        "independently_live_exchange_verified": false,
+        "l": 3.263,
+        "minutes": 5,
+        "o": 3.27,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794546000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08035262,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794545640000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.08012027,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794546360000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10014558,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794546240000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794546539999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.0777727,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794542940000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T07:45:09+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794546540000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.514,
+        "close_ms": 1794559499999,
+        "h": 3.539,
+        "independently_live_exchange_verified": false,
+        "l": 3.51,
+        "minutes": 3,
+        "o": 3.539,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794559320000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.514,
+        "close_ms": 1794559499999,
+        "h": 3.539,
+        "independently_live_exchange_verified": false,
+        "l": 3.51,
+        "minutes": 5,
+        "o": 3.533,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794559200000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.04957619,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794558720000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.13918646,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794559440000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.07085504,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794559320000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.07250351,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794556020000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T11:21:17+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794559620000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.514,
+        "close_ms": 1794559499999,
+        "h": 3.539,
+        "independently_live_exchange_verified": false,
+        "l": 3.51,
+        "minutes": 3,
+        "o": 3.539,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794559320000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.514,
+        "close_ms": 1794559499999,
+        "h": 3.539,
+        "independently_live_exchange_verified": false,
+        "l": 3.51,
+        "minutes": 5,
+        "o": 3.533,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794559200000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.04957619,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794558720000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.13918646,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794559440000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.07085504,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794559320000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794559619999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.07250351,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794556020000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T11:24:02+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794559620000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.574,
+        "close_ms": 1794579659999,
+        "h": 3.584,
+        "independently_live_exchange_verified": false,
+        "l": 3.565,
+        "minutes": 3,
+        "o": 3.573,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794579480000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.577,
+        "close_ms": 1794579599999,
+        "h": 3.577,
+        "independently_live_exchange_verified": false,
+        "l": 3.561,
+        "minutes": 5,
+        "o": 3.572,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794579300000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794579719999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10583682,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794578820000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794579719999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.40532863,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794579540000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794579719999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.34342018,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794579420000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794579719999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.01577006,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794576120000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T16:54:16+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794579720000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T17:51:25+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T17:54:02+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T18:03:05+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "archive_close3": {
+        "c": 3.48,
+        "close_ms": 1794584879999,
+        "h": 3.484,
+        "independently_live_exchange_verified": false,
+        "l": 3.459,
+        "minutes": 3,
+        "o": 3.459,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794584700000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.497,
+        "close_ms": 1794584999999,
+        "h": 3.498,
+        "independently_live_exchange_verified": false,
+        "l": 3.459,
+        "minutes": 5,
+        "o": 3.459,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794584700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.087389,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584100000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.26512664,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584820000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.41270791,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584700000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02462632,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794581400000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T18:21:02+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794585000000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.48,
+        "close_ms": 1794584879999,
+        "h": 3.484,
+        "independently_live_exchange_verified": false,
+        "l": 3.459,
+        "minutes": 3,
+        "o": 3.459,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794584700000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.497,
+        "close_ms": 1794584999999,
+        "h": 3.498,
+        "independently_live_exchange_verified": false,
+        "l": 3.459,
+        "minutes": 5,
+        "o": 3.459,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794584700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.087389,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584100000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.26512664,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584820000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.41270791,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584700000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02462632,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794581400000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T18:24:12+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794585000000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.48,
+        "close_ms": 1794584879999,
+        "h": 3.484,
+        "independently_live_exchange_verified": false,
+        "l": 3.459,
+        "minutes": 3,
+        "o": 3.459,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794584700000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.497,
+        "close_ms": 1794584999999,
+        "h": 3.498,
+        "independently_live_exchange_verified": false,
+        "l": 3.459,
+        "minutes": 5,
+        "o": 3.459,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794584700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.087389,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584100000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.26512664,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584820000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.41270791,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794584700000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794584999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02462632,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794581400000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-13T18:27:05+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794585000000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-13T18:36:13+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONFLICT_ORIGIN"
+    },
+    {
+      "archive_close3": {
+        "c": 3.438,
+        "close_ms": 1794609179999,
+        "h": 3.446,
+        "independently_live_exchange_verified": false,
+        "l": 3.437,
+        "minutes": 3,
+        "o": 3.438,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794609000000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.438,
+        "close_ms": 1794608999999,
+        "h": 3.442,
+        "independently_live_exchange_verified": false,
+        "l": 3.422,
+        "minutes": 5,
+        "o": 3.43,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794608700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.1728346,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608340000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10962038,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794609060000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.12584329,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608940000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.16613014,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794605640000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T01:06:10+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794609240000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T01:09:04+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.438,
+        "close_ms": 1794609179999,
+        "h": 3.446,
+        "independently_live_exchange_verified": false,
+        "l": 3.437,
+        "minutes": 3,
+        "o": 3.438,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794609000000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.438,
+        "close_ms": 1794608999999,
+        "h": 3.442,
+        "independently_live_exchange_verified": false,
+        "l": 3.422,
+        "minutes": 5,
+        "o": 3.43,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794608700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.1728346,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608340000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10962038,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794609060000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.12584329,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608940000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.16613014,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794605640000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T01:12:19+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794609240000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.438,
+        "close_ms": 1794609179999,
+        "h": 3.446,
+        "independently_live_exchange_verified": false,
+        "l": 3.437,
+        "minutes": 3,
+        "o": 3.438,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794609000000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.438,
+        "close_ms": 1794608999999,
+        "h": 3.442,
+        "independently_live_exchange_verified": false,
+        "l": 3.422,
+        "minutes": 5,
+        "o": 3.43,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794608700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.1728346,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608340000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10962038,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794609060000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.12584329,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608940000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.16613014,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794605640000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T01:15:09+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794609240000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "archive_close3": {
+        "c": 3.438,
+        "close_ms": 1794609179999,
+        "h": 3.446,
+        "independently_live_exchange_verified": false,
+        "l": 3.437,
+        "minutes": 3,
+        "o": 3.438,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794609000000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.438,
+        "close_ms": 1794608999999,
+        "h": 3.442,
+        "independently_live_exchange_verified": false,
+        "l": 3.422,
+        "minutes": 5,
+        "o": 3.43,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794608700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.1728346,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608340000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.10962038,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794609060000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.12584329,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794608940000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794609239999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.16613014,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794605640000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T01:18:08+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794609240000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T01:21:01+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.396,
+        "close_ms": 1794624299999,
+        "h": 3.399,
+        "independently_live_exchange_verified": false,
+        "l": 3.392,
+        "minutes": 3,
+        "o": 3.392,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794624120000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.396,
+        "close_ms": 1794624299999,
+        "h": 3.399,
+        "independently_live_exchange_verified": false,
+        "l": 3.38,
+        "minutes": 5,
+        "o": 3.393,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794624000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.00739315,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794623460000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.3042964,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794624180000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.36305189,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794624060000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.14978461,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794620760000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T05:24:11+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794624360000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T05:27:00+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.396,
+        "close_ms": 1794624299999,
+        "h": 3.399,
+        "independently_live_exchange_verified": false,
+        "l": 3.392,
+        "minutes": 3,
+        "o": 3.392,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794624120000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.396,
+        "close_ms": 1794624299999,
+        "h": 3.399,
+        "independently_live_exchange_verified": false,
+        "l": 3.38,
+        "minutes": 5,
+        "o": 3.393,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794624000000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.00739315,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794623460000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.3042964,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794624180000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.36305189,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794624060000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794624359999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.14978461,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794620760000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T05:30:16+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794624360000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T06:18:04+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.347,
+        "close_ms": 1794631319999,
+        "h": 3.353,
+        "independently_live_exchange_verified": false,
+        "l": 3.328,
+        "minutes": 3,
+        "o": 3.336,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794631140000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.334,
+        "close_ms": 1794631199999,
+        "h": 3.339,
+        "independently_live_exchange_verified": false,
+        "l": 3.31,
+        "minutes": 5,
+        "o": 3.315,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794630900000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794631319999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.06366364,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794630420000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794631319999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.3964716,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794631140000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794631319999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.17447443,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794631020000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794631319999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.02540917,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794627720000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T07:36:06+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794631320000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T10:45:19+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T17:03:16+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T17:06:14+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T17:21:07+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T17:24:14+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T17:27:07+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T18:33:05+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T18:36:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T19:06:12+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T19:09:09+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T19:12:03+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T19:15:18+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T19:24:00+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 3.095,
+        "close_ms": 1794674879999,
+        "h": 3.106,
+        "independently_live_exchange_verified": false,
+        "l": 3.078,
+        "minutes": 3,
+        "o": 3.105,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794674700000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 3.102,
+        "close_ms": 1794674999999,
+        "h": 3.106,
+        "independently_live_exchange_verified": false,
+        "l": 3.078,
+        "minutes": 5,
+        "o": 3.105,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794674700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794674999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.05723518,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794674100000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794674999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.41107466,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794674820000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794674999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.09632788,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794674700000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794674999999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.10888503,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794671400000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-14T19:45:12+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794675000000,
+      "research_market_context_result": "PRICE_REVERSAL_NOT_SUPPORTED",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T20:48:11+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T20:54:22+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T21:06:22+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "MODEL_GATE"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T21:48:17+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T21:51:01+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T23:18:08+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T23:54:16+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-14T23:57:09+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "CONTRA_WAIT_30M"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-15T00:00:25+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-15T00:03:06+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-15T00:15:11+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "investigated": false,
+      "model_time_tr": "2026-11-15T00:18:00+03:00",
+      "real_order_authority": false,
+      "stage13_decision": "ENTRY_PENDING_EXPIRED"
+    },
+    {
+      "archive_close3": {
+        "c": 2.959,
+        "close_ms": 1794708179999,
+        "h": 2.968,
+        "independently_live_exchange_verified": false,
+        "l": 2.939,
+        "minutes": 3,
+        "o": 2.948,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 3,
+        "start_ms": 1794708000000,
+        "valid": true
+      },
+      "archive_close5": {
+        "c": 2.949,
+        "close_ms": 1794707999999,
+        "h": 2.957,
+        "independently_live_exchange_verified": false,
+        "l": 2.928,
+        "minutes": 5,
+        "o": 2.935,
+        "source": "ARCHIVE_1M_AGGREGATE_RESEARCH_PROXY",
+        "source_1m_count": 5,
+        "start_ms": 1794707700000,
+        "valid": true
+      },
+      "archive_flow15": {
+        "close_ms": 1794708179999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.18435234,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794707280000,
+        "valid": true,
+        "window_minutes": 15
+      },
+      "archive_flow3": {
+        "close_ms": 1794708179999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.31616643,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794708000000,
+        "valid": true,
+        "window_minutes": 3
+      },
+      "archive_flow5": {
+        "close_ms": 1794708179999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": 0.31078,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794707880000,
+        "valid": true,
+        "window_minutes": 5
+      },
+      "archive_flow60": {
+        "close_ms": 1794708179999,
+        "live_collector_and_market_context_independently_verified": false,
+        "signed_ratio": -0.11401128,
+        "source": "ARCHIVE_CLOSED_1M_TAKER_VOLUME_PROXY",
+        "start_ms": 1794704580000,
+        "valid": true,
+        "window_minutes": 60
+      },
+      "investigated": true,
+      "missing_real_proof": [
+        "exact_parent_chain_not_attested",
+        "fresh_model_not_attested",
+        "closed_3m_unverified",
+        "closed_5m_unverified",
+        "contra_recovery_unverified",
+        "new_sniper_unverified",
+        "new_entry_unverified",
+        "original_pending_not_expired",
+        "conflict_not_excluded",
+        "broker_flat_unverified",
+        "shared_risk_unverified"
+      ],
+      "model_time_tr": "2026-11-15T04:36:08+03:00",
+      "pending_provenance_status": "NO_GO",
+      "real_order_authority": false,
+      "research_decision_asof_ms": 1794708180000,
+      "research_market_context_result": "15M_60M_CONTEXT_NEGATIVE",
+      "source_chain_and_real_new_intent_proven": false,
+      "stage13_decision": "RESEARCH_READY_NO_REAL_INTENT"
+    }
+  ],
+  "human_outcome_labels_used_for_gating": false,
+  "independent_new_model_identity_proven": false,
+  "live_whale_sniper_entry_confirm_risk_proven": false,
+  "missing_real_proof_frequency": {
+    "broker_flat_unverified": 32,
+    "candle_not_fresh_asof": 4,
+    "closed_3m_unverified": 32,
+    "closed_5m_unverified": 32,
+    "conflict_not_excluded": 32,
+    "contra_recovery_unverified": 32,
+    "exact_parent_chain_not_attested": 32,
+    "fresh_model_not_attested": 32,
+    "new_entry_unverified": 32,
+    "new_sniper_unverified": 32,
+    "original_pending_not_expired": 32,
+    "shared_risk_unverified": 32
+  },
+  "model_events": 103,
+  "native_live_3m5m_market_context_proven": false,
+  "native_pending_origin_and_new_intent_proven": false,
+  "production_redis_writes": 0,
+  "real_order_authority_count": 0,
+  "schema": "long1_stage21_context_flow_pending_evidence_v1",
+  "stage13_ready_proxies": 32
+}
