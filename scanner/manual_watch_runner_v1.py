@@ -64,7 +64,7 @@ def watch_rows(bus,allocations,asof_ms):
    'observed_at_ms':asof_ms})
  return result
 def make_status(bus,allocations,now,universe,*,
-                confirmed_telegram_sends=0,latest_cost_checks=None):
+                confirmed_telegram_sends=0,latest_cost_checks=None,outcome_ledger=None):
  from scanner.context_entry_shadow_v1 import assess
  watches=watch_rows(bus,allocations,now)[-10:]
  for item in watches:
@@ -92,6 +92,8 @@ def make_status(bus,allocations,now,universe,*,
   'market_cache':bus.stats(),
   'context_gate_mode':'SHADOW_ONLY_NO_READY',
   'cost_gate_mode':'SHADOW_ONLY_INDICATIVE_COST_NO_READY',
+  'outcome_telemetry':outcome_ledger.summary() if outcome_ledger else
+   {'outcome_tracking':'OFF_IN_ONCE_PUBLIC_MODE','real_trades':0},
   'context_gate_horizons':'rolling_3_5_15_60m_from_closed_1m',
   'last_signals':watches}
 def atomic_status(payload,path=STATUS):
@@ -125,7 +127,10 @@ async def live(*,limit,max_seconds):
   bus=ClosedBarBus(symbols)
   clock_offset_ms=now-int(time.time()*1000)
   bootstrap(session,bus,symbols,clock_offset_ms)
-  atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u))
+  from scanner.watch_outcomes_v1 import OutcomeLedger
+  outcome_ledger=OutcomeLedger(ROOT/'run/signal_center/watch_outcomes.json')
+  atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
+    outcome_ledger=outcome_ledger))
   stream=WS+'/'.join(s.lower()+'@kline_1m' for s in symbols)
   backoff=1
   refresh_deadline=time.monotonic()+1800
@@ -176,15 +181,20 @@ async def live(*,limit,max_seconds):
       total+=1
       result=bus.update_ws(symbol,event,observed_at_ms=ts)
       if result=='GAP_BLOCKED':
+       outcome_ledger.invalidate_symbol(symbol,'market_feed_gap')
        # REST rebootstrap through isolated thread (bounded).
        await asyncio.to_thread(bootstrap,session,bus,[symbol],clock_offset_ms)
       if result=='CLOSED_ACCEPTED':
        accepted+=1
+       last_close_ms=bus.data[symbol][-1]['t']+60000
+       outcome_ledger.advance(symbol,list(bus.data[symbol]),
+                              last_close_ms=last_close_ms)
        x=bus.analyze(symbol,asof_ms=ts)
        if time.monotonic()-last_status_write>=45:
         atomic_status(make_status(bus,alloc,ts,u,
           confirmed_telegram_sends=confirmed_deliveries,
-          latest_cost_checks=latest_cost_checks))
+          latest_cost_checks=latest_cost_checks,
+          outcome_ledger=outcome_ledger))
         last_status_write=time.monotonic()
        if x.get('status') not in ('STRONG_WATCH','EXTREME_WATCH','WATCH',
             'EXTREME_CAUTION_WATCH'):
@@ -192,6 +202,10 @@ async def live(*,limit,max_seconds):
        watch+=1
        research=assess(symbol,x['direction'],list(bus.data[symbol]),
          observed_at_ms=ts)
+       outcome_record=outcome_ledger.observe(
+         symbol,x['direction'],x,research,
+         reference_close_ms=last_close_ms,
+         reference_price=bus.data[symbol][-1]['c'])
        context_counts[research['state']]=context_counts.get(research['state'],0)+1
        cost_result={'state':'NOT_QUERIED','reason':'context_gate_not_eligible'}
        # Only the highest quality candidate requests a single public quote.
@@ -216,7 +230,8 @@ async def live(*,limit,max_seconds):
          confirmed_deliveries+=1
          atomic_status(make_status(bus,alloc,ts,u,
            confirmed_telegram_sends=confirmed_deliveries,
-           latest_cost_checks=latest_cost_checks))
+           latest_cost_checks=latest_cost_checks,
+          outcome_ledger=outcome_ledger))
         elif delivery in ('SEND_FAILED','SEND_NOT_CONFIRMED','PERSISTENCE_UNAVAILABLE'):
          delivery_failures+=1
        print(json.dumps({'event':'WATCH_PREVIEW','symbol':symbol,
@@ -224,6 +239,7 @@ async def live(*,limit,max_seconds):
          'ret15_pct':x.get('ret15_pct'),
          'context_shadow_state':research['state'],
          'context_shadow_reason':research['reason'],
+         'outcome_tracking':outcome_record,
          'cost_shadow_state':cost_result.get('state'),
          'cost_shadow_reason':cost_result.get('reason'),
          'cost_spread_bps':cost_result.get('spread_bps'),
@@ -232,7 +248,8 @@ async def live(*,limit,max_seconds):
       elif result in ('GAP_BLOCKED','FUTURE_OR_STALE_CLOSE','BAD_CANDLE'):
        atomic_status(make_status(bus,alloc,ts,u,
          confirmed_telegram_sends=confirmed_deliveries,
-         latest_cost_checks=latest_cost_checks))
+         latest_cost_checks=latest_cost_checks,
+         outcome_ledger=outcome_ledger))
    except (OSError,ConnectionClosed,asyncio.TimeoutError,ValueError) as e:
     reconnects+=1
     if max_seconds and time.monotonic()-started>=max_seconds:break
@@ -241,6 +258,7 @@ async def live(*,limit,max_seconds):
     try:
      now,u,symbols,alloc=await asyncio.to_thread(make_universe,session,limit)
      bus=ClosedBarBus(symbols)
+     outcome_ledger.invalidate_missing(symbols,'removed_from_dynamic_universe')
      clock_offset_ms=now-int(time.time()*1000)
      await asyncio.to_thread(bootstrap,session,bus,symbols,clock_offset_ms)
      stream=WS+'/'.join(s.lower()+'@kline_1m' for s in symbols)
@@ -249,7 +267,8 @@ async def live(*,limit,max_seconds):
      refresh_deadline=time.monotonic()+1800
      last_healthy_packet=time.monotonic()
      atomic_status(make_status(bus,alloc,int(time.time()*1000)+clock_offset_ms,u,
-       confirmed_telegram_sends=confirmed_deliveries))
+       confirmed_telegram_sends=confirmed_deliveries,
+       outcome_ledger=outcome_ledger))
     except Exception:
      for symbol in bus.data:bus.rejections[symbol]='RECONNECT_SOURCE_UNVERIFIED'
     await asyncio.sleep(min(backoff,8))
@@ -259,6 +278,7 @@ async def live(*,limit,max_seconds):
    'watch_events':watch,'reconnects':reconnects,
    'context_shadow_counts':context_counts,
    'cost_shadow_counts':cost_counts,
+   'outcome_telemetry':outcome_ledger.summary(),
    'telegram_sent':confirmed_deliveries,
    'telegram_delivery_failures':delivery_failures,
    'orders':0}),flush=True)
